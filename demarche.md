@@ -44,6 +44,8 @@ Un retour spontané d'entraîneur est plus rare mais plus précieux : il vient d
 
 **Les décisions** qui gouvernent la priorisation, comme l'arbitrage ci-dessous, sont des issues épinglées. Elles ne figurent pas au tableau.
 
+**Pas de brouillon dans le tableau.** Le bouton « + » des colonnes crée une fiche qui n'existe que dans le tableau et ne passe par aucun formulaire. Toute idée, tout bug passe par une issue de ce dépôt, créée avec le formulaire correspondant. Un brouillon trouvé dans le tableau est converti en issue et remis au format, ou supprimé.
+
 ## Étiquettes
 
 | Axe | Étiquettes |
