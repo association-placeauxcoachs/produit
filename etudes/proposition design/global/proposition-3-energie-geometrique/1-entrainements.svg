@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      .font-black { font-family: 'Inter', 'Arial Black', sans-serif; font-weight: 900; }
+      .font-bold { font-family: 'Inter', Arial, sans-serif; font-weight: 700; }
+      .font-light { font-family: 'Inter', Arial, sans-serif; font-weight: 300; }
+      .font-regular { font-family: 'Inter', Arial, sans-serif; font-weight: 400; }
+    </style>
+  </defs>
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <rect width="260" height="900" fill="#1A1A2E"/>
+
+  <!-- Logo area -->
+  <rect x="0" y="0" width="260" height="80" fill="#1A1A2E"/>
+  <circle cx="42" cy="40" r="18" fill="none" stroke="#E8553D" stroke-width="2.5"/>
+  <circle cx="42" cy="40" r="7" fill="#E8553D" opacity="0.4"/>
+  <line x1="42" y1="22" x2="42" y2="58" stroke="#E8553D" stroke-width="1.5" opacity="0.5"/>
+  <line x1="24" y1="40" x2="60" y2="40" stroke="#E8553D" stroke-width="1.5" opacity="0.5"/>
+  <text x="70" y="37" class="font-bold" fill="#FFFFFF" font-size="13" letter-spacing="1">PLACE AUX</text>
+  <text x="70" y="54" class="font-bold" fill="#E8553D" font-size="13" letter-spacing="1">COACHS</text>
+
+  <line x1="20" y1="80" x2="240" y2="80" stroke="#FFFFFF" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- Nav items -->
+  <!-- Active: Entraînements -->
+  <rect x="0" y="100" width="260" height="52" fill="#FFFFFF" opacity="0.05"/>
+  <rect x="0" y="100" width="5" height="52" fill="#E8553D"/>
+  <text x="55" y="131" class="font-bold" fill="#FFFFFF" font-size="12" letter-spacing="2.5">ENTRAÎNEMENTS</text>
+  <rect x="22" y="115" width="18" height="18" fill="none" stroke="#E8553D" stroke-width="1.5" rx="0"/>
+
+  <g opacity="0.5">
+    <text x="55" y="183" class="font-bold" fill="#FFFFFF" font-size="12" letter-spacing="2.5">GROUPES</text>
+    <rect x="22" y="167" width="18" height="18" fill="none" stroke="#FFFFFF" stroke-width="1" rx="0"/>
+  </g>
+
+  <g opacity="0.5">
+    <text x="55" y="235" class="font-bold" fill="#FFFFFF" font-size="12" letter-spacing="2.5">COMMUNAUTÉ</text>
+    <circle cx="31" cy="228" r="9" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+  </g>
+
+  <g opacity="0.5">
+    <text x="55" y="287" class="font-bold" fill="#FFFFFF" font-size="12" letter-spacing="2.5">PROFIL</text>
+    <circle cx="31" cy="280" r="9" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+    <circle cx="31" cy="276" r="4" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+  </g>
+
+  <line x1="20" y1="830" x2="240" y2="830" stroke="#FFFFFF" stroke-width="0.5" opacity="0.1"/>
+  <text x="55" y="870" class="font-bold" fill="#FFFFFF" font-size="11" letter-spacing="2" opacity="0.4">DÉCONNEXION</text>
+
+  <!-- Decorative geometric in sidebar -->
+  <circle cx="130" cy="600" r="80" fill="none" stroke="#1A8A7D" stroke-width="0.5" opacity="0.1"/>
+  <polygon points="100,720 130,680 160,720" fill="none" stroke="#F2B705" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <rect x="260" y="0" width="1180" height="900" fill="#FAF7F2"/>
+
+  <!-- Top bar -->
+  <rect x="260" y="0" width="1180" height="120" fill="#FFFFFF"/>
+
+  <text x="310" y="45" class="font-black" fill="#1A1A2E" font-size="28" letter-spacing="-0.5">MES ENTRAÎNEMENTS</text>
+  <rect x="310" y="55" width="60" height="4" fill="#E8553D"/>
+
+  <!-- Search input -->
+  <rect x="310" y="75" width="400" height="36" fill="#FAF7F2"/>
+  <rect x="310" y="111" width="400" height="3" fill="#1A1A2E"/>
+  <text x="325" y="98" class="font-light" fill="#1A1A2E" font-size="13" opacity="0.4">Rechercher un entraînement...</text>
+
+  <!-- Filter tabs -->
+  <g transform="translate(760, 80)">
+    <text x="0" y="20" class="font-bold" fill="#E8553D" font-size="12" letter-spacing="1.5">TOUS</text>
+    <rect x="-5" y="27" width="40" height="3" fill="#E8553D"/>
+    <text x="70" y="20" class="font-bold" fill="#1A1A2E" font-size="12" letter-spacing="1.5" opacity="0.4">BROUILLON</text>
+    <text x="190" y="20" class="font-bold" fill="#1A1A2E" font-size="12" letter-spacing="1.5" opacity="0.4">EN COURS</text>
+    <text x="300" y="20" class="font-bold" fill="#1A1A2E" font-size="12" letter-spacing="1.5" opacity="0.4">PRÊT</text>
+    <text x="380" y="20" class="font-bold" fill="#1A1A2E" font-size="12" letter-spacing="1.5" opacity="0.4">TERMINÉ</text>
+  </g>
+
+  <!-- Category pills -->
+  <g transform="translate(310, 130)">
+    <rect x="0" y="0" width="65" height="28" fill="#1A1A2E" rx="2"/>
+    <text x="32" y="18" class="font-bold" fill="#FFFFFF" font-size="10" letter-spacing="1" text-anchor="middle">U11</text>
+    <rect x="75" y="0" width="65" height="28" fill="none" stroke="#1A1A2E" stroke-width="1.5" rx="2"/>
+    <text x="107" y="18" class="font-bold" fill="#1A1A2E" font-size="10" letter-spacing="1" text-anchor="middle">U13</text>
+    <rect x="150" y="0" width="65" height="28" fill="none" stroke="#1A1A2E" stroke-width="1.5" rx="2"/>
+    <text x="182" y="18" class="font-bold" fill="#1A1A2E" font-size="10" letter-spacing="1" text-anchor="middle">U15</text>
+    <rect x="225" y="0" width="80" height="28" fill="none" stroke="#1A1A2E" stroke-width="1.5" rx="2"/>
+    <text x="265" y="18" class="font-bold" fill="#1A1A2E" font-size="10" letter-spacing="1" text-anchor="middle">SENIORS</text>
+  </g>
+
+  <!-- ==================== TRAINING CARDS GRID ==================== -->
+
+  <!-- Card 1 - Coral top border (Brouillon) -->
+  <g transform="translate(310, 180)">
+    <rect width="350" height="310" fill="#FFFFFF" rx="2"/>
+    <rect width="350" height="5" fill="#E8553D"/>
+    <g transform="translate(20, 25)">
+      <rect width="310" height="130" fill="#3D7A5F" rx="0"/>
+      <rect width="310" height="130" fill="#2D6B50" rx="0" opacity="0.5"/>
+      <line x1="0" y1="65" x2="310" y2="65" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="155" cy="65" r="25" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="0" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="275" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="80" cy="45" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="110" cy="80" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="140" cy="50" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="200" cy="55" r="7" fill="#F2B705" opacity="0.9"/>
+      <circle cx="230" cy="85" r="7" fill="#F2B705" opacity="0.9"/>
+    </g>
+    <text x="20" y="185" class="font-bold" fill="#1A1A2E" font-size="17">Défense 1-5 repli</text>
+    <rect x="20" y="198" width="40" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="40" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">U15</text>
+    <rect x="66" y="198" width="65" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="98" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">DÉFENSE</text>
+    <text x="20" y="245" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">Travail de repli défensif en 1-5</text>
+    <text x="20" y="260" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">avec transition rapide</text>
+    <line x1="20" y1="275" x2="330" y2="275" stroke="#1A1A2E" stroke-width="0.5" opacity="0.1"/>
+    <text x="20" y="298" class="font-bold" fill="#E8553D" font-size="11" letter-spacing="1">BROUILLON</text>
+    <text x="330" y="298" class="font-regular" fill="#1A1A2E" font-size="11" opacity="0.4" text-anchor="end">12 mars 2026</text>
+  </g>
+
+  <!-- Card 2 - Teal top border (En cours) -->
+  <g transform="translate(690, 180)">
+    <rect width="350" height="310" fill="#FFFFFF" rx="2"/>
+    <rect width="350" height="5" fill="#1A8A7D"/>
+    <g transform="translate(20, 25)">
+      <rect width="310" height="130" fill="#3D7A5F" rx="0"/>
+      <rect width="310" height="130" fill="#2D6B50" rx="0" opacity="0.5"/>
+      <line x1="0" y1="65" x2="310" y2="65" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="155" cy="65" r="25" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="0" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="275" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="70" cy="40" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="100" cy="70" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="130" cy="45" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="160" cy="80" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="210" cy="50" r="7" fill="#F2B705" opacity="0.9"/>
+      <circle cx="240" cy="75" r="7" fill="#F2B705" opacity="0.9"/>
+      <line x1="70" y1="40" x2="130" y2="45" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+      <line x1="130" y1="45" x2="210" y2="50" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+    </g>
+    <text x="20" y="185" class="font-bold" fill="#1A1A2E" font-size="17">Montée de balle rapide</text>
+    <rect x="20" y="198" width="40" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="40" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">U13</text>
+    <rect x="66" y="198" width="70" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="101" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">ATTAQUE</text>
+    <text x="20" y="245" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">Exercice de contre-attaque et montée</text>
+    <text x="20" y="260" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">de balle avec 3 situations progressives</text>
+    <line x1="20" y1="275" x2="330" y2="275" stroke="#1A1A2E" stroke-width="0.5" opacity="0.1"/>
+    <text x="20" y="298" class="font-bold" fill="#1A8A7D" font-size="11" letter-spacing="1">EN COURS</text>
+    <text x="330" y="298" class="font-regular" fill="#1A1A2E" font-size="11" opacity="0.4" text-anchor="end">10 mars 2026</text>
+  </g>
+
+  <!-- Card 3 - Yellow top border (Prêt) -->
+  <g transform="translate(1070, 180)">
+    <rect width="350" height="310" fill="#FFFFFF" rx="2"/>
+    <rect width="350" height="5" fill="#F2B705"/>
+    <g transform="translate(20, 25)">
+      <rect width="310" height="130" fill="#3D7A5F" rx="0"/>
+      <rect width="310" height="130" fill="#2D6B50" rx="0" opacity="0.5"/>
+      <line x1="0" y1="65" x2="310" y2="65" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="155" cy="65" r="25" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="0" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="275" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="90" cy="50" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="120" cy="75" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="150" cy="55" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="190" cy="45" r="7" fill="#F2B705" opacity="0.9"/>
+      <circle cx="220" cy="80" r="7" fill="#F2B705" opacity="0.9"/>
+      <circle cx="250" cy="60" r="7" fill="#F2B705" opacity="0.9"/>
+      <polygon points="155,40 158,35 152,35" fill="#F2B705"/>
+      <polygon points="155,90 158,85 152,85" fill="#F2B705"/>
+    </g>
+    <text x="20" y="185" class="font-bold" fill="#1A1A2E" font-size="17">Circulation de balle 3-3</text>
+    <rect x="20" y="198" width="60" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="50" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">SENIORS</text>
+    <rect x="86" y="198" width="75" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="123" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">COLLECTIF</text>
+    <text x="20" y="245" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">Jeu en circulation sur demi-terrain</text>
+    <text x="20" y="260" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">avec variation des appuis</text>
+    <line x1="20" y1="275" x2="330" y2="275" stroke="#1A1A2E" stroke-width="0.5" opacity="0.1"/>
+    <text x="20" y="298" class="font-bold" fill="#F2B705" font-size="11" letter-spacing="1">PRÊT</text>
+    <text x="330" y="298" class="font-regular" fill="#1A1A2E" font-size="11" opacity="0.4" text-anchor="end">8 mars 2026</text>
+  </g>
+
+  <!-- Card 4 - Navy top border (Terminé) -->
+  <g transform="translate(310, 510)">
+    <rect width="350" height="310" fill="#FFFFFF" rx="2"/>
+    <rect width="350" height="5" fill="#1A1A2E"/>
+    <g transform="translate(20, 25)">
+      <rect width="310" height="130" fill="#3D7A5F" rx="0"/>
+      <rect width="310" height="130" fill="#2D6B50" rx="0" opacity="0.5"/>
+      <line x1="0" y1="65" x2="310" y2="65" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="155" cy="65" r="25" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="0" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="275" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="80" cy="50" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="110" cy="75" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="140" cy="55" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="170" cy="40" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="200" cy="70" r="7" fill="#F2B705" opacity="0.9"/>
+      <circle cx="230" cy="50" r="7" fill="#F2B705" opacity="0.9"/>
+    </g>
+    <text x="20" y="185" class="font-bold" fill="#1A1A2E" font-size="17">Échauffement complet</text>
+    <rect x="20" y="198" width="40" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="40" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">U11</text>
+    <rect x="66" y="198" width="90" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="111" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">PHYSIQUE</text>
+    <text x="20" y="245" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">Routine complète d'échauffement avec</text>
+    <text x="20" y="260" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">montée en intensité progressive</text>
+    <line x1="20" y1="275" x2="330" y2="275" stroke="#1A1A2E" stroke-width="0.5" opacity="0.1"/>
+    <text x="20" y="298" class="font-bold" fill="#1A1A2E" font-size="11" letter-spacing="1">TERMINÉ</text>
+    <text x="330" y="298" class="font-regular" fill="#1A1A2E" font-size="11" opacity="0.4" text-anchor="end">5 mars 2026</text>
+  </g>
+
+  <!-- Card 5 - Coral (Brouillon) -->
+  <g transform="translate(690, 510)">
+    <rect width="350" height="310" fill="#FFFFFF" rx="2"/>
+    <rect width="350" height="5" fill="#E8553D"/>
+    <g transform="translate(20, 25)">
+      <rect width="310" height="130" fill="#3D7A5F" rx="0"/>
+      <rect width="310" height="130" fill="#2D6B50" rx="0" opacity="0.5"/>
+      <line x1="0" y1="65" x2="310" y2="65" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="155" cy="65" r="25" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="0" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="275" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="100" cy="55" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="180" cy="65" r="7" fill="#F2B705" opacity="0.9"/>
+    </g>
+    <text x="20" y="185" class="font-bold" fill="#1A1A2E" font-size="17">Tirs en appui</text>
+    <rect x="20" y="198" width="40" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="40" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">U18</text>
+    <rect x="66" y="198" width="45" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="88" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">TIR</text>
+    <text x="20" y="245" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">Travail de tir en appui avec course</text>
+    <text x="20" y="260" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">d'élan et variantes de trajectoire</text>
+    <line x1="20" y1="275" x2="330" y2="275" stroke="#1A1A2E" stroke-width="0.5" opacity="0.1"/>
+    <text x="20" y="298" class="font-bold" fill="#E8553D" font-size="11" letter-spacing="1">BROUILLON</text>
+    <text x="330" y="298" class="font-regular" fill="#1A1A2E" font-size="11" opacity="0.4" text-anchor="end">3 mars 2026</text>
+  </g>
+
+  <!-- Card 6 - Teal (En cours) -->
+  <g transform="translate(1070, 510)">
+    <rect width="350" height="310" fill="#FFFFFF" rx="2"/>
+    <rect width="350" height="5" fill="#1A8A7D"/>
+    <g transform="translate(20, 25)">
+      <rect width="310" height="130" fill="#3D7A5F" rx="0"/>
+      <rect width="310" height="130" fill="#2D6B50" rx="0" opacity="0.5"/>
+      <line x1="0" y1="65" x2="310" y2="65" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="155" cy="65" r="25" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="0" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <rect x="275" y="20" width="35" height="90" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.4"/>
+      <circle cx="90" cy="50" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="130" cy="70" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="170" cy="55" r="7" fill="#E8553D" opacity="0.9"/>
+      <circle cx="200" cy="80" r="7" fill="#F2B705" opacity="0.9"/>
+      <circle cx="230" cy="50" r="7" fill="#F2B705" opacity="0.9"/>
+    </g>
+    <text x="20" y="185" class="font-bold" fill="#1A1A2E" font-size="17">Jeu de transition 2v2</text>
+    <rect x="20" y="198" width="40" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="40" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">U15</text>
+    <rect x="66" y="198" width="95" height="22" fill="#1A1A2E" rx="2"/>
+    <text x="113" y="213" class="font-bold" fill="#FFFFFF" font-size="9" letter-spacing="0.5" text-anchor="middle">TRANSITION</text>
+    <text x="20" y="245" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">Situation de jeu en supériorité avec</text>
+    <text x="20" y="260" class="font-light" fill="#1A1A2E" font-size="12" opacity="0.6">transition offensive/défensive</text>
+    <line x1="20" y1="275" x2="330" y2="275" stroke="#1A1A2E" stroke-width="0.5" opacity="0.1"/>
+    <text x="20" y="298" class="font-bold" fill="#1A8A7D" font-size="11" letter-spacing="1">EN COURS</text>
+    <text x="330" y="298" class="font-regular" fill="#1A1A2E" font-size="11" opacity="0.4" text-anchor="end">1 mars 2026</text>
+  </g>
+
+  <!-- ==================== FLOATING CREATE BUTTON ==================== -->
+  <circle cx="1372" cy="853" r="32" fill="#E8553D" opacity="0.15"/>
+  <circle cx="1370" cy="850" r="32" fill="#E8553D"/>
+  <line x1="1370" y1="836" x2="1370" y2="864" stroke="#FFFFFF" stroke-width="3"/>
+  <line x1="1356" y1="850" x2="1384" y2="850" stroke="#FFFFFF" stroke-width="3"/>
+
+  <!-- Decorative elements -->
+  <circle cx="1400" cy="150" r="25" fill="none" stroke="#F2B705" stroke-width="1.5" opacity="0.2"/>
+  <rect x="1390" y="400" width="15" height="15" fill="#E8553D" opacity="0.06" transform="rotate(45 1397 407)"/>
+</svg>

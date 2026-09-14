@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étude UX — Header Navigation & Filtres (Pattern Airbnb)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap');
+
+  :root {
+    --ink: #1a1a1a;
+    --ink-soft: #6b6b6b;
+    --ink-muted: #999;
+    --surface: #ffffff;
+    --surface-warm: #faf9f7;
+    --surface-hover: #f3f1ee;
+    --border: #e0ddd8;
+    --border-light: #ece9e4;
+    --accent: #e8451e;
+    --accent-glow: rgba(232, 69, 30, 0.08);
+    --overlay: rgba(20, 18, 15, 0.45);
+    --shadow-soft: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-medium: 0 4px 24px rgba(0,0,0,0.1);
+    --shadow-heavy: 0 8px 40px rgba(0,0,0,0.15);
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-pill: 50px;
+    --transition: 380ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface-warm);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══════════════════════════════════════════
+     CONTROLS PANEL — Toggle between states
+     ═══════════════════════════════════════════ */
+  .controls {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    gap: 6px;
+    padding: 6px;
+    background: var(--ink);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-heavy);
+  }
+
+  .controls button {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 10px 18px;
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+  }
+
+  .controls button.active {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .controls button:hover:not(.active) {
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ═══════════════════════════════════════════
+     STATE LABEL
+     ═══════════════════════════════════════════ */
+  .state-label {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 9999;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-muted);
+    background: var(--surface);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    pointer-events: none;
+    transition: all var(--transition);
+  }
+
+  /* ═══════════════════════════════════════════
+     OVERLAY
+     ═══════════════════════════════════════════ */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+    backdrop-filter: blur(2px);
+  }
+
+  .overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ═══════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════ */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-light);
+    transition: all var(--transition);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ─── Navigation Row ─── */
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all var(--transition);
+    padding: 20px 0 12px;
+    overflow: hidden;
+  }
+
+  /* State: compact */
+  .header.compact .nav-row {
+    padding: 8px 0 6px;
+  }
+
+  .nav-tab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    padding: 10px 22px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: var(--radius-pill);
+    transition: all var(--transition-fast);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-tab .tab-icon {
+    font-size: 20px;
+    transition: all var(--transition);
+    line-height: 1;
+  }
+
+  .nav-tab .tab-label {
+    transition: all var(--transition);
+  }
+
+  /* Compact: icon hidden, text only */
+  .header.compact .nav-tab {
+    flex-direction: row;
+    gap: 0;
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+
+  .header.compact .nav-tab .tab-icon {
+    font-size: 0;
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .nav-tab:hover {
+    background: var(--surface-hover);
+    color: var(--ink);
+  }
+
+  .nav-tab.active {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .nav-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: all var(--transition-fast);
+  }
+
+  .header.compact .nav-tab.active::after {
+    width: 20px;
+  }
+
+  .nav-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    margin: 0 4px;
+    transition: all var(--transition);
+  }
+
+  .header.compact .nav-separator {
+    height: 14px;
+  }
+
+  /* ─── Filter Row ─── */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 16px;
+    transition: all var(--transition);
+    overflow: hidden;
+    max-height: 80px;
+    opacity: 1;
+  }
+
+  .header.compact .filter-row {
+    max-height: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .header.compact.expanded .filter-row {
+    max-height: 80px;
+    padding: 0 0 16px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .filter-pill {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .filter-pill:hover {
+    box-shadow: var(--shadow-medium);
+  }
+
+  .filter-segment {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    padding: 12px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .filter-segment:last-child {
+    border-right: none;
+  }
+
+  .filter-segment:hover {
+    background: var(--surface-hover);
+  }
+
+  .filter-segment .segment-label {
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .filter-segment .segment-value {
+    color: var(--ink-muted);
+    font-size: 13px;
+  }
+
+  .filter-segment .filter-badge {
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+  }
+
+  .filter-search-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 4px;
+    margin-left: 0;
+    transition: all var(--transition-fast);
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .filter-search-btn:hover {
+    background: #d13d18;
+    transform: scale(1.05);
+  }
+
+  /* ─── Compact Filter Summary (click target) ─── */
+  .compact-filter-bar {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 10px;
+    transition: all var(--transition);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .header.compact .compact-filter-bar {
+    display: flex;
+    opacity: 1;
+    max-height: 60px;
+    padding: 0 0 10px;
+  }
+
+  .header.compact.expanded .compact-filter-bar {
+    display: none;
+    opacity: 0;
+    max-height: 0;
+  }
+
+  .compact-filter-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-soft);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .compact-filter-trigger:hover {
+    box-shadow: var(--shadow-medium);
+    border-color: var(--ink-muted);
+  }
+
+  .compact-filter-trigger .trigger-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .compact-filter-trigger .trigger-divider {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+  }
+
+  .compact-filter-trigger .trigger-summary {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .compact-filter-trigger .trigger-icon {
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+
+  /* ═══════════════════════════════════════════
+     CONTENT (Fake cards)
+     ═══════════════════════════════════════════ */
+  .content {
+    padding-top: 160px;
+    transition: padding-top var(--transition);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 120px;
+  }
+
+  .content.compact-padding {
+    padding-top: 100px;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+    padding: 20px;
+    transition: all var(--transition-fast);
+    min-height: 180px;
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .card-badge {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--accent-glow);
+    color: var(--accent);
+  }
+
+  .card-badge.brouillon { background: #f5f0eb; color: #9a8b7a; }
+  .card-badge.en-cours { background: #eef3ff; color: #4a6fa5; }
+  .card-badge.pret { background: #edf7ee; color: #4a8f4e; }
+
+  .card-date {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .card-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .card-meta {
+    font-size: 13px;
+    color: var(--ink-muted);
+    display: flex;
+    gap: 12px;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .card-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-warm);
+    border: 1px solid var(--border-light);
+    color: var(--ink-soft);
+  }
+
+  /* ═══════════════════════════════════════════
+     MOBILE STYLES (≤ 768px)
+     ═══════════════════════════════════════════ */
+
+  /* Mobile filter summary bar */
+  .mobile-filter-summary {
+    display: none;
+  }
+
+  /* Mobile full-screen filter panel */
+  .mobile-filter-panel {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--surface);
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all var(--transition);
+  }
+
+  .mobile-filter-panel.open {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mobile-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .mobile-panel-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+  }
+
+  .mobile-panel-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-panel-close:hover {
+    background: var(--surface-hover);
+  }
+
+  .mobile-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .mobile-filter-group {
+    margin-bottom: 28px;
+  }
+
+  .mobile-filter-group-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    margin-bottom: 12px;
+  }
+
+  .mobile-filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mobile-filter-chip {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--ink-soft);
+  }
+
+  .mobile-filter-chip:hover {
+    border-color: var(--ink-muted);
+  }
+
+  .mobile-filter-chip.selected {
+    background: var(--ink);
+    color: var(--surface);
+    border-color: var(--ink);
+  }
+
+  .mobile-search-input {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface-warm);
+    outline: none;
+    transition: border-color var(--transition-fast);
+  }
+
+  .mobile-search-input:focus {
+    border-color: var(--ink-muted);
+  }
+
+  .mobile-panel-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    gap: 12px;
+  }
+
+  .mobile-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    flex: 1;
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-btn-reset {
+    background: var(--surface-warm);
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+  }
+
+  .mobile-btn-apply {
+    background: var(--accent);
+    color: white;
+  }
+
+  .mobile-btn-apply:hover {
+    background: #d13d18;
+  }
+
+  /* ═══════════════════════════════════════════
+     ANNOTATIONS (for wireframe study)
+     ═══════════════════════════════════════════ */
+  .annotation {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9998;
+    max-width: 240px;
+    padding: 16px 20px;
+    background: var(--ink);
+    color: rgba(255,255,255,0.9);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 1.6;
+    box-shadow: var(--shadow-heavy);
+    transition: all var(--transition);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .annotation.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .annotation-title {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: white;
+  }
+
+  .annotation-arrow {
+    color: var(--accent);
+    margin-right: 4px;
+  }
+
+  /* ═══════════════════════════════════════════
+     MOBILE VIEWPORT SIMULATION
+     ═══════════════════════════════════════════ */
+  body.mobile-preview {
+    max-width: 390px;
+    margin: 0 auto;
+    border-left: 2px dashed var(--border);
+    border-right: 2px dashed var(--border);
+    min-height: 100vh;
+    position: relative;
+  }
+
+  body.mobile-preview .header-inner {
+    padding: 0 16px;
+  }
+
+  body.mobile-preview .filter-row {
+    display: none !important;
+  }
+
+  body.mobile-preview .compact-filter-bar {
+    display: none !important;
+  }
+
+  body.mobile-preview .mobile-filter-summary {
+    display: flex;
+    align-items: center;
+    padding: 0 0 12px;
+    justify-content: center;
+  }
+
+  body.mobile-preview .mobile-filter-panel {
+    display: flex;
+  }
+
+  body.mobile-preview .nav-tab {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  body.mobile-preview .nav-tab .tab-icon {
+    font-size: 18px;
+  }
+
+  body.mobile-preview .header.compact .nav-tab {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  body.mobile-preview .content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  body.mobile-preview .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.mobile-preview .annotation {
+    display: none;
+  }
+
+  /* Mobile filter summary trigger */
+  .mobile-summary-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    box-shadow: var(--shadow-soft);
+    transition: all var(--transition-fast);
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .mobile-summary-trigger:hover {
+    box-shadow: var(--shadow-medium);
+  }
+
+  .mobile-summary-trigger .summary-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .mobile-summary-trigger .summary-text {
+    flex: 1;
+    text-align: left;
+  }
+
+  .mobile-summary-trigger .summary-main {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    display: block;
+  }
+
+  .mobile-summary-trigger .summary-detail {
+    font-size: 11px;
+    color: var(--ink-muted);
+    display: block;
+    margin-top: 1px;
+  }
+
+  .mobile-summary-trigger .summary-badge {
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* ═══════════════════════════════════════════
+     TRANSITION DIAGRAM
+     ═══════════════════════════════════════════ */
+  .diagram-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .diagram-overlay.visible {
+    display: flex;
+  }
+
+  .diagram-content {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 40px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .diagram-close {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 10001;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .diagram-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .diagram-ascii {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre;
+    background: var(--surface-warm);
+    padding: 24px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    overflow-x: auto;
+    color: var(--ink-soft);
+  }
+
+  .diagram-ascii .highlight {
+    color: var(--accent);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<!-- State Label -->
+<div class="state-label" id="stateLabel">État : Étendu</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════ -->
+<header class="header" id="header">
+  <div class="header-inner">
+
+    <!-- Navigation Row -->
+    <nav class="nav-row" id="navRow">
+      <button class="nav-tab active" onclick="selectTab(this)">
+        <span class="tab-icon">📋</span>
+        <span class="tab-label">Personnel</span>
+      </button>
+      <div class="nav-separator"></div>
+      <button class="nav-tab" onclick="selectTab(this)">
+        <span class="tab-icon">⭐</span>
+        <span class="tab-label">Mis en avant</span>
+      </button>
+      <div class="nav-separator"></div>
+      <button class="nav-tab" onclick="selectTab(this)">
+        <span class="tab-icon">👥</span>
+        <span class="tab-label">Groupes</span>
+      </button>
+      <div class="nav-separator"></div>
+      <button class="nav-tab" onclick="selectTab(this)">
+        <span class="tab-icon">🌍</span>
+        <span class="tab-label">Communauté</span>
+      </button>
+    </nav>
+
+    <!-- Filter Row (desktop, extended) -->
+    <div class="filter-row" id="filterRow">
+      <div class="filter-pill">
+        <button class="filter-segment">
+          <span class="segment-label">Catégories</span>
+          <span class="segment-value">U13, U15</span>
+          <span class="filter-badge">2</span>
+        </button>
+        <button class="filter-segment">
+          <span class="segment-label">Mots-clés</span>
+          <span class="segment-value">Tous</span>
+        </button>
+        <button class="filter-segment">
+          <span class="segment-label">Statuts</span>
+          <span class="segment-value">En cours, Prêt</span>
+          <span class="filter-badge">2</span>
+        </button>
+        <button class="filter-segment">
+          <span class="segment-label">Recherche</span>
+          <span class="segment-value">défense...</span>
+        </button>
+        <button class="filter-search-btn">🔍</button>
+      </div>
+    </div>
+
+    <!-- Compact filter trigger (shown in compact mode) -->
+    <div class="compact-filter-bar" id="compactFilterBar">
+      <button class="compact-filter-trigger" onclick="expandFromCompact()">
+        <span class="trigger-icon">⚙</span>
+        <span class="trigger-text">Filtres</span>
+        <span class="trigger-divider"></span>
+        <span class="trigger-summary">U13, U15 · En cours, Prêt</span>
+        <span class="trigger-icon">▾</span>
+      </button>
+    </div>
+
+    <!-- Mobile: Filter Summary -->
+    <div class="mobile-filter-summary" id="mobileFilterSummary">
+      <button class="mobile-summary-trigger" onclick="openMobileFilters()">
+        <span class="summary-icon">⚙</span>
+        <span class="summary-text">
+          <span class="summary-main">U13, U15 · En cours, Prêt</span>
+          <span class="summary-detail">2 catégories · 2 statuts · « défense »</span>
+        </span>
+        <span class="summary-badge">5</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     MOBILE FILTER PANEL (fullscreen)
+     ═══════════════════════════════════════════ -->
+<div class="mobile-filter-panel" id="mobileFilterPanel">
+  <div class="mobile-panel-header">
+    <span class="mobile-panel-title">Filtres</span>
+    <button class="mobile-panel-close" onclick="closeMobileFilters()">✕</button>
+  </div>
+  <div class="mobile-panel-body">
+    <div class="mobile-filter-group">
+      <div class="mobile-filter-group-label">Recherche</div>
+      <input type="text" class="mobile-search-input" placeholder="Rechercher un entraînement..." value="défense">
+    </div>
+    <div class="mobile-filter-group">
+      <div class="mobile-filter-group-label">Catégories</div>
+      <div class="mobile-filter-options">
+        <button class="mobile-filter-chip">Baby</button>
+        <button class="mobile-filter-chip">Mini</button>
+        <button class="mobile-filter-chip">U9</button>
+        <button class="mobile-filter-chip">U11</button>
+        <button class="mobile-filter-chip selected">U13</button>
+        <button class="mobile-filter-chip selected">U15</button>
+        <button class="mobile-filter-chip">U18</button>
+        <button class="mobile-filter-chip">Seniors</button>
+      </div>
+    </div>
+    <div class="mobile-filter-group">
+      <div class="mobile-filter-group-label">Mots-clés</div>
+      <div class="mobile-filter-options">
+        <button class="mobile-filter-chip">Défense</button>
+        <button class="mobile-filter-chip">Attaque</button>
+        <button class="mobile-filter-chip">Tir</button>
+        <button class="mobile-filter-chip">Passe</button>
+        <button class="mobile-filter-chip">Dribble</button>
+        <button class="mobile-filter-chip">Gardien</button>
+        <button class="mobile-filter-chip">Montée de balle</button>
+        <button class="mobile-filter-chip">Repli</button>
+      </div>
+    </div>
+    <div class="mobile-filter-group">
+      <div class="mobile-filter-group-label">Statuts</div>
+      <div class="mobile-filter-options">
+        <button class="mobile-filter-chip">Brouillon</button>
+        <button class="mobile-filter-chip selected">En cours</button>
+        <button class="mobile-filter-chip selected">Prêt</button>
+        <button class="mobile-filter-chip">Terminé</button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-panel-footer">
+    <button class="mobile-btn mobile-btn-reset">Réinitialiser</button>
+    <button class="mobile-btn mobile-btn-apply" onclick="closeMobileFilters()">Voir 12 résultats</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CONTENT
+     ═══════════════════════════════════════════ -->
+<main class="content" id="content">
+  <div class="content-grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-badge en-cours">En cours</span>
+        <span class="card-date">12 mars 2026</span>
+      </div>
+      <div class="card-title">Défense en zone 1-5</div>
+      <div class="card-meta">
+        <span>3 situations</span>
+        <span>U15</span>
+      </div>
+      <div class="card-tags">
+        <span class="card-tag">Défense</span>
+        <span class="card-tag">Repli</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-badge pret">Prêt</span>
+        <span class="card-date">10 mars 2026</span>
+      </div>
+      <div class="card-title">Circulation de balle en supériorité</div>
+      <div class="card-meta">
+        <span>4 situations</span>
+        <span>U13</span>
+      </div>
+      <div class="card-tags">
+        <span class="card-tag">Attaque</span>
+        <span class="card-tag">Passe</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-badge brouillon">Brouillon</span>
+        <span class="card-date">8 mars 2026</span>
+      </div>
+      <div class="card-title">Tirs en course — angles fermés</div>
+      <div class="card-meta">
+        <span>1 situation</span>
+        <span>U15</span>
+      </div>
+      <div class="card-tags">
+        <span class="card-tag">Tir</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-badge pret">Prêt</span>
+        <span class="card-date">5 mars 2026</span>
+      </div>
+      <div class="card-title">Jeu rapide après récupération</div>
+      <div class="card-meta">
+        <span>5 situations</span>
+        <span>U13</span>
+      </div>
+      <div class="card-tags">
+        <span class="card-tag">Montée de balle</span>
+        <span class="card-tag">Contre-attaque</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-badge en-cours">En cours</span>
+        <span class="card-date">3 mars 2026</span>
+      </div>
+      <div class="card-title">Travail spécifique gardien — parades basses</div>
+      <div class="card-meta">
+        <span>2 situations</span>
+        <span>U15</span>
+      </div>
+      <div class="card-tags">
+        <span class="card-tag">Gardien</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-badge brouillon">Brouillon</span>
+        <span class="card-date">1 mars 2026</span>
+      </div>
+      <div class="card-title">Échauffement ludique avec ballon</div>
+      <div class="card-meta">
+        <span>0 situations</span>
+        <span>U13</span>
+      </div>
+      <div class="card-tags">
+        <span class="card-tag">Échauffement</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════════════════════════════════════════
+     TRANSITION DIAGRAM
+     ═══════════════════════════════════════════ -->
+<div class="diagram-overlay" id="diagramOverlay">
+  <button class="diagram-close" onclick="closeDiagram()">✕</button>
+  <div class="diagram-content">
+    <div class="diagram-title">Diagramme de transitions</div>
+    <pre class="diagram-ascii">
+  ╔══════════════════════════════════════════════════════════════════════════════╗
+  ║                        MACHINE D'ÉTATS — HEADER                            ║
+  ╚══════════════════════════════════════════════════════════════════════════════╝
+
+  ┌─────────────────────────────────────────────────────────────────────────────┐
+  │                                                                             │
+  │     ┌──────────────┐      scroll > 100px      ┌──────────────┐             │
+  │     │              │ ─────────────────────────▶│              │             │
+  │     │   ÉTENDU     │                           │   COMPACT    │             │
+  │     │  (default)   │◀───────────────────────── │              │             │
+  │     │              │      scroll < 40px        │              │             │
+  │     └──────────────┘                           └──────┬───────┘             │
+  │            │                                          │                     │
+  │            │                                          │ clic nav/filtre     │
+  │            │                                          ▼                     │
+  │            │                                   ┌──────────────┐             │
+  │            │                                   │   COMPACT    │             │
+  │            │          clic overlay              │  + ÉTENDU   │             │
+  │            │◀───────────────────────────────── │  + OVERLAY   │             │
+  │            │          ou clic nav               │              │             │
+  │            │                                   └──────────────┘             │
+  │                                                                             │
+  │─────────────────────────────────────────────────────────────────────────────│
+  │                                                                             │
+  │     DESKTOP / TABLETTE                                                      │
+  │     ┌────────────────────────────────────────────┐                          │
+  │     │ Étendu : Nav icônes+texte + Filtres pill   │                          │
+  │     │ Compact : Nav texte seul + Résumé filtres  │                          │
+  │     │ Expanded : Nav icônes+texte + Filtres pill │                          │
+  │     │            + Overlay sombre sur contenu    │                          │
+  │     └────────────────────────────────────────────┘                          │
+  │                                                                             │
+  │     MOBILE                                                                  │
+  │     ┌────────────────────────────────────────────┐                          │
+  │     │ Nav : identique tablette (icônes+texte)    │                          │
+  │     │ Filtres : résumé cliquable (jamais pill)   │                          │
+  │     │ Clic résumé → panneau plein écran          │                          │
+  │     │ (formulaire complet avec chips/input)      │                          │
+  │     └────────────────────────────────────────────┘                          │
+  │                                                                             │
+  └─────────────────────────────────────────────────────────────────────────────┘
+
+  ╔══════════════════════════════════════════════════════════════════════════════╗
+  ║  FLUX MOBILE — Filtres                                                      ║
+  ╠══════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                             ║
+  ║   ┌──────────────────┐     tap       ┌──────────────────┐                  ║
+  ║   │  Résumé filtres  │ ────────────▶ │  Panel plein     │                  ║
+  ║   │  « U13, U15 ·   │               │  écran           │                  ║
+  ║   │   En cours »     │◀──────────── │  (formulaire)    │                  ║
+  ║   └──────────────────┘   Appliquer   └──────────────────┘                  ║
+  ║                          ou fermer                                          ║
+  ╚══════════════════════════════════════════════════════════════════════════════╝
+    </pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CONTROLS
+     ═══════════════════════════════════════════ -->
+<div class="controls">
+  <button class="active" onclick="setState('extended')" id="btnExtended">Étendu</button>
+  <button onclick="setState('compact')" id="btnCompact">Compact</button>
+  <button onclick="setState('expanded')" id="btnExpanded">Compact + Overlay</button>
+  <button onclick="setState('mobile')" id="btnMobile">Mobile</button>
+  <button onclick="setState('mobile-filters')" id="btnMobileFilters">Mobile filtres</button>
+  <button onclick="showDiagram()" id="btnDiagram" style="border-left: 1px solid rgba(255,255,255,0.15)">Schéma</button>
+</div>
+
+<!-- Annotation -->
+<div class="annotation" id="annotation"></div>
+
+<script>
+  const header = document.getElementById('header');
+  const overlay = document.getElementById('overlay');
+  const content = document.getElementById('content');
+  const stateLabel = document.getElementById('stateLabel');
+  const annotation = document.getElementById('annotation');
+  const mobilePanel = document.getElementById('mobileFilterPanel');
+
+  let currentState = 'extended';
+
+  function setState(state) {
+    currentState = state;
+
+    // Reset all
+    header.classList.remove('compact', 'expanded');
+    overlay.classList.remove('visible');
+    content.classList.remove('compact-padding');
+    document.body.classList.remove('mobile-preview');
+    mobilePanel.classList.remove('open');
+    annotation.classList.remove('visible');
+
+    // Remove active from all buttons
+    document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+
+    switch(state) {
+      case 'extended':
+        document.getElementById('btnExtended').classList.add('active');
+        stateLabel.textContent = 'État : Étendu (haut de page)';
+        showAnnotation(
+          'Mode étendu',
+          '→ Navigation avec icônes + texte\n→ Barre de filtres "pill" complète\n→ État par défaut en haut de page\n→ Comme Airbnb au chargement'
+        );
+        break;
+
+      case 'compact':
+        header.classList.add('compact');
+        content.classList.add('compact-padding');
+        document.getElementById('btnCompact').classList.add('active');
+        stateLabel.textContent = 'État : Compact (après scroll)';
+        showAnnotation(
+          'Mode compact',
+          '→ Navigation texte seul, plus petite\n→ Filtres masqués, résumé cliquable\n→ Déclenché au scroll > 100px\n→ Clic sur résumé → mode étendu + overlay'
+        );
+        break;
+
+      case 'expanded':
+        header.classList.add('compact', 'expanded');
+        overlay.classList.add('visible');
+        content.classList.add('compact-padding');
+        document.getElementById('btnExpanded').classList.add('active');
+        stateLabel.textContent = 'État : Compact + Overlay';
+        showAnnotation(
+          'Compact + Overlay',
+          '→ Clic sur nav ou filtres en compact\n→ Header s\'étend avec filtres visibles\n→ Overlay sombre sur le contenu\n→ Clic overlay → retour compact'
+        );
+        break;
+
+      case 'mobile':
+        document.body.classList.add('mobile-preview');
+        document.getElementById('btnMobile').classList.add('active');
+        stateLabel.textContent = 'État : Mobile';
+        break;
+
+      case 'mobile-filters':
+        document.body.classList.add('mobile-preview');
+        mobilePanel.classList.add('open');
+        document.getElementById('btnMobileFilters').classList.add('active');
+        stateLabel.textContent = 'État : Mobile — Filtres ouverts';
+        break;
+    }
+  }
+
+  function expandFromCompact() {
+    setState('expanded');
+  }
+
+  function showAnnotation(title, text) {
+    annotation.innerHTML = `<div class="annotation-title">${title}</div>${text.split('\n').map(l => `<div><span class="annotation-arrow">›</span> ${l.replace('→ ', '')}</div>`).join('')}`;
+    annotation.classList.add('visible');
+  }
+
+  function selectTab(el) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+
+    // If we're in compact mode, expand
+    if (header.classList.contains('compact') && !header.classList.contains('expanded')) {
+      setState('expanded');
+    }
+  }
+
+  function openMobileFilters() {
+    mobilePanel.classList.add('open');
+    stateLabel.textContent = 'État : Mobile — Filtres ouverts';
+  }
+
+  function closeMobileFilters() {
+    mobilePanel.classList.remove('open');
+    stateLabel.textContent = 'État : Mobile';
+  }
+
+  function showDiagram() {
+    document.getElementById('diagramOverlay').classList.add('visible');
+  }
+
+  function closeDiagram() {
+    document.getElementById('diagramOverlay').classList.remove('visible');
+  }
+
+  // Overlay click → back to compact
+  overlay.addEventListener('click', () => {
+    if (currentState === 'expanded') {
+      setState('compact');
+    }
+  });
+
+  // Mobile filter chips toggle
+  document.querySelectorAll('.mobile-filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('selected');
+    });
+  });
+</script>
+
+</body>
+</html>

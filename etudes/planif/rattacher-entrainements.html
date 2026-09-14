@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rattacher mes entraînements à la saison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+    --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E;
+    --st-brouillon:#8A8478; --st-encours:#C8841E; --st-pret:#2F7D4F; --st-termine:#2B4C7E;
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30);
+    --violet:#9B82FF; --st-brouillon:#9E978A; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#6E97D6;
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30);
+    --violet:#9B82FF; --st-brouillon:#9E978A; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#6E97D6;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--corps);font-size:15px;line-height:1.5;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+  .app{min-height:100vh}
+  .content{padding:26px 40px 120px;max-width:1120px;width:100%;margin:0 auto}
+  /* barre d'outils — reprise de Structure + StructureHeader (éditeur d'entraînement) */
+  .topbar{position:sticky;top:0;z-index:40;min-height:64px;display:flex;align-items:center;gap:10px;
+    background:color-mix(in srgb,var(--paper) 85%,transparent);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--filet);padding:0 max(16px, calc((100vw - 1120px) / 2))}
+  .topbar .ret{display:inline-flex;align-items:center;gap:.6em;border-radius:8px;padding:.5em .7em;font-size:.88rem;color:var(--attenue);flex:none}
+  .topbar .ret:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+  .topbar .ret svg{width:17px;height:17px}
+  .topbar .sp{margin-left:auto;display:flex;align-items:center;gap:10px}
+  @media(max-width:720px){.topbar .ret .lb{display:none}}
+  .kicker{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--orange);display:inline-flex;align-items:center;gap:.7em}
+  .kicker::before{content:"";width:30px;height:1px;background:var(--orange)}
+  .head h1{font-size:clamp(1.9rem,3.2vw,2.6rem);margin:.2em 0 .15em}
+  .head p{color:var(--attenue);font-size:.92rem;max-width:66ch}
+  .head p b{color:var(--ink);font-weight:600}
+
+  .barre{border-radius:999px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--filet);padding:12px 16px;margin:24px 0 6px;position:sticky;top:0;z-index:10}
+  .barre .cherche{border-radius:999px;display:flex;align-items:center;gap:.55em;border:1px solid var(--filet-fort);padding:.5em .8em;font-size:.86rem;color:var(--attenue);min-width:230px}
+  .barre .cherche input{border:none;background:none;outline:none;font:inherit;color:var(--ink);width:100%}
+  .barre .filtre{border-radius:999px;display:inline-flex;align-items:center;gap:.4em;font-size:.78rem;font-weight:600;border:1px solid var(--filet-fort);padding:.5em .8em;cursor:pointer}
+  .barre .filtre.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .barre .sel{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:.84rem}
+  .barre .sel b{font-weight:700}
+  .themesel{border-radius:999px;display:inline-flex;align-items:center;gap:.5em;border:1px solid var(--filet-fort);background:var(--paper);padding:.5em .8em;font-size:.82rem;font-weight:600}
+  .themesel .pt{width:9px;height:9px;border-radius:50%;background:var(--accent,var(--orange))}
+  .btn{border-radius:999px;display:inline-flex;align-items:center;gap:.5em;font-weight:600;font-size:.84rem;padding:.6em 1.1em;border:1px solid var(--orange);background:var(--orange);color:#fff}
+  .btn:disabled{opacity:.4}
+  .btn svg{width:14px;height:14px}
+
+  .grp{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--attenue);margin:26px 0 10px;display:flex;align-items:baseline;gap:.7em}
+  .grp .cpt{font-family:var(--mono);letter-spacing:0;color:var(--ink)}
+  .grp .tout{margin-left:auto;font-weight:600;font-size:.76rem;letter-spacing:0;text-transform:none;color:var(--violet);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+
+  .ln{border-radius:12px;display:flex;align-items:center;gap:13px;border:1px solid var(--filet);background:var(--surface);padding:11px 14px;margin-bottom:6px}
+  .ln:hover{border-color:var(--filet-fort)}
+  .ln.coche{border-color:var(--orange);background:color-mix(in srgb,var(--orange) 4%,var(--surface))}
+  .ln input[type=checkbox]{width:16px;height:16px;accent-color:var(--orange);flex:none}
+  .ln .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .ln .body{flex:1;min-width:0}
+  .ln .body b{font-size:.92rem;font-weight:600;display:block;line-height:1.25}
+  .ln .body .m{font-size:.74rem;color:var(--attenue);display:flex;gap:.8em;flex-wrap:wrap;margin-top:2px}
+  .ln .body .m .mono{font-family:var(--mono);font-size:.68rem}
+  .ln .mc{display:flex;gap:4px;flex-wrap:wrap;flex:none;max-width:230px;justify-content:flex-end}
+  .ln .mc span{border-radius:999px;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--violet);border:1px solid color-mix(in srgb,var(--violet) 30%,transparent);padding:.2em .45em}
+  .ln .propo{border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--st-pret);background:color-mix(in srgb,var(--st-pret) 12%,transparent);padding:.3em .55em;flex:none;display:inline-flex;align-items:center;gap:.4em}
+  .ln .propo .pt{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+
+  .astuce{border-left:2px solid var(--peach);padding-left:13px;font-size:.84rem;color:var(--attenue);line-height:1.55;margin:8px 0 4px}
+  .astuce b{color:var(--ink);font-weight:600}
+
+  .commu{border-radius:14px;margin-top:34px;border:1px solid color-mix(in srgb,var(--violet) 26%,transparent);border-left:3px solid var(--violet);background:color-mix(in srgb,var(--violet) 4%,transparent);padding:18px 20px}
+  .commu h3{font-size:1.15rem;display:flex;align-items:center;gap:.55em}
+  .commu h3 svg{width:17px;height:17px;color:var(--violet)}
+  .commu p{font-size:.85rem;color:var(--attenue);margin:6px 0 14px;max-width:68ch}
+  .commu p b{color:var(--ink);font-weight:600}
+  .commu .ln{background:var(--surface)}
+  .commu .aut{font-size:.72rem;color:var(--attenue);flex:none}
+  .commu .add{border-radius:999px;font-size:.74rem;font-weight:600;color:var(--violet);border:1px solid color-mix(in srgb,var(--violet) 40%,transparent);padding:.35em .7em;flex:none}
+  .commu .add:hover{background:var(--violet);color:#fff}
+  .commu .plus{display:inline-block;margin-top:10px;font-size:.8rem;font-weight:600;color:var(--violet);text-decoration:underline;text-underline-offset:3px}
+
+  .pied-fixe{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--filet-fort);padding:14px max(40px, calc((100vw - 1120px) / 2));display:flex;align-items:center;gap:16px;z-index:20}
+  .pied-fixe .r{font-size:.86rem}
+  .pied-fixe .r b{font-weight:700}
+  .pied-fixe .sp{margin-left:auto;display:flex;gap:10px;align-items:center}
+  .pied-fixe .ann{font-size:.82rem;font-weight:600;color:var(--attenue);text-decoration:underline;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <a class="ret" href="edition-saison.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span class="lb">U15 Filles · saison 2026–2027</span></a>
+  </div>
+
+  <div class="content">
+    <div class="head">
+      <span class="kicker" style="margin-top:14px">Rattacher</span>
+      <h1>Mes entraînements dans la saison</h1>
+      <p>Coche des entraînements, choisis un thème, valide. Ils sont <b>rattachés, pas copiés</b> : rien n'est dupliqué, rien n'est modifié, et tu peux les détacher à tout moment.</p>
+    </div>
+
+    <div class="barre">
+      <label class="cherche"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input placeholder="Chercher un entraînement…"></label>
+      <span class="filtre on">Sans thème</span>
+      <span class="filtre">U15</span>
+      <span class="filtre">2024–2025</span>
+      <span class="filtre">Tous</span>
+      <div class="sel">
+        <span>Ranger dans</span>
+        <span class="themesel" style="--accent:#C8841E"><span class="pt"></span> Réseau d'échange sur GE ▾</span>
+      </div>
+    </div>
+
+    <div class="astuce">Les entraînements marqués <b style="color:var(--st-pret)">suggéré</b> portent déjà des mots-clés proches de ceux du thème sélectionné — c'est un tri, pas une décision.<br><b>Aucune date n'est demandée ici</b> : les entraînements rejoignent leur thème, c'est tout. Ceux qui en avaient une la gardent ; les autres afficheront « + dater » dans le thème, à remplir quand tu voudras — ou jamais.</div>
+
+    <div class="grp">Suggérés pour ce thème <span class="cpt">4</span><span class="tout">tout cocher</span></div>
+    <label class="ln coche"><input type="checkbox" checked><span class="dot" style="background:var(--st-termine)"></span><div class="body"><b>Réseau d'échange — étagement à 3</b><span class="m"><span class="mono">créé le 18.11.2025</span><span>4 situations</span></span></div><span class="propo" style="--accent:#C8841E"><span class="pt"></span>suggéré</span><span class="mc"><span>Attaque</span><span>GE</span></span></label>
+    <label class="ln coche"><input type="checkbox" checked><span class="dot" style="background:var(--st-termine)"></span><div class="body"><b>Écartement — situation 3c3</b><span class="m"><span class="mono">créé le 02.12.2025</span><span>3 situations</span></span></div><span class="propo" style="--accent:#C8841E"><span class="pt"></span>suggéré</span><span class="mc"><span>Attaque</span><span>GE</span></span></label>
+    <label class="ln coche"><input type="checkbox" checked><span class="dot" style="background:var(--st-pret)"></span><div class="body"><b>Montée de balle — bases arrières</b><span class="m"><span class="mono">créé le 14.01.2025</span><span>5 situations</span></span></div><span class="propo" style="--accent:#C8841E"><span class="pt"></span>suggéré</span><span class="mc"><span>Attaque</span><span>Transition</span></span></label>
+    <label class="ln"><input type="checkbox"><span class="dot" style="background:var(--st-encours)"></span><div class="body"><b>Passe et va / passe et suit</b><span class="m"><span class="mono">créé le 09.03.2025</span><span>3 situations</span></span></div><span class="propo" style="--accent:#C8841E"><span class="pt"></span>suggéré</span><span class="mc"><span>Attaque</span></span></label>
+
+    <div class="grp">Mes autres entraînements sans thème <span class="cpt">43</span></div>
+    <label class="ln"><input type="checkbox"><span class="dot" style="background:var(--st-termine)"></span><div class="body"><b>Gammes GB — parades hautes</b><span class="m"><span class="mono">créé le 21.10.2024</span><span>6 situations</span></span></div><span class="mc"><span>Gardien</span></span></label>
+    <label class="ln"><input type="checkbox"><span class="dot" style="background:var(--st-brouillon)"></span><div class="body"><b>Jeu à 2 base AR / base AV</b><span class="m"><span class="mono">créé le 05.02.2025</span><span>2 situations</span></span></div><span class="mc"><span>Attaque</span><span>Relation</span></span></label>
+    <label class="ln"><input type="checkbox"><span class="dot" style="background:var(--st-pret)"></span><div class="body"><b>Front défensif demi-terrain</b><span class="m"><span class="mono">créé le 17.03.2025</span><span>4 situations</span></span></div><span class="mc"><span>Défense</span></span></label>
+    <label class="ln"><input type="checkbox"><span class="dot" style="background:var(--st-termine)"></span><div class="body"><b>Motricité générale — parcours</b><span class="m"><span class="mono">créé le 12.09.2024</span><span>3 situations</span></span></div><span class="mc"><span>Motricité</span></span></label>
+
+    <section class="commu">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg> Et dans la communauté</h3>
+      <p>Sur les tags de ce thème — <b>Attaque placée · Grand espace</b> — 12 entraînements partagés par d'autres coachs. Les ajouter en crée une <b>copie chez toi</b> (l'auteur reste crédité), contrairement à tes propres entraînements qui sont simplement rattachés.</p>
+      <div class="ln"><span class="dot" style="background:var(--st-termine)"></span><div class="body"><b>Étagement à 3 — montée de balle rapide</b><span class="m"><span>7 clubs l'ont repris</span></span></div><span class="aut">par C. Meunier</span><span class="add">ajouter</span></div>
+      <div class="ln"><span class="dot" style="background:var(--st-termine)"></span><div class="body"><b>Écartement : 4 ateliers en vagues</b><span class="m"><span>3 clubs l'ont repris</span></span></div><span class="aut">par HBC Mérignac</span><span class="add">ajouter</span></div>
+      <a class="plus">Voir les 12 entraînements de la communauté →</a>
+    </section>
+  </div>
+</div>
+
+<div class="pied-fixe">
+  <span class="r"><b>3</b> entraînements sélectionnés</span>
+  <span class="themesel" style="--accent:#C8841E"><span class="pt"></span> Réseau d'échange sur GE ▾</span>
+  <div class="sp">
+    <span class="ann">Tout décocher</span>
+    <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg> Rattacher au thème</button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.ln input[type=checkbox]').forEach(c=>{
+    c.addEventListener('change',()=>{
+      c.closest('.ln').classList.toggle('coche',c.checked);
+      const n=document.querySelectorAll('.ln input[type=checkbox]:checked').length;
+      document.querySelector('.pied-fixe .r').innerHTML='<b>'+n+'</b> entraînement'+(n>1?'s':'')+' sélectionné'+(n>1?'s':'');
+    });
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key.toLowerCase()==='t'&&e.target.tagName!=='INPUT'){
+      const r=document.documentElement;
+      const s=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+      r.dataset.theme=s?'light':'dark';
+    }
+  });
+</script>
+</body>
+</html>

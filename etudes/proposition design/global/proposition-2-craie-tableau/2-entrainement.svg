@@ -1,0 +1,343 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <filter id="chalkDust" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" seed="4" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feComponentTransfer in="grayNoise" result="softNoise">
+        <feFuncA type="linear" slope="0.07" intercept="0"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="softNoise" mode="screen"/>
+    </filter>
+    <filter id="chalkText" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="9" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="chalkLine" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="11" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="paperShadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <filter id="paperTexture">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="18" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+      <feComponentTransfer in="gray" result="faint">
+        <feFuncA type="linear" slope="0.05" intercept="0"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faint" mode="multiply"/>
+    </filter>
+    <filter id="woodTexture">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02 0.3" numOctaves="5" seed="25" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+      <feComponentTransfer in="gray" result="faint">
+        <feFuncA type="linear" slope="0.12" intercept="0"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faint" mode="overlay"/>
+    </filter>
+    <filter id="screenGlow">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <linearGradient id="boardGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1B3D2F"/>
+      <stop offset="50%" stop-color="#234A38"/>
+      <stop offset="100%" stop-color="#1B3D2F"/>
+    </linearGradient>
+    <linearGradient id="sidebarGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2A1F14"/>
+      <stop offset="100%" stop-color="#3D2B1A"/>
+    </linearGradient>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E4233"/>
+      <stop offset="100%" stop-color="#1B3D2F"/>
+    </linearGradient>
+  </defs>
+
+  <!-- === BACKGROUND === -->
+  <rect width="1440" height="900" fill="url(#boardGrad)"/>
+  <rect width="1440" height="900" filter="url(#chalkDust)" fill="transparent"/>
+
+  <!-- Chalk dust -->
+  <g opacity="0.1" fill="#F5F0E8">
+    <circle cx="400" cy="100" r="0.8"/><circle cx="700" cy="200" r="1"/><circle cx="1000" cy="150" r="0.7"/>
+    <circle cx="500" cy="500" r="0.9"/><circle cx="900" cy="600" r="1.1"/><circle cx="1200" cy="400" r="0.8"/>
+    <circle cx="600" cy="800" r="0.6"/><circle cx="1100" cy="700" r="1"/>
+  </g>
+
+  <!-- === LEFT SIDEBAR === -->
+  <rect x="0" y="0" width="260" height="900" fill="url(#sidebarGrad)" filter="url(#woodTexture)"/>
+  <g opacity="0.06" stroke="#F5F0E8" stroke-width="0.5">
+    <line x1="40" y1="0" x2="42" y2="900"/><line x1="100" y1="0" x2="98" y2="900"/>
+    <line x1="160" y1="0" x2="163" y2="900"/><line x1="220" y1="0" x2="218" y2="900"/>
+  </g>
+  <line x1="260" y1="0" x2="260" y2="900" stroke="#F5F0E8" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- Sidebar logo -->
+  <g transform="translate(30, 28)">
+    <circle cx="14" cy="14" r="12" fill="none" stroke="#FFD93D" stroke-width="1.5" filter="url(#chalkLine)" opacity="0.85"/>
+    <path d="M7 8 Q14 4 21 8 Q18 14 21 20 Q14 24 7 20 Q10 14 7 8Z" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.7"/>
+  </g>
+  <text x="62" y="46" font-family="'Caveat', cursive" font-size="20" fill="#F5F0E8" filter="url(#chalkText)" opacity="0.9">Place aux Coachs</text>
+  <line x1="20" y1="70" x2="240" y2="70" stroke="#F5F0E8" stroke-width="0.5" opacity="0.12"/>
+
+  <!-- Nav: Entraînements (active) -->
+  <rect x="10" y="85" width="240" height="42" rx="4" fill="#F5F0E8" opacity="0.08"/>
+  <text x="30" y="113" font-family="'Caveat', cursive" font-size="18" fill="#FFD93D" filter="url(#chalkText)">Entraînements</text>
+
+  <!-- === SITUATION LIST (Left panel, inside sidebar) === -->
+  <line x1="20" y1="140" x2="240" y2="140" stroke="#F5F0E8" stroke-width="0.5" opacity="0.1"/>
+  <text x="25" y="168" font-family="'Caveat', cursive" font-size="16" fill="#F5F0E8" opacity="0.7" filter="url(#chalkText)">Situations</text>
+
+  <!-- Situation card 1 (active) -->
+  <g transform="translate(15, 180)" filter="url(#paperShadow)">
+    <rect width="230" height="70" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <rect x="0" y="0" width="4" height="70" rx="2" fill="#FFD93D"/>
+    <!-- Pin -->
+    <circle cx="215" cy="10" r="4" fill="#CC3333" opacity="0.7"/>
+    <text x="15" y="25" font-family="'Caveat', cursive" font-size="15" fill="#1B3D2F">1. Échauffement avec ballon</text>
+    <text x="15" y="45" font-family="'Crimson Text', serif" font-size="11" fill="#888">2 schémas</text>
+    <g transform="translate(15, 52)">
+      <rect width="40" height="14" rx="6" fill="#FFD93D" opacity="0.3"/>
+      <text x="20" y="11" text-anchor="middle" font-family="'Caveat', cursive" font-size="10" fill="#8B7000">U15</text>
+    </g>
+  </g>
+
+  <!-- Situation card 2 -->
+  <g transform="translate(15, 262)">
+    <rect width="230" height="70" rx="3" fill="#3D2B1A" opacity="0.4"/>
+    <rect x="0" y="0" width="4" height="70" rx="2" fill="#6BC5F8" opacity="0.5"/>
+    <text x="15" y="25" font-family="'Caveat', cursive" font-size="15" fill="#F5F0E8" opacity="0.7">2. Montée de balle 3v2</text>
+    <text x="15" y="45" font-family="'Crimson Text', serif" font-size="11" fill="#F5F0E8" opacity="0.4">3 schémas</text>
+  </g>
+
+  <!-- Situation card 3 -->
+  <g transform="translate(15, 344)">
+    <rect width="230" height="70" rx="3" fill="#3D2B1A" opacity="0.4"/>
+    <rect x="0" y="0" width="4" height="70" rx="2" fill="#FF6B6B" opacity="0.5"/>
+    <text x="15" y="25" font-family="'Caveat', cursive" font-size="15" fill="#F5F0E8" opacity="0.7">3. Tir en pivot décalé</text>
+    <text x="15" y="45" font-family="'Crimson Text', serif" font-size="11" fill="#F5F0E8" opacity="0.4">1 schéma</text>
+  </g>
+
+  <!-- Situation card 4 -->
+  <g transform="translate(15, 426)">
+    <rect width="230" height="70" rx="3" fill="#3D2B1A" opacity="0.4"/>
+    <rect x="0" y="0" width="4" height="70" rx="2" fill="#F5F0E8" opacity="0.3"/>
+    <text x="15" y="25" font-family="'Caveat', cursive" font-size="15" fill="#F5F0E8" opacity="0.7">4. Jeu en supériorité</text>
+    <text x="15" y="45" font-family="'Crimson Text', serif" font-size="11" fill="#F5F0E8" opacity="0.4">2 schémas</text>
+  </g>
+
+  <!-- Add situation button -->
+  <g transform="translate(15, 515)">
+    <rect width="230" height="40" rx="4" fill="none" stroke="#F5F0E8" stroke-width="1" stroke-dasharray="6,4" opacity="0.3"/>
+    <text x="115" y="26" text-anchor="middle" font-family="'Caveat', cursive" font-size="15" fill="#F5F0E8" opacity="0.4">+ Ajouter une situation</text>
+  </g>
+
+  <!-- === MAIN CONTENT AREA === -->
+  <!-- Breadcrumb -->
+  <text x="290" y="30" font-family="'Crimson Text', serif" font-size="13" fill="#F5F0E8" opacity="0.4">Entraînements</text>
+  <text x="388" y="30" font-family="'Crimson Text', serif" font-size="13" fill="#F5F0E8" opacity="0.3">/</text>
+  <text x="400" y="30" font-family="'Crimson Text', serif" font-size="13" fill="#F5F0E8" opacity="0.6">Montée de balle rapide</text>
+
+  <!-- Training title -->
+  <text x="290" y="70" font-family="'Caveat', cursive" font-size="38" fill="#F5F0E8" filter="url(#chalkText)">Montée de balle rapide</text>
+  <path d="M290 78 Q420 84 550 77 Q640 73 720 80" fill="none" stroke="#FFD93D" stroke-width="2" opacity="0.35" filter="url(#chalkLine)"/>
+
+  <!-- Status badge -->
+  <g transform="translate(750, 50)">
+    <circle cx="8" cy="10" r="6" fill="#FFD93D" opacity="0.7"/>
+    <text x="20" y="15" font-family="'Caveat', cursive" font-size="16" fill="#FFD93D" opacity="0.8">En cours</text>
+  </g>
+
+  <!-- Metadata row (chalk icons + text) -->
+  <g transform="translate(290, 100)">
+    <!-- Date -->
+    <rect x="0" y="0" width="14" height="14" rx="2" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.4"/>
+    <line x1="0" y1="5" x2="14" y2="5" stroke="#F5F0E8" stroke-width="0.8" opacity="0.4"/>
+    <text x="22" y="12" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.6">12 mars 2026</text>
+
+    <!-- Theme -->
+    <text x="160" y="12" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.6">Thème : Contre-attaque et transition</text>
+
+    <!-- Categories -->
+    <g transform="translate(500, -2)">
+      <rect width="45" height="18" rx="8" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.5"/>
+      <text x="22" y="13" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#FFD93D" opacity="0.8">U15</text>
+      <rect x="55" width="55" height="18" rx="8" fill="none" stroke="#6BC5F8" stroke-width="1" opacity="0.5"/>
+      <text x="82" y="13" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#6BC5F8" opacity="0.8">U18</text>
+    </g>
+  </g>
+
+  <line x1="290" y1="128" x2="1400" y2="128" stroke="#F5F0E8" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- === SELECTED SITUATION DETAIL === -->
+  <!-- Situation header -->
+  <text x="290" y="158" font-family="'Caveat', cursive" font-size="26" fill="#F5F0E8" filter="url(#chalkText)">1. Échauffement avec ballon</text>
+  <path d="M290 164 Q380 168 470 163" fill="none" stroke="#6BC5F8" stroke-width="1.5" opacity="0.4" filter="url(#chalkLine)"/>
+
+  <!-- Action buttons (chalk outlined) -->
+  <g transform="translate(1160, 140)">
+    <rect width="80" height="30" rx="4" fill="none" stroke="#F5F0E8" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" filter="url(#chalkLine)"/>
+    <text x="40" y="20" text-anchor="middle" font-family="'Caveat', cursive" font-size="14" fill="#F5F0E8" opacity="0.6">Éditer</text>
+  </g>
+  <g transform="translate(1260, 140)">
+    <rect width="110" height="30" rx="4" fill="none" stroke="#FFD93D" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6" filter="url(#chalkLine)"/>
+    <text x="55" y="20" text-anchor="middle" font-family="'Caveat', cursive" font-size="14" fill="#FFD93D" opacity="0.8">Exporter PDF</text>
+  </g>
+
+  <!-- === HANDBALL COURT SCHEMA (projected screen area) === -->
+  <g transform="translate(290, 180)">
+    <!-- Lighter green "projection screen" area -->
+    <rect width="680" height="420" rx="6" fill="#1E4233" opacity="0.6" filter="url(#screenGlow)"/>
+    <rect width="680" height="420" rx="6" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.15"/>
+
+    <!-- Court drawn in chalk -->
+    <g transform="translate(40, 30)">
+      <!-- Court outline -->
+      <rect width="600" height="360" rx="3" fill="none" stroke="#F5F0E8" stroke-width="2" opacity="0.5" stroke-dasharray="8,4" filter="url(#chalkLine)"/>
+      <!-- Center line -->
+      <line x1="300" y1="0" x2="300" y2="360" stroke="#F5F0E8" stroke-width="1.5" opacity="0.3" stroke-dasharray="6,5"/>
+      <!-- Center circle -->
+      <circle cx="300" cy="180" r="40" fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity="0.3" stroke-dasharray="5,4"/>
+
+      <!-- Left goal area (6m) -->
+      <path d="M0 100 Q80 100 80 180 Q80 260 0 260" fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity="0.4" stroke-dasharray="6,4"/>
+      <!-- Left 9m (dashed) -->
+      <path d="M0 70 Q120 70 120 180 Q120 290 0 290" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.2" stroke-dasharray="4,6"/>
+      <!-- Left goal -->
+      <rect x="-8" y="150" width="8" height="60" fill="none" stroke="#F5F0E8" stroke-width="2" opacity="0.5"/>
+
+      <!-- Right goal area (6m) -->
+      <path d="M600 100 Q520 100 520 180 Q520 260 600 260" fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity="0.4" stroke-dasharray="6,4"/>
+      <!-- Right 9m (dashed) -->
+      <path d="M600 70 Q480 70 480 180 Q480 290 600 290" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.2" stroke-dasharray="4,6"/>
+      <!-- Right goal -->
+      <rect x="600" y="150" width="8" height="60" fill="none" stroke="#F5F0E8" stroke-width="2" opacity="0.5"/>
+
+      <!-- Players: Red team (coral X's) -->
+      <g stroke="#FF6B6B" stroke-width="2.5" opacity="0.85" filter="url(#chalkLine)">
+        <!-- Attacker 1 -->
+        <line x1="145" y1="125" x2="165" y2="145"/><line x1="165" y1="125" x2="145" y2="145"/>
+        <!-- Attacker 2 -->
+        <line x1="145" y1="205" x2="165" y2="225"/><line x1="165" y1="205" x2="145" y2="225"/>
+        <!-- Attacker 3 -->
+        <line x1="195" y1="165" x2="215" y2="185"/><line x1="215" y1="165" x2="195" y2="185"/>
+        <!-- Runner -->
+        <line x1="260" y1="100" x2="280" y2="120"/><line x1="280" y1="100" x2="260" y2="120"/>
+      </g>
+
+      <!-- Players: Yellow team (yellow O's) -->
+      <g fill="none" stroke="#FFD93D" stroke-width="2.5" opacity="0.85" filter="url(#chalkLine)">
+        <circle cx="420" cy="135" r="11"/>
+        <circle cx="420" cy="225" r="11"/>
+        <circle cx="470" cy="175" r="11"/>
+      </g>
+
+      <!-- Ball -->
+      <circle cx="230" cy="175" r="5" fill="#F5F0E8" opacity="0.8"/>
+
+      <!-- Trajectories (dashed chalk arrows) -->
+      <g fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity="0.5" stroke-dasharray="6,4" filter="url(#chalkLine)">
+        <path d="M230 175 L300 140"/>
+        <path d="M270 110 L350 90 L420 135"/>
+        <path d="M300 140 L350 180"/>
+      </g>
+      <!-- Arrowheads -->
+      <g fill="#F5F0E8" opacity="0.5">
+        <polygon points="297,137 303,140 298,145"/>
+        <polygon points="415,132 422,135 416,140"/>
+        <polygon points="347,177 352,183 346,184"/>
+      </g>
+
+      <!-- Chalk annotations -->
+      <text x="140" y="118" font-family="'Caveat', cursive" font-size="11" fill="#FF6B6B" opacity="0.6">A1</text>
+      <text x="140" y="240" font-family="'Caveat', cursive" font-size="11" fill="#FF6B6B" opacity="0.6">A2</text>
+      <text x="410" y="128" font-family="'Caveat', cursive" font-size="11" fill="#FFD93D" opacity="0.6">D1</text>
+      <text x="410" y="248" font-family="'Caveat', cursive" font-size="11" fill="#FFD93D" opacity="0.6">D2</text>
+    </g>
+
+    <!-- Schema tabs -->
+    <g transform="translate(20, 395)">
+      <rect x="0" y="0" width="80" height="24" rx="3" fill="#F5F0E8" opacity="0.12"/>
+      <text x="40" y="16" text-anchor="middle" font-family="'Caveat', cursive" font-size="13" fill="#F5F0E8" opacity="0.8">Schéma 1</text>
+      <text x="110" y="16" font-family="'Caveat', cursive" font-size="13" fill="#F5F0E8" opacity="0.4">Schéma 2</text>
+      <text x="200" y="16" font-family="'Caveat', cursive" font-size="13" fill="#F5F0E8" opacity="0.3">+</text>
+    </g>
+  </g>
+
+  <!-- === DESCRIPTION SECTIONS (right side) === -->
+  <!-- À FAIRE (yellow border) -->
+  <g transform="translate(1000, 180)">
+    <rect width="390" height="120" rx="4" fill="#1B3D2F" opacity="0.3"/>
+    <rect x="0" y="0" width="4" height="120" rx="2" fill="#FFD93D" opacity="0.8"/>
+    <text x="20" y="28" font-family="'Caveat', cursive" font-size="20" fill="#FFD93D" filter="url(#chalkText)">À FAIRE</text>
+    <path d="M20 34 Q60 37 100 33" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.3"/>
+    <text x="20" y="55" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">Les attaquants doivent monter la balle</text>
+    <text x="20" y="73" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">en moins de 5 passes. Le porteur de balle</text>
+    <text x="20" y="91" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">choisit entre passe longue et relais court.</text>
+  </g>
+
+  <!-- À VÉRIFIER (blue border) -->
+  <g transform="translate(1000, 315)">
+    <rect width="390" height="120" rx="4" fill="#1B3D2F" opacity="0.3"/>
+    <rect x="0" y="0" width="4" height="120" rx="2" fill="#6BC5F8" opacity="0.8"/>
+    <text x="20" y="28" font-family="'Caveat', cursive" font-size="20" fill="#6BC5F8" filter="url(#chalkText)">À VÉRIFIER</text>
+    <path d="M20 34 Q70 38 120 33" fill="none" stroke="#6BC5F8" stroke-width="1" opacity="0.3"/>
+    <text x="20" y="55" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">Orientation du corps à la réception.</text>
+    <text x="20" y="73" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">Qualité de la première passe après</text>
+    <text x="20" y="91" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">récupération de balle.</text>
+  </g>
+
+  <!-- À DIRE AUX JOUEURS (coral border) -->
+  <g transform="translate(1000, 450)">
+    <rect width="390" height="150" rx="4" fill="#1B3D2F" opacity="0.3"/>
+    <rect x="0" y="0" width="4" height="150" rx="2" fill="#FF6B6B" opacity="0.8"/>
+    <text x="20" y="28" font-family="'Caveat', cursive" font-size="20" fill="#FF6B6B" filter="url(#chalkText)">À DIRE AUX JOUEURS</text>
+    <path d="M20 34 Q100 38 180 33" fill="none" stroke="#FF6B6B" stroke-width="1" opacity="0.3"/>
+    <text x="20" y="58" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">"Levez la tête avant de passer !"</text>
+    <text x="20" y="78" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">"Occupez toute la largeur du terrain."</text>
+    <text x="20" y="98" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">"Si le défenseur monte, on passe dans</text>
+    <text x="20" y="116" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.7">le dos. Sinon on va au duel."</text>
+  </g>
+
+  <!-- Decorative chalk X's and O's in margins -->
+  <g transform="translate(1360, 640)" opacity="0.08" filter="url(#chalkLine)">
+    <line x1="0" y1="0" x2="20" y2="20" stroke="#F5F0E8" stroke-width="2.5"/>
+    <line x1="20" y1="0" x2="0" y2="20" stroke="#F5F0E8" stroke-width="2.5"/>
+  </g>
+  <g transform="translate(1360, 680)" opacity="0.08" filter="url(#chalkLine)">
+    <circle cx="10" cy="10" r="10" fill="none" stroke="#F5F0E8" stroke-width="2.5"/>
+  </g>
+  <g transform="translate(1400, 660)" opacity="0.06" filter="url(#chalkLine)">
+    <line x1="0" y1="0" x2="15" y2="15" stroke="#F5F0E8" stroke-width="2"/>
+    <line x1="15" y1="0" x2="0" y2="15" stroke="#F5F0E8" stroke-width="2"/>
+  </g>
+  <g transform="translate(1320, 710)" opacity="0.06" filter="url(#chalkLine)">
+    <circle cx="8" cy="8" r="8" fill="none" stroke="#F5F0E8" stroke-width="2"/>
+  </g>
+
+  <!-- Whistle motif bottom right -->
+  <g transform="translate(1340, 820)" opacity="0.1" filter="url(#chalkLine)">
+    <ellipse cx="22" cy="14" rx="20" ry="12" fill="none" stroke="#F5F0E8" stroke-width="1.5"/>
+    <line x1="42" y1="14" x2="58" y2="6" stroke="#F5F0E8" stroke-width="1.5"/>
+    <circle cx="58" cy="6" r="4" fill="none" stroke="#F5F0E8" stroke-width="1"/>
+    <path d="M10 2 Q15 -5 22 0" fill="none" stroke="#F5F0E8" stroke-width="1"/>
+  </g>
+
+  <!-- Keywords section at bottom -->
+  <g transform="translate(1000, 630)">
+    <text x="0" y="15" font-family="'Caveat', cursive" font-size="18" fill="#F5F0E8" opacity="0.6" filter="url(#chalkText)">Mots-clés</text>
+    <path d="M0 20 Q35 23 70 19" fill="none" stroke="#F5F0E8" stroke-width="0.8" opacity="0.2"/>
+    <g transform="translate(0, 30)">
+      <rect width="115" height="24" rx="12" fill="none" stroke="#FF6B6B" stroke-width="1" opacity="0.5"/>
+      <text x="57" y="16" text-anchor="middle" font-family="'Caveat', cursive" font-size="13" fill="#FF6B6B" opacity="0.7">contre-attaque</text>
+      <rect x="125" width="95" height="24" rx="12" fill="none" stroke="#6BC5F8" stroke-width="1" opacity="0.5"/>
+      <text x="172" y="16" text-anchor="middle" font-family="'Caveat', cursive" font-size="13" fill="#6BC5F8" opacity="0.7">transition</text>
+      <rect x="230" width="70" height="24" rx="12" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.5"/>
+      <text x="265" y="16" text-anchor="middle" font-family="'Caveat', cursive" font-size="13" fill="#FFD93D" opacity="0.7">vitesse</text>
+    </g>
+  </g>
+
+  <!-- Bottom chalk line -->
+  <path d="M260 895 Q600 890 900 895 Q1200 900 1440 893" fill="none" stroke="#F5F0E8" stroke-width="0.5" opacity="0.1" filter="url(#chalkLine)"/>
+</svg>

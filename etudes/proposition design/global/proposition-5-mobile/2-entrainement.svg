@@ -1,0 +1,260 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 2800" width="390" height="2800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .font-urban { font-family: 'Urbanist', sans-serif; }
+      .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+    <linearGradient id="bgPastel" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#F8F5FF"/>
+      <stop offset="50%" stop-color="#FFF8F5"/>
+      <stop offset="100%" stop-color="#F3F0FF"/>
+    </linearGradient>
+    <linearGradient id="ctaViolet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5B8DEF"/>
+      <stop offset="100%" stop-color="#7C5CFC"/>
+    </linearGradient>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1976D2"/>
+      <stop offset="100%" stop-color="#1565C0"/>
+    </linearGradient>
+    <radialGradient id="blobViolet" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#C5B3FF" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#C5B3FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobPeach" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#FFD4B8" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FFD4B8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="cardShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#7C5CFC" flood-opacity="0.05"/>
+    </filter>
+    <filter id="courtShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#7C5CFC" flood-opacity="0.1"/>
+    </filter>
+    <filter id="btnShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#7C5CFC" flood-opacity="0.2"/>
+    </filter>
+    <filter id="softGlow"><feGaussianBlur stdDeviation="30"/></filter>
+  </defs>
+
+  <!-- BG -->
+  <rect width="390" height="2800" fill="url(#bgPastel)"/>
+  <ellipse cx="340" cy="400" rx="150" ry="130" fill="url(#blobViolet)" filter="url(#softGlow)"/>
+  <ellipse cx="50" cy="1400" rx="120" ry="110" fill="url(#blobPeach)" filter="url(#softGlow)"/>
+  <ellipse cx="360" cy="2200" rx="140" ry="120" fill="url(#blobViolet)" filter="url(#softGlow)"/>
+
+  <!-- MOBILE HEADER -->
+  <rect width="390" height="56" fill="#ffffff" opacity="0.85"/>
+  <line x1="0" y1="56" x2="390" y2="56" stroke="#7C5CFC" stroke-width="0.5" opacity="0.06"/>
+
+  <!-- Back arrow -->
+  <rect x="12" y="14" width="32" height="28" rx="10" fill="#7C5CFC" opacity="0.05"/>
+  <text x="28" y="33" class="font-urban" fill="#1E1340" font-size="16" text-anchor="middle" opacity="0.4">‹</text>
+
+  <!-- Page title -->
+  <text x="56" y="35" class="font-urban" fill="#1E1340" font-size="13" font-weight="700">Entraînement</text>
+
+  <!-- Actions -->
+  <rect x="260" y="14" width="52" height="28" rx="14" fill="none" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="286" y="33" class="font-urban" fill="#7C5CFC" font-size="10" font-weight="600" text-anchor="middle">PDF</text>
+
+  <rect x="320" y="14" width="58" height="28" rx="14" fill="url(#ctaViolet)" filter="url(#btnShadow)"/>
+  <text x="349" y="33" class="font-urban" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">Sauver</text>
+
+  <!-- TRAINING TITLE -->
+  <g transform="translate(16, 72)">
+    <text x="0" y="20" class="font-urban" fill="#1E1340" font-size="18" font-weight="900">Améliorer le jeu du PB</text>
+    <text x="0" y="42" class="font-urban" fill="#1E1340" font-size="18" font-weight="900">dans l'exploitation du</text>
+    <text x="0" y="64" class="font-urban" fill="#1E1340" font-size="18" font-weight="900">surnombre</text>
+
+    <!-- Status badge -->
+    <rect x="0" y="78" width="56" height="22" rx="11" fill="#ECFDF5"/>
+    <circle cx="14" cy="89" r="3" fill="#22C55E"/>
+    <text x="34" y="93" class="font-inter" fill="#16A34A" font-size="9" font-weight="600">Prêt</text>
+  </g>
+
+  <!-- METADATA CHIPS (horizontal scroll) -->
+  <g transform="translate(16, 186)">
+    <!-- Theme -->
+    <rect width="80" height="28" rx="14" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.5" stroke-opacity="0.1"/>
+    <text x="12" y="18" class="font-inter" fill="#1E1340" font-size="9" opacity="0.3">Thème</text>
+    <text x="52" y="18" class="font-urban" fill="#1E1340" font-size="10" font-weight="600">Attaque</text>
+
+    <!-- Date -->
+    <rect x="88" width="100" height="28" rx="14" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.5" stroke-opacity="0.1"/>
+    <text x="100" y="18" class="font-inter" fill="#1E1340" font-size="9" opacity="0.3">Date</text>
+    <text x="130" y="18" class="font-urban" fill="#1E1340" font-size="10" font-weight="600">12/03/2026</text>
+
+    <!-- Catégorie -->
+    <rect x="196" width="58" height="28" rx="14" fill="#F5EEFF"/>
+    <text x="225" y="18" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="600" text-anchor="middle">U15</text>
+
+    <!-- Effectif -->
+    <rect x="262" width="54" height="28" rx="14" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.5" stroke-opacity="0.1"/>
+    <text x="274" y="18" class="font-inter" fill="#1E1340" font-size="9" opacity="0.3">Eff.</text>
+    <text x="298" y="18" class="font-urban" fill="#1E1340" font-size="10" font-weight="600">16</text>
+
+    <!-- Durée -->
+    <rect x="324" width="54" height="28" rx="14" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.5" stroke-opacity="0.1"/>
+    <text x="336" y="18" class="font-inter" fill="#1E1340" font-size="9" opacity="0.3">Durée</text>
+    <text x="364" y="18" class="font-urban" fill="#1E1340" font-size="10" font-weight="600">1h30</text>
+  </g>
+
+  <!-- === SITUATION 01 === -->
+  <g transform="translate(16, 234)">
+    <text x="0" y="20" class="font-urban" fill="#1E1340" font-size="16" font-weight="800">01 — Échauffement</text>
+
+    <!-- Schema tabs (scrollable) -->
+    <rect x="0" y="34" width="80" height="28" rx="14" fill="#7C5CFC" opacity="0.1"/>
+    <text x="40" y="52" class="font-urban" fill="#7C5CFC" font-size="11" font-weight="700" text-anchor="middle">Schéma 1</text>
+
+    <rect x="88" y="34" width="80" height="28" rx="14" fill="none" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.12"/>
+    <text x="128" y="52" class="font-urban" fill="#1E1340" font-size="11" font-weight="500" opacity="0.35" text-anchor="middle">Schéma 2</text>
+
+    <rect x="176" y="34" width="80" height="28" rx="14" fill="none" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.12"/>
+    <text x="216" y="52" class="font-urban" fill="#1E1340" font-size="11" font-weight="500" opacity="0.35" text-anchor="middle">Schéma 3</text>
+
+    <!-- COURT SCHEMA -->
+    <g transform="translate(0, 74)" filter="url(#courtShadow)">
+      <rect width="358" height="210" rx="14" fill="#ffffff"/>
+      <rect x="8" y="8" width="342" height="194" rx="10" fill="url(#courtGrad)"/>
+
+      <!-- Court lines -->
+      <line x1="179" y1="8" x2="179" y2="202" stroke="#ffffff" stroke-width="1" opacity="0.35"/>
+      <circle cx="179" cy="105" r="18" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.35"/>
+
+      <!-- Left goal area -->
+      <path d="M 8 70 Q 50 105 8 140" fill="#C8850A" opacity="0.4"/>
+      <path d="M 8 70 Q 50 105 8 140" fill="none" stroke="#fff" stroke-width="1" opacity="0.5"/>
+      <path d="M 8 58 Q 62 105 8 152" fill="none" stroke="#fff" stroke-width="1" opacity="0.3" stroke-dasharray="4,3"/>
+      <rect x="7" y="95" width="3" height="20" fill="#fff" opacity="0.7"/>
+
+      <!-- Right goal area -->
+      <path d="M 350 70 Q 308 105 350 140" fill="#C8850A" opacity="0.4"/>
+      <path d="M 350 70 Q 308 105 350 140" fill="none" stroke="#fff" stroke-width="1" opacity="0.5"/>
+      <path d="M 350 58 Q 296 105 350 152" fill="none" stroke="#fff" stroke-width="1" opacity="0.3" stroke-dasharray="4,3"/>
+      <rect x="348" y="95" width="3" height="20" fill="#fff" opacity="0.7"/>
+
+      <!-- Red team -->
+      <circle cx="105" cy="72" r="10" fill="#F06850" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="105" y="76" class="font-urban" fill="#ffffff" font-size="8" font-weight="800" text-anchor="middle">1</text>
+      <circle cx="95" cy="105" r="10" fill="#F06850" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="95" y="109" class="font-urban" fill="#ffffff" font-size="8" font-weight="800" text-anchor="middle">2</text>
+      <circle cx="105" cy="138" r="10" fill="#F06850" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="105" y="142" class="font-urban" fill="#ffffff" font-size="8" font-weight="800" text-anchor="middle">3</text>
+      <circle cx="135" cy="88" r="10" fill="#F06850" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="135" y="92" class="font-urban" fill="#ffffff" font-size="8" font-weight="800" text-anchor="middle">4</text>
+      <circle cx="135" cy="122" r="10" fill="#F06850" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="135" y="126" class="font-urban" fill="#ffffff" font-size="8" font-weight="800" text-anchor="middle">5</text>
+
+      <!-- Yellow team -->
+      <circle cx="250" cy="78" r="10" fill="#FFCA28" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="250" y="82" class="font-urban" fill="#1E1340" font-size="8" font-weight="800" text-anchor="middle">1</text>
+      <circle cx="242" cy="108" r="10" fill="#FFCA28" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="242" y="112" class="font-urban" fill="#1E1340" font-size="8" font-weight="800" text-anchor="middle">2</text>
+      <circle cx="250" cy="138" r="10" fill="#FFCA28" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="250" y="142" class="font-urban" fill="#1E1340" font-size="8" font-weight="800" text-anchor="middle">3</text>
+
+      <!-- Goalkeepers -->
+      <circle cx="28" cy="105" r="10" fill="#9C27B0" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="28" y="109" class="font-urban" fill="#ffffff" font-size="7" font-weight="800" text-anchor="middle">G</text>
+      <circle cx="330" cy="105" r="10" fill="#9C27B0" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="330" y="109" class="font-urban" fill="#ffffff" font-size="7" font-weight="800" text-anchor="middle">G</text>
+
+      <!-- Ball -->
+      <circle cx="150" cy="100" r="6" fill="#BCFF00" stroke="#ffffff" stroke-width="1.5"/>
+
+      <!-- Cones -->
+      <polygon points="162,77 158,85 166,85" fill="#F06850" opacity="0.8"/>
+      <polygon points="162,143 158,151 166,151" fill="#F06850" opacity="0.8"/>
+
+      <!-- Trajectories -->
+      <path d="M 135 88 L 160 80" stroke="#F06850" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+      <path d="M 135 122 L 160 140" stroke="#F06850" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+      <path d="M 150 100 L 210 90" stroke="#22C55E" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.5"/>
+    </g>
+
+    <!-- Lien vers éditeur schéma -->
+    <rect x="0" y="296" width="358" height="36" rx="12" fill="#7C5CFC" opacity="0.04" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.08"/>
+    <text x="179" y="318" class="font-urban" fill="#7C5CFC" font-size="11" font-weight="600" text-anchor="middle">Ouvrir dans l'éditeur →</text>
+
+    <!-- DESCRIPTION SECTIONS -->
+
+    <!-- À FAIRE -->
+    <g transform="translate(0, 348)" filter="url(#cardShadow)">
+      <rect width="358" height="88" rx="14" fill="#ffffff"/>
+      <rect width="4" height="88" rx="2" fill="#F06850"/>
+      <rect x="14" y="14" width="32" height="32" rx="8" fill="#FFF0EC"/>
+      <text x="30" y="36" font-size="14" text-anchor="middle">📋</text>
+      <text x="56" y="28" class="font-urban" fill="#1E1340" font-size="12" font-weight="700">À FAIRE</text>
+      <text x="56" y="46" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">Les joueurs se déplacent en colonne avec</text>
+      <text x="56" y="60" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">passe et va. Le porteur de balle engage le</text>
+      <text x="56" y="74" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">surnombre vers le pivot opposé.</text>
+    </g>
+
+    <!-- À VÉRIFIER -->
+    <g transform="translate(0, 450)" filter="url(#cardShadow)">
+      <rect width="358" height="88" rx="14" fill="#ffffff"/>
+      <rect width="4" height="88" rx="2" fill="#7C5CFC"/>
+      <rect x="14" y="14" width="32" height="32" rx="8" fill="#F5EEFF"/>
+      <text x="30" y="36" font-size="14" text-anchor="middle">👁️</text>
+      <text x="56" y="28" class="font-urban" fill="#1E1340" font-size="12" font-weight="700">À VÉRIFIER</text>
+      <text x="56" y="46" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">Qualité de la passe (hauteur poitrine,</text>
+      <text x="56" y="60" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">timing). Le non-porteur doit appeler la balle</text>
+      <text x="56" y="74" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">et offrir un angle de passe.</text>
+    </g>
+
+    <!-- À DIRE AUX JOUEURS -->
+    <g transform="translate(0, 552)" filter="url(#cardShadow)">
+      <rect width="358" height="88" rx="14" fill="#ffffff"/>
+      <rect width="4" height="88" rx="2" fill="#E5A100"/>
+      <rect x="14" y="14" width="32" height="32" rx="8" fill="#FFF8E0"/>
+      <text x="30" y="36" font-size="14" text-anchor="middle">💬</text>
+      <text x="56" y="28" class="font-urban" fill="#1E1340" font-size="12" font-weight="700">À DIRE AUX JOUEURS</text>
+      <text x="56" y="46" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">« Lève la tête avant de passer ! »</text>
+      <text x="56" y="60" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">Le surnombre se crée par la vitesse de</text>
+      <text x="56" y="74" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">déplacement, pas par la vitesse de passe.</text>
+    </g>
+
+    <!-- À FAIRE ÉVOLUER -->
+    <g transform="translate(0, 654)" filter="url(#cardShadow)">
+      <rect width="358" height="88" rx="14" fill="#ffffff"/>
+      <rect width="4" height="88" rx="2" fill="#22C55E"/>
+      <rect x="14" y="14" width="32" height="32" rx="8" fill="#ECFDF5"/>
+      <text x="30" y="36" font-size="14" text-anchor="middle">🔄</text>
+      <text x="56" y="28" class="font-urban" fill="#1E1340" font-size="12" font-weight="700">À FAIRE ÉVOLUER</text>
+      <text x="56" y="46" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">Ajouter un défenseur semi-actif, puis actif.</text>
+      <text x="56" y="60" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">Augmenter la zone d'action pour</text>
+      <text x="56" y="74" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">complexifier le jeu.</text>
+    </g>
+  </g>
+
+  <!-- === SITUATION 02 — Collapsed === -->
+  <g transform="translate(16, 1008)" filter="url(#cardShadow)">
+    <rect width="358" height="50" rx="14" fill="#ffffff"/>
+    <text x="16" y="31" class="font-urban" fill="#1E1340" font-size="14" font-weight="700" opacity="0.4">02 — Montée de balle</text>
+    <text x="298" y="31" class="font-inter" fill="#1E1340" font-size="10" opacity="0.2">2 schémas</text>
+    <path d="M 342 25 L 348 31 L 354 25" fill="none" stroke="#1E1340" stroke-width="1.5" opacity="0.2"/>
+  </g>
+
+  <!-- === SITUATION 03 — Collapsed === -->
+  <g transform="translate(16, 1072)" filter="url(#cardShadow)">
+    <rect width="358" height="50" rx="14" fill="#ffffff"/>
+    <text x="16" y="31" class="font-urban" fill="#1E1340" font-size="14" font-weight="700" opacity="0.4">03 — Surnombre 3v2</text>
+    <text x="302" y="31" class="font-inter" fill="#1E1340" font-size="10" opacity="0.2">1 schéma</text>
+    <path d="M 342 25 L 348 31 L 354 25" fill="none" stroke="#1E1340" stroke-width="1.5" opacity="0.2"/>
+  </g>
+
+  <!-- === SITUATION 04 — Collapsed === -->
+  <g transform="translate(16, 1136)" filter="url(#cardShadow)">
+    <rect width="358" height="50" rx="14" fill="#ffffff"/>
+    <text x="16" y="31" class="font-urban" fill="#1E1340" font-size="14" font-weight="700" opacity="0.4">04 — Match à thème</text>
+    <text x="302" y="31" class="font-inter" fill="#1E1340" font-size="10" opacity="0.2">1 schéma</text>
+    <path d="M 342 25 L 348 31 L 354 25" fill="none" stroke="#1E1340" stroke-width="1.5" opacity="0.2"/>
+  </g>
+
+  <!-- Add situation button -->
+  <rect x="16" y="1210" width="358" height="40" rx="20" fill="#7C5CFC" opacity="0.05" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.1"/>
+  <text x="195" y="1235" class="font-urban" fill="#7C5CFC" font-size="12" font-weight="600" text-anchor="middle">+ Ajouter une situation</text>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 780" width="390" height="780">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .urb { font-family: 'Urbanist', system-ui, sans-serif; }
+      .it  { font-family: 'Inter', system-ui, sans-serif; }
+    </style>
+    <linearGradient id="bgF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F8F5FF"/>
+      <stop offset="1" stop-color="#FFF8F5"/>
+    </linearGradient>
+    <filter id="shadF"><feDropShadow dx="2" dy="0" stdDeviation="8" flood-color="#7C5CFC" flood-opacity="0.18"/></filter>
+  </defs>
+
+  <rect width="390" height="780" fill="url(#bgF)"/>
+
+  <rect x="0" y="0" width="390" height="64" fill="#FEFCFF"/>
+  <line x1="0" y1="64" x2="390" y2="64" stroke="#7C5CFC" stroke-opacity="0.10"/>
+  <rect x="14" y="16" width="32" height="32" rx="9" fill="#F5EEFF"/>
+  <path d="M34 28 L26 28 M30 24 L26 28 L30 32" stroke="#7C5CFC" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <rect x="270" y="16" width="50" height="32" rx="11" fill="#FEFCFF" stroke="#7C5CFC" stroke-opacity="0.25"/>
+  <text x="295" y="36" class="it" font-size="10" font-weight="700" fill="#7C5CFC" text-anchor="middle">Brouillon</text>
+  <rect x="328" y="16" width="48" height="32" rx="11" fill="#7C5CFC"/>
+  <text x="352" y="36" font-size="13" text-anchor="middle">💾</text>
+
+  <g transform="translate(16, 80)">
+    <rect width="358" height="80" rx="14" fill="#FEFCFF" stroke="#7C5CFC" stroke-opacity="0.10"/>
+    <text x="16" y="26" class="urb" font-size="11" font-weight="800" fill="#1E1340" opacity="0.45">ENTÊTE</text>
+    <text x="16" y="48" class="urb" font-size="14" font-weight="800" fill="#1E1340">Améliorer le jeu du porteur de balle</text>
+    <text x="16" y="66" class="it" font-size="10" fill="#1E1340" opacity="0.55">U15 · 12/03/26 · 1h30</text>
+  </g>
+  <g transform="translate(16, 176)">
+    <rect width="358" height="320" rx="16" fill="#FEFCFF" stroke="#7C5CFC" stroke-opacity="0.18"/>
+    <rect x="0" y="0" width="6" height="320" rx="3" fill="#7C5CFC"/>
+    <text x="22" y="28" class="urb" font-size="11" font-weight="800" fill="#7C5CFC">SITUATION 03</text>
+    <text x="22" y="50" class="urb" font-size="16" font-weight="800" fill="#1E1340">Surnombre 3v2</text>
+    <rect x="22" y="66" width="60" height="20" rx="10" fill="#F5EEFF"/>
+    <text x="52" y="80" class="it" font-size="10" font-weight="700" fill="#7C5CFC" text-anchor="middle">attaque</text>
+    <rect x="22" y="100" width="314" height="200" rx="10" fill="#1976D2" opacity="0.08"/>
+    <text x="179" y="206" class="it" font-size="11" fill="#1976D2" text-anchor="middle" opacity="0.6">[ schéma ]</text>
+  </g>
+
+  <!-- BULLE F : poignée latérale gauche -->
+  <g transform="translate(0, 360)" filter="url(#shadF)">
+    <path d="M0 0 L24 0 Q30 0 30 6 L30 60 Q30 66 24 66 L0 66 Z" fill="#7C5CFC"/>
+    <g transform="translate(15, 33) rotate(-90)">
+      <text class="urb" font-size="12" font-weight="800" fill="#FEFCFF" text-anchor="middle" dy="4">3 / 8</text>
+    </g>
+    <path d="M22 12 L26 16 L22 20" stroke="#FEFCFF" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.7"/>
+  </g>
+
+  <text x="20" y="760" class="it" font-size="10" fill="#1E1340" opacity="0.5">Variante F — poignée latérale gauche, ouvre un drawer</text>
+</svg>

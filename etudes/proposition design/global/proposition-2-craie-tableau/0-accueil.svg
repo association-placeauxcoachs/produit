@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <!-- Chalk dust texture filter -->
+    <filter id="chalkDust" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" seed="2" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feComponentTransfer in="grayNoise" result="softNoise">
+        <feFuncA type="linear" slope="0.08" intercept="0"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="softNoise" mode="screen"/>
+    </filter>
+    <!-- Chalk text roughness -->
+    <filter id="chalkText" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="5" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Chalk line roughness -->
+    <filter id="chalkLine" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="8" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Paper note shadow -->
+    <filter id="paperShadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    <!-- Subtle paper texture -->
+    <filter id="paperTexture">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="12" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+      <feComponentTransfer in="gray" result="faint">
+        <feFuncA type="linear" slope="0.06" intercept="0"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faint" mode="multiply"/>
+    </filter>
+    <!-- Glow for chalk highlight -->
+    <filter id="chalkGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <!-- Board background gradient -->
+    <linearGradient id="boardGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1B3D2F"/>
+      <stop offset="40%" stop-color="#234A38"/>
+      <stop offset="70%" stop-color="#1E4233"/>
+      <stop offset="100%" stop-color="#1B3D2F"/>
+    </linearGradient>
+    <!-- CTA button gradient -->
+    <linearGradient id="ctaGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFD93D" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#FFD93D" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  <!-- === BACKGROUND: CHALKBOARD === -->
+  <rect width="1440" height="900" fill="url(#boardGrad)"/>
+  <rect width="1440" height="900" filter="url(#chalkDust)" fill="transparent"/>
+  <rect width="1440" height="900" fill="url(#boardGrad)" opacity="0.15"/>
+
+  <!-- Scattered chalk dust particles -->
+  <g opacity="0.12" fill="#F5F0E8">
+    <circle cx="120" cy="200" r="1"/><circle cx="340" cy="150" r="0.8"/><circle cx="560" cy="80" r="1.2"/>
+    <circle cx="780" cy="120" r="0.7"/><circle cx="1000" cy="60" r="1"/><circle cx="1200" cy="180" r="0.9"/>
+    <circle cx="200" cy="400" r="0.6"/><circle cx="450" cy="350" r="1.1"/><circle cx="700" cy="300" r="0.8"/>
+    <circle cx="950" cy="450" r="1"/><circle cx="1100" cy="380" r="0.7"/><circle cx="1300" cy="420" r="1.3"/>
+    <circle cx="80" cy="600" r="0.9"/><circle cx="300" cy="550" r="1"/><circle cx="520" cy="650" r="0.6"/>
+    <circle cx="740" cy="580" r="1.1"/><circle cx="960" cy="700" r="0.8"/><circle cx="1180" cy="620" r="1"/>
+    <circle cx="1350" cy="750" r="0.7"/><circle cx="160" cy="800" r="1.2"/><circle cx="600" cy="820" r="0.9"/>
+    <circle cx="900" cy="830" r="1"/><circle cx="1250" cy="860" r="0.8"/>
+  </g>
+
+  <!-- === NAVBAR === -->
+  <rect x="0" y="0" width="1440" height="64" fill="#162E24" opacity="0.85"/>
+  <line x1="0" y1="64" x2="1440" y2="64" stroke="#F5F0E8" stroke-width="0.5" opacity="0.2"/>
+
+  <!-- Logo: handball icon -->
+  <g transform="translate(60, 18)">
+    <circle cx="14" cy="14" r="13" fill="none" stroke="#FFD93D" stroke-width="1.8" filter="url(#chalkLine)" opacity="0.9"/>
+    <path d="M7 8 Q14 4 21 8 Q18 14 21 20 Q14 24 7 20 Q10 14 7 8Z" fill="none" stroke="#F5F0E8" stroke-width="1.2" opacity="0.8"/>
+    <line x1="7" y1="14" x2="21" y2="14" stroke="#F5F0E8" stroke-width="0.8" opacity="0.6"/>
+  </g>
+  <text x="96" y="40" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="22" fill="#F5F0E8" filter="url(#chalkText)" opacity="0.95">Place aux Coachs</text>
+
+  <!-- Nav links -->
+  <text x="820" y="39" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="17" fill="#F5F0E8" opacity="0.7" filter="url(#chalkText)">Fonctionnalités</text>
+  <text x="980" y="39" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="17" fill="#F5F0E8" opacity="0.7" filter="url(#chalkText)">Communauté</text>
+  <text x="1120" y="39" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="17" fill="#F5F0E8" opacity="0.7" filter="url(#chalkText)">Tarifs</text>
+
+  <!-- Connexion button -->
+  <rect x="1240" y="18" width="140" height="32" rx="4" fill="none" stroke="#FFD93D" stroke-width="1.5" stroke-dasharray="6,3" filter="url(#chalkLine)" opacity="0.8"/>
+  <text x="1275" y="40" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="17" fill="#FFD93D" filter="url(#chalkText)">Connexion</text>
+
+  <!-- === HERO SECTION === -->
+  <!-- Decorative chalk lines -->
+  <line x1="200" y1="100" x2="350" y2="100" stroke="#F5F0E8" stroke-width="0.5" opacity="0.15" stroke-dasharray="4,6"/>
+  <line x1="1100" y1="110" x2="1280" y2="110" stroke="#F5F0E8" stroke-width="0.5" opacity="0.12" stroke-dasharray="3,8"/>
+
+  <!-- Main headline -->
+  <text x="720" y="200" text-anchor="middle" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="64" fill="#F5F0E8" filter="url(#chalkText)">Ne coachez</text>
+
+  <!-- "plus" with yellow chalk highlight -->
+  <g filter="url(#chalkGlow)">
+    <rect x="510" y="220" width="120" height="55" rx="3" fill="#FFD93D" opacity="0.12"/>
+    <text x="525" y="265" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="64" fill="#FFD93D" filter="url(#chalkText)">plus</text>
+  </g>
+  <text x="660" y="265" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="64" fill="#F5F0E8" filter="url(#chalkText)">jamais seul</text>
+
+  <!-- Chalk underline strokes -->
+  <path d="M380 278 Q550 285 720 275 Q890 268 1060 280" fill="none" stroke="#F5F0E8" stroke-width="2.5" opacity="0.5" filter="url(#chalkLine)"/>
+  <path d="M420 286 Q600 290 780 284 Q950 279 1020 287" fill="none" stroke="#F5F0E8" stroke-width="1.5" opacity="0.3" filter="url(#chalkLine)"/>
+
+  <!-- Subtitle -->
+  <text x="720" y="325" text-anchor="middle" font-family="'Crimson Text', 'Georgia', serif" font-size="20" fill="#F5F0E8" opacity="0.7" filter="url(#chalkText)">Créez, organisez et partagez vos entraînements de handball.</text>
+  <text x="720" y="352" text-anchor="middle" font-family="'Crimson Text', 'Georgia', serif" font-size="20" fill="#F5F0E8" opacity="0.7" filter="url(#chalkText)">L'outil pensé par et pour les coachs.</text>
+
+  <!-- CTA Buttons -->
+  <g transform="translate(530, 380)">
+    <rect width="200" height="50" rx="5" fill="url(#ctaGrad)" stroke="#FFD93D" stroke-width="2" stroke-dasharray="8,4" filter="url(#chalkLine)"/>
+    <text x="100" y="32" text-anchor="middle" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="22" fill="#FFD93D" filter="url(#chalkText)">Commencer</text>
+    <path d="M160 25 L175 25 M170 20 L175 25 L170 30" fill="none" stroke="#FFD93D" stroke-width="1.5" opacity="0.7"/>
+  </g>
+  <g transform="translate(760, 380)">
+    <rect width="180" height="50" rx="5" fill="transparent" stroke="#F5F0E8" stroke-width="1.5" stroke-dasharray="6,4" filter="url(#chalkLine)" opacity="0.6"/>
+    <text x="90" y="32" text-anchor="middle" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="20" fill="#F5F0E8" opacity="0.8" filter="url(#chalkText)">Voir la démo</text>
+  </g>
+
+  <!-- Whistle icon motif (decorative) -->
+  <g transform="translate(340, 170)" opacity="0.15" filter="url(#chalkLine)">
+    <ellipse cx="20" cy="12" rx="18" ry="10" fill="none" stroke="#F5F0E8" stroke-width="1.5"/>
+    <line x1="38" y1="12" x2="52" y2="5" stroke="#F5F0E8" stroke-width="1.5"/>
+    <circle cx="52" cy="5" r="3" fill="none" stroke="#F5F0E8" stroke-width="1"/>
+    <path d="M8 2 Q12 -4 18 0" fill="none" stroke="#F5F0E8" stroke-width="1"/>
+  </g>
+  <g transform="translate(1050, 180) scale(-1,1)" opacity="0.12" filter="url(#chalkLine)">
+    <ellipse cx="20" cy="12" rx="18" ry="10" fill="none" stroke="#F5F0E8" stroke-width="1.5"/>
+    <line x1="38" y1="12" x2="52" y2="5" stroke="#F5F0E8" stroke-width="1.5"/>
+    <circle cx="52" cy="5" r="3" fill="none" stroke="#F5F0E8" stroke-width="1"/>
+  </g>
+
+  <!-- === FEATURE CARDS SECTION === -->
+  <text x="720" y="490" text-anchor="middle" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="36" fill="#F5F0E8" filter="url(#chalkText)">Pourquoi Place aux Coachs ?</text>
+  <path d="M560 498 Q640 504 720 497 Q800 492 880 500" fill="none" stroke="#6BC5F8" stroke-width="2" opacity="0.5" filter="url(#chalkLine)"/>
+
+  <!-- Card 1: Dessinez vos exercices -->
+  <g transform="translate(160, 520) rotate(-1.5, 165, 130)" filter="url(#paperShadow)">
+    <rect width="330" height="260" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <rect x="130" y="-8" width="70" height="20" rx="1" fill="#D4C5A0" opacity="0.7" transform="rotate(3, 165, 2)"/>
+    <g transform="translate(85, 35)">
+      <rect width="160" height="90" rx="2" fill="none" stroke="#2D5A3F" stroke-width="1.5" opacity="0.5"/>
+      <line x1="80" y1="0" x2="80" y2="90" stroke="#2D5A3F" stroke-width="1" opacity="0.4" stroke-dasharray="4,3"/>
+      <circle cx="80" cy="45" r="18" fill="none" stroke="#2D5A3F" stroke-width="1" opacity="0.4"/>
+      <circle cx="40" cy="35" r="5" fill="#FF6B6B" opacity="0.6"/>
+      <circle cx="55" cy="55" r="5" fill="#FF6B6B" opacity="0.6"/>
+      <circle cx="110" cy="40" r="5" fill="#6BC5F8" opacity="0.6"/>
+      <circle cx="125" cy="60" r="5" fill="#6BC5F8" opacity="0.6"/>
+      <path d="M45 35 L65 40" fill="none" stroke="#333" stroke-width="1" stroke-dasharray="3,2"/>
+      <path d="M62 37 L65 40 L61 42" fill="none" stroke="#333" stroke-width="1"/>
+    </g>
+    <text x="165" y="155" text-anchor="middle" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="24" fill="#1B3D2F">Dessinez vos exercices</text>
+    <text x="165" y="182" text-anchor="middle" font-family="'Crimson Text', 'Georgia', serif" font-size="14" fill="#555">Placez joueurs, plots et trajectoires</text>
+    <text x="165" y="202" text-anchor="middle" font-family="'Crimson Text', 'Georgia', serif" font-size="14" fill="#555">sur un terrain interactif.</text>
+    <line x1="60" y1="220" x2="270" y2="220" stroke="#FFD93D" stroke-width="1.5" opacity="0.4" stroke-dasharray="5,4"/>
+  </g>
+
+  <!-- Card 2: Prêt en 3 étapes -->
+  <g transform="translate(555, 520) rotate(1, 165, 130)" filter="url(#paperShadow)">
+    <rect width="330" height="260" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <circle cx="165" cy="2" r="8" fill="#CC3333" opacity="0.8"/>
+    <circle cx="165" cy="2" r="3" fill="#FFE0E0" opacity="0.6"/>
+    <g transform="translate(50, 45)">
+      <circle cx="35" cy="30" r="22" fill="none" stroke="#FFD93D" stroke-width="2" opacity="0.7"/>
+      <text x="35" y="37" text-anchor="middle" font-family="'Caveat', cursive" font-size="24" fill="#FFD93D">1</text>
+      <text x="35" y="70" text-anchor="middle" font-family="'Crimson Text', serif" font-size="11" fill="#666">Créez</text>
+      <circle cx="115" cy="30" r="22" fill="none" stroke="#6BC5F8" stroke-width="2" opacity="0.7"/>
+      <text x="115" y="37" text-anchor="middle" font-family="'Caveat', cursive" font-size="24" fill="#6BC5F8">2</text>
+      <text x="115" y="70" text-anchor="middle" font-family="'Crimson Text', serif" font-size="11" fill="#666">Dessinez</text>
+      <circle cx="195" cy="30" r="22" fill="none" stroke="#FF6B6B" stroke-width="2" opacity="0.7"/>
+      <text x="195" y="37" text-anchor="middle" font-family="'Caveat', cursive" font-size="24" fill="#FF6B6B">3</text>
+      <text x="195" y="70" text-anchor="middle" font-family="'Crimson Text', serif" font-size="11" fill="#666">Partagez</text>
+      <path d="M58 30 L92 30" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+      <path d="M138 30 L172 30" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+    </g>
+    <text x="165" y="165" text-anchor="middle" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="24" fill="#1B3D2F">Prêt en 3 étapes</text>
+    <text x="165" y="192" text-anchor="middle" font-family="'Crimson Text', 'Georgia', serif" font-size="14" fill="#555">De l'idée à l'entraînement complet</text>
+    <text x="165" y="212" text-anchor="middle" font-family="'Crimson Text', 'Georgia', serif" font-size="14" fill="#555">en quelques minutes seulement.</text>
+    <line x1="60" y1="230" x2="270" y2="230" stroke="#6BC5F8" stroke-width="1.5" opacity="0.4" stroke-dasharray="5,4"/>
+  </g>
+
+  <!-- Card 3: Partagez avec la communauté -->
+  <g transform="translate(950, 520) rotate(-0.8, 165, 130)" filter="url(#paperShadow)">
+    <rect width="330" height="260" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <rect x="120" y="-10" width="90" height="18" rx="1" fill="#D4C5A0" opacity="0.65" transform="rotate(-2, 165, -1)"/>
+    <g transform="translate(80, 40)">
+      <circle cx="45" cy="20" r="12" fill="none" stroke="#FF6B6B" stroke-width="1.8"/>
+      <path d="M30 55 Q45 40 60 55" fill="none" stroke="#FF6B6B" stroke-width="1.8"/>
+      <circle cx="90" cy="15" r="12" fill="none" stroke="#6BC5F8" stroke-width="1.8"/>
+      <path d="M75 50 Q90 35 105 50" fill="none" stroke="#6BC5F8" stroke-width="1.8"/>
+      <circle cx="135" cy="20" r="12" fill="none" stroke="#FFD93D" stroke-width="1.8"/>
+      <path d="M120 55 Q135 40 150 55" fill="none" stroke="#FFD93D" stroke-width="1.8"/>
+      <line x1="57" y1="25" x2="78" y2="20" stroke="#555" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
+      <line x1="102" y1="20" x2="123" y2="25" stroke="#555" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
+    </g>
+    <text x="165" y="130" text-anchor="middle" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="22" fill="#1B3D2F">Partagez avec</text>
+    <text x="165" y="158" text-anchor="middle" font-family="'Caveat', 'Patrick Hand', cursive, sans-serif" font-size="22" fill="#1B3D2F">la communauté</text>
+    <text x="165" y="192" text-anchor="middle" font-family="'Crimson Text', 'Georgia', serif" font-size="14" fill="#555">Groupes de travail, exercices</text>
+    <text x="165" y="212" text-anchor="middle" font-family="'Crimson Text', 'Georgia', serif" font-size="14" fill="#555">partagés et inspiration collective.</text>
+    <line x1="60" y1="230" x2="270" y2="230" stroke="#FF6B6B" stroke-width="1.5" opacity="0.4" stroke-dasharray="5,4"/>
+  </g>
+
+  <!-- === STATS SECTION === -->
+  <line x1="100" y1="815" x2="1340" y2="815" stroke="#F5F0E8" stroke-width="0.5" opacity="0.15" stroke-dasharray="8,6"/>
+
+  <g transform="translate(200, 830)">
+    <text x="0" y="28" font-family="'Caveat', cursive" font-size="42" fill="#FFD93D" filter="url(#chalkText)">250+</text>
+    <text x="0" y="52" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.6">Entraînements créés</text>
+  </g>
+  <g transform="translate(540, 830)">
+    <text x="0" y="28" font-family="'Caveat', cursive" font-size="42" fill="#6BC5F8" filter="url(#chalkText)">80+</text>
+    <text x="0" y="52" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.6">Coachs actifs</text>
+  </g>
+  <g transform="translate(850, 830)">
+    <text x="0" y="28" font-family="'Caveat', cursive" font-size="42" fill="#FF6B6B" filter="url(#chalkText)">15</text>
+    <text x="0" y="52" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.6">Groupes de travail</text>
+  </g>
+  <g transform="translate(1120, 830)">
+    <text x="0" y="28" font-family="'Caveat', cursive" font-size="42" fill="#F5F0E8" filter="url(#chalkText)">100%</text>
+    <text x="0" y="52" font-family="'Crimson Text', serif" font-size="14" fill="#F5F0E8" opacity="0.6">Gratuit et ouvert</text>
+  </g>
+
+  <!-- Chalk line border bottom -->
+  <path d="M0 895 Q360 890 720 895 Q1080 900 1440 893" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.2" filter="url(#chalkLine)"/>
+
+  <!-- Decorative chalk X and O in corners -->
+  <g transform="translate(50, 820)" opacity="0.08" filter="url(#chalkLine)">
+    <line x1="0" y1="0" x2="20" y2="20" stroke="#F5F0E8" stroke-width="2.5"/>
+    <line x1="20" y1="0" x2="0" y2="20" stroke="#F5F0E8" stroke-width="2.5"/>
+  </g>
+  <g transform="translate(1380, 820)" opacity="0.08" filter="url(#chalkLine)">
+    <circle cx="10" cy="10" r="10" fill="none" stroke="#F5F0E8" stroke-width="2.5"/>
+  </g>
+</svg>

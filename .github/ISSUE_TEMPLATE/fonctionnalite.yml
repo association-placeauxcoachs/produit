@@ -1,0 +1,53 @@
+name: Fonctionnalité
+description: Proposer une idée ou décrire une gêne rencontrée dans l'application
+title: "[Fonctionnalité] "
+labels: ["fonctionnalite"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de prendre le temps de proposer une idée ! Pas besoin de vocabulaire technique : racontez ce que vous vivez sur le terrain.
+        Seul le premier champ est obligatoire. Pour aller plus loin, le [guide de travail](https://github.com/association-placeauxcoachs/produit/blob/main/guide-de-travail.md) et l'[assistant produit](https://github.com/association-placeauxcoachs/produit/blob/main/assistant-produit.md) aident à remplir les autres.
+  - type: textarea
+    id: probleme
+    attributes:
+      label: 🔍 Le problème
+      description: Qu'est-ce qui est difficile ou agaçant aujourd'hui ? Qui est concerné ?
+      placeholder: "Je perds du temps à recréer des exercices que j'ai déjà faits."
+    validations:
+      required: true
+  - type: input
+    id: fonctionnalite
+    attributes:
+      label: 💡 La fonctionnalité proposée
+      description: Un nom court et une phrase d'explication
+      placeholder: "Dupliquer une situation — copier une situation complète pour la réutiliser ailleurs"
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: 📝 User stories
+      description: "Format : En tant que… je veux… afin de…"
+      placeholder: "- En tant qu'entraîneur, je veux copier une situation afin de la coller dans un autre entraînement."
+  - type: textarea
+    id: criteres
+    attributes:
+      label: ✅ Critères d'acceptation
+      description: "C'est réussi si… Chaque point doit pouvoir être vérifié."
+      placeholder: |
+        - la copie prend moins de 10 secondes
+        - aucun contenu n'est perdu
+  - type: dropdown
+    id: valeur
+    attributes:
+      label: 🚀 Valeur pour les entraîneurs
+      options:
+        - "1 — confort"
+        - "2 — utile"
+        - "3 — important"
+        - "4 — très important"
+        - "5 — indispensable"
+  - type: textarea
+    id: conseil
+    attributes:
+      label: Remarques
+      description: Mise en garde, contexte d'usage, captures d'écran…

@@ -1,0 +1,470 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 2000" width="1440" height="2000">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .font-urban { font-family: 'Urbanist', sans-serif; }
+      .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+    <linearGradient id="bgPastel" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#F8F5FF"/>
+      <stop offset="50%" stop-color="#FFF8F5"/>
+      <stop offset="100%" stop-color="#F3F0FF"/>
+    </linearGradient>
+    <linearGradient id="sidebarGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EEEFF2"/>
+      <stop offset="100%" stop-color="#E8EAF0"/>
+    </linearGradient>
+    <linearGradient id="ctaViolet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5B8DEF"/>
+      <stop offset="100%" stop-color="#7C5CFC"/>
+    </linearGradient>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1976D2"/>
+      <stop offset="100%" stop-color="#1565C0"/>
+    </linearGradient>
+    <filter id="cardShadow"><feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#7C5CFC" flood-opacity="0.06"/></filter>
+    <filter id="courtShadow"><feDropShadow dx="0" dy="6" stdDeviation="18" flood-color="#7C5CFC" flood-opacity="0.10"/></filter>
+    <filter id="btnShadow"><feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#7C5CFC" flood-opacity="0.18"/></filter>
+  </defs>
+
+  <rect width="1440" height="2000" fill="url(#bgPastel)"/>
+
+  <!-- ====================== SIDEBAR (300px, mode focus, pas de rail) ====================== -->
+  <rect width="300" height="2000" fill="url(#sidebarGrad)"/>
+  <line x1="300" y1="0" x2="300" y2="2000" stroke="#1E1340" stroke-width="0.5" opacity="0.08"/>
+
+  <!-- Top : burger + retour (cohérent avec NavigationRail existant) -->
+  <g transform="translate(16, 18)">
+    <!-- Burger toggle (cf. rail existant) -->
+    <rect width="40" height="40" rx="20" fill="transparent"/>
+    <line x1="12" y1="14" x2="28" y2="14" stroke="#1E1340" stroke-width="1.6" stroke-linecap="round" opacity="0.7"/>
+    <line x1="12" y1="20" x2="28" y2="20" stroke="#1E1340" stroke-width="1.6" stroke-linecap="round" opacity="0.7"/>
+    <line x1="12" y1="26" x2="28" y2="26" stroke="#1E1340" stroke-width="1.6" stroke-linecap="round" opacity="0.7"/>
+
+    <!-- Retour -->
+    <g transform="translate(48, 0)">
+      <rect width="40" height="40" rx="20" fill="transparent"/>
+      <path d="M 26 20 L 14 20 M 19 14 L 13 20 L 19 26" stroke="#1E1340" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+    </g>
+    <text x="100" y="26" class="font-inter" fill="#1E1340" font-size="12.5" font-weight="500" opacity="0.7">Retour aux entraînements</text>
+  </g>
+
+  <line x1="16" y1="76" x2="284" y2="76" stroke="#1E1340" stroke-width="0.5" opacity="0.08"/>
+
+  <!-- Section SITUATIONS -->
+  <g transform="translate(20, 100)">
+    <text class="font-urban" fill="#1E1340" font-size="10" font-weight="700" opacity="0.35" letter-spacing="1.4">SITUATIONS</text>
+    <text x="260" y="0" class="font-inter" fill="#1E1340" font-size="10" opacity="0.35" text-anchor="end">3 · 11 schémas</text>
+
+    <!-- CTA + Ajouter une situation -->
+    <rect y="14" width="260" height="38" rx="11" fill="url(#ctaViolet)" filter="url(#btnShadow)"/>
+    <text x="80" y="38" class="font-urban" fill="#ffffff" font-size="14" font-weight="700">+</text>
+    <text x="130" y="38" class="font-urban" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">Ajouter une situation</text>
+  </g>
+
+  <!-- Coller (état presse-papiers) -->
+  <g transform="translate(20, 196)">
+    <rect width="260" height="32" rx="9" fill="none" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.25" stroke-dasharray="4 3"/>
+    <text x="14" y="20" font-size="12">📋</text>
+    <text x="34" y="21" class="font-inter" fill="#7C5CFC" font-size="11" font-weight="600">Coller</text>
+    <text x="80" y="21" class="font-inter" fill="#1E1340" font-size="10" opacity="0.45">« Match U17 · 3v2 »</text>
+  </g>
+
+  <!-- Liste situations -->
+  <!-- 01 actif -->
+  <g transform="translate(20, 248)">
+    <rect width="260" height="78" rx="12" fill="#ffffff" filter="url(#cardShadow)"/>
+    <rect width="3" height="78" fill="#F06850"/>
+    <!-- handle + numéro -->
+    <g transform="translate(14, 14)" opacity="0.4">
+      <circle cx="2" cy="3" r="1.2" fill="#1E1340"/><circle cx="6" cy="3" r="1.2" fill="#1E1340"/>
+      <circle cx="2" cy="9" r="1.2" fill="#1E1340"/><circle cx="6" cy="9" r="1.2" fill="#1E1340"/>
+      <circle cx="2" cy="15" r="1.2" fill="#1E1340"/><circle cx="6" cy="15" r="1.2" fill="#1E1340"/>
+    </g>
+    <text x="30" y="26" class="font-urban" fill="#F06850" font-size="11" font-weight="700">01</text>
+    <text x="50" y="26" class="font-urban" fill="#1E1340" font-size="13" font-weight="700">Échauffement</text>
+    <text x="30" y="44" class="font-inter" fill="#1E1340" font-size="10" opacity="0.5">3 schémas · 8 éléments</text>
+    <!-- chips motsCles -->
+    <rect x="30" y="52" width="50" height="16" rx="8" fill="#F5EEFF"/>
+    <text x="55" y="63" class="font-inter" fill="#7C5CFC" font-size="8.5" font-weight="600" text-anchor="middle">passe</text>
+    <rect x="84" y="52" width="60" height="16" rx="8" fill="#F5EEFF"/>
+    <text x="114" y="63" class="font-inter" fill="#7C5CFC" font-size="8.5" font-weight="600" text-anchor="middle">collectif</text>
+    <text x="148" y="63" class="font-inter" fill="#1E1340" font-size="9" opacity="0.4">+1</text>
+
+    <!-- Actions hover -->
+    <g transform="translate(208, 12)">
+      <rect width="22" height="22" rx="6" fill="#F5EEFF"/>
+      <text x="11" y="16" font-size="11" text-anchor="middle">📋</text>
+      <rect x="26" y="0" width="22" height="22" rx="6" fill="#FFF5F3"/>
+      <text x="37" y="16" font-size="11" text-anchor="middle">🗑</text>
+    </g>
+  </g>
+
+  <!-- 02 -->
+  <g transform="translate(20, 338)">
+    <rect width="260" height="60" rx="12" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.6" stroke-opacity="0.08"/>
+    <text x="20" y="24" class="font-urban" fill="#1E1340" font-size="11" font-weight="700" opacity="0.45">02</text>
+    <text x="40" y="24" class="font-urban" fill="#1E1340" font-size="13" font-weight="600">Montée de balle</text>
+    <text x="20" y="42" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">2 schémas · 6 éléments</text>
+  </g>
+
+  <!-- 03 -->
+  <g transform="translate(20, 410)">
+    <rect width="260" height="60" rx="12" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.6" stroke-opacity="0.08"/>
+    <text x="20" y="24" class="font-urban" fill="#1E1340" font-size="11" font-weight="700" opacity="0.45">03</text>
+    <text x="40" y="24" class="font-urban" fill="#1E1340" font-size="13" font-weight="600">Surnombre 3v2</text>
+    <text x="20" y="42" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">1 schéma · 5 éléments</text>
+  </g>
+
+  <!-- ============ Actions sur la situation courante (en bas de sidebar) ============ -->
+  <line x1="20" y1="1820" x2="280" y2="1820" stroke="#7C5CFC" stroke-width="0.5" opacity="0.08"/>
+  <g transform="translate(20, 1840)">
+    <text class="font-urban" fill="#1E1340" font-size="10" font-weight="700" opacity="0.35" letter-spacing="1.4">SITUATION COURANTE</text>
+    <text y="16" class="font-inter" fill="#1E1340" font-size="10" opacity="0.5">01 — Échauffement</text>
+
+    <!-- + ajouter schéma -->
+    <g transform="translate(0, 30)">
+      <rect width="260" height="34" rx="10" fill="#F5EEFF"/>
+      <text x="20" y="22" class="font-urban" fill="#7C5CFC" font-size="14" font-weight="700">+</text>
+      <text x="38" y="22" class="font-inter" fill="#7C5CFC" font-size="11.5" font-weight="600">Ajouter un schéma</text>
+    </g>
+
+    <!-- copier / dupliquer / supprimer -->
+    <g transform="translate(0, 74)">
+      <rect width="82" height="34" rx="10" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+      <text x="14" y="22" font-size="12">📋</text>
+      <text x="32" y="22" class="font-inter" fill="#1E1340" font-size="10.5" font-weight="600">Copier</text>
+
+      <rect x="89" y="0" width="82" height="34" rx="10" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+      <text x="103" y="22" font-size="12">📑</text>
+      <text x="121" y="22" class="font-inter" fill="#1E1340" font-size="10.5" font-weight="600">Dupliquer</text>
+
+      <rect x="178" y="0" width="82" height="34" rx="10" fill="#FFF5F3" stroke="#F06850" stroke-width="0.8" stroke-opacity="0.3"/>
+      <text x="192" y="22" font-size="12">🗑</text>
+      <text x="210" y="22" class="font-inter" fill="#F06850" font-size="10.5" font-weight="600">Suppr.</text>
+    </g>
+  </g>
+
+  <!-- Profil utilisateur en bas -->
+  <line x1="20" y1="1976" x2="280" y2="1976" stroke="#7C5CFC" stroke-width="0.5" opacity="0.08"/>
+
+  <!-- ====================== ZONE PRINCIPALE ====================== -->
+
+  <!-- BARRE D'ACTIONS HAUT (statut · PDF · enregistrer) — header sticky cohérent avec StructureHeader -->
+  <rect x="300" y="0" width="1140" height="68" fill="#ffffff" opacity="0.9"/>
+  <line x1="300" y1="68" x2="1440" y2="68" stroke="#1E1340" stroke-width="0.5" opacity="0.08"/>
+
+  <g transform="translate(320, 16)">
+    <!-- Statut Prêt (pill cliquable, modifiable) -->
+    <rect width="64" height="36" rx="18" fill="#ECFDF5" stroke="#22C55E" stroke-width="0.6" stroke-opacity="0.25"/>
+    <circle cx="16" cy="18" r="3.5" fill="#22C55E"/>
+    <text x="26" y="22" class="font-inter" fill="#16A34A" font-size="11" font-weight="600">Prêt</text>
+
+    <text x="80" y="22" class="font-inter" fill="#1E1340" font-size="11" opacity="0.45">Enregistré il y a 2 min</text>
+
+    <!-- Actions à droite : PDF (outline) + Enregistrer (primary) -->
+    <g transform="translate(836, 0)">
+      <rect width="172" height="36" rx="10" fill="#ffffff" stroke="#1E1340" stroke-width="0.8" stroke-opacity="0.18"/>
+      <text x="16" y="22" font-size="12">📄</text>
+      <text x="36" y="22" class="font-inter" fill="#1E1340" font-size="12" font-weight="500">Télécharger en PDF</text>
+    </g>
+    <g transform="translate(1018, 0)">
+      <rect width="100" height="36" rx="10" fill="url(#ctaViolet)" filter="url(#btnShadow)"/>
+      <text x="20" y="23" font-size="13">💾</text>
+      <text x="64" y="23" class="font-inter" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">Enregistrer</text>
+    </g>
+  </g>
+
+  <!-- ENTÊTE ENTRAÎNEMENT (carte fidèle au code) -->
+  <g transform="translate(320, 96)" filter="url(#cardShadow)">
+    <rect width="1100" height="172" rx="16" fill="#ffffff"/>
+
+    <!-- Thème (gros, violet) — éditable -->
+    <text x="28" y="48" class="font-urban" fill="#7C5CFC" font-size="28" font-weight="800">Améliorer le jeu du PB dans l'exploitation du surnombre</text>
+    <!-- caret edit hint -->
+    <g transform="translate(28, 60)" opacity="0.3">
+      <line x1="0" y1="0" x2="60" y2="0" stroke="#7C5CFC" stroke-width="1" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- Objectif (icône Target + texte muted) -->
+    <g transform="translate(28, 72)">
+      <!-- Target icon -->
+      <circle cx="9" cy="14" r="8" fill="none" stroke="#1E1340" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="9" cy="14" r="4" fill="none" stroke="#1E1340" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="9" cy="14" r="1.5" fill="#1E1340" opacity="0.4"/>
+      <text x="28" y="20" class="font-urban" fill="#1E1340" font-size="17" font-weight="500" opacity="0.65">Maîtriser le 1c1 puis enchaîner sur le surnombre côté faible</text>
+    </g>
+
+    <line x1="28" y1="112" x2="1072" y2="112" stroke="#7C5CFC" stroke-width="0.5" opacity="0.1"/>
+
+    <!-- Ligne metadata : Date · Catégories · Durée · Effectif -->
+    <g transform="translate(28, 130)">
+      <!-- Date -->
+      <g transform="translate(0, 0)">
+        <!-- CalendarDays icon -->
+        <rect x="0" y="2" width="14" height="14" rx="2" fill="none" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <line x1="0" y1="6" x2="14" y2="6" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <line x1="4" y1="0" x2="4" y2="3" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <line x1="10" y1="0" x2="10" y2="3" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <text x="22" y="14" class="font-inter" fill="#1E1340" font-size="11.5" opacity="0.45">Date</text>
+        <text x="56" y="14" class="font-urban" fill="#1E1340" font-size="12.5" font-weight="600">12/03/2026</text>
+      </g>
+
+      <!-- Catégories -->
+      <g transform="translate(196, 0)">
+        <rect width="42" height="20" rx="10" fill="#F5EEFF"/>
+        <text x="21" y="14" class="font-inter" fill="#7C5CFC" font-size="10.5" font-weight="700" text-anchor="middle">U15</text>
+        <rect x="48" y="0" width="48" height="20" rx="10" fill="#F5EEFF"/>
+        <text x="72" y="14" class="font-inter" fill="#7C5CFC" font-size="10.5" font-weight="700" text-anchor="middle">U17F</text>
+        <rect x="102" y="0" width="36" height="20" rx="10" fill="none" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.25" stroke-dasharray="3 3"/>
+        <text x="120" y="14" class="font-inter" fill="#7C5CFC" font-size="10.5" font-weight="600" text-anchor="middle">+</text>
+      </g>
+
+      <!-- Durée -->
+      <g transform="translate(380, 0)">
+        <!-- Clock icon -->
+        <circle cx="8" cy="9" r="7" fill="none" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <line x1="8" y1="9" x2="8" y2="4" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <line x1="8" y1="9" x2="12" y2="9" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <text x="22" y="14" class="font-inter" fill="#1E1340" font-size="11.5" opacity="0.45">Durée</text>
+        <text x="60" y="14" class="font-urban" fill="#1E1340" font-size="12.5" font-weight="600">1h30</text>
+      </g>
+
+      <!-- Effectif -->
+      <g transform="translate(540, 0)">
+        <!-- Users icon -->
+        <circle cx="6" cy="6" r="3" fill="none" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <path d="M 0 16 Q 0 10 6 10 Q 12 10 12 16" fill="none" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <circle cx="13" cy="6" r="2.5" fill="none" stroke="#1E1340" stroke-width="1.3" opacity="0.45"/>
+        <text x="22" y="14" class="font-inter" fill="#1E1340" font-size="11.5" opacity="0.45">Effectif</text>
+        <text x="68" y="14" class="font-urban" fill="#1E1340" font-size="12.5" font-weight="600">16 joueurs</text>
+      </g>
+
+      <!-- Créé par (à droite) -->
+      <g transform="translate(880, 0)">
+        <text x="0" y="14" class="font-inter" fill="#1E1340" font-size="11" opacity="0.4">Créé par</text>
+        <text x="48" y="14" class="font-inter" fill="#1E1340" font-size="11" font-weight="600">Pierre Roux</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ====================== SITUATION FOCALISÉE ====================== -->
+  <g transform="translate(320, 296)">
+
+    <!-- Header situation : numéro / titre / motsCles / actions -->
+    <g>
+      <text class="font-urban" fill="#1E1340" font-size="10" font-weight="700" opacity="0.4" letter-spacing="1.4">SITUATION 01 / 03</text>
+      <text y="32" class="font-urban" fill="#1E1340" font-size="22" font-weight="800">Échauffement avec passe et va</text>
+
+      <!-- chips motsCles éditables -->
+      <g transform="translate(0, 50)">
+        <rect width="76" height="26" rx="13" fill="#F5EEFF"/>
+        <text x="38" y="17" class="font-inter" fill="#7C5CFC" font-size="11" font-weight="600" text-anchor="middle">passe ×</text>
+        <rect x="82" y="0" width="80" height="26" rx="13" fill="#F5EEFF"/>
+        <text x="122" y="17" class="font-inter" fill="#7C5CFC" font-size="11" font-weight="600" text-anchor="middle">collectif ×</text>
+        <rect x="168" y="0" width="106" height="26" rx="13" fill="#F5EEFF"/>
+        <text x="221" y="17" class="font-inter" fill="#7C5CFC" font-size="11" font-weight="600" text-anchor="middle">échauffement ×</text>
+        <rect x="280" y="0" width="92" height="26" rx="13" fill="none" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.25" stroke-dasharray="4 3"/>
+        <text x="326" y="17" class="font-inter" fill="#7C5CFC" font-size="11" font-weight="600" text-anchor="middle">+ mot-clé</text>
+      </g>
+    </g>
+
+    <!-- ============ ÉDITEUR DE SCHÉMA (intact, on ajoute juste les onglets) ============ -->
+
+    <!-- Onglets schémas (NOUVEAU — tout le reste de l'éditeur reste comme aujourd'hui) -->
+    <g transform="translate(0, 100)">
+      <rect width="1100" height="44" rx="12" fill="#ffffff" filter="url(#cardShadow)"/>
+
+      <!-- onglet 1 actif -->
+      <g transform="translate(8, 6)">
+        <rect width="156" height="32" rx="9" fill="#F5EEFF"/>
+        <rect x="8" y="6" width="20" height="20" rx="4" fill="#1565C0"/>
+        <text x="36" y="14" class="font-inter" fill="#7C5CFC" font-size="9" opacity="0.6">Schéma 1</text>
+        <text x="36" y="26" class="font-urban" fill="#7C5CFC" font-size="11" font-weight="700">Mise en place</text>
+      </g>
+      <!-- onglet 2 -->
+      <g transform="translate(172, 6)">
+        <rect width="156" height="32" rx="9" fill="none" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.15"/>
+        <rect x="8" y="6" width="20" height="20" rx="4" fill="#1565C0" opacity="0.4"/>
+        <text x="36" y="14" class="font-inter" fill="#1E1340" font-size="9" opacity="0.4">Schéma 2</text>
+        <text x="36" y="26" class="font-urban" fill="#1E1340" font-size="11" font-weight="600" opacity="0.55">Variante</text>
+      </g>
+      <!-- onglet 3 -->
+      <g transform="translate(336, 6)">
+        <rect width="156" height="32" rx="9" fill="none" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.15"/>
+        <rect x="8" y="6" width="20" height="20" rx="4" fill="#1565C0" opacity="0.4"/>
+        <text x="36" y="14" class="font-inter" fill="#1E1340" font-size="9" opacity="0.4">Schéma 3</text>
+        <text x="36" y="26" class="font-urban" fill="#1E1340" font-size="11" font-weight="600" opacity="0.55">Évolution</text>
+      </g>
+      <!-- + ajouter schéma -->
+      <g transform="translate(500, 6)">
+        <rect width="36" height="32" rx="9" fill="#F5EEFF"/>
+        <text x="18" y="22" class="font-urban" fill="#7C5CFC" font-size="16" font-weight="700" text-anchor="middle">+</text>
+      </g>
+
+      <!-- chevrons navigation onglets -->
+      <g transform="translate(1056, 14)" opacity="0.4">
+        <path d="M 0 8 L 6 2 M 6 14 L 0 8" stroke="#1E1340" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M 18 2 L 24 8 L 18 14" stroke="#1E1340" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+
+    <!-- BLOC ÉDITEUR (titre + tags + toolbar haut + canvas + toolbar bas) — INTACT, illustration -->
+    <g transform="translate(0, 160)" filter="url(#cardShadow)">
+      <rect width="1100" height="600" rx="14" fill="#ffffff"/>
+
+      <!-- Titre interne du schéma + tags (comme actuellement) -->
+      <text x="24" y="36" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Mise en place — passe &amp; va</text>
+      <g transform="translate(24, 50)">
+        <rect width="64" height="20" rx="10" fill="#F5EEFF"/>
+        <text x="32" y="14" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="600" text-anchor="middle">Échauf.</text>
+        <rect x="68" y="0" width="56" height="20" rx="10" fill="#F5EEFF"/>
+        <text x="96" y="14" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="600" text-anchor="middle">Passes</text>
+        <rect x="128" y="0" width="56" height="20" rx="10" fill="#F5EEFF"/>
+        <text x="156" y="14" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="600" text-anchor="middle">3v3</text>
+      </g>
+      <!-- Actions schéma à droite (likes, partage, etc) -->
+      <g transform="translate(940, 24)" opacity="0.6">
+        <text x="0" y="12" font-size="13">🔄</text>
+        <text x="20" y="12" font-size="13">⭐</text>
+        <text x="40" y="12" font-size="13">📤</text>
+        <text x="60" y="12" font-size="13">⤢</text>
+        <text x="80" y="12" font-size="13">⋯</text>
+      </g>
+
+      <!-- Toolbar Konva haut -->
+      <g transform="translate(24, 90)">
+        <rect width="1052" height="36" rx="9" fill="#F8F5FF"/>
+        <g transform="translate(12, 12)">
+          <circle cx="8" cy="8" r="7" fill="#F06850"/>
+          <circle cx="28" cy="8" r="7" fill="#FFCA28"/>
+          <circle cx="48" cy="8" r="7" fill="#9C27B0"/>
+          <circle cx="68" cy="8" r="6" fill="#BCFF00"/>
+          <polygon points="84,2 78,14 90,14" fill="#F06850" opacity="0.7"/>
+          <line x1="100" y1="0" x2="100" y2="14" stroke="#7C5CFC" stroke-opacity="0.2"/>
+          <text x="116" y="11" font-size="11">↗</text>
+          <text x="134" y="12" font-size="11">A</text>
+          <text x="150" y="12" font-size="11">▭</text>
+          <text x="166" y="12" font-size="11">↺</text>
+          <line x1="184" y1="0" x2="184" y2="14" stroke="#7C5CFC" stroke-opacity="0.2"/>
+          <text x="200" y="12" font-size="11">⤺</text>
+          <text x="218" y="12" font-size="11">⤻</text>
+        </g>
+        <g transform="translate(960, 12)" opacity="0.7">
+          <text x="0" y="11" font-size="11">⊕</text>
+          <text x="18" y="11" font-size="11">⊖</text>
+          <text x="36" y="11" font-size="11">⤢</text>
+          <text x="54" y="11" font-size="11">⋯</text>
+        </g>
+      </g>
+
+      <!-- Canvas terrain (Konva) -->
+      <g transform="translate(24, 142)">
+        <rect width="1052" height="380" rx="10" fill="url(#courtGrad)"/>
+        <line x1="526" y1="0" x2="526" y2="380" stroke="#fff" stroke-width="1.5" opacity="0.35"/>
+        <circle cx="526" cy="190" r="34" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.35"/>
+        <path d="M 0 110 Q 130 190 0 270" fill="#C8850A" opacity="0.4"/>
+        <path d="M 0 110 Q 130 190 0 270" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.5"/>
+        <path d="M 1052 110 Q 922 190 1052 270" fill="#C8850A" opacity="0.4"/>
+        <path d="M 1052 110 Q 922 190 1052 270" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="280" cy="130" r="14" fill="#F06850" stroke="#fff" stroke-width="2"/>
+        <circle cx="250" cy="200" r="14" fill="#F06850" stroke="#fff" stroke-width="2"/>
+        <circle cx="280" cy="270" r="14" fill="#F06850" stroke="#fff" stroke-width="2"/>
+        <circle cx="380" cy="170" r="14" fill="#F06850" stroke="#fff" stroke-width="2"/>
+        <circle cx="380" cy="230" r="14" fill="#F06850" stroke="#fff" stroke-width="2"/>
+        <circle cx="700" cy="150" r="14" fill="#FFCA28" stroke="#fff" stroke-width="2"/>
+        <circle cx="680" cy="210" r="14" fill="#FFCA28" stroke="#fff" stroke-width="2"/>
+        <circle cx="700" cy="270" r="14" fill="#FFCA28" stroke="#fff" stroke-width="2"/>
+        <circle cx="60" cy="190" r="14" fill="#9C27B0" stroke="#fff" stroke-width="2"/>
+        <circle cx="992" cy="190" r="14" fill="#9C27B0" stroke="#fff" stroke-width="2"/>
+        <circle cx="430" cy="190" r="8" fill="#BCFF00" stroke="#fff" stroke-width="2"/>
+        <path d="M 380 170 L 460 155" stroke="#F06850" stroke-width="2" stroke-dasharray="6,4" opacity="0.5"/>
+        <path d="M 430 190 L 600 180" stroke="#22C55E" stroke-width="2" stroke-dasharray="8,4" opacity="0.5"/>
+      </g>
+
+      <!-- Toolbar Konva bas (formatage texte) -->
+      <g transform="translate(24, 538)">
+        <rect width="1052" height="36" rx="9" fill="#F8F5FF"/>
+        <g transform="translate(12, 12)">
+          <text x="0" y="11" font-size="11" font-weight="700">B</text>
+          <text x="14" y="11" font-size="11" font-style="italic">I</text>
+          <text x="28" y="11" font-size="11" text-decoration="underline">U</text>
+          <line x1="46" y1="0" x2="46" y2="14" stroke="#7C5CFC" stroke-opacity="0.2"/>
+          <text x="60" y="11" class="font-inter" fill="#1E1340" font-size="10">Paragraphe ▾</text>
+          <line x1="130" y1="0" x2="130" y2="14" stroke="#7C5CFC" stroke-opacity="0.2"/>
+          <text x="144" y="11" font-size="11">≣</text>
+          <text x="160" y="11" font-size="11">≡</text>
+          <text x="176" y="11" font-size="11">⋯</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- ====================== DESCRIPTION (4 cartes empilées, pas de grille) ====================== -->
+    <g transform="translate(0, 800)">
+      <text class="font-urban" fill="#1E1340" font-size="10" font-weight="700" opacity="0.4" letter-spacing="1.4">DESCRIPTION</text>
+      <text x="120" y="0" class="font-inter" fill="#1E1340" font-size="10" opacity="0.35">parsée depuis les titres H1 du texte enrichi (sinon une seule carte)</text>
+      <g transform="translate(960, -10)">
+        <rect width="140" height="22" rx="7" fill="#F5EEFF"/>
+        <text x="70" y="15" class="font-inter" fill="#7C5CFC" font-size="10.5" font-weight="600" text-anchor="middle">Éditer (TipTap)  ✎</text>
+      </g>
+    </g>
+
+    <!-- À FAIRE -->
+    <g transform="translate(0, 824)" filter="url(#cardShadow)">
+      <rect width="1100" height="156" rx="14" fill="#ffffff"/>
+      <rect width="4" height="156" fill="#F06850"/>
+      <rect x="24" y="20" width="40" height="40" rx="11" fill="#FFF0EC"/>
+      <text x="44" y="46" font-size="18" text-anchor="middle">📋</text>
+      <text x="80" y="38" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">À FAIRE</text>
+      <text x="80" y="62" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">Les joueurs se déplacent en colonne avec passe et va. Le porteur de balle engage le surnombre vers</text>
+      <text x="80" y="80" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">le pivot opposé. Rotation toutes les 3 minutes pour laisser passer chaque triplette.</text>
+      <text x="80" y="100" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6" font-weight="600">• Mise en place : 5 minutes</text>
+      <text x="80" y="118" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6" font-weight="600">• Exécution : 15 minutes (3 rotations)</text>
+      <text x="80" y="136" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">• Retour au calme et débriefing collectif sur les angles de passe.</text>
+    </g>
+
+    <!-- À VÉRIFIER -->
+    <g transform="translate(0, 996)" filter="url(#cardShadow)">
+      <rect width="1100" height="124" rx="14" fill="#ffffff"/>
+      <rect width="4" height="124" fill="#7C5CFC"/>
+      <rect x="24" y="20" width="40" height="40" rx="11" fill="#F5EEFF"/>
+      <text x="44" y="46" font-size="18" text-anchor="middle">👁</text>
+      <text x="80" y="38" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">À VÉRIFIER</text>
+      <text x="80" y="62" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">Qualité de la passe (hauteur poitrine, timing). Le non-porteur doit appeler la balle et offrir un angle</text>
+      <text x="80" y="80" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">de passe lisible. La communication entre les joueurs doit être audible jusqu'à la touche.</text>
+      <text x="80" y="100" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">Vérifier l'engagement physique du PB lors du fixage du défenseur côté ballon.</text>
+    </g>
+
+    <!-- À DIRE AUX JOUEURS -->
+    <g transform="translate(0, 1136)" filter="url(#cardShadow)">
+      <rect width="1100" height="124" rx="14" fill="#ffffff"/>
+      <rect width="4" height="124" fill="#E5A100"/>
+      <rect x="24" y="20" width="40" height="40" rx="11" fill="#FFF8E0"/>
+      <text x="44" y="46" font-size="18" text-anchor="middle">💬</text>
+      <text x="80" y="38" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">À DIRE AUX JOUEURS</text>
+      <text x="80" y="62" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6" font-style="italic">« Lève la tête avant de passer ! »</text>
+      <text x="80" y="80" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6" font-style="italic">« Appelez la balle ! » — « Le surnombre se crée par la vitesse de déplacement, pas par la passe. »</text>
+      <text x="80" y="100" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">Insister sur l'intention : on cherche à <tspan font-weight="600">fixer</tspan> avant de transmettre.</text>
+    </g>
+
+    <!-- À FAIRE ÉVOLUER -->
+    <g transform="translate(0, 1276)" filter="url(#cardShadow)">
+      <rect width="1100" height="124" rx="14" fill="#ffffff"/>
+      <rect width="4" height="124" fill="#22C55E"/>
+      <rect x="24" y="20" width="40" height="40" rx="11" fill="#ECFDF5"/>
+      <text x="44" y="46" font-size="18" text-anchor="middle">🔄</text>
+      <text x="80" y="38" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">À FAIRE ÉVOLUER</text>
+      <text x="80" y="62" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">Ajouter un défenseur semi-actif, puis actif. Augmenter la zone d'action pour complexifier.</text>
+      <text x="80" y="80" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">Variante : imposer un nombre minimum de passes avant le tir (3 → 5).</text>
+      <text x="80" y="100" class="font-inter" fill="#1E1340" font-size="12" opacity="0.6">Évolution finale : enchaîner directement sur le 3v2 de la situation 03.</text>
+    </g>
+
+    <!-- Note d'aide -->
+    <g transform="translate(0, 1428)">
+      <rect width="1100" height="42" rx="11" fill="#FFF8E0" stroke="#E5A100" stroke-width="0.6" stroke-opacity="0.3"/>
+      <text x="20" y="20" font-size="14">💡</text>
+      <text x="42" y="22" class="font-inter" fill="#1E1340" font-size="11" font-weight="600">Astuce</text>
+      <text x="92" y="22" class="font-inter" fill="#1E1340" font-size="11" opacity="0.65">Si aucun titre H1 n'est trouvé dans le texte enrichi, une seule carte est affichée avec le texte formaté.</text>
+    </g>
+  </g>
+</svg>

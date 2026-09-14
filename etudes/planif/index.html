@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planification de saison — maquettes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+    --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E; --st-pret:#2F7D4F; --st-termine:#2B4C7E; --st-encours:#C8841E;
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30);
+    --violet:#9B82FF; --st-pret:#52B37D; --st-termine:#6E97D6; --st-encours:#E0A64A; color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30);
+    --violet:#9B82FF; --st-pret:#52B37D; --st-termine:#6E97D6; --st-encours:#E0A64A; color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--corps);line-height:1.55;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;padding:60px 28px 110px}
+  .wrap{max-width:940px;margin:0 auto}
+  .kicker{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--orange);display:inline-flex;align-items:center;gap:.7em}
+  .kicker::before{content:"";width:30px;height:1px;background:var(--orange)}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.02;letter-spacing:-.02em;margin:.3em 0 .25em}
+  h1 em{font-style:normal;color:var(--orange)}
+  .lede{color:var(--attenue);font-size:1.02rem;max-width:66ch}
+  .lede b{color:var(--ink);font-weight:600}
+  .rule{height:1px;background:var(--filet);margin:32px 0}
+  a{color:inherit;text-decoration:none}
+  .sect-k{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--attenue);margin-bottom:16px}
+
+  /* modèle */
+  .modele{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px}
+  @media(max-width:760px){.modele{grid-template-columns:1fr}}
+  .mo{background:var(--surface);border:1px solid var(--filet);border-top:3px solid var(--acc);padding:18px 20px}
+  .mo .t{font-family:var(--display);font-size:1.15rem;font-weight:600;margin-bottom:5px}
+  .mo p{font-size:.85rem;color:var(--attenue);line-height:1.5}
+  .mo p b{color:var(--ink);font-weight:600}
+
+  /* cas d'usage */
+  .cas{display:grid;grid-template-columns:auto 1fr;gap:18px;background:var(--surface);border:1px solid var(--filet);border-left:3px solid var(--acc);padding:18px 22px;margin-bottom:10px}
+  .cas .n{font-family:var(--display);font-size:1.6rem;font-weight:400;color:var(--acc);line-height:1}
+  .cas h3{font-family:var(--display);font-size:1.1rem;font-weight:600;margin-bottom:4px}
+  .cas p{font-size:.88rem;color:var(--attenue);line-height:1.5}
+  .cas p b{color:var(--ink);font-weight:600}
+  .cas .liens{margin-top:9px;display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;font-weight:600}
+  .cas .liens a{color:var(--violet);text-decoration:underline;text-underline-offset:3px}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:34px}
+  @media(max-width:720px){.cards{grid-template-columns:1fr}}
+  a.card{border-radius:16px;display:block;background:var(--surface);border:1px solid var(--filet);border-top:3px solid var(--acc,var(--orange));padding:22px 24px;transition:border-color .15s}
+  a.card:hover{border-color:var(--filet-fort)}
+  a.card .n{font-family:var(--display);font-size:1.9rem;font-weight:400;color:var(--acc,var(--orange));line-height:1}
+  a.card h2{font-family:var(--display);font-weight:600;font-size:1.28rem;margin:.45em 0 .2em}
+  a.card p{color:var(--attenue);font-size:.89rem}
+  a.card p b{color:var(--ink);font-weight:600}
+  a.card .go{display:inline-block;font-weight:600;font-size:.86rem;margin-top:14px;color:var(--violet);text-decoration:underline;text-underline-offset:3px}
+
+  .notes{border-radius:14px;background:var(--surface);border:1px solid var(--filet);border-left:3px solid var(--orange);padding:22px 26px}
+  .notes ul{list-style:none;display:grid;gap:9px}
+  .notes li{padding-left:1.4em;position:relative;font-size:.92rem}
+  .notes li::before{content:"—";position:absolute;left:0;color:var(--orange);font-weight:700}
+  .notes b{font-weight:600}
+  .astuce{margin-top:18px;font-size:.8rem;color:var(--attenue)}
+  .astuce kbd{border-radius:4px;font-family:var(--mono);font-size:.74rem;border:1px solid var(--filet-fort);padding:.1em .45em;background:var(--paper)}
+  .ecarte{margin-top:26px;font-size:.82rem;color:var(--attenue);border-left:2px solid var(--peach);padding-left:13px;line-height:1.55}
+  .ecarte b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">Place aux coachs · exploration</span>
+  <h1>Planification de <em>saison</em></h1>
+  <p class="lede">Version épurée. Exit les périodes-tiroirs et les assistants à rallonge : une saison, ce sont des <b>thèmes</b> — ce qu'on veut faire progresser — dans lesquels on crée ses entraînements. Les thèmes <b>se chevauchent</b> librement, les vacances sont des trous assumés, et l'écran répond d'abord à la seule question du mardi soir : <b>qu'est-ce qu'on fait aujourd'hui ?</b></p>
+
+  <div class="rule"></div>
+
+  <div class="sect-k">Le modèle, en trois objets</div>
+  <div class="modele">
+    <div class="mo" style="--acc:var(--orange)">
+      <div class="t">La saison</div>
+      <p>Un nom (celui de l'équipe), deux bornes, des catégories — plus, si on veut, un groupe de travail avec qui la partager. <b>Pas de mots-clés</b> : ils vivent sur les thèmes. Elle porte les <b>thèmes</b>, et rien d'autre : c'est tout ce qu'on demande à la création.</p>
+    </div>
+    <div class="mo" style="--acc:var(--st-encours)">
+      <div class="t">Le thème</div>
+      <p>Un titre, un <b>texte libre</b> (TipTap), des <b>tags</b>, une période indicative. Plusieurs thèmes peuvent courir <b>en même temps</b> — un fil de fond sur l'année, un thème serré sur six semaines.</p>
+    </div>
+    <div class="mo" style="--acc:var(--st-pret)">
+      <div class="t">L'entraînement</div>
+      <p>Créé <b>dans</b> un thème, ou rattaché après coup. Il garde sa <b>date</b>, facultative — on la pose d'un clic depuis la ligne du thème.</p>
+    </div>
+  </div>
+
+  <div class="sect-k">Les trois cas d'usage</div>
+  <div class="cas" style="--acc:var(--orange)">
+    <span class="n">01</span>
+    <div>
+      <h3>Le coach qui démarre</h3>
+      <p>Crée une saison vide, pose ses <b>thèmes</b> (titre, texte, tags), puis crée ses entraînements dedans, au fil des semaines.</p>
+      <div class="liens"><a href="creation-saison.html">Créer une saison →</a><a href="edition-saison.html">L'écran saison →</a></div>
+    </div>
+  </div>
+  <div class="cas" style="--acc:var(--st-termine)">
+    <span class="n">02</span>
+    <div>
+      <h3>Le coach qui a déjà 47 entraînements</h3>
+      <p>Crée sa saison et <b>range son historique</b> dans les thèmes : sélection multiple, suggestions par mots-clés, rattachement sans copie.</p>
+      <div class="liens"><a href="rattacher-entrainements.html">L'écran de rattachement →</a></div>
+    </div>
+  </div>
+  <div class="cas" style="--acc:var(--violet)">
+    <span class="n">03</span>
+    <div>
+      <h3>Le coach qui recommence en 2027–2028</h3>
+      <p><b>Duplique</b> la saison précédente : les thèmes sont recopiés, les entraînements rattachés, les dates repartent à zéro. Il n'a plus qu'à améliorer.</p>
+      <div class="liens"><a href="planification.html">Les archives &amp; la duplication →</a></div>
+    </div>
+  </div>
+
+  <div class="sect-k" style="margin-top:36px">Les écrans</div>
+  <div class="cards">
+    <a class="card" href="planification.html" style="--acc:var(--orange)">
+      <span class="n">01</span>
+      <h2>Planification — vue d'ensemble</h2>
+      <p>La page d'entrée, au clic sur « Planification » : <b>une carte par équipe</b>, avec la séance qui vient et les thèmes du moment. On entraîne souvent plusieurs équipes — cet écran répond avant d'ouvrir quoi que ce soit. Les saisons <b>archivées</b> sont au même endroit, repliées en bas, avec la duplication vers l'année suivante.</p>
+      <span class="go">Ouvrir →</span>
+    </a>
+    <a class="card" href="edition-saison.html" style="--acc:var(--st-encours)">
+      <span class="n">02</span>
+      <h2>La saison — desktop</h2>
+      <p>L'écran principal. En haut, <b>la prochaine séance</b> prête à animer. Puis <b>la trame</b> : une frise mois par mois où l'on voit les thèmes se chevaucher et les <b>vacances hachurées</b>. Puis les thèmes, éditables en place, chacun avec ses entraînements et un bouton « nouvel entraînement dans ce thème ».</p>
+      <span class="go">Ouvrir →</span>
+    </a>
+    <a class="card" href="lecture-mobile.html" style="--acc:var(--st-encours)">
+      <span class="n">03</span>
+      <h2>La saison — mobile</h2>
+      <p>Planification ouvre sur <b>toutes les équipes</b>. Chaque carte tient la planification entière de sa saison : bornes et compteurs, groupe de partage, la séance qui vient avec un <b>bouton Animer</b> qui la lance sans ouvrir la saison, la séance suivante, et les <b>thèmes du moment</b> avec période et nombre de séances. Le second écran est la saison elle-même.</p>
+      <span class="go">Ouvrir →</span>
+    </a>
+    <a class="card" href="creation-saison.html" style="--acc:var(--st-pret)">
+      <span class="n">04</span>
+      <h2>Créer une saison</h2>
+      <p>Une modale, <b>un seul écran</b> : nom, bornes, catégories (le sélecteur de l'app), plus un <b>bouton Partager</b> qui ouvre la liste des groupes de travail. Aucun mot-clé n'est demandé — c'est l'affaire des thèmes. Pas de deuxième étape — la saison s'ouvre sur son premier thème.</p>
+      <span class="go">Ouvrir →</span>
+    </a>
+    <a class="card" href="rattacher-entrainements.html" style="--acc:var(--st-termine)">
+      <span class="n">05</span>
+      <h2>Rattacher l'existant</h2>
+      <p>Coche, choisis un thème, valide. Les entraînements aux <b>mots-clés proches</b> remontent en tête, et la communauté propose ses entraînements sur les <b>mêmes tags</b>.</p>
+      <span class="go">Ouvrir →</span>
+    </a>
+    <a class="card" href="entrainement-et-dates.html" style="--acc:var(--violet)">
+      <span class="n">06</span>
+      <h2>L'entraînement &amp; les dates</h2>
+      <p>Comment la saison se voit dans la <b>liste des entraînements</b> et dans l'<b>éditeur</b>, desktop et mobile — sur les composants existants (onglets de contexte, pilule de filtres, carte à rail) —, puis les trois règles qui règlent le problème des dates : la date se pose depuis le thème, dater n'est jamais obligatoire, et le tri existant ne change pas.</p>
+      <span class="go">Ouvrir →</span>
+    </a>
+  </div>
+
+  <div class="sect-k">Décisions</div>
+  <div class="notes">
+    <ul>
+      <li><b>Tout s'édite en place</b> — le nom de la saison est un titre éditable, et ses dates et ses catégories sont des chips cliquables dans la ligne de métadonnées : mêmes composants et même geste que sur l'en-tête d'un entraînement. Aucun écran de réglages à part.</li>
+      <li><b>Écrans de concentration</b> — dès qu'on entre dans une saison (édition, rattachement), le rail de navigation s'efface et un <b>bouton de retour</b> prend sa place : on travaille sur une seule chose à la fois, et on remonte d'un cran par ce bouton.</li>
+      <li><b>Un seul écran de saisons</b> — pas de page « Mes saisons » à part : la planification porte tout, les saisons en cours dépliées et les <b>archivées repliées en bas</b>, d'un clic. Une liste séparée aurait fait un aller-retour pour une poignée de saisons dont on ne consulte presque jamais les anciennes.</li>
+      <li><b>Une saison par équipe</b> — plusieurs saisons peuvent être en cours en même temps. « Planification » ouvre donc une <b>vue d'ensemble</b> (une carte par équipe : prochaine séance + thèmes du moment), puis le détail d'une saison, puis la liste complète avec les archives.</li>
+      <li><b>Les mots-clés sont au thème, pas à la saison</b> — une saison dure un an et traverse tout ; ce qu'on travaille, lui, change d'un thème à l'autre. Mettre des mots-clés sur la saison reviendrait à figer l'année entière sur trois étiquettes, et à les répéter sur chaque thème. La saison ne porte donc que ses <b>catégories</b> (la tranche d'âge, qui, elle, ne bouge pas) ; les mots-clés qui alimentent les suggestions de la communauté viennent du thème.</li>
+      <li><b>Thèmes, pas périodes</b> — un thème porte titre, texte TipTap, tags et une période <b>indicative</b> ; deux thèmes peuvent se chevaucher ou courir toute l'année.</li>
+      <li><b>L'entraînement naît dans le thème</b> — le bouton principal d'un thème crée un entraînement déjà rattaché, avec les tags du thème pré-remplis.</li>
+      <li><b>La saison reste facultative</b> — le bouton « Nouvel entraînement » crée toujours une séance sans rien demander ; un entraînement hors saison garde son champ date, s'affiche normalement dans la liste, et le filtre propose « Sans saison » pour le retrouver.</li>
+      <li><b>Le tri de la liste ne change pas</b> — toujours <code style="font-family:var(--mono);font-size:.85em">date_seance</code> décroissant : seul l'endroit où on le remplit change. « Modifié récemment » serait plus juste mais demande une colonne indexée (la date de modification est aujourd'hui enfouie dans le JSONB) — décision séparée.</li>
+      <li><b>On date depuis le thème</b> — la date reste le champ actuel de l'entraînement, mais elle se pose d'un clic sur sa ligne dans le thème, via le même calendrier que dans l'éditeur. Dater n'est jamais obligatoire, le rattachement ne demande aucune date, et le calendrier montre les jours déjà pris.</li>
+      <li><b>Les vacances</b> sont des zones sans séance, hachurées dans la trame — elles n'obligent à rien et expliquent les trous.</li>
+      <li><b>Rattacher ≠ copier</b> — ses propres entraînements sont référencés ; seuls ceux de la communauté sont copiés (l'auteur reste crédité).</li>
+      <li><b>La communauté nourrit les thèmes</b> — suggestions filtrées sur les tags du thème, dans le thème lui-même et dans l'écran de rattachement.</li>
+      <li><b>La création tient en un écran</b> — nom, bornes, catégories, et le partage avec un groupe de travail (le même mécanisme que pour un entraînement). Pas de deuxième étape : la saison s'ouvre sur son premier thème à écrire.</li>
+      <li><b>DA</b> — les composants existants de l'app (rail de navigation, onglets de contexte, pilule de filtres, carte à rail, en-tête d'éditeur), filets plutôt qu'ombres lourdes, kicker à trait orange, dates en JetBrains Mono, mode nuit complet.</li>
+    </ul>
+    <div class="astuce">Astuce : la touche <kbd>T</kbd> bascule clair / nuit — sauf sur les deux pages présentées sur fond sombre (le mobile et la modale de création), qui sont volontairement figées.</div>
+  </div>
+
+  <div class="ecarte" style="margin-bottom:14px"><b>Un mot sur le vocabulaire :</b> « séance » et « entraînement » désignent le même objet — l'entraînement de l'application. On dit « séance » quand on parle de celui qui est <b>daté</b> et qui arrive (« la séance de mardi »), « entraînement » quand on parle du contenu. Il n'y a pas de troisième objet : rien ne s'intercale entre le thème et l'entraînement.</div>
+
+  <div class="ecarte"><b>Écarté à cette étape :</b> les périodes exclusives qui découpaient l'année en tiroirs (un entraînement ne pouvait être qu'à un endroit, et les vacances créaient des trous gênants) ; l'assistant de création en quatre blocs, qui demandait des décisions avant d'avoir rien vu ; et le « banc » de séances non placées, remplacé par le rattachement dans un thème.</div>
+</div>
+<script>
+  document.addEventListener('keydown',e=>{
+    if(e.key.toLowerCase()==='t'){
+      const r=document.documentElement;
+      const s=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+      r.dataset.theme=s?'light':'dark';
+    }
+  });
+</script>
+</body>
+</html>

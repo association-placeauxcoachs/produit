@@ -1,0 +1,331 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 3800" width="390" height="3800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .font-urban { font-family: 'Urbanist', sans-serif; }
+      .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+    <linearGradient id="bgPastel" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#F5EEFF"/>
+      <stop offset="30%" stop-color="#FFF5F0"/>
+      <stop offset="60%" stop-color="#EEF0FF"/>
+      <stop offset="100%" stop-color="#F8F0FF"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7C5CFC"/>
+      <stop offset="50%" stop-color="#5B8DEF"/>
+      <stop offset="100%" stop-color="#E86CA0"/>
+    </linearGradient>
+    <linearGradient id="ctaViolet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5B8DEF"/>
+      <stop offset="100%" stop-color="#7C5CFC"/>
+    </linearGradient>
+    <linearGradient id="ctaCorail" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F06850"/>
+      <stop offset="100%" stop-color="#F2924A"/>
+    </linearGradient>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1976D2"/>
+      <stop offset="100%" stop-color="#1565C0"/>
+    </linearGradient>
+    <radialGradient id="blobViolet" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#C5B3FF" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#C5B3FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobBlue" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#B3D4FF" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#B3D4FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobPink" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#FFB3D4" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#FFB3D4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobPeach" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#FFD4B8" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#FFD4B8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow"><feGaussianBlur stdDeviation="30"/></filter>
+    <filter id="cardShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#7C5CFC" flood-opacity="0.07"/>
+    </filter>
+    <filter id="cardShadowLg">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#7C5CFC" flood-opacity="0.1"/>
+    </filter>
+    <filter id="btnShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#7C5CFC" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- BG -->
+  <rect width="390" height="3800" fill="url(#bgPastel)"/>
+  <!-- Blobs -->
+  <ellipse cx="50" cy="250" rx="200" ry="180" fill="url(#blobViolet)" filter="url(#softGlow)"/>
+  <ellipse cx="350" cy="180" rx="180" ry="150" fill="url(#blobBlue)" filter="url(#softGlow)"/>
+  <ellipse cx="200" cy="500" rx="160" ry="130" fill="url(#blobPink)" filter="url(#softGlow)"/>
+  <ellipse cx="100" cy="1200" rx="180" ry="150" fill="url(#blobPeach)" filter="url(#softGlow)"/>
+  <ellipse cx="300" cy="1800" rx="160" ry="120" fill="url(#blobViolet)" filter="url(#softGlow)"/>
+  <ellipse cx="80" cy="2400" rx="170" ry="130" fill="url(#blobBlue)" filter="url(#softGlow)"/>
+  <ellipse cx="300" cy="3000" rx="150" ry="120" fill="url(#blobPink)" filter="url(#softGlow)"/>
+
+  <!-- === NAVBAR === -->
+  <rect width="390" height="56" fill="#ffffff" opacity="0.75"/>
+  <line x1="0" y1="56" x2="390" y2="56" stroke="#7C5CFC" stroke-width="0.5" opacity="0.06"/>
+  <!-- Logo -->
+  <circle cx="30" cy="28" r="11" fill="#7C5CFC" opacity="0.12"/>
+  <circle cx="30" cy="28" r="5" fill="#7C5CFC" opacity="0.3"/>
+  <circle cx="30" cy="28" r="2.5" fill="#7C5CFC"/>
+  <text x="48" y="33" class="font-urban" fill="#1E1340" font-size="14" font-weight="800">Place aux coachs</text>
+  <!-- Hamburger menu -->
+  <line x1="350" y1="22" x2="370" y2="22" stroke="#1E1340" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+  <line x1="350" y1="28" x2="370" y2="28" stroke="#1E1340" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+  <line x1="350" y1="34" x2="370" y2="34" stroke="#1E1340" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
+
+  <!-- === HERO === -->
+  <text x="195" y="130" class="font-urban" fill="#1E1340" font-size="38" font-weight="900" text-anchor="middle" letter-spacing="-0.5">Ne coachez</text>
+  <text x="195" y="178" class="font-urban" font-size="38" font-weight="900" text-anchor="middle" letter-spacing="-0.5" fill="url(#textGrad)">plus jamais</text>
+  <text x="195" y="226" class="font-urban" fill="#1E1340" font-size="38" font-weight="900" text-anchor="middle" letter-spacing="-0.5">seul</text>
+
+  <text x="195" y="262" class="font-inter" fill="#1E1340" font-size="13" text-anchor="middle" opacity="0.4">Votre application de création</text>
+  <text x="195" y="280" class="font-inter" fill="#1E1340" font-size="13" text-anchor="middle" opacity="0.4">d'entraînements de handball</text>
+
+  <!-- Search bar -->
+  <g filter="url(#cardShadow)">
+    <rect x="24" y="305" width="342" height="44" rx="22" fill="#ffffff"/>
+    <text x="55" y="332" class="font-inter" fill="#1E1340" font-size="12" opacity="0.22">Rechercher un exercice...</text>
+    <rect x="296" y="311" width="62" height="32" rx="16" fill="url(#ctaViolet)"/>
+    <text x="327" y="332" class="font-inter" fill="#ffffff" font-size="10" font-weight="600" text-anchor="middle">Chercher</text>
+  </g>
+
+  <!-- CTA -->
+  <rect x="65" y="375" width="260" height="46" rx="23" fill="url(#ctaViolet)" filter="url(#btnShadow)"/>
+  <text x="195" y="404" class="font-urban" fill="#ffffff" font-size="14" font-weight="700" text-anchor="middle">Créer un entraînement →</text>
+
+  <!-- === COURT PREVIEW === -->
+  <g transform="translate(20, 450)" filter="url(#cardShadowLg)">
+    <rect width="350" height="210" rx="16" fill="#ffffff"/>
+    <rect x="12" y="12" width="326" height="186" rx="10" fill="url(#courtGrad)"/>
+    <line x1="175" y1="12" x2="175" y2="198" stroke="#fff" stroke-width="1" opacity="0.4"/>
+    <circle cx="175" cy="105" r="22" fill="none" stroke="#fff" stroke-width="1" opacity="0.4"/>
+    <!-- Goal areas -->
+    <path d="M 12 70 Q 60 105 12 140" fill="#C8850A" opacity="0.4"/>
+    <path d="M 12 70 Q 60 105 12 140" fill="none" stroke="#fff" stroke-width="1" opacity="0.5"/>
+    <rect x="10" y="92" width="4" height="26" fill="#fff" opacity="0.7"/>
+    <path d="M 338 70 Q 290 105 338 140" fill="#C8850A" opacity="0.4"/>
+    <path d="M 338 70 Q 290 105 338 140" fill="none" stroke="#fff" stroke-width="1" opacity="0.5"/>
+    <rect x="336" y="92" width="4" height="26" fill="#fff" opacity="0.7"/>
+    <!-- Players -->
+    <circle cx="115" cy="80" r="8" fill="#F06850"/>
+    <circle cx="115" cy="130" r="8" fill="#F06850"/>
+    <circle cx="140" cy="105" r="8" fill="#F06850"/>
+    <circle cx="230" cy="85" r="8" fill="#FFCA28"/>
+    <circle cx="230" cy="125" r="8" fill="#FFCA28"/>
+    <circle cx="155" cy="100" r="4" fill="#BCFF00"/>
+    <circle cx="55" cy="105" r="9" fill="#9C27B0"/>
+  </g>
+
+  <!-- === FEATURES === -->
+  <text x="195" y="720" class="font-urban" fill="#1E1340" font-size="26" font-weight="900" text-anchor="middle">Votre boîte à outils</text>
+  <text x="195" y="748" class="font-inter" fill="#1E1340" font-size="12" text-anchor="middle" opacity="0.35">Dessinez, organisez, partagez</text>
+
+  <!-- Feature Card 1 -->
+  <g transform="translate(20, 775)" filter="url(#cardShadow)">
+    <rect width="350" height="140" rx="16" fill="#ffffff"/>
+    <text x="24" y="38" font-size="22">✏️</text>
+    <text x="56" y="38" class="font-urban" fill="#1E1340" font-size="16" font-weight="800">Dessinez vos exercices</text>
+    <text x="24" y="62" class="font-inter" fill="#7C5CFC" font-size="11" font-weight="500">Directement sur le terrain interactif</text>
+    <text x="24" y="85" class="font-inter" fill="#1E1340" font-size="12" opacity="0.45">Créez visuellement avec joueurs, plots</text>
+    <text x="24" y="105" class="font-inter" fill="#1E1340" font-size="12" opacity="0.45">et trajectoires sur un terrain interactif.</text>
+  </g>
+
+  <!-- Feature Card 2 -->
+  <g transform="translate(20, 935)" filter="url(#cardShadow)">
+    <rect width="350" height="140" rx="16" fill="#ffffff"/>
+    <text x="24" y="38" font-size="22">⚡</text>
+    <text x="56" y="38" class="font-urban" fill="#1E1340" font-size="16" font-weight="800">Prêt en 3 étapes</text>
+    <text x="24" y="62" class="font-inter" fill="#F06850" font-size="11" font-weight="500">Rapide et efficace</text>
+    <text x="24" y="85" class="font-inter" fill="#1E1340" font-size="12" opacity="0.45">Créez, organisez et partagez vos</text>
+    <text x="24" y="105" class="font-inter" fill="#1E1340" font-size="12" opacity="0.45">entraînements en quelques minutes.</text>
+    <!-- Steps inline -->
+    <circle cx="50" cy="128" r="10" fill="#F5EEFF"/>
+    <text x="50" y="132" class="font-urban" fill="#7C5CFC" font-size="11" font-weight="800" text-anchor="middle">1</text>
+    <line x1="64" y1="128" x2="80" y2="128" stroke="#7C5CFC" stroke-width="1" opacity="0.15"/>
+    <circle cx="94" cy="128" r="10" fill="#FFF0EC"/>
+    <text x="94" y="132" class="font-urban" fill="#F06850" font-size="11" font-weight="800" text-anchor="middle">2</text>
+    <line x1="108" y1="128" x2="124" y2="128" stroke="#F06850" stroke-width="1" opacity="0.15"/>
+    <circle cx="138" cy="128" r="10" fill="#EEF7FF"/>
+    <text x="138" y="132" class="font-urban" fill="#5B8DEF" font-size="11" font-weight="800" text-anchor="middle">3</text>
+  </g>
+
+  <!-- Feature Card 3 -->
+  <g transform="translate(20, 1095)" filter="url(#cardShadow)">
+    <rect width="350" height="120" rx="16" fill="#ffffff"/>
+    <text x="24" y="38" font-size="22">🤝</text>
+    <text x="56" y="38" class="font-urban" fill="#1E1340" font-size="16" font-weight="800">Partagez et collaborez</text>
+    <text x="24" y="62" class="font-inter" fill="#5B8DEF" font-size="11" font-weight="500">Avec toute la communauté</text>
+    <text x="24" y="85" class="font-inter" fill="#1E1340" font-size="12" opacity="0.45">Rejoignez des groupes de travail et</text>
+    <text x="24" y="105" class="font-inter" fill="#1E1340" font-size="12" opacity="0.45">partagez avec +250 coachs.</text>
+  </g>
+
+  <!-- === 3 ÉTAPES === -->
+  <g transform="translate(0, 1280)">
+    <rect x="20" y="0" width="350" height="350" rx="20" fill="#ffffff" opacity="0.8" filter="url(#cardShadowLg)"/>
+    <text x="195" y="40" class="font-urban" fill="#1E1340" font-size="22" font-weight="900" text-anchor="middle">Prêt en 3 étapes</text>
+
+    <g transform="translate(35, 70)">
+      <circle cx="20" cy="20" r="18" fill="#F5EEFF"/>
+      <text x="20" y="26" class="font-urban" fill="#7C5CFC" font-size="16" font-weight="900" text-anchor="middle">1</text>
+      <text x="50" y="18" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Créez votre entraînement</text>
+      <text x="50" y="36" class="font-inter" fill="#1E1340" font-size="11" opacity="0.4">Donnez un thème, une date, un objectif</text>
+    </g>
+    <g transform="translate(35, 155)">
+      <circle cx="20" cy="20" r="18" fill="#FFF0EC"/>
+      <text x="20" y="26" class="font-urban" fill="#F06850" font-size="16" font-weight="900" text-anchor="middle">2</text>
+      <text x="50" y="18" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Ajoutez des situations</text>
+      <text x="50" y="36" class="font-inter" fill="#1E1340" font-size="11" opacity="0.4">Dessinez vos exercices sur le terrain</text>
+    </g>
+    <g transform="translate(35, 240)">
+      <circle cx="20" cy="20" r="18" fill="#EEF7FF"/>
+      <text x="20" y="26" class="font-urban" fill="#5B8DEF" font-size="16" font-weight="900" text-anchor="middle">3</text>
+      <text x="50" y="18" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Partagez et exportez</text>
+      <text x="50" y="36" class="font-inter" fill="#1E1340" font-size="11" opacity="0.4">PDF, communauté, groupes de travail</text>
+    </g>
+  </g>
+
+  <!-- === PARTENARIAT === -->
+  <g transform="translate(0, 1700)">
+    <text x="195" y="40" class="font-urban" fill="#1E1340" font-size="22" font-weight="900" text-anchor="middle">Bientôt en partenariat</text>
+
+    <g transform="translate(20, 70)">
+      <g filter="url(#cardShadow)">
+        <rect width="165" height="65" rx="14" fill="#ffffff"/>
+        <text x="82" y="40" class="font-urban" fill="#1E1340" font-size="13" font-weight="600" text-anchor="middle" opacity="0.3">Fédération</text>
+      </g>
+      <g transform="translate(180, 0)" filter="url(#cardShadow)">
+        <rect width="165" height="65" rx="14" fill="#ffffff"/>
+        <text x="82" y="40" class="font-urban" fill="#1E1340" font-size="13" font-weight="600" text-anchor="middle" opacity="0.3">Clubs</text>
+      </g>
+      <g transform="translate(0, 80)" filter="url(#cardShadow)">
+        <rect width="165" height="65" rx="14" fill="#ffffff"/>
+        <text x="82" y="40" class="font-urban" fill="#1E1340" font-size="13" font-weight="600" text-anchor="middle" opacity="0.3">Ligues</text>
+      </g>
+      <g transform="translate(180, 80)" filter="url(#cardShadow)">
+        <rect width="165" height="65" rx="14" fill="#ffffff"/>
+        <text x="82" y="40" class="font-urban" fill="#1E1340" font-size="13" font-weight="600" text-anchor="middle" opacity="0.3">Écoles</text>
+      </g>
+    </g>
+
+    <rect x="65" y="240" width="260" height="44" rx="22" fill="url(#ctaCorail)"/>
+    <text x="195" y="268" class="font-urban" fill="#ffffff" font-size="13" font-weight="700" text-anchor="middle">Soutenez le projet ♥</text>
+  </g>
+
+  <!-- === POURQUOI === -->
+  <g transform="translate(0, 2020)">
+    <text x="195" y="40" class="font-urban" fill="#1E1340" font-size="22" font-weight="900" text-anchor="middle">Pourquoi Place aux Coachs ?</text>
+
+    <g transform="translate(20, 70)" filter="url(#cardShadow)">
+      <rect width="350" height="90" rx="16" fill="#ffffff"/>
+      <rect width="4" height="90" rx="2" fill="#7C5CFC"/>
+      <text x="22" y="30" class="font-urban" fill="#7C5CFC" font-size="24" font-weight="900" opacity="0.15">01</text>
+      <text x="22" y="52" class="font-urban" fill="#1E1340" font-size="16" font-weight="800">Gratuit</text>
+      <text x="22" y="74" class="font-inter" fill="#1E1340" font-size="12" opacity="0.4">Accès complet sans frais. Pour tous.</text>
+    </g>
+    <g transform="translate(20, 175)" filter="url(#cardShadow)">
+      <rect width="350" height="90" rx="16" fill="#ffffff"/>
+      <rect width="4" height="90" rx="2" fill="#F06850"/>
+      <text x="22" y="30" class="font-urban" fill="#F06850" font-size="24" font-weight="900" opacity="0.15">02</text>
+      <text x="22" y="52" class="font-urban" fill="#1E1340" font-size="16" font-weight="800">Visuel</text>
+      <text x="22" y="74" class="font-inter" fill="#1E1340" font-size="12" opacity="0.4">Éditeur intuitif avec terrain interactif.</text>
+    </g>
+    <g transform="translate(20, 280)" filter="url(#cardShadow)">
+      <rect width="350" height="90" rx="16" fill="#ffffff"/>
+      <rect width="4" height="90" rx="2" fill="#5B8DEF"/>
+      <text x="22" y="30" class="font-urban" fill="#5B8DEF" font-size="24" font-weight="900" opacity="0.15">03</text>
+      <text x="22" y="52" class="font-urban" fill="#1E1340" font-size="16" font-weight="800">Collaboratif</text>
+      <text x="22" y="74" class="font-inter" fill="#1E1340" font-size="12" opacity="0.4">Partagez avec votre club et la communauté.</text>
+    </g>
+    <g transform="translate(20, 385)" filter="url(#cardShadow)">
+      <rect width="350" height="90" rx="16" fill="#ffffff"/>
+      <rect width="4" height="90" rx="2" fill="#E86CA0"/>
+      <text x="22" y="30" class="font-urban" fill="#E86CA0" font-size="24" font-weight="900" opacity="0.15">04</text>
+      <text x="22" y="52" class="font-urban" fill="#1E1340" font-size="16" font-weight="800">Export PDF</text>
+      <text x="22" y="74" class="font-inter" fill="#1E1340" font-size="12" opacity="0.4">Imprimez vos séances pour le gymnase.</text>
+    </g>
+  </g>
+
+  <!-- === STATS === -->
+  <g transform="translate(0, 2550)">
+    <text x="195" y="40" class="font-urban" fill="#1E1340" font-size="22" font-weight="900" text-anchor="middle">Quelques chiffres</text>
+
+    <g transform="translate(20, 70)" filter="url(#cardShadow)">
+      <rect width="350" height="80" rx="16" fill="#ffffff"/>
+      <text x="28" y="52" class="font-urban" fill="#7C5CFC" font-size="40" font-weight="900">6+</text>
+      <text x="110" y="45" class="font-inter" fill="#1E1340" font-size="14" font-weight="500" opacity="0.4">Coachs actifs</text>
+      <rect x="110" y="55" width="30" height="3" rx="1.5" fill="#7C5CFC" opacity="0.3"/>
+    </g>
+    <g transform="translate(20, 165)" filter="url(#cardShadow)">
+      <rect width="350" height="80" rx="16" fill="#ffffff"/>
+      <text x="28" y="52" class="font-urban" fill="#F06850" font-size="40" font-weight="900">50+</text>
+      <text x="130" y="45" class="font-inter" fill="#1E1340" font-size="14" font-weight="500" opacity="0.4">Entraînements créés</text>
+      <rect x="130" y="55" width="30" height="3" rx="1.5" fill="#F06850" opacity="0.3"/>
+    </g>
+    <g transform="translate(20, 260)" filter="url(#cardShadow)">
+      <rect width="350" height="80" rx="16" fill="#ffffff"/>
+      <text x="28" y="52" class="font-urban" fill="#5B8DEF" font-size="40" font-weight="900">7+</text>
+      <text x="100" y="45" class="font-inter" fill="#1E1340" font-size="14" font-weight="500" opacity="0.4">Exercices partagés</text>
+      <rect x="100" y="55" width="30" height="3" rx="1.5" fill="#5B8DEF" opacity="0.3"/>
+    </g>
+  </g>
+
+  <!-- === TESTIMONIALS === -->
+  <g transform="translate(0, 2920)">
+    <text x="195" y="40" class="font-urban" fill="#1E1340" font-size="22" font-weight="900" text-anchor="middle">Paroles de coachs</text>
+
+    <g transform="translate(20, 70)" filter="url(#cardShadow)">
+      <rect width="350" height="160" rx="16" fill="#ffffff"/>
+      <text x="24" y="35" fill="#7C5CFC" font-size="36" opacity="0.15" class="font-urban" font-weight="900">"</text>
+      <text x="24" y="60" class="font-inter" fill="#1E1340" font-size="13" opacity="0.6">Un outil indispensable pour préparer</text>
+      <text x="24" y="78" class="font-inter" fill="#1E1340" font-size="13" opacity="0.6">mes séances. Je gagne un temps fou !</text>
+      <circle cx="42" cy="125" r="16" fill="#F5EEFF"/>
+      <text x="42" y="130" class="font-urban" fill="#7C5CFC" font-size="11" font-weight="700" text-anchor="middle">JD</text>
+      <text x="68" y="120" class="font-urban" fill="#1E1340" font-size="12" font-weight="700">Jean Dupont</text>
+      <text x="68" y="136" class="font-inter" fill="#1E1340" font-size="10" opacity="0.35">Coach U15 — Nantes HB</text>
+    </g>
+
+    <g transform="translate(20, 250)" filter="url(#cardShadow)">
+      <rect width="350" height="160" rx="16" fill="#ffffff"/>
+      <text x="24" y="35" fill="#F06850" font-size="36" opacity="0.15" class="font-urban" font-weight="900">"</text>
+      <text x="24" y="60" class="font-inter" fill="#1E1340" font-size="13" opacity="0.6">La communauté est géniale, on échange</text>
+      <text x="24" y="78" class="font-inter" fill="#1E1340" font-size="13" opacity="0.6">des exercices et ça enrichit tout le monde.</text>
+      <circle cx="42" cy="125" r="16" fill="#FFF0EC"/>
+      <text x="42" y="130" class="font-urban" fill="#F06850" font-size="11" font-weight="700" text-anchor="middle">ML</text>
+      <text x="68" y="120" class="font-urban" fill="#1E1340" font-size="12" font-weight="700">Marie Laurent</text>
+      <text x="68" y="136" class="font-inter" fill="#1E1340" font-size="10" opacity="0.35">Coach Seniors F — Toulon</text>
+    </g>
+  </g>
+
+  <!-- === CTA FINAL === -->
+  <g transform="translate(0, 3380)">
+    <rect x="20" y="0" width="350" height="200" rx="20" fill="#F5EEFF"/>
+    <ellipse cx="100" cy="100" rx="100" ry="80" fill="url(#blobViolet)"/>
+    <ellipse cx="280" cy="100" rx="80" ry="70" fill="url(#blobPink)"/>
+
+    <text x="195" y="65" class="font-urban" fill="#1E1340" font-size="24" font-weight="900" text-anchor="middle">Prêt à commencer ?</text>
+    <text x="195" y="90" class="font-inter" fill="#1E1340" font-size="12" text-anchor="middle" opacity="0.35">Rejoignez la communauté</text>
+
+    <rect x="60" y="115" width="270" height="48" rx="24" fill="url(#ctaViolet)" filter="url(#btnShadow)"/>
+    <text x="195" y="145" class="font-urban" fill="#ffffff" font-size="14" font-weight="700" text-anchor="middle">Créer mon compte</text>
+  </g>
+
+  <!-- === FOOTER === -->
+  <g transform="translate(0, 3630)">
+    <rect width="390" height="170" fill="#FAFAFE"/>
+    <line x1="20" y1="10" x2="370" y2="10" stroke="#7C5CFC" stroke-width="0.5" opacity="0.04"/>
+    <circle cx="42" cy="45" r="10" fill="#7C5CFC" opacity="0.12"/>
+    <circle cx="42" cy="45" r="4" fill="#7C5CFC" opacity="0.3"/>
+    <text x="58" y="50" class="font-urban" fill="#1E1340" font-size="12" font-weight="800" opacity="0.5">Place aux coachs</text>
+    <text x="24" y="85" class="font-inter" fill="#1E1340" font-size="11" opacity="0.3">Fonctionnalités · Communauté · Contact</text>
+    <text x="24" y="105" class="font-inter" fill="#1E1340" font-size="11" opacity="0.3">Mentions légales</text>
+    <line x1="20" y1="120" x2="370" y2="120" stroke="#7C5CFC" stroke-width="0.5" opacity="0.04"/>
+    <text x="195" y="148" class="font-inter" fill="#1E1340" font-size="10" text-anchor="middle" opacity="0.2">© 2026 Place aux Coachs</text>
+  </g>
+</svg>

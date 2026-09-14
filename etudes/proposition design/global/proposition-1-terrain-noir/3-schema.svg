@@ -1,0 +1,235 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .font-oswald { font-family: 'Oswald', sans-serif; }
+      .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+    <filter id="glowBlue" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#00D4FF" flood-opacity="0.3"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowOrange" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#FF6B35" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowGreen" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#BCFF00" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1565C0"/>
+      <stop offset="100%" stop-color="#0D47A1"/>
+    </linearGradient>
+    <linearGradient id="ctaGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#FF3D71"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#0A0A0F"/>
+
+  <!-- === MINIMAL SIDEBAR === -->
+  <rect width="60" height="900" fill="#06060A"/>
+  <line x1="60" y1="0" x2="60" y2="900" stroke="#ffffff" stroke-width="1" opacity="0.04"/>
+
+  <!-- Logo icon -->
+  <circle cx="30" cy="30" r="12" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="30" cy="30" r="4" fill="#FF6B35"/>
+
+  <!-- Sidebar nav icons -->
+  <rect x="16" y="70" width="28" height="28" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="30" y="89" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.3">🏠</text>
+
+  <rect x="16" y="110" width="28" height="28" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="30" y="129" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.3">📋</text>
+
+  <!-- Bottom sidebar -->
+  <circle cx="30" cy="830" r="14" fill="#00D4FF" opacity="0.12" stroke="#00D4FF" stroke-width="0.8" stroke-opacity="0.2"/>
+  <text x="30" y="835" class="font-oswald" fill="#00D4FF" font-size="10" text-anchor="middle">PR</text>
+  <text x="30" y="870" class="font-inter" fill="#ffffff" font-size="9" text-anchor="middle" opacity="0.2">Profil</text>
+  <text x="30" y="892" class="font-inter" fill="#ffffff" font-size="8" text-anchor="middle" opacity="0.15">⏻</text>
+
+  <!-- === TOOLBAR === -->
+  <rect x="60" y="0" width="1380" height="56" fill="#0B0B14" opacity="0.95"/>
+  <line x1="60" y1="56" x2="1440" y2="56" stroke="#ffffff" stroke-width="0.5" opacity="0.05"/>
+
+  <!-- Back button -->
+  <rect x="80" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+  <text x="98" y="33" class="font-inter" fill="#ffffff" font-size="16" text-anchor="middle" opacity="0.4">‹</text>
+
+  <!-- Tool separator -->
+  <line x1="130" y1="14" x2="130" y2="42" stroke="#ffffff" stroke-width="0.5" opacity="0.06"/>
+
+  <!-- Tools -->
+  <!-- Layout tool -->
+  <rect x="145" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="163" y="33" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.35">⊞</text>
+
+  <!-- Cursor tool - Active -->
+  <rect x="190" y="12" width="36" height="32" rx="6" fill="#00D4FF" opacity="0.15" stroke="#00D4FF" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="208" y="33" class="font-inter" fill="#00D4FF" font-size="14" text-anchor="middle">↖</text>
+
+  <!-- Player tool -->
+  <rect x="235" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="253" y="33" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.35">♟</text>
+
+  <!-- Cone tool -->
+  <rect x="280" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="298" y="33" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.35">▲</text>
+
+  <!-- Group/connect tool -->
+  <rect x="325" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="343" y="33" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.35">⤳</text>
+
+  <!-- Undo -->
+  <line x1="385" y1="14" x2="385" y2="42" stroke="#ffffff" stroke-width="0.5" opacity="0.06"/>
+  <rect x="400" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="418" y="33" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.35">↩</text>
+  <!-- Redo -->
+  <rect x="445" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="463" y="33" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.35">↪</text>
+
+  <!-- Eraser -->
+  <line x1="500" y1="14" x2="500" y2="42" stroke="#ffffff" stroke-width="0.5" opacity="0.06"/>
+  <rect x="515" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="533" y="33" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.35">◇</text>
+
+  <!-- Help -->
+  <rect x="560" y="12" width="36" height="32" rx="6" fill="#ffffff" opacity="0.04"/>
+  <text x="578" y="33" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.35">?</text>
+
+  <!-- Right side buttons -->
+  <rect x="1240" y="12" width="90" height="32" rx="4" fill="transparent" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.12"/>
+  <text x="1285" y="33" class="font-inter" fill="#ffffff" font-size="12" text-anchor="middle" opacity="0.4">← Retour</text>
+
+  <rect x="1345" y="12" width="80" height="32" rx="4" fill="url(#ctaGrad)" filter="url(#glowOrange)"/>
+  <text x="1385" y="33" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="0.5">SAUVER</text>
+
+  <!-- === HANDBALL COURT === -->
+  <g transform="translate(100, 80)">
+    <!-- Court background with neon border -->
+    <rect x="-3" y="-3" width="1286" height="706" rx="10" fill="none" stroke="#00D4FF" stroke-width="1" opacity="0.15" filter="url(#glowBlue)"/>
+    <rect width="1280" height="700" rx="8" fill="url(#courtGrad)"/>
+
+    <!-- Center line -->
+    <line x1="640" y1="0" x2="640" y2="700" stroke="#ffffff" stroke-width="2" opacity="0.45"/>
+    <!-- Center circle -->
+    <circle cx="640" cy="350" r="60" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.45"/>
+    <circle cx="640" cy="350" r="3" fill="#ffffff" opacity="0.4"/>
+
+    <!-- === LEFT GOAL AREA === -->
+    <!-- Goal -->
+    <rect x="-2" y="285" width="8" height="130" rx="2" fill="#ffffff" opacity="0.8"/>
+    <!-- 6m area (solid) -->
+    <path d="M 0 220 Q 160 350 0 480" fill="#C8850A" opacity="0.5"/>
+    <path d="M 0 220 Q 160 350 0 480" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <!-- 9m area (dashed) -->
+    <path d="M 0 170 Q 220 350 0 530" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.35" stroke-dasharray="8,6"/>
+    <!-- 7m point -->
+    <circle cx="100" cy="350" r="3" fill="#ffffff" opacity="0.5"/>
+
+    <!-- === RIGHT GOAL AREA === -->
+    <rect x="1274" y="285" width="8" height="130" rx="2" fill="#ffffff" opacity="0.8"/>
+    <path d="M 1280 220 Q 1120 350 1280 480" fill="#C8850A" opacity="0.5"/>
+    <path d="M 1280 220 Q 1120 350 1280 480" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <path d="M 1280 170 Q 1060 350 1280 530" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.35" stroke-dasharray="8,6"/>
+    <circle cx="1180" cy="350" r="3" fill="#ffffff" opacity="0.5"/>
+
+    <!-- === RED TEAM (Left side - Attackers) === -->
+    <!-- Player 1 - Pivot -->
+    <g transform="translate(380, 250)">
+      <circle r="18" fill="#FF3D71" stroke="#FF6B7A" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">4</text>
+    </g>
+    <!-- Player 2 - Center back -->
+    <g transform="translate(350, 350)">
+      <circle r="18" fill="#FF3D71" stroke="#FF6B7A" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">9</text>
+    </g>
+    <!-- Player 3 - Left back -->
+    <g transform="translate(380, 180)">
+      <circle r="18" fill="#FF3D71" stroke="#FF6B7A" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">3</text>
+    </g>
+    <!-- Player 4 - Right back -->
+    <g transform="translate(380, 450)">
+      <circle r="18" fill="#FF3D71" stroke="#FF6B7A" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">5</text>
+    </g>
+    <!-- Player 5 - Left wing -->
+    <g transform="translate(280, 100)">
+      <circle r="18" fill="#FF3D71" stroke="#FF6B7A" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">7</text>
+    </g>
+    <!-- Player 6 - Right wing -->
+    <g transform="translate(280, 580)">
+      <circle r="18" fill="#FF3D71" stroke="#FF6B7A" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">2</text>
+    </g>
+
+    <!-- === YELLOW TEAM (Right side - Defenders) === -->
+    <g transform="translate(900, 250)">
+      <circle r="18" fill="#FFEB3B" stroke="#FFE082" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#1A1A2E" font-size="12" font-weight="600" text-anchor="middle">1</text>
+    </g>
+    <g transform="translate(900, 450)">
+      <circle r="18" fill="#FFEB3B" stroke="#FFE082" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#1A1A2E" font-size="12" font-weight="600" text-anchor="middle">3</text>
+    </g>
+    <g transform="translate(950, 350)">
+      <circle r="18" fill="#FFEB3B" stroke="#FFE082" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#1A1A2E" font-size="12" font-weight="600" text-anchor="middle">2</text>
+    </g>
+    <g transform="translate(850, 160)">
+      <circle r="18" fill="#FFEB3B" stroke="#FFE082" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#1A1A2E" font-size="12" font-weight="600" text-anchor="middle">4</text>
+    </g>
+    <g transform="translate(850, 540)">
+      <circle r="18" fill="#FFEB3B" stroke="#FFE082" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#1A1A2E" font-size="12" font-weight="600" text-anchor="middle">5</text>
+    </g>
+
+    <!-- === GOALKEEPER (Purple) === -->
+    <g transform="translate(80, 350)">
+      <circle r="20" fill="#9C27B0" stroke="#BA68C8" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">GB</text>
+    </g>
+    <g transform="translate(1200, 350)">
+      <circle r="20" fill="#9C27B0" stroke="#BA68C8" stroke-width="2"/>
+      <text y="6" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">GB</text>
+    </g>
+
+    <!-- === BALLS === -->
+    <circle cx="420" cy="320" r="9" fill="#BCFF00" stroke="#BCFF00" stroke-width="2" filter="url(#glowGreen)"/>
+    <circle cx="820" cy="200" r="7" fill="#BCFF00" opacity="0.5"/>
+    <circle cx="500" cy="500" r="7" fill="#BCFF00" opacity="0.5"/>
+
+    <!-- === CONES/PLOTS === -->
+    <polygon points="560,260 570,240 580,260" fill="#FF6B35" stroke="#FF6B35" stroke-width="1" opacity="0.8"/>
+    <polygon points="560,440 570,420 580,440" fill="#FF6B35" stroke="#FF6B35" stroke-width="1" opacity="0.8"/>
+
+    <!-- === TRAJECTORIES === -->
+    <!-- Pass trajectory -->
+    <path d="M 420 320 C 480 280 520 270 560 260" stroke="#BCFF00" stroke-width="2.5" stroke-dasharray="10,5" fill="none" opacity="0.6"/>
+    <polygon points="558,255 565,258 560,265" fill="#BCFF00" opacity="0.6"/>
+
+    <!-- Player movement -->
+    <path d="M 350 350 C 400 320 450 300 490 290" stroke="#FF6B35" stroke-width="2" stroke-dasharray="6,4" fill="none" opacity="0.5"/>
+    <polygon points="488,285 495,288 490,295" fill="#FF6B35" opacity="0.5"/>
+
+    <!-- Another trajectory -->
+    <path d="M 380 450 C 420 430 480 420 520 440" stroke="#00D4FF" stroke-width="2" stroke-dasharray="6,4" fill="none" opacity="0.4"/>
+    <polygon points="518,435 525,438 520,445" fill="#00D4FF" opacity="0.4"/>
+  </g>
+
+  <!-- Court neon ambient glow -->
+  <circle cx="740" cy="430" r="350" fill="#00D4FF" opacity="0.01"/>
+</svg>

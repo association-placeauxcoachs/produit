@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saison — lecture mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+    --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E;
+    --st-brouillon:#8A8478; --sur-bloc:var(--peach); --st-encours:#C8841E; --st-pret:#2F7D4F; --st-termine:#2B4C7E;
+    --th-passe:#8A8478; --th-actif:#2F7D4F; --th-futur:#7E9BB8;
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#25202f;font-family:var(--corps);color:var(--ink);-webkit-font-smoothing:antialiased;padding:44px 20px 80px;letter-spacing:-.01em}
+  h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+  .intro{max-width:800px;margin:0 auto 42px;text-align:center}
+  .intro .kick{color:var(--peach);font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.2em}
+  .intro h1{color:#fff;font-size:2rem;margin:10px 0}
+  .intro p{color:#CFC6DC;font-size:.93rem;line-height:1.6;max-width:64ch;margin:0 auto}
+  .intro p b{color:#fff;font-weight:600}
+
+  .scene{display:flex;gap:52px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+  .col{display:flex;flex-direction:column;gap:14px;align-items:center}
+  .col .lab{color:#CFC6DC;font-size:.8rem;text-align:center;max-width:380px;line-height:1.5}
+  .col .lab b{color:#fff;font-family:var(--display);font-size:1.05rem;font-weight:600;display:block;margin-bottom:3px}
+
+  .phone{border-radius:26px;width:380px;max-width:100%;background:var(--paper);overflow:hidden;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.65);height:806px;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.14)}
+  .statusb{height:32px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-family:var(--mono);font-size:.66rem;color:var(--attenue)}
+  .appbar{padding:4px 18px 12px;flex:none;border-bottom:1px solid var(--filet)}
+  .kicker{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--orange);display:inline-flex;align-items:center;gap:.55em}
+  .kicker::before{content:"";width:18px;height:1px;background:var(--orange)}
+  .appbar .row{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:3px}
+  .sbtn{display:inline-flex;align-items:baseline;gap:.35em;font-family:var(--display);font-weight:600;font-size:1.35rem;letter-spacing:-.02em}
+  .sbtn em{font-style:normal;color:var(--orange)}
+  .ic-btn{border-radius:50%;width:34px;height:34px;border:1px solid var(--filet-fort);background:var(--surface);display:grid;place-items:center;flex:none}
+
+  .scroll{flex:1;overflow:auto;padding:16px 16px 10px}
+
+  /* séance du jour */
+  .next{border-radius:16px;background:var(--ink);color:var(--paper);padding:18px 18px 16px;margin-bottom:22px}
+  .next .k{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--peach)}
+  .next .quand{font-family:var(--mono);font-size:.7rem;color:var(--sur-bloc);margin-top:7px;display:block}
+  .next h2{font-size:1.32rem;color:var(--paper);margin:5px 0 7px}
+  .next .th{display:inline-flex;align-items:center;gap:.45em;font-size:.74rem;opacity:.78}
+  .next .th .pt{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .next .cta{display:flex;gap:8px;margin-top:14px}
+  .next .cta a{border-radius:999px;flex:1;display:inline-flex;align-items:center;justify-content:center;gap:.45em;font-weight:600;font-size:.85rem;padding:.72em 0;border:1px solid color-mix(in srgb,var(--paper) 35%,transparent);color:var(--paper)}
+  .next .cta a.pri{background:var(--orange);border-color:var(--orange)}
+  .next .cta a svg{width:12px;height:12px}
+  .next .fait{display:block;text-align:center;font-size:.72rem;opacity:.6;margin-top:11px;text-decoration:underline;text-underline-offset:2px}
+
+  .sk{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--attenue);margin:0 2px 10px;display:flex;justify-content:space-between;align-items:baseline}
+  .sk .n{font-family:var(--mono);letter-spacing:0}
+
+  .theme{border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--filet);border-left:3px solid var(--accent,var(--orange));margin-bottom:10px}
+  .theme .th{display:flex;align-items:center;gap:11px;padding:13px 14px;cursor:pointer}
+  .theme .tn{font-family:var(--display);font-size:1.4rem;font-weight:400;color:var(--accent);line-height:1;flex:none}
+  .theme .ti{flex:1;min-width:0}
+  .theme .ti b{font-family:var(--display);font-size:1rem;font-weight:600;display:block;line-height:1.2}
+  .theme .ti .q{font-family:var(--mono);font-size:.63rem;color:var(--attenue)}
+  .theme .chev{color:var(--attenue);transition:transform .2s;flex:none}
+  .theme.ouvert .chev{transform:rotate(90deg)}
+  .theme .corps{display:none;border-top:1px solid var(--filet);padding:12px 14px 13px}
+  .theme.ouvert .corps{display:block}
+  .theme .desc{font-size:.85rem;line-height:1.5;margin-bottom:11px}
+  .theme .desc ul{list-style:none;display:grid;gap:4px;margin-top:5px}
+  .theme .desc li{padding-left:1em;position:relative}
+  .theme .desc li::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:1px;background:var(--accent)}
+  .theme .mc{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:11px}
+  .theme .mc span{border-radius:999px;font-size:.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--attenue);border:1px solid var(--filet-fort);padding:.2em .45em}
+  .sn{border-radius:10px;display:flex;align-items:center;gap:9px;border:1px solid var(--filet);background:var(--paper);padding:9px 10px;margin-bottom:5px}
+  .sn .no{font-family:var(--mono);font-size:.64rem;color:var(--attenue);width:20px;flex:none}
+  .sn .dot{width:7px;height:7px;border-radius:50%;flex:none}
+  .sn .ti{flex:1;min-width:0;font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sn .anim{border-radius:999px;flex:none;display:inline-flex;align-items:center;gap:.3em;font-size:.66rem;font-weight:700;color:#fff;background:var(--orange);padding:.4em .6em}
+  .sn .anim svg{width:8px;height:8px}
+  .sn.faite .ti{color:var(--attenue)}
+  .sn.faite .anim{background:transparent;color:var(--attenue);border:1px solid var(--filet-fort)}
+
+  .vac{border-radius:10px;display:flex;align-items:center;gap:.6em;font-size:.72rem;color:var(--attenue);padding:9px 12px;border:1px dashed var(--filet-fort);background:repeating-linear-gradient(45deg,var(--filet) 0 2px,transparent 2px 7px);margin-bottom:10px}
+
+  .retour-m{display:inline-flex;align-items:center;gap:.4em;font-size:.78rem;color:var(--attenue);border-radius:8px;padding:.3em .5em}
+  .eq{border:1px solid var(--filet);border-left:3px solid var(--a);border-radius:14px;background:var(--surface);padding:13px 14px 12px;margin-bottom:12px}
+
+  .eq .eqt{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+  .eq .eqt b{font-family:var(--display);font-size:1.12rem;font-weight:600;flex:1;min-width:0}
+  .eq .eqt .fl{font-size:1.15rem;color:var(--attenue);line-height:1;flex:none}
+  .eq .cat{display:flex;gap:4px;flex-wrap:wrap;flex:none}
+  .eq .cat span{border-radius:999px;font-size:.53rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--attenue);border:1px solid var(--filet-fort);padding:.2em .45em}
+  .eq .sous{font-family:var(--mono);font-size:.58rem;letter-spacing:.04em;text-transform:uppercase;color:var(--attenue)}
+  .eq .part{display:flex;align-items:center;gap:.45em;font-size:.63rem;color:var(--attenue);margin-top:3px}
+  .eq .part svg{width:11px;height:11px;flex:none}
+  .eq .part b{font-weight:600;color:var(--ink)}
+  .eq .ctx{margin-bottom:11px}
+
+  .eq .eqn{display:flex;align-items:center;gap:11px;border-radius:11px;background:var(--ink);color:var(--paper);padding:10px 11px}
+  .eq .eqn .dt{font-family:var(--mono);font-size:1.05rem;color:var(--peach);line-height:1;text-align:center;flex:none}
+  .eq .eqn .dt small{display:block;font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+  .eq .eqn .ti{flex:1;min-width:0;font-size:.83rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .eq .eqn .ti em{display:block;font-style:normal;font-size:.62rem;font-weight:400;color:color-mix(in srgb,var(--paper) 62%,transparent);margin-top:2px}
+  .eq .eqn .anim{flex:none;width:29px;height:29px;border-radius:50%;background:var(--orange);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;padding-left:2px}
+  .eq .eqn.vide{background:none;border:1px dashed var(--filet-fort);color:var(--attenue)}
+  .eq .eqn.vide .ti{font-weight:400;font-style:italic}
+  .eq .eqn .add{font-size:.72rem;font-weight:600;color:var(--orange);flex:none}
+  .eq .puis{display:flex;align-items:center;gap:7px;font-size:.7rem;color:var(--attenue);padding:8px 2px 0}
+  .eq .puis .et{font-family:var(--mono);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;flex:none}
+  .eq .puis .d{font-family:var(--mono);color:var(--ink);flex:none}
+  .eq .puis .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .eq .thk{font-size:.55rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--attenue);margin:12px 0 7px;padding-top:10px;border-top:1px solid var(--filet)}
+  .eq .thl{display:grid;grid-template-columns:auto 1fr auto;gap:2px 8px;align-items:baseline;border:1px solid var(--filet);border-radius:9px;background:var(--paper);padding:8px 10px;margin-bottom:5px}
+  .eq .thl .pt{width:7px;height:7px;border-radius:50%;background:var(--th-actif);flex:none;align-self:center;grid-row:1/3}
+  .eq .thl.fut .pt{background:var(--th-futur)}
+  .eq .thl .nm{font-size:.78rem;font-weight:600;line-height:1.3}
+  .eq .thl .cpt{font-family:var(--mono);font-size:.62rem;color:var(--attenue);text-align:right;white-space:nowrap}
+  .eq .thl .per{grid-column:2/4;font-family:var(--mono);font-size:.57rem;letter-spacing:.06em;text-transform:uppercase;color:var(--attenue)}
+  .eq .plus{font-size:.7rem;color:var(--attenue);padding:3px 2px 0}
+  .eq .plus b{font-weight:600;color:var(--th-futur)}
+  .eq .note{font-size:.7rem;color:var(--attenue);font-style:italic;padding:4px 2px 0}
+
+  .tout{display:block;text-align:center;font-size:.78rem;font-weight:600;color:var(--attenue);padding:8px 0 2px}
+  .botnav{display:flex;border-top:1px solid var(--filet);background:var(--surface);flex:none}
+  .botnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 10px;font-size:.6rem;font-weight:600;color:var(--attenue)}
+  .botnav a .ic{width:20px;height:20px}
+  .botnav a.actif{color:var(--ink)}
+  .botnav a.actif .ic{color:var(--orange)}
+</style>
+</head>
+<body>
+<div class="intro">
+  <span class="kick">Mobile · lecture</span>
+  <h1>La séance du jour, en deux touches</h1>
+  <p>Sur le terrain, une seule question compte : <b>qu'est-ce qu'on fait aujourd'hui&nbsp;?</b> Planification ouvre donc sur <b>toutes les équipes</b>, et chaque carte porte la séance qui vient : un appui dessus l'ouvre, le bouton rond l'anime — <b>sans passer par la saison</b>. La saison, elle, reste à un appui de là pour situer le travail dans ses thèmes.</p>
+</div>
+
+<div class="scene">
+  <!-- ÉTAT 1 -->
+  <div class="col">
+    <div class="lab"><b>À l'ouverture de Planification</b>Une carte par équipe, assez large pour tout dire : le contexte de la saison, la séance qui vient et la suivante, puis les thèmes du moment avec leur période et leur nombre de séances.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      <div class="appbar">
+        <span class="kicker">Planification</span>
+        <div class="row"><span class="sbtn">Mes <em>saisons</em></span><button class="ic-btn">+</button></div>
+      </div>
+      <div class="scroll">
+        <div class="eq" style="--a:var(--th-actif)">
+          <a class="eqt"><b>U15 Filles</b><span class="cat"><span>U15</span><span>U18</span></span><span class="fl">›</span></a>
+          <div class="ctx">
+            <div class="sous">Saison 2026–2027 · 4 thèmes · 14 entraînements</div>
+            <div class="part"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Partagée avec <b>HBC Blanquefort</b></div>
+          </div>
+          <a class="eqn"><span class="dt">24<small>nov.</small></span><span class="ti">Défense du PDB + enchaînements<em>Réseau d'échange sur grand espace</em></span><span class="anim">▶</span></a>
+          <div class="puis"><span class="et">Puis</span><span class="d">jeu. 26 nov.</span><span class="n">Motricité &amp; duels GB</span></div>
+          <div class="thk">Les thèmes du moment</div>
+          <div class="thl"><span class="pt"></span><span class="nm">Réseau d'échange sur grand espace</span><span class="cpt">4 séances</span><span class="per">nov → jan</span></div>
+          <div class="thl"><span class="pt"></span><span class="nm">Motricité &amp; duels GB</span><span class="cpt">6 séances</span><span class="per">toute l'année</span></div>
+          <div class="plus">+ 2 autres thèmes, dont <b>1 à venir en janvier</b></div>
+        </div>
+
+        <div class="eq" style="--a:var(--th-actif)">
+          <a class="eqt"><b>U13 Garçons</b><span class="cat"><span>U13</span></span><span class="fl">›</span></a>
+          <div class="ctx"><div class="sous">Saison 2026–2027 · 3 thèmes · 12 entraînements</div></div>
+          <a class="eqn"><span class="dt">25<small>nov.</small></span><span class="ti">Passe et va — appuis et courses<em>Motricité et maniement</em></span><span class="anim">▶</span></a>
+          <div class="thk">Les thèmes du moment</div>
+          <div class="thl"><span class="pt"></span><span class="nm">Motricité et maniement</span><span class="cpt">7 séances</span><span class="per">sep → déc</span></div>
+          <div class="thl fut"><span class="pt"></span><span class="nm">Contre-attaque et montée de balle</span><span class="cpt">à venir</span><span class="per">déc → mars</span></div>
+          <div class="plus">Le thème est déjà écrit, il attend ses entraînements.</div>
+        </div>
+
+        <div class="eq" style="--a:var(--th-actif)">
+          <a class="eqt"><b>Seniors filles</b><span class="cat"><span>Seniors</span></span><span class="fl">›</span></a>
+          <div class="ctx">
+            <div class="sous">Saison 2026–2027 · 1 thème · 3 entraînements</div>
+            <div class="part"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Partagée avec <b>Entente Gironde</b></div>
+          </div>
+          <a class="eqn vide"><span class="ti">Aucun entraînement daté</span><span class="add">+ dater</span></a>
+          <div class="thk">Les thèmes du moment</div>
+          <div class="thl"><span class="pt"></span><span class="nm">Défense 1-5 et repli</span><span class="cpt">3 séances</span><span class="per">oct → fév</span></div>
+          <div class="note">Les entraînements existent, ils ne sont simplement pas datés — c'est permis.</div>
+        </div>
+
+        <a class="tout">⌄ 3 saisons archivées</a>
+      </div>
+      <div class="botnav">
+        <a><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6h12M4 12h16M8 18h8"/></svg>Entraîn.</a>
+        <a class="actif"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Planif</a>
+        <a><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg>Groupes</a>
+        <a><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6"/></svg>Profil</a>
+      </div>
+    </div>
+  </div>
+  <!-- ÉTAT 2 -->
+  <div class="col">
+    <div class="lab"><b>Puis la saison</b>La prochaine séance en grand, puis les thèmes — celui en cours déplié.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      <div class="appbar">
+        <div class="row"><button class="retour-m">← Planification</button><button class="ic-btn">⋮</button></div>
+        <div class="row"><span class="sbtn">U15 <em>Filles</em></span></div>
+      </div>
+      <div class="scroll">
+        <section class="next" style="--accent:var(--th-actif)">
+          <span class="k">Prochaine séance</span>
+          <span class="quand">MARDI 24 NOVEMBRE</span>
+          <h2>Défense du PDB + enchaînements</h2>
+          <span class="th"><span class="pt"></span> Réseau d'échange sur GE</span>
+          <div class="cta">
+            <a class="pri"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg> Animer</a>
+            <a>Ouvrir</a>
+          </div>
+          <a class="fait">✓ marquer faite</a>
+        </section>
+
+        <div class="sk"><span>Les thèmes</span><span class="n">4</span></div>
+
+        <article class="theme" style="--accent:var(--th-passe)">
+          <div class="th" onclick="bascule(this)">
+            <span class="tn">01</span>
+            <div class="ti"><b>Changement de statut</b><span class="q">SEP → NOV · 4 séances</span></div>
+            <span class="chev">›</span>
+          </div>
+          <div class="corps">
+            <div class="mc"><span>Transition</span><span>U15</span></div>
+            <div class="desc">Passer d'attaquant à défenseur sans temps mort — et l'inverse.</div>
+            <div class="sn faite"><span class="no">01</span><span class="dot" style="background:var(--st-termine)"></span><span class="ti">Reprise — motricité &amp; duels</span><span class="anim">revoir</span></div>
+            <div class="sn faite"><span class="no">03</span><span class="dot" style="background:var(--st-termine)"></span><span class="ti">Statut ATT-DEF sur MB</span><span class="anim">revoir</span></div>
+          </div>
+        </article>
+
+        <article class="theme ouvert" style="--accent:var(--th-actif)">
+          <div class="th" onclick="bascule(this)">
+            <span class="tn">02</span>
+            <div class="ti"><b>Réseau d'échange sur GE</b><span class="q">NOV → JAN · 3 séances</span></div>
+            <span class="chev">›</span>
+          </div>
+          <div class="corps">
+            <div class="mc"><span>Attaque</span><span>Grand espace</span><span>U15</span></div>
+            <div class="desc">Augmenter les solutions offertes au porteur : écartement pour créer les intervalles, étagement pour proposer une passe en avant et une en retrait.
+              <ul><li>Repères des non-porteurs : distance, orientation d'appuis</li><li>Le défenseur du PDB : sortir ou rester ?</li></ul>
+            </div>
+            <div class="sn faite"><span class="no">06</span><span class="dot" style="background:var(--st-termine)"></span><span class="ti">Travail réseau GE — écartement</span><span class="anim">revoir</span></div>
+            <div class="sn"><span class="no">08</span><span class="dot" style="background:var(--st-pret)"></span><span class="ti">Défense du PDB + enchaînements</span><span class="anim"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>Animer</span></div>
+            <div class="sn"><span class="no">09</span><span class="dot" style="background:var(--st-brouillon)"></span><span class="ti">Étagement — situation 3c3</span><span class="anim"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>Animer</span></div>
+          </div>
+        </article>
+
+        <div class="vac"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg> Vacances de Noël — 19 déc. au 4 janv.</div>
+
+        <article class="theme" style="--accent:var(--th-futur)">
+          <div class="th" onclick="bascule(this)">
+            <span class="tn">03</span>
+            <div class="ti"><b>Débordement du PDB</b><span class="q">JAN → AVR · 0 séance</span></div>
+            <span class="chev">›</span>
+          </div>
+          <div class="corps">
+            <div class="mc"><span>Attaque</span><span>1c1</span></div>
+            <div class="desc">Pas encore d'entraînement dans ce thème.</div>
+          </div>
+        </article>
+
+        <article class="theme" style="--accent:var(--th-actif)">
+          <div class="th" onclick="bascule(this)">
+            <span class="tn">04</span>
+            <div class="ti"><b>Motricité &amp; duels GB</b><span class="q">TOUTE L'ANNÉE · 6 séances</span></div>
+            <span class="chev">›</span>
+          </div>
+          <div class="corps">
+            <div class="mc"><span>Motricité</span><span>Gardien</span></div>
+            <div class="desc">Travaillé en continu, en début de séance.</div>
+          </div>
+        </article>
+      </div>
+      <nav class="botnav">
+        <a><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h12M4 12h16M8 18h8"/></svg>Entraîn.</a>
+        <a class="actif"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Planif</a>
+        <a><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg>Groupes</a>
+        <a><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profil</a>
+      </nav>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function bascule(th){ th.closest('.theme').classList.toggle('ouvert'); }
+</script>
+</body>
+</html>

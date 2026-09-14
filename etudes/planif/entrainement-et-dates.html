@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'entraînement dans la saison — et la question des dates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+    --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E;
+    --st-brouillon:#8A8478; --st-encours:#C8841E; --st-pret:#2F7D4F; --st-termine:#2B4C7E;
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+    --bloc:#1C1726; --bloc-tx:#FAF4EC; --bloc-bord:rgba(255,255,255,.34);
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --bloc:#241D30; --bloc-tx:#F2EBDE; --bloc-bord:rgba(242,235,222,.3);
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30);
+    --violet:#9B82FF; --st-brouillon:#9E978A; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#6E97D6;
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bloc:#241D30; --bloc-tx:#F2EBDE; --bloc-bord:rgba(242,235,222,.3);
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30);
+    --violet:#9B82FF; --st-brouillon:#9E978A; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#6E97D6;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--corps);font-size:15px;line-height:1.55;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;padding:56px 26px 100px}
+  h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;line-height:1.06}
+  .wrap{max-width:1060px;margin:0 auto}
+  .kicker{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--orange);display:inline-flex;align-items:center;gap:.7em}
+  .kicker::before{content:"";width:30px;height:1px;background:var(--orange)}
+  h1{font-size:clamp(2rem,4.4vw,2.9rem);margin:.3em 0 .25em}
+  h1 em{font-style:normal;color:var(--orange)}
+  .lede{color:var(--attenue);font-size:1.02rem;max-width:68ch}
+  .lede b{color:var(--ink);font-weight:600}
+  .rule{height:1px;background:var(--filet);margin:34px 0}
+  .sk{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--attenue);margin-bottom:16px}
+  .lgd{font-size:.85rem;color:var(--attenue);margin:14px 0 34px;max-width:82ch;line-height:1.6}
+  .lgd b{color:var(--ink);font-weight:600}
+  .neuf{display:inline-flex;align-items:center;gap:.4em;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.13em;color:var(--orange);border:1px solid color-mix(in srgb,var(--orange) 45%,transparent);border-radius:999px;padding:.15em .55em;vertical-align:.12em}
+
+  /* ============ chrome applicatif (fidèle aux écrans existants) ============ */
+  .appli{border:1px solid var(--filet);border-radius:14px;background:var(--paper);overflow:hidden}
+  .onglets{display:flex;align-items:flex-end;gap:22px;padding:16px 24px 0;border-bottom:1px solid var(--filet)}
+  .onglets .t{position:relative;display:flex;align-items:center;gap:9px;padding:0 6px 13px;font-size:.92rem;color:color-mix(in srgb,var(--attenue) 85%,transparent);white-space:nowrap}
+  .onglets .t.on{color:var(--orange);font-weight:600}
+  .onglets .t.on::after{content:"";position:absolute;left:2px;right:2px;bottom:-1px;height:4px;border-radius:999px;background:var(--orange)}
+  .onglets .t .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .onglets .t.on .ic{background:color-mix(in srgb,var(--orange) 13%,transparent)}
+
+  .pilule{display:flex;align-items:center;height:64px;margin:20px 24px 0;border-radius:999px;border:1px solid color-mix(in srgb,var(--ink) 14%,transparent);background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.05);overflow:hidden}
+  .pilule .seg{display:flex;align-items:center;gap:.55em;padding:0 17px;font-size:.86rem;color:var(--attenue);height:100%;white-space:nowrap}
+  .pilule .seg .pt{width:9px;height:9px;border-radius:50%;background:var(--acc,var(--orange));flex:none}
+  .pilule .seg.sais{color:var(--orange);font-weight:600}
+  .pilule .sv{width:1px;height:28px;background:var(--filet);flex:none}
+  .pilule .rech{flex:1;min-width:60px;color:color-mix(in srgb,var(--attenue) 80%,transparent);padding:0 6px}
+  .pilule .act{display:flex;align-items:center;gap:.45em;padding:0 17px;font-size:.86rem;color:var(--orange);font-weight:500;white-space:nowrap}
+  .pilule .act.gris{color:var(--attenue);font-weight:400}
+
+  /* rappel de la prochaine séance */
+  .rappel{display:flex;align-items:center;gap:16px;margin:18px 24px 0;padding:14px 20px;border-radius:14px;background:var(--bloc);color:var(--bloc-tx);border:1px solid transparent}
+  :root[data-theme="dark"] .rappel{border-color:color-mix(in srgb,var(--orange) 32%,transparent)}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .rappel{border-color:color-mix(in srgb,var(--orange) 32%,transparent)}}
+  .rappel .k{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;background:var(--orange);color:#fff;border-radius:999px;padding:.42em .75em;flex:none}
+  .rappel .n{font-family:var(--mono);font-size:1.45rem;color:var(--peach);line-height:1;flex:none;display:flex;flex-direction:column;align-items:center}
+  .rappel .n small{font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+  .rappel .t{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+  .rappel .t b{font-family:var(--display);font-weight:600;font-size:1.08rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rappel .t .q{font-family:var(--mono);font-size:.66rem;opacity:.72}
+  .rappel .go{border:1px solid var(--bloc-bord);border-radius:999px;padding:.5em .95em;font-size:.8rem;font-weight:500;flex:none}
+
+  /* ============ carte d'entraînement (reprise du composant réel) ============ */
+  .cartes{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:22px 24px 26px}
+  .appli > .cartes{padding-bottom:88px}
+  @media(max-width:860px){.cartes{grid-template-columns:1fr}}
+  .k{display:flex;border:1px solid var(--filet);border-top:3px solid var(--acc,var(--st-pret));border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 30px -20px rgba(0,0,0,.30)}
+  .k .gauche{flex:1;min-width:0;padding:20px;display:flex;flex-direction:column;gap:12px}
+  .k .over{display:flex;align-items:center;gap:10px}
+  .k .stp{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:var(--acc);white-space:nowrap}
+  .k .stp i{width:6px;height:6px;border-radius:50%;background:currentColor;display:block}
+  .k .trait{flex:1;height:1px;min-width:10px;background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 35%,transparent),transparent)}
+  .k .cats{display:flex;gap:6px;flex:none}
+  .k .cats span{border-radius:6px;padding:2px 7px;font-family:var(--mono);font-size:.72rem;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--attenue)}
+  .k h3{font-size:1.45rem;line-height:1.15}
+  .k .obj{font-family:var(--display);font-style:italic;font-size:.86rem;color:var(--attenue);line-height:1.4;padding-left:20px;position:relative}
+  .k .obj::before{content:"\201C";position:absolute;left:0;top:-6px;font-size:1.9rem;font-style:normal;color:var(--acc)}
+  .k .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+  .k .tags span{border:1px solid var(--filet);border-radius:999px;padding:2px 10px;font-size:11px;color:var(--attenue);background:var(--paper)}
+  .k .rail{width:216px;flex:none;border-left:1px solid var(--filet);padding:16px;display:flex;flex-direction:column;gap:13px;background:linear-gradient(180deg,color-mix(in srgb,var(--paper-2) 55%,var(--surface)),var(--surface))}
+  .k .rail .mt{display:flex;flex-direction:column;gap:5px}
+  .k .rail .mt > div{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .k .rail .l{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--attenue)}
+  .k .rail .v{font-family:var(--display);font-size:.86rem;font-weight:600}
+  .k .rail .v.vide{color:color-mix(in srgb,var(--attenue) 60%,transparent);font-weight:400}
+  .k .rail .sais{display:flex;align-items:center;gap:8px;border-radius:10px;padding:7px 9px;background:color-mix(in srgb,var(--acc-th,var(--orange)) 10%,transparent);border:1px solid color-mix(in srgb,var(--acc-th,var(--orange)) 26%,transparent)}
+  .k .rail .sais .pt{width:8px;height:8px;border-radius:50%;background:var(--acc-th,var(--orange));flex:none}
+  .k .rail .sais .tx{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+  .k .rail .sais .tx .a{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--attenue)}
+  .k .rail .sais .tx .b{font-family:var(--display);font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .k .rail .sais.abs{background:none;border-style:dashed;border-color:var(--filet-fort)}
+  .k .rail .aut{display:flex;align-items:center;gap:9px;border-top:1px solid var(--filet);padding-top:11px}
+  .k .rail .ini{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:var(--acc);flex:none}
+  .k .rail .aut .nom{font-size:.74rem;font-weight:600}
+  .k .rail .btn{margin-top:auto;height:40px;border-radius:999px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:.85rem}
+  .k .rail .ico{display:flex;justify-content:space-between;color:var(--attenue);font-size:.86rem;padding:0 6px}
+
+  /* bouton flottant de création (inchangé par les saisons) */
+  .appli{position:relative}
+  .fab{position:absolute;right:26px;bottom:26px;display:inline-flex;align-items:center;gap:.5em;height:46px;padding:0 22px;border-radius:999px;background:var(--orange);color:#fff;font-weight:600;font-size:.9rem;box-shadow:0 12px 26px -12px rgba(235,93,33,.7)}
+
+  /* ============ éditeur d'entraînement ============ */
+  .sansfil{display:flex;align-items:center;gap:10px;padding:10px 22px;border-bottom:1px dashed var(--filet-fort);color:var(--attenue);font-size:.8rem;flex-wrap:wrap}
+  .sansfil .rat{display:inline-flex;align-items:center;gap:.45em;border:1px solid var(--filet-fort);border-radius:999px;padding:.35em .8em;font-size:.78rem;font-weight:600;color:var(--ink)}
+  .sansfil .rat:hover{border-color:var(--orange);color:var(--orange)}
+  .entete .meta .cal2{display:inline-flex;align-items:center;gap:.5em;border-radius:999px;padding:.2em .7em;background:color-mix(in srgb,var(--ink) 5%,transparent);cursor:pointer}
+  .entete .meta .cal{display:inline-flex;align-items:center;gap:.5em;border-radius:999px;padding:.2em .6em;background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .editeur{border:1px solid var(--filet);border-radius:14px;background:var(--paper);overflow:hidden}
+  .fil{display:flex;align-items:center;gap:12px;padding:10px 22px;background:var(--paper-2);border-bottom:1px solid var(--filet);flex-wrap:wrap}
+  .fil .ch{display:flex;align-items:center;gap:.5em;font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--attenue);min-width:0}
+  .fil .ch .pt{width:9px;height:9px;border-radius:50%;background:var(--acc-th,var(--orange));flex:none}
+  .fil .ch a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--filet-fort);padding-bottom:1px}
+  .fil .pro{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;background:var(--orange);color:#fff;border-radius:999px;padding:.4em .7em;flex:none}
+  .fil .sc{font-family:var(--mono);font-size:.72rem;color:var(--ink);flex:none}
+  .fil .nv{display:flex;gap:6px;margin-left:auto;flex:none}
+  .fil .nv i{width:28px;height:28px;border-radius:50%;border:1px solid var(--filet-fort);display:grid;place-items:center;font-style:normal;font-size:.8rem;color:var(--attenue)}
+  .entete{padding:26px 26px 24px}
+  .entete .meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:var(--attenue)}
+  .entete .meta .d{width:4px;height:4px;border-radius:50%;background:var(--filet-fort);display:block}
+  .entete .meta .cr{color:var(--orange)}
+  .entete h2{font-size:clamp(1.7rem,3.4vw,2.5rem);margin:16px 0 0;max-width:22ch}
+  .entete .cit{display:flex;align-items:flex-start;gap:6px;margin-top:12px;max-width:52ch}
+  .entete .cit .g{font-family:var(--display);font-style:italic;font-size:1.4rem;line-height:1;color:var(--orange);flex:none}
+  .entete .cit p{font-family:var(--display);font-size:1rem;color:var(--attenue)}
+
+  /* ============ téléphones ============ */
+  .phones{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-bottom:34px}
+  .tel{width:344px;flex:none}
+  .phone{border:1px solid var(--filet-fort);border-radius:22px;background:var(--paper);overflow:hidden}
+  .phone .sb{display:flex;justify-content:space-between;padding:8px 16px 4px;font-family:var(--mono);font-size:.58rem;color:var(--attenue)}
+  .phone .ongm{display:flex;gap:14px;padding:6px 14px 0;border-bottom:1px solid var(--filet);overflow:hidden}
+  .phone .ongm .t{position:relative;padding:0 2px 10px;font-size:.78rem;color:var(--attenue);white-space:nowrap}
+  .phone .ongm .t.on{color:var(--orange);font-weight:600}
+  .phone .ongm .t.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;border-radius:999px;background:var(--orange)}
+  .phone .pmini{display:flex;align-items:center;gap:9px;margin:12px 13px 0;padding:8px 12px;border-radius:999px;border:1px solid var(--filet);background:var(--surface);font-size:.76rem;color:var(--attenue)}
+  .phone .pmini .pt{width:9px;height:9px;border-radius:50%;background:var(--orange);flex:none}
+  .phone .rappel{margin:12px 13px 0;padding:12px 14px;gap:11px}
+  .phone .rappel .n{font-size:1.2rem}
+  .phone .rappel .t b{font-size:.94rem}
+  .phone .cartes{grid-template-columns:1fr;padding:13px;gap:13px}
+  .phone .k{flex-direction:column}
+  .phone .k .gauche{padding:16px 16px 14px;text-align:center;align-items:center}
+  .phone .k .over{width:100%}
+  .phone .k h3{font-size:1.3rem}
+  .phone .k .obj{padding-left:0;text-align:center}
+  .phone .k .obj::before{display:none}
+  .phone .k .tags{justify-content:center}
+  .phone .k .rail{width:auto;border-left:0;border-top:1px solid var(--filet)}
+  .phone .k .rail .mt{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:6px 16px}
+  .phone .k .rail .mt > div{gap:6px}
+  .phone .split{display:flex;height:40px;border-radius:999px;overflow:hidden;background:var(--ink);color:var(--paper);margin-top:auto}
+  .phone .split .p{flex:1;display:grid;place-items:center;font-size:.85rem}
+  .phone .split .m{width:44px;display:grid;place-items:center;border-left:1px solid rgba(255,255,255,.22)}
+  .phone .fil{padding:9px 13px;gap:8px;border-radius:0}
+  .phone .fil .ch{font-size:.66rem;letter-spacing:.12em}
+  .phone .fil .nv i{width:25px;height:25px}
+  .phone .entete{padding:16px 14px 18px}
+  .phone .entete .meta{gap:8px;font-size:9.5px;letter-spacing:.16em}
+  .phone .entete h2{font-size:1.42rem;margin-top:12px}
+  .phone .entete .cit p{font-size:.88rem}
+  .phone .bas{display:flex;border-top:1px solid var(--filet)}
+  .phone .bas span{flex:1;text-align:center;padding:10px 2px;font-size:.54rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--attenue)}
+  .phone .bas span.on{color:var(--orange)}
+  .cap{font-size:.76rem;color:var(--attenue);font-style:italic;line-height:1.5;padding:10px 4px 0}
+
+  /* ============ règles sur les dates ============ */
+  .regles{display:grid;gap:12px;margin-bottom:14px}
+  .regle{display:grid;grid-template-columns:auto 1fr;gap:18px;background:var(--surface);border:1px solid var(--filet);border-left:3px solid var(--acc,var(--orange));border-radius:12px;padding:18px 22px}
+  .regle .n{font-family:var(--display);font-size:1.7rem;font-weight:400;color:var(--acc,var(--orange));line-height:1}
+  .regle h3{font-size:1.12rem;margin-bottom:5px}
+  .regle p{font-size:.9rem;color:var(--attenue);max-width:80ch}
+  .regle p b{color:var(--ink);font-weight:600}
+  .regle code{font-family:var(--mono);font-size:.84em;background:var(--paper-2);padding:.1em .35em;border-radius:4px}
+
+  /* démo : dater depuis la ligne du thème */
+  .intro2{font-size:.95rem;color:var(--attenue);max-width:80ch;margin:-4px 0 18px;line-height:1.6}
+  .intro2 b{color:var(--ink);font-weight:600}
+  .demo{border:1px solid var(--filet);border-radius:16px;background:var(--surface);padding:16px 18px 20px;position:relative}
+  .demo .dk{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--attenue);margin-bottom:11px}
+  .demo .dl{display:flex;align-items:center;gap:12px;border:1px solid var(--filet);border-radius:12px;padding:11px 14px;margin-bottom:7px;background:var(--paper)}
+  .demo .dl .pt{width:8px;height:8px;border-radius:50%;background:var(--a);flex:none}
+  .demo .dl .ti{flex:1;min-width:0;font-size:.9rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .demo .dl .dt{font-family:var(--mono);font-size:.72rem;color:var(--attenue);border:1px solid transparent;border-radius:999px;padding:.32em .75em;flex:none;cursor:pointer}
+  .demo .dl .dt:hover{border-color:var(--filet-fort);color:var(--ink)}
+  .demo .dl .dt.on{border-color:var(--orange);color:var(--orange);background:color-mix(in srgb,var(--orange) 8%,transparent)}
+  .demo .dl .dt.vide{font-family:var(--corps);font-weight:600;color:var(--orange);border:1px dashed color-mix(in srgb,var(--orange) 45%,transparent)}
+  .demo .dl .bd{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;border-radius:999px;padding:.3em .6em;flex:none}
+  .demo .dl .bd.fa{color:var(--st-termine);background:color-mix(in srgb,var(--st-termine) 12%,transparent)}
+  .demo .dl .bd.pr{color:#fff;background:var(--orange)}
+  .demo .dl.pro{border-color:var(--orange)}
+  .demo .dl.fait .ti{color:var(--attenue)}
+  .demo .dl.ouv{position:relative;z-index:5;margin-bottom:150px}
+  .cald{position:absolute;top:calc(100% + 6px);right:14px;z-index:20;width:270px;background:var(--surface);border:1px solid var(--filet-fort);border-radius:14px;padding:12px 13px 10px;box-shadow:0 24px 48px -28px rgba(28,23,38,.55)}
+  .cald .ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;font-size:.82rem}
+  .cald .ch b{font-family:var(--display);font-weight:600}
+  .cald .ch span{color:var(--attenue);cursor:pointer;padding:0 .4em}
+  .cald .cg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+  .cald .cg i{font-style:normal;font-size:.58rem;font-weight:700;color:var(--attenue);padding-bottom:4px}
+  .cald .cg span{font-family:var(--mono);font-size:.72rem;padding:5px 0;border-radius:50%;cursor:pointer}
+  .cald .cg span:hover{background:var(--paper-2)}
+  .cald .cg span.o{color:color-mix(in srgb,var(--attenue) 45%,transparent)}
+  .cald .cg span.occ{color:var(--st-pret);font-weight:600;background:color-mix(in srgb,var(--st-pret) 12%,transparent)}
+  .cald .cg span.sel{background:var(--orange);color:#fff;font-weight:600}
+  .cald .cf{display:flex;align-items:center;justify-content:space-between;margin-top:9px;padding-top:9px;border-top:1px solid var(--filet);font-size:.74rem}
+  .cald .cf .hr{font-family:var(--mono);border-bottom:1px dashed var(--filet-fort);cursor:pointer}
+  .cald .cf .eff{color:var(--attenue);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+
+  .avant-apres{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  @media(max-width:720px){.avant-apres{grid-template-columns:1fr}}
+  .col{border:1px solid var(--filet);border-radius:12px;padding:18px 20px;background:var(--surface)}
+  .col.av{border-top:3px solid var(--st-brouillon)}
+  .col.ap{border-top:3px solid var(--st-pret)}
+  .col .t{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--attenue);margin-bottom:12px}
+  .col ul{list-style:none;display:grid;gap:9px}
+  .col li{font-size:.88rem;padding-left:1.3em;position:relative;line-height:1.45}
+  .col.av li::before{content:"×";position:absolute;left:0;color:var(--st-brouillon);font-weight:700}
+  .col.ap li::before{content:"→";position:absolute;left:0;color:var(--st-pret);font-weight:700}
+  .col li b{font-weight:600}
+
+  .note{margin-top:30px;border-left:2px solid var(--peach);padding-left:14px;font-size:.86rem;color:var(--attenue);line-height:1.6}
+  .note b{color:var(--ink);font-weight:600}
+  .astuce{margin-top:22px;font-size:.8rem;color:var(--attenue)}
+  .astuce kbd{font-family:var(--mono);font-size:.74rem;border:1px solid var(--filet-fort);border-radius:4px;padding:.1em .45em;background:var(--surface)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">Modèle</span>
+  <h1>L'entraînement dans la <em>saison</em></h1>
+  <p class="lede">Deux choses à régler : qu'un entraînement <b>sache</b> qu'il appartient à une saison et à un thème — dans la liste comme dans l'éditeur, sur desktop comme sur mobile —, et que les <b>dates</b> cessent d'être un champ qu'on remplit pour rien. Le principe : <b>la date appartient à la saison, pas à l'entraînement</b>. Les écrans ci-dessous reprennent les composants existants (onglets de contexte, pilule de filtres, carte à rail, en-tête d'éditeur) : ce qui est <span class="neuf">nouveau</span> y est signalé.</p>
+
+  <div class="rule"></div>
+
+  <div class="sk">Page « Mes entraînements » — desktop</div>
+  <div class="appli">
+    <div class="onglets">
+      <span class="t on"><span class="ic">◪</span>Mes entraînements</span>
+      <span class="t"><span class="ic">★</span>HBC Vallée</span>
+      <span class="t"><span class="ic">◎</span>Groupes</span>
+      <span class="t"><span class="ic">◈</span>Communauté</span>
+    </div>
+
+    <div class="pilule">
+      <span class="seg">◪ Catégories</span>
+      <span class="sv"></span>
+      <span class="seg">⌗ Mots-clés</span>
+      <span class="sv"></span>
+      <span class="seg">☰ Statuts</span>
+      <span class="sv"></span>
+      <span class="seg sais" style="--acc:#EB5D21"><span class="pt"></span>Saison 2026–2027</span>
+      <span class="sv"></span>
+      <span class="seg">🔍</span><span class="rech">Rechercher…</span>
+      <span class="sv"></span>
+      <span class="act">✓ Appliquer</span>
+      <span class="act gris">↺ Réinitialiser</span>
+    </div>
+
+    <div class="rappel">
+      <span class="k">Prochaine séance</span>
+      <span class="n">24<small>nov.</small></span>
+      <span class="t"><b>Défense du PDB + enchaînements</b><span class="q">MAR. 24 NOV. · RÉSEAU D'ÉCHANGE SUR GRAND ESPACE</span></span>
+      <span class="go">Ouvrir</span>
+    </div>
+
+    <div class="cartes">
+      <article class="k" style="--acc:var(--st-pret);--acc-th:#C8841E">
+        <div class="gauche">
+          <div class="over">
+            <span class="stp"><i></i>Prêt</span>
+            <span class="trait"></span>
+            <span class="cats"><span>U15</span><span>U18</span></span>
+          </div>
+          <h3>Défense du PDB + enchaînements</h3>
+          <p class="obj">Fixer le vis-à-vis avant la passe, sortir en course.</p>
+          <div class="tags"><span>Attaque</span><span>Grand espace</span><span>Duel</span></div>
+        </div>
+        <div class="rail">
+          <div class="sais">
+            <span class="pt"></span>
+            <span class="tx"><span class="a">Saison 2026–2027</span><span class="b">Réseau d'échange</span></span>
+          </div>
+          <div class="mt">
+            <div><span class="l">Situations</span><span class="v">5</span></div>
+            <div><span class="l">Effectif</span><span class="v">14 joueuses</span></div>
+            <div><span class="l">Durée</span><span class="v">1 h 30</span></div>
+            <div><span class="l">Date</span><span class="v">24 nov.</span></div>
+          </div>
+          <div class="aut"><span class="ini">JR</span><span class="nom">Jérôme Roux</span></div>
+          <div class="btn">Afficher</div>
+          <div class="ico"><span>▷</span><span>⤓</span><span>⧉</span><span>⤴</span><span>🗑</span></div>
+        </div>
+      </article>
+
+      <article class="k" style="--acc:var(--st-brouillon)">
+        <div class="gauche">
+          <div class="over">
+            <span class="stp"><i></i>Brouillon</span>
+            <span class="trait"></span>
+            <span class="cats"><span>U15</span></span>
+          </div>
+          <h3>Gardien — duels et tirs de loin</h3>
+          <p class="obj">Séance à part, réutilisable toute l'année.</p>
+          <div class="tags"><span>Gardien</span><span>Tir</span></div>
+        </div>
+        <div class="rail">
+          <div class="sais abs">
+            <span class="tx"><span class="a">Saison</span><span class="b" style="color:var(--attenue);font-weight:400">Aucune</span></span>
+          </div>
+          <div class="mt">
+            <div><span class="l">Situations</span><span class="v">2</span></div>
+            <div><span class="l">Effectif</span><span class="v vide">—</span></div>
+            <div><span class="l">Durée</span><span class="v vide">—</span></div>
+            <div><span class="l">Date</span><span class="v vide">—</span></div>
+          </div>
+          <div class="aut"><span class="ini">JR</span><span class="nom">Jérôme Roux</span></div>
+          <div class="btn">Afficher</div>
+          <div class="ico"><span>▷</span><span>⤓</span><span>⧉</span><span>⤴</span><span>🗑</span></div>
+        </div>
+      </article>
+
+      <article class="k" style="--acc:var(--st-pret);--acc-th:#5D32F5">
+        <div class="gauche">
+          <div class="over">
+            <span class="stp"><i></i>Terminé</span>
+            <span class="trait"></span>
+            <span class="cats"><span>U15</span></span>
+          </div>
+          <h3>Contre-attaque à 3 couloirs</h3>
+          <p class="obj">Occuper la largeur dès la récupération du ballon.</p>
+          <div class="tags"><span>Montée de balle</span><span>Transition</span></div>
+        </div>
+        <div class="rail">
+          <div class="sais">
+            <span class="pt"></span>
+            <span class="tx"><span class="a">Saison 2026–2027</span><span class="b">Montée de balle</span></span>
+          </div>
+          <div class="mt">
+            <div><span class="l">Situations</span><span class="v">4</span></div>
+            <div><span class="l">Effectif</span><span class="v">12 joueuses</span></div>
+            <div><span class="l">Durée</span><span class="v">1 h 15</span></div>
+            <div><span class="l">Date</span><span class="v">18 nov.</span></div>
+          </div>
+          <div class="aut"><span class="ini">JR</span><span class="nom">Jérôme Roux</span></div>
+          <div class="btn">Afficher</div>
+          <div class="ico"><span>▷</span><span>⤓</span><span>⧉</span><span>⤴</span><span>🗑</span></div>
+        </div>
+      </article>
+
+      <article class="k" style="--acc:var(--st-pret);--acc-th:#2F7D4F">
+        <div class="gauche">
+          <div class="over">
+            <span class="stp"><i></i>Terminé</span>
+            <span class="trait"></span>
+            <span class="cats"><span>U15</span></span>
+          </div>
+          <h3>Sortie sur base arrière</h3>
+          <p class="obj">Le même entraînement sert dans deux saisons — aucune copie.</p>
+          <div class="tags"><span>Défense</span><span>1-5</span></div>
+        </div>
+        <div class="rail">
+          <div class="sais">
+            <span class="pt"></span>
+            <span class="tx"><span class="a">2026–2027 · aussi 2025–2026</span><span class="b">Défense 1-5</span></span>
+          </div>
+          <div class="mt">
+            <div><span class="l">Situations</span><span class="v">6</span></div>
+            <div><span class="l">Effectif</span><span class="v">16 joueuses</span></div>
+            <div><span class="l">Durée</span><span class="v">1 h 30</span></div>
+            <div><span class="l">Date</span><span class="v">6 déc.</span></div>
+          </div>
+          <div class="aut"><span class="ini">JR</span><span class="nom">Jérôme Roux</span></div>
+          <div class="btn">Afficher</div>
+          <div class="ico"><span>▷</span><span>⤓</span><span>⧉</span><span>⤴</span><span>🗑</span></div>
+        </div>
+      </article>
+    </div>
+    <span class="fab">+ Nouvel entraînement</span>
+  </div>
+  <p class="lgd">Rien n'est déplacé : les onglets de contexte, la pilule de filtres et la carte à rail restent tels quels. La saison ajoute <b>trois choses</b> — un <b>segment « Saison »</b> dans la pilule (actif par défaut sur la saison en cours) ; le <b>rappel de la prochaine séance</b> au-dessus de la grille, qui remplace le recours au tri par date ; et dans le <b>rail de la carte</b>, un encart thème en tête plus la métadonnée <b>Séance</b> à la place de <b>Date</b>. Un entraînement sans saison garde un encart en pointillés et un lien « Rattacher » : il n'est pas signalé comme incomplet. Le segment de filtre propose aussi <b>Toutes les saisons</b> et <b>Sans saison</b> — on ne perd jamais de vue ce qui n'est rattaché à rien, et le bouton flottant <b>Nouvel entraînement</b> continue de créer une séance sans rien demander.</p>
+
+  <div class="sk">Page « Mes entraînements » et éditeur — mobile</div>
+  <div class="phones">
+    <div class="tel">
+      <div class="phone">
+        <div class="sb"><span>09:41</span><span>▮▮▮</span></div>
+        <div class="ongm"><span class="t on">Mes entraînements</span><span class="t">Groupes</span><span class="t">Communauté</span></div>
+        <div class="rappel">
+          <span class="k">Prochaine</span>
+          <span class="n">24<small>nov.</small></span>
+          <span class="t"><b>Défense du PDB</b><span class="q">MAR. 24 NOV.</span></span>
+        </div>
+        <div class="pmini"><span class="pt"></span>Saison 2026–2027 · Filtres</div>
+        <div class="cartes">
+          <article class="k" style="--acc:var(--st-pret);--acc-th:#C8841E">
+            <div class="gauche">
+              <div class="over">
+                <span class="stp"><i></i>Prêt</span>
+                <span class="trait"></span>
+                <span class="cats"><span>U15</span></span>
+              </div>
+              <h3>Défense du PDB + enchaînements</h3>
+              <p class="obj">Fixer le vis-à-vis avant la passe.</p>
+              <div class="tags"><span>Attaque</span><span>Grand espace</span></div>
+            </div>
+            <div class="rail">
+              <div class="sais">
+                <span class="pt"></span>
+                <span class="tx"><span class="a">Saison 2026–2027</span><span class="b">Réseau d'échange</span></span>
+              </div>
+              <div class="mt">
+                <div><span class="l">Situations</span><span class="v">5</span></div>
+                <div><span class="l">Durée</span><span class="v">1 h 30</span></div>
+                <div><span class="l">Effectif</span><span class="v">14</span></div>
+              </div>
+              <div class="split"><span class="p">▶ Animer</span><span class="m">⋮</span></div>
+            </div>
+          </article>
+          <article class="k" style="--acc:var(--st-brouillon)">
+            <div class="gauche">
+              <div class="over">
+                <span class="stp"><i></i>Brouillon</span>
+                <span class="trait"></span>
+                <span class="cats"><span>U15</span></span>
+              </div>
+              <h3>Gardien — duels et tirs de loin</h3>
+            </div>
+            <div class="rail">
+              <div class="sais abs">
+                <span class="tx"><span class="a">Saison</span><span class="b" style="color:var(--orange);font-size:.78rem">Rattacher</span></span>
+              </div>
+              <div class="split"><span class="p">▶ Animer</span><span class="m">⋮</span></div>
+            </div>
+          </article>
+        </div>
+        <div class="bas"><span class="on">Entraînements</span><span>Saisons</span><span>Groupes</span><span>Profil</span></div>
+      </div>
+      <p class="cap">La liste garde la carte empilée du mobile (contenu centré, rail dessous, split button Animer). Le rappel de séance passe en tête, les filtres se replient dans une pilule unique qui affiche la saison active.</p>
+    </div>
+
+    <div class="tel">
+      <div class="phone">
+        <div class="sb"><span>09:41</span><span>▮▮▮</span></div>
+        <div class="fil" style="--acc-th:#C8841E">
+          <span class="ch"><span class="pt"></span><a href="edition-saison.html">2026–27 · Réseau d'échange</a></span>
+          <span class="nv"><i>‹</i><i>›</i></span>
+        </div>
+        <div class="fil" style="padding-top:0;border-bottom:1px solid var(--filet)">
+          <span class="pro">Prochaine</span>
+          <span class="sc">MAR. 24 NOV.</span>
+        </div>
+        <div class="entete">
+          <div class="meta">
+            <span class="cal2">🗓 mar. 24 nov.</span><span class="d"></span><span>1 h 30</span><span class="d"></span><span>14 joueuses</span><span class="d"></span><span>U15</span>
+          </div>
+          <h2>Défense du PDB + enchaînements</h2>
+          <div class="cit"><span class="g">«</span><p>Fixer le vis-à-vis avant la passe, sortir en course.</p><span class="g">»</span></div>
+        </div>
+        <div class="bas"><span>Entraînements</span><span class="on">Séance</span><span>Animer</span><span>Profil</span></div>
+      </div>
+      <p class="cap">Dans l'entraînement, le fil de saison se pose au-dessus de l'en-tête existant et reste collé en haut. La ligne de métadonnées perd la date et commence par le rang de séance.</p>
+    </div>
+  </div>
+
+  <div class="sk">Dans l'éditeur d'entraînement — desktop</div>
+  <div class="editeur">
+    <div class="fil" style="--acc-th:#C8841E">
+      <span class="ch"><a href="edition-saison.html">Saison 2026–2027</a> › <span class="pt"></span><a href="edition-saison.html">Réseau d'échange sur grand espace</a></span>
+      <span class="pro">Prochaine séance</span>
+      <span class="sc">MAR. 24 NOV.</span>
+      <span class="nv"><i>‹</i><i>›</i></span>
+    </div>
+    <div class="entete">
+      <div class="meta">
+        <span class="cal2">🗓 mar. 24 nov.</span><span class="d"></span><span>1 h 30</span><span class="d"></span><span>14 joueuses</span><span class="d"></span><span>U15</span><span class="d"></span><span class="cr">Jérôme Roux</span>
+      </div>
+      <h2>Défense du PDB + enchaînements</h2>
+      <div class="cit"><span class="g">«</span><p>Fixer le vis-à-vis avant la passe, sortir en course.</p><span class="g">»</span></div>
+    </div>
+  </div>
+  <p class="lgd">L'en-tête ne bouge pas : mêmes petites capitales espacées, même titre éditable, même objectif entre guillemets orange. Une seule différence — un <b>fil de saison</b> discret au-dessus, sur fond papier : le chemin saison › thème, la date de la séance, et les flèches pour passer à la suivante sans repasser par la liste. La ligne de métadonnées, elle, ne bouge pas : le sélecteur de date y reste, à sa place habituelle.</p>
+
+  <div class="sk">Sans saison — le chemin par défaut ne change pas</div>
+  <div class="editeur">
+    <div class="sansfil">
+      Cet entraînement n'appartient à aucune saison.
+      <span class="rat">+ Rattacher à une saison</span>
+    </div>
+    <div class="entete">
+      <div class="meta">
+        <span class="cal">🗓 21 NOV. 2026</span><span class="d"></span><span>1 h 00</span><span class="d"></span><span>10 joueuses</span><span class="d"></span><span>U15</span><span class="d"></span><span class="cr">Jérôme Roux</span>
+      </div>
+      <h2>Gardien — duels et tirs de loin</h2>
+      <div class="cit"><span class="g">«</span><p>Séance à part, réutilisable toute l'année.</p><span class="g">»</span></div>
+    </div>
+  </div>
+  <p class="lgd">La saison est une <b>option, jamais un passage obligé</b>. Le bouton « Nouvel entraînement » reste ce qu'il est — un bouton flottant qui crée directement une séance vide, sans demander ni saison ni thème. Un entraînement créé ainsi vit très bien seul : il <b>garde son sélecteur de date</b> (facultatif), il apparaît dans la liste comme aujourd'hui, il peut être animé, dupliqué, partagé. La barre en pointillés n'est pas un avertissement mais une <b>offre</b> : rattacher quand ça a du sens, et détacher ensuite sans rien perdre. Trois usages restent hors saison par nature : les blocs génériques (échauffements, gammes de gardien), les séances de dépannage, et tout le travail de ceux qui ne veulent simplement pas planifier leur année.</p>
+
+  <div class="sk">La question des dates — trois règles</div>
+  <div class="regles">
+    <div class="regle" style="--acc:var(--orange)">
+      <span class="n">01</span>
+      <div>
+        <h3>La date reste sur l'entraînement — on la pose ailleurs</h3>
+        <p>Aucun changement de modèle : l'entraînement garde son champ date, facultatif, exactement comme aujourd'hui. Ce qui change, c'est <b>l'endroit où on le remplit</b> : plus au fond de l'éditeur, mais sur la ligne de l'entraînement dans son thème, là où l'on voit la suite des séances. Un clic, un jour, c'est daté.</p>
+      </div>
+    </div>
+    <div class="regle" style="--acc:var(--violet)">
+      <span class="n">02</span>
+      <div>
+        <h3>Dater n'est jamais obligatoire</h3>
+        <p>Un entraînement sans date attend dans son thème avec une invite « + dater », et rien ne le signale comme incomplet. Le rattachement ne demande donc <b>aucune date</b>, même pour 47 entraînements d'un coup : ils rejoignent leur thème, on datera ceux qu'on veut, quand on voudra.</p>
+      </div>
+    </div>
+    <div class="regle" style="--acc:var(--st-pret)">
+      <span class="n">03</span>
+      <div>
+        <h3>Rien à changer côté tri</h3>
+        <p>La liste reste triée par <code>date_seance</code> décroissant, avec ses filtres de plage — même colonne, même index, aucune migration. Dans la saison, le raccourci vers ce qu'on doit faire n'est plus une date à chercher mais un état : <b>la prochaine séance</b>, c'est-à-dire le prochain entraînement daté non fait, mis en avant en haut de l'écran.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sk">Dater une séance</div>
+  <p class="intro2">Pas de réglage préalable, pas de calendrier à configurer : la date se pose <b>là où on la lit</b>, sur la ligne de l'entraînement dans son thème. Un clic sur la date ouvre le calendrier, un clic sur un jour et c'est daté.</p>
+
+  <div class="demo">
+    <div class="dk">Entraînements du thème · Réseau d'échange</div>
+    <div class="dl fait"><span class="pt" style="--a:var(--st-termine)"></span><span class="ti">Travail réseau GE — écartement</span><span class="dt">mar. 10 nov.</span><span class="bd fa">Faite</span></div>
+    <div class="dl pro"><span class="pt" style="--a:var(--st-pret)"></span><span class="ti">Défense du PDB + enchaînements</span><span class="dt">mar. 24 nov.</span><span class="bd pr">Prochaine</span></div>
+    <div class="dl ouv">
+      <span class="pt" style="--a:var(--st-encours)"></span><span class="ti">Plateau — mise en situation</span><span class="dt on">sam. 28 nov.</span>
+      <div class="cald">
+        <div class="ch"><span>‹</span><b>Novembre 2026</b><span>›</span></div>
+        <div class="cg">
+          <i>L</i><i>M</i><i>M</i><i>J</i><i>V</i><i>S</i><i>D</i>
+          <span class="o">26</span><span class="o">27</span><span class="o">28</span><span class="o">29</span><span class="o">30</span><span class="o">31</span><span>1</span>
+          <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+          <span>9</span><span class="occ">10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span>
+          <span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span>
+          <span>23</span><span class="occ">24</span><span>25</span><span>26</span><span>27</span><span class="sel">28</span><span>29</span>
+          <span>30</span><span class="o">1</span><span class="o">2</span><span class="o">3</span><span class="o">4</span><span class="o">5</span><span class="o">6</span>
+        </div>
+        <div class="cf"><span class="hr">Mardi 24 novembre 2026</span><span class="eff">retirer la date</span></div>
+      </div>
+    </div>
+    <div class="dl"><span class="pt" style="--a:var(--st-brouillon)"></span><span class="ti">Étagement — situation 3c3</span><span class="dt vide">+ dater</span></div>
+  </div>
+
+  <p class="lgd">C'est le <b>même sélecteur de date que dans l'éditeur d'entraînement</b> (<code>AppCalendar</code>), simplement remonté d'un cran : au lieu d'ouvrir la séance pour la dater, on la date depuis la liste où l'on voit déjà tout le thème. Trois choses en découlent, et il n'y en a pas d'autres.<br>
+  — <b>Dater reste facultatif.</b> « + dater » est une invite, pas une obligation : un entraînement sans date attend dans son thème, et rien ne le signale comme incomplet.<br>
+  — <b>Deux séances la même semaine, trois, ou une seule</b> : la question ne se pose plus. On date ce qu'on veut, quand on veut, y compris un dimanche de plateau — il n'y a aucune règle de récurrence à respecter ou à contourner.<br>
+  — <b>Les jours déjà pris apparaissent dans le calendrier</b> (ici les 10 et 24, en vert) : on voit d'un coup d'œil ce qui est occupé sans quitter la liste. Les vacances marquées sur la trame y sont grisées de la même façon.</p>
+
+  <div class="avant-apres">
+    <div class="col av">
+      <div class="t">Aujourd'hui</div>
+      <ul>
+        <li>Une <b>date de séance</b> à remplir sur chaque entraînement, souvent fausse ou vide</li>
+        <li>Elle sert surtout à <b>trier</b> (<code style="font-family:var(--mono);font-size:.85em">date_seance</code> décroissant) pour retrouver son travail en cours</li>
+        <li>Un entraînement réutilisé oblige à <b>choisir</b> : garder l'ancienne date ou dupliquer</li>
+        <li>Rien n'indique dans l'entraînement <b>à quoi il sert</b> dans l'année</li>
+      </ul>
+    </div>
+    <div class="col ap">
+      <div class="t">Avec les saisons</div>
+      <ul>
+        <li>La date se pose <b>d'un clic depuis le thème</b>, sur la ligne de l'entraînement — plus au fond de l'éditeur</li>
+        <li><b>Même tri, même colonne, aucune migration</b> : <code style="font-family:var(--mono);font-size:.85em">date_seance</code> ne change pas de rôle</li>
+        <li>Un entraînement peut être rattaché <b>plusieurs fois</b>, sans copie</li>
+        <li>Le rail de la carte et le fil de l'éditeur disent <b>saison › thème › date</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note"><b>Migration — il n'y en a pas.</b> La colonne <code>date_seance</code> garde son rôle, son index, son tri et ses filtres. Les entraînements existants restent datés comme ils le sont ; ceux qui n'ont pas de date affichent « + dater » une fois rangés dans un thème. Le seul ajout au modèle est le <b>lien entre un entraînement et un thème</b> — le reste du fonctionnement actuel est intact.<br><br><b>Et « modifié récemment » ?</b> Ce tri serait plus juste que la date pour retrouver son travail en cours, mais il n'est pas gratuit : <code>dateModification</code> vit dans le JSONB <code>donnees</code>, sans colonne ni index. Il demande une petite migration (colonne <code>modifie_le timestamptz</code> + index) et reste une question <b>indépendante</b> des saisons.</div>
+
+  <div class="astuce">Astuce : la touche <kbd>T</kbd> bascule clair / nuit.</div>
+</div>
+<script>
+  document.addEventListener('keydown',e=>{
+    if(e.key.toLowerCase()==='t'){
+      const r=document.documentElement;
+      const s=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+      r.dataset.theme=s?'light':'dark';
+    }
+  });
+</script>
+</body>
+</html>

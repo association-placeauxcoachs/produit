@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saison — écran principal (desktop)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+    --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E;
+    --st-brouillon:#8A8478; --sur-bloc:var(--peach); --st-encours:#C8841E; --st-pret:#2F7D4F; --st-termine:#2B4C7E;
+    --th-passe:#8A8478; --th-actif:#2F7D4F; --th-futur:#7E9BB8;
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30);
+    --violet:#9B82FF; --st-brouillon:#9E978A; --sur-bloc:#B8471A; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#6E97D6;
+    --th-passe:#9E978A; --th-actif:#52B37D; --th-futur:#8FAACB;
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30);
+    --violet:#9B82FF; --st-brouillon:#9E978A; --sur-bloc:#B8471A; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#6E97D6;
+    --th-passe:#9E978A; --th-actif:#52B37D; --th-futur:#8FAACB;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--corps);font-size:15px;line-height:1.5;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+  .app{min-height:100vh}
+  .content{padding:26px 40px 100px;max-width:1180px;width:100%;margin:0 auto}
+  /* barre d'outils — reprise de Structure + StructureHeader (éditeur d'entraînement) */
+  .topbar{position:sticky;top:0;z-index:40;min-height:64px;display:flex;align-items:center;gap:10px;
+    background:color-mix(in srgb,var(--paper) 85%,transparent);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--filet);padding:0 max(16px, calc((100vw - 1180px) / 2))}
+  .topbar .ret{display:inline-flex;align-items:center;gap:.6em;border-radius:8px;padding:.5em .7em;font-size:.88rem;color:var(--attenue);flex:none}
+  .topbar .ret:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+  .topbar .ret svg{width:17px;height:17px}
+  .topbar .sp{margin-left:auto;display:flex;align-items:center;gap:10px}
+  @media(max-width:720px){.topbar .ret .lb{display:none}}
+
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:6px}
+  .spick{position:relative}
+  .spick h1{display:flex;align-items:baseline;gap:.35em;font-size:clamp(1.9rem,3.2vw,2.6rem);margin:.2em 0 .12em}
+  .spick h1 em{font-style:normal;color:var(--orange)}
+  .spick h1[contenteditable]{outline:none;border-radius:6px}
+  .spick h1[contenteditable]:hover{outline:1px dashed var(--filet-fort);outline-offset:7px}
+  .spick h1[contenteditable]:focus{outline:1px solid var(--orange);outline-offset:7px}
+  /* ligne de métadonnées éditable — même traitement que l'en-tête d'entraînement */
+  .meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--attenue);margin-top:2px}
+  .meta .dot{width:4px;height:4px;border-radius:50%;background:var(--filet-fort);flex:none}
+  .meta .ch{display:inline-flex;align-items:center;gap:.6em;border-radius:999px;padding:.35em .7em;cursor:pointer;transition:background .15s,color .15s}
+  .meta .ch:hover{background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink)}
+  .meta .ch svg{width:13px;height:13px;flex:none;opacity:.75}
+  .meta .part{padding:.35em 0}
+  .meta .part b{color:var(--ink);font-weight:600}
+  .btn{border-radius:999px;display:inline-flex;align-items:center;gap:.55em;font-weight:600;font-size:.88rem;padding:.7em 1.2em;border:1px solid var(--ink);background:transparent;color:var(--ink);transition:transform .15s,background .15s,color .15s}
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn.p{background:var(--orange);border-color:var(--orange);color:#fff}
+  .btn.p:hover{transform:translateY(-2px);background:var(--orange);color:#fff}
+  .btn .ic{width:15px;height:15px}
+
+  /* ===== prochaine séance ===== */
+  .next{border-radius:16px;display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center;background:var(--ink);color:var(--paper);padding:22px 26px;margin:22px 0 34px}
+  .next .num{text-align:center}
+  .next .num .k{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--sur-bloc);display:block}
+  .next .num .n{font-family:var(--display);font-size:3rem;font-weight:300;line-height:.95;color:var(--paper)}
+  .next .corps .quand{font-family:var(--mono);font-size:.74rem;color:var(--sur-bloc);display:flex;align-items:center;gap:.6em}
+  .next .corps .quand .modif{font-family:var(--corps);font-weight:600;color:var(--paper);opacity:.55;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+  .next .corps .quand .modif:hover{opacity:1}
+  .next .corps h2{font-size:1.5rem;color:var(--paper);margin:5px 0 6px}
+  .next .corps .th{display:inline-flex;align-items:center;gap:.5em;font-size:.78rem;color:var(--paper);opacity:.75}
+  .next .corps .th .pt{width:8px;height:8px;border-radius:50%;background:var(--accent,var(--orange))}
+  .next .apres{margin-top:12px;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--paper) 22%,transparent);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .next .apres .et{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--sur-bloc)}
+  .next .apres .li{font-size:.82rem;color:var(--paper);opacity:.82;display:inline-flex;align-items:center;gap:.45em;flex-wrap:wrap}
+  .next .apres .li b{font-family:var(--mono);font-weight:600}
+  .next .apres .li i{font-style:normal;font-size:.68rem;border:1px dashed color-mix(in srgb,var(--paper) 40%,transparent);border-radius:999px;padding:.15em .55em;opacity:.75}
+  .next .apres .pt2{width:7px;height:7px;border-radius:50%;background:var(--a);display:inline-block}
+  .next .cta{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+  .next .cta .b{border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-weight:600;font-size:.86rem;padding:.65em 1.3em;border:1px solid color-mix(in srgb,var(--paper) 35%,transparent);color:var(--paper);white-space:nowrap}
+  .next .cta .b:hover{background:rgba(255,255,255,.12)}
+  .next .cta .b.pri{background:var(--orange);border-color:var(--orange)}
+  .next .cta .b svg{width:13px;height:13px}
+  .next .cta .fait{font-size:.74rem;color:var(--paper);opacity:.6;text-align:center;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+  .next .cta .fait:hover{opacity:1}
+
+  /* ===== trame ===== */
+  .sect-k{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:14px}
+  .sect-k .k{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--attenue)}
+  .sect-k .note{font-size:.76rem;color:var(--attenue)}
+  .trame{border-radius:16px;background:var(--surface);border:1px solid var(--filet);padding:16px 20px 18px;margin-bottom:38px;overflow-x:auto}
+  .grille{display:grid;grid-template-columns:190px repeat(10,1fr);gap:0 2px;min-width:760px}
+  .grille .mois{font-family:var(--mono);font-size:.62rem;color:var(--attenue);text-align:center;padding-bottom:8px;border-bottom:1px solid var(--filet)}
+  .grille .coin{border-bottom:1px solid var(--filet)}
+  .grille .vac{background:repeating-linear-gradient(45deg,var(--filet) 0 2px,transparent 2px 6px);position:relative}
+  .grille .tnom{font-size:.8rem;font-weight:600;padding:9px 10px 9px 0;display:flex;align-items:center;gap:.55em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .grille .tnom .pt{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+  .grille .cell{padding:9px 0;position:relative}
+  .grille .bar{height:11px;background:var(--accent);opacity:.9;position:relative}
+  .grille .bar.deb{margin-left:4px}
+  .grille .bar.fin{margin-right:4px}
+  .grille .cell.creux .bar{opacity:.22}
+  .trame .legende{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--filet);font-size:.74rem;color:var(--attenue)}
+  .trame .legende span{display:inline-flex;align-items:center;gap:.5em}
+  .trame .legende .sw{width:22px;height:9px;background:var(--th-actif)}
+  .trame .legende .sw.p{background:var(--th-passe)}
+  .trame .legende .sw.f{background:var(--th-futur)}
+  .trame .legende .sw.v{background:repeating-linear-gradient(45deg,var(--filet-fort) 0 2px,transparent 2px 6px);border:1px solid var(--filet)}
+  .trame .legende .add{color:var(--orange);font-weight:600;cursor:pointer;margin-left:auto}
+
+  /* ===== thèmes ===== */
+  .theme{border-radius:16px;background:var(--surface);border:1px solid var(--filet);border-left:3px solid var(--accent,var(--orange));margin-bottom:16px}
+  .theme .th{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;padding:18px 22px 14px}
+  .theme .tnum{font-family:var(--display);font-size:1.7rem;font-weight:400;line-height:1;color:var(--accent,var(--orange))}
+  .theme h3{font-size:1.28rem}
+  .theme h3[contenteditable]:hover,.theme h3[contenteditable]:focus{outline:1px dashed var(--filet-fort);outline-offset:4px}
+  .theme .quand{font-family:var(--mono);font-size:.7rem;color:var(--attenue);margin-top:4px;display:inline-flex;gap:.6em;align-items:center}
+  .theme .quand .modif{font-family:var(--corps);font-weight:600;color:var(--orange);text-decoration:underline;text-underline-offset:2px;cursor:pointer;opacity:0;transition:opacity .15s}
+  .theme:hover .quand .modif{opacity:1}
+  .theme .ttags{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+  .theme .ttags span{border-radius:999px;font-size:.64rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--attenue);border:1px solid var(--filet-fort);padding:.22em .5em}
+  .theme .ttags .add{color:var(--attenue);border:1px dashed var(--filet-fort);cursor:pointer;text-transform:none;font-weight:600;letter-spacing:0}
+  .theme .tmenu{color:var(--attenue);font-size:1.1rem;padding:0 .2em}
+  .theme .desc{padding:0 22px;color:var(--ink);font-size:.93rem;line-height:1.55;max-width:74ch}
+  .theme .desc p{margin-bottom:7px}
+  .theme .desc ul{list-style:none;display:grid;gap:5px;margin:6px 0 8px}
+  .theme .desc li{padding-left:1.1em;position:relative}
+  .theme .desc li::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:1px;background:var(--accent,var(--orange))}
+  .theme .desc:hover{outline:1px dashed var(--filet);outline-offset:6px}
+  .theme .desc .ph{color:var(--attenue);font-style:italic}
+
+  .seances{padding:14px 22px 18px;margin-top:12px}
+  .seances .sk{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--attenue);margin-bottom:9px;display:flex;justify-content:space-between;align-items:baseline}
+  .seances .sk .cpt{font-family:var(--mono);letter-spacing:0}
+  .sn{border-radius:12px;display:flex;align-items:center;gap:12px;border:1px solid var(--filet);background:var(--paper);padding:10px 13px;margin-bottom:6px}
+  .sn:hover{border-color:var(--filet-fort)}
+  .sn .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .sn .ti{flex:1;min-width:0;font-size:.9rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sn .quand{font-family:var(--mono);font-size:.68rem;color:var(--attenue);flex:none}
+  .sn .dat{font-family:var(--mono);font-size:.7rem;color:var(--attenue);border:1px solid transparent;border-radius:999px;padding:.3em .7em;flex:none;cursor:pointer}
+  .sn .dat:hover{border-color:var(--filet-fort);color:var(--ink)}
+  .sn .dat.on{border-color:color-mix(in srgb,var(--th-futur) 60%,transparent);color:var(--th-futur);background:color-mix(in srgb,var(--th-futur) 10%,transparent)}
+  .sn .dat.vide{font-family:var(--corps);font-weight:600;color:var(--orange);border:1px dashed color-mix(in srgb,var(--orange) 45%,transparent)}
+  .sn.ouvert{position:relative;z-index:5}
+  .cald{position:absolute;top:calc(100% + 6px);right:10px;z-index:20;width:266px;background:var(--surface);border:1px solid var(--filet-fort);border-radius:14px;padding:12px 13px 10px;box-shadow:0 24px 48px -28px rgba(28,23,38,.55)}
+  .cald .ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;font-size:.82rem}
+  .cald .ch b{font-family:var(--display);font-weight:600}
+  .cald .ch span{color:var(--attenue);cursor:pointer;padding:0 .4em}
+  .cald .cg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+  .cald .cg i{font-style:normal;font-size:.58rem;font-weight:700;color:var(--attenue);padding-bottom:4px}
+  .cald .cg span{font-family:var(--mono);font-size:.72rem;padding:5px 0;border-radius:50%;cursor:pointer}
+  .cald .cg span:hover{background:var(--paper-2)}
+  .cald .cg span.o{color:color-mix(in srgb,var(--attenue) 45%,transparent)}
+  .cald .cg span.fait{color:var(--th-passe);font-weight:600;background:color-mix(in srgb,var(--th-passe) 12%,transparent)}
+  .cald .cg span.sel{background:var(--th-futur);color:#fff;font-weight:600}
+  .cald .cf{display:flex;align-items:center;justify-content:space-between;margin-top:9px;padding-top:9px;border-top:1px solid var(--filet);font-size:.74rem}
+  .cald .cf .hr{font-family:var(--mono);border-bottom:1px dashed var(--filet-fort);cursor:pointer}
+  .cald .cf .eff{color:var(--attenue);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+  .sn .badge{border-radius:999px;font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:.28em .5em;flex:none}
+  .sn .badge.faite{color:var(--th-passe);background:color-mix(in srgb,var(--th-passe) 14%,transparent)}
+  .sn .badge.prochaine{color:#fff;background:var(--th-actif)}
+  .sn.estprochaine{border-color:color-mix(in srgb,var(--th-actif) 55%,transparent);border-left:3px solid var(--th-actif)}
+  .sn.faite .ti{color:var(--attenue)}
+  .ajout{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .ajout .a{border-radius:999px;display:inline-flex;align-items:center;gap:.5em;font-size:.8rem;font-weight:600;padding:.6em 1em;border:1px dashed var(--filet-fort);color:var(--attenue)}
+  .ajout .a:hover{color:var(--orange);border-color:var(--orange)}
+  .ajout .a.pri{border-style:solid;border-color:var(--orange);color:var(--orange)}
+  .ajout .a.pri:hover{background:var(--orange);color:#fff}
+  .ajout .a svg{width:13px;height:13px}
+
+  /* suggestion communauté */
+  .commu{border-radius:12px;margin:12px 22px 20px;border:1px solid color-mix(in srgb,var(--violet) 26%,transparent);border-left:3px solid var(--violet);background:color-mix(in srgb,var(--violet) 4%,transparent)}
+  .commu .ct{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer}
+  .commu .ct svg{width:15px;height:15px;color:var(--violet);flex:none}
+  .commu .ct .tx{flex:1;font-size:.82rem}
+  .commu .ct .tx b{font-weight:700}
+  .commu .ct .vo{font-size:.74rem;font-weight:600;color:var(--violet);text-decoration:underline;text-underline-offset:2px}
+  .commu .liste{display:none;padding:0 14px 12px}
+  .commu.on .liste{display:block}
+  .commu .liste .sn{background:var(--surface)}
+  .commu .liste .aut{font-size:.68rem;color:var(--attenue);flex:none}
+  .commu .liste .add{font-size:.72rem;font-weight:600;color:var(--attenue);border:1px solid color-mix(in srgb,var(--violet) 40%,transparent);padding:.3em .6em;flex:none;cursor:pointer}
+  .commu .liste .add:hover{background:var(--violet);color:#fff}
+  .commu .liste .note{font-size:.72rem;color:var(--attenue);margin-top:6px}
+
+  .theme.replie{display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer}
+  .theme.replie:hover{border-color:var(--filet-fort)}
+  .theme.replie .tnum{font-family:var(--display);font-size:1.4rem;font-weight:400;line-height:1;color:var(--accent);flex:none}
+  .theme.replie h3{font-family:var(--display);font-size:1.05rem;font-weight:600;margin:0}
+  .theme.replie .quand{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--attenue);margin-top:2px}
+  .theme.replie .cpt{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--attenue);flex:none}
+  .theme.replie .chev{color:var(--attenue);flex:none}
+  .add-theme{display:flex;align-items:center;justify-content:center;gap:.6em;border:1px dashed var(--filet-fort);padding:20px;color:var(--attenue);font-weight:600;font-size:.9rem;cursor:pointer}
+  .add-theme:hover{color:var(--orange);border-color:var(--orange);background:color-mix(in srgb,var(--orange) 4%,transparent)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <a class="ret" href="planification.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span class="lb">Retour à la planification</span></a>
+    <div class="sp">
+      <button class="btn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Partager</button>
+      <button class="btn p"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Thème</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="head">
+      <div class="spick">
+        <h1 contenteditable spellcheck="false" title="Renommer la saison">U15 <em>Filles</em></h1>
+        <div class="meta">
+          <span class="ch" title="Modifier les dates de la saison"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>01.09.2026 → 30.06.2027</span>
+          <span class="dot"></span>
+          <span class="ch" title="Modifier les catégories"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V6a2 2 0 0 1 2-2h3.5l2 2H18a2 2 0 0 1 2 2v2"/><path d="M2 12h20l-2 8H4z"/></svg>U15 · U18</span>
+          <span class="dot"></span>
+          <span class="part">partagée avec <b>HBC Blanquefort — Pôle féminin</b></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROCHAINE SÉANCE -->
+    <section class="next" style="--accent:var(--th-actif)">
+      <div class="num"><span class="k">Mardi</span><span class="n">24</span><span class="k">Novembre</span></div>
+      <div class="corps">
+        <div class="quand">PROCHAINE SÉANCE <span class="modif">changer la date</span></div>
+        <h2>Défense du PDB + enchaînements</h2>
+        <span class="th"><span class="pt"></span> Thème · Réseau d'échange sur grand espace</span>
+        <div class="apres">
+          <span class="et">Puis cette semaine</span>
+          <span class="li">jeu. 26 nov. — <span class="pt2" style="--a:#5D32F5"></span> Motricité &amp; duels GB</span>
+        </div>
+      </div>
+      <div class="cta">
+        <a class="b pri"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg> Animer</a>
+        <a class="b">Ouvrir</a>
+        <span class="fait">✓ marquer faite</span>
+      </div>
+    </section>
+
+    <!-- TRAME -->
+    <div class="sect-k">
+      <span class="k">La trame de la saison</span>
+      <span class="note">Les thèmes se chevauchent librement — les zones hachurées sont les vacances, pour t'éviter d'y poser une séance.</span>
+    </div>
+    <div class="trame">
+      <div class="grille">
+        <div class="coin"></div>
+        <div class="mois">SEP</div><div class="mois">OCT</div><div class="mois">NOV</div><div class="mois">DÉC</div><div class="mois">JAN</div><div class="mois">FÉV</div><div class="mois">MAR</div><div class="mois">AVR</div><div class="mois">MAI</div><div class="mois">JUIN</div>
+
+        <div class="tnom" style="--accent:var(--th-passe)"><span class="pt"></span>Changement de statut</div>
+        <div class="cell"><div class="bar deb" style="--accent:var(--th-passe)"></div></div>
+        <div class="cell creux vac"><div class="bar" style="--accent:var(--th-passe)"></div></div>
+        <div class="cell"><div class="bar fin" style="--accent:var(--th-passe)"></div></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+
+        <div class="tnom" style="--accent:var(--th-actif)"><span class="pt"></span>Réseau d'échange sur GE</div>
+        <div class="cell"></div>
+        <div class="cell vac"></div>
+        <div class="cell"><div class="bar deb" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell creux vac"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell"><div class="bar fin" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+
+        <div class="tnom" style="--accent:var(--th-futur)"><span class="pt"></span>Débordement du PDB</div>
+        <div class="cell"></div><div class="cell vac"></div><div class="cell"></div><div class="cell vac"></div>
+        <div class="cell"><div class="bar deb" style="--accent:var(--th-futur)"></div></div>
+        <div class="cell creux vac"><div class="bar" style="--accent:var(--th-futur)"></div></div>
+        <div class="cell"><div class="bar" style="--accent:var(--th-futur)"></div></div>
+        <div class="cell creux vac"><div class="bar fin" style="--accent:var(--th-futur)"></div></div>
+        <div class="cell"></div><div class="cell"></div>
+
+        <div class="tnom" style="--accent:var(--th-actif)"><span class="pt"></span>Motricité &amp; duels GB</div>
+        <div class="cell"><div class="bar deb" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell creux vac"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell creux vac"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell creux vac"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell creux vac"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell"><div class="bar" style="--accent:var(--th-actif)"></div></div>
+        <div class="cell"><div class="bar fin" style="--accent:var(--th-actif)"></div></div>
+      </div>
+      <div class="legende">
+        <span><span class="sw a"></span> En cours</span>
+        <span><span class="sw p"></span> Terminé</span>
+        <span><span class="sw f"></span> À venir</span>
+        <span><span class="sw v"></span> Vacances — pas d'entraînement</span>
+        <span class="add">+ Marquer des vacances</span>
+      </div>
+    </div>
+
+    <!-- THÈMES -->
+    <div class="sect-k">
+      <span class="k">Les thèmes</span>
+      <span class="note">C'est ici qu'on crée les entraînements : un entraînement appartient à un thème. Les thèmes terminés ou de fond restent repliés — 4 thèmes, 14 entraînements en tout.</span>
+    </div>
+
+    <article class="theme replie" style="--accent:var(--th-passe)" title="Déplier ce thème">
+      <span class="tnum">01</span>
+      <div>
+        <h3>Changement de statut</h3>
+        <div class="quand">SEP → NOV · terminé</div>
+      </div>
+      <span class="cpt">4 entraînements</span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </article>
+
+    <article class="theme" style="--accent:var(--th-actif)">
+      <div class="th">
+        <span class="tnum">02</span>
+        <div>
+          <h3 contenteditable="true" spellcheck="false">Réseau d'échange sur grand espace</h3>
+          <div class="quand">NOV → JAN <span class="modif">modifier la période</span></div>
+          <div class="ttags"><span>Attaque placée</span><span>Grand espace</span><span class="add">+ tag</span></div>
+        </div>
+        <span class="tmenu">⋮</span>
+      </div>
+      <div class="desc">
+        <p>Augmenter le nombre de solutions offertes au porteur : <b>écartement</b> pour créer les intervalles, <b>étagement</b> pour proposer une passe en avant et une passe en retrait.</p>
+        <ul>
+          <li>Repères pour les non-porteurs : distance de passe, orientation d'appuis</li>
+          <li>Le défenseur du PDB : sortir ou rester ?</li>
+        </ul>
+      </div>
+      <div class="seances">
+        <div class="sk"><span>Entraînements du thème</span><span class="cpt">4</span></div>
+        <div class="sn faite"><span class="dot" style="background:var(--th-passe)"></span><span class="ti">Travail réseau GE — écartement</span><span class="dat">mar. 10 nov.</span><span class="badge faite">Faite</span></div>
+        <div class="sn estprochaine"><span class="dot" style="background:var(--th-actif)"></span><span class="ti">Défense du PDB + enchaînements</span><span class="dat">mar. 24 nov.</span><span class="badge prochaine">Prochaine</span></div>
+        <div class="sn ouvert"><span class="dot" style="background:var(--th-futur)"></span><span class="ti">Plateau — mise en situation</span><span class="dat on">sam. 28 nov.</span>
+          <div class="cald">
+            <div class="ch"><span>‹</span><b>Novembre 2026</b><span>›</span></div>
+            <div class="cg">
+              <i>L</i><i>M</i><i>M</i><i>J</i><i>V</i><i>S</i><i>D</i>
+              <span class="o">26</span><span class="o">27</span><span class="o">28</span><span class="o">29</span><span class="o">30</span><span class="o">31</span><span>1</span>
+              <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+              <span>9</span><span class="fait">10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span>
+              <span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span>
+              <span>23</span><span class="fait">24</span><span>25</span><span>26</span><span>27</span><span class="sel">28</span><span>29</span>
+              <span>30</span><span class="o">1</span><span class="o">2</span><span class="o">3</span><span class="o">4</span><span class="o">5</span><span class="o">6</span>
+            </div>
+            <div class="cf"><span class="hr">Mardi 24 novembre 2026</span><span class="eff">retirer la date</span></div>
+          </div>
+        </div>
+        <div class="sn"><span class="dot" style="background:var(--st-brouillon)"></span><span class="ti">Étagement — situation 3c3</span><span class="dat vide">+ dater</span></div>
+        <div class="ajout">
+          <button class="a pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Nouvel entraînement dans ce thème</button>
+          <button class="a">Rattacher un entraînement existant</button>
+        </div>
+      </div>
+      <div class="commu">
+        <div class="ct" onclick="this.closest('.commu').classList.toggle('on')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg>
+          <span class="tx"><b>Dans la communauté</b> — 12 entraînements sur « Attaque placée · Grand espace »</span>
+          <span class="vo">voir</span>
+        </div>
+        <div class="liste">
+          <div class="sn"><span class="dot" style="background:var(--th-passe)"></span><span class="ti">Étagement à 3 — montée de balle rapide</span><span class="aut">par C. Meunier</span><span class="add">ajouter</span></div>
+          <div class="sn"><span class="dot" style="background:var(--th-passe)"></span><span class="ti">Écartement : 4 ateliers en vagues</span><span class="aut">par HBC Mérignac</span><span class="add">ajouter</span></div>
+          <div class="note">Ajouter un entraînement de la communauté en crée une copie chez toi — l'auteur reste crédité.</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="theme" style="--accent:var(--th-futur)">
+      <div class="th">
+        <span class="tnum">03</span>
+        <div>
+          <h3 contenteditable="true" spellcheck="false">Débordement du PDB</h3>
+          <div class="quand">JAN → AVR <span class="modif">modifier la période</span></div>
+          <div class="ttags"><span>Attaque placée</span><span>Débordement</span><span class="add">+ tag</span></div>
+        </div>
+        <span class="tmenu">⋮</span>
+      </div>
+      <div class="desc"><p class="ph">Décris ici ce que tu veux faire progresser — texte libre, listes, mise en forme.</p></div>
+      <div class="seances">
+        <div class="sk"><span>Entraînements du thème</span><span class="cpt">0</span></div>
+        <div class="ajout">
+          <button class="a pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Nouvel entraînement dans ce thème</button>
+          <button class="a">Rattacher un entraînement existant</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="theme replie" style="--accent:var(--th-actif)" title="Déplier ce thème">
+      <span class="tnum">04</span>
+      <div>
+        <h3>Motricité &amp; duels GB</h3>
+        <div class="quand">Toute l'année</div>
+      </div>
+      <span class="cpt">6 entraînements</span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </article>
+
+    <div class="add-theme"><span>+</span> Nouveau thème</div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('keydown',e=>{
+    if(e.key.toLowerCase()==='t'&&!e.target.isContentEditable&&e.target.tagName!=='INPUT'){
+      const r=document.documentElement;
+      const s=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+      r.dataset.theme=s?'light':'dark';
+    }
+  });
+</script>
+</body>
+</html>

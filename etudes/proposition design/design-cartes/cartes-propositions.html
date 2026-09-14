@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Propositions — Cartes d'entraînement</title>
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link href="https://api.fontshare.com/v2/css?f[]=cal-sans@400,600&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --primary: #6f3ff5; --primary-d: #5b2fd6; --primary-soft: #efe9ff;
+    --ink: #1c1b22; --ink-soft: #4b4a55; --muted: #8a889a; --line: #e7e6ee;
+    --bg: #f4f3f8; --card: #ffffff;
+    --pret: #16a34a;      --pret-soft: #e8f6ed;
+    --termine: #0d8f63;   --termine-soft: #e3f5ee;
+    --encours: #ea8a0c;   --encours-soft: #fdf1df;
+    --brouillon: #8a889a; --brouillon-soft: #eceaf0;
+    --mea: #f97316;       --mea-soft: #fff1e6;
+    --danger: #dc2626;
+    --font-heading: "Cal Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "Geist Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background: radial-gradient(1400px 600px at 80% -10%, #ece6ff 0%, transparent 60%), var(--bg);
+    color: var(--ink); -webkit-font-smoothing: antialiased;
+    padding: 48px clamp(20px, 4vw, 56px) 96px; line-height: 1.5;
+  }
+  svg { display: block; }
+
+  .page-head { max-width: 880px; }
+  .page-head .kicker { font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--primary); font-weight: 600; }
+  .page-head h1 { font-family: var(--font-heading); font-weight: 600; font-size: clamp(30px, 4vw, 44px); line-height: 1.05; margin: 10px 0 14px; letter-spacing: -.01em; }
+  .page-head p { color: var(--ink-soft); font-size: 15.5px; max-width: 78ch; }
+  .legend { margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 18px; font-size: 13px; color: var(--ink-soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .dot { width: 9px; height: 9px; border-radius: 99px; }
+
+  .concept { margin: 78px 0 0; }
+  .concept-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+  .concept-num { font-family: var(--font-heading); font-size: 22px; color: var(--primary); }
+  .concept-head h2 { font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.01em; }
+  .concept-head .tag { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 99px; padding: 4px 11px; }
+  .concept-head .why { flex-basis: 100%; color: var(--ink-soft); font-size: 14px; margin-top: 2px; max-width: 92ch; }
+  .col-label { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; font-weight: 600; }
+
+  /* Grille réelle : 3 colonnes pleine largeur, gap-6 (24px) */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 1500px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 900px)  { .grid { grid-template-columns: 1fr; } }
+
+  /* éléments réutilisables */
+  .theme { font-family: var(--font-heading); font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
+  .cats { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cat-strong { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--primary); background: var(--primary-soft); border-radius: 7px; padding: 3px 8px; }
+  .cat-outline { font-size: 11.5px; font-weight: 700; color: var(--ink-soft); border: 1.5px solid var(--line); border-radius: 8px; padding: 3px 9px; }
+  .kw-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .kw { font-size: 11px; letter-spacing: .03em; color: var(--muted); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; }
+  .kw.more { color: var(--primary); background: var(--primary-soft); border-color: transparent; }
+  .author { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .author .ava { width: 22px; height: 22px; border-radius: 99px; background: var(--primary-soft); color: var(--primary); font-weight: 700; font-size: 10px; display: grid; place-items: center; flex: 0 0 auto; }
+  .author.mea { color: var(--mea); font-weight: 600; }
+  .author.mea .ava { background: var(--mea-soft); color: var(--mea); }
+  .status-chip { display: inline-flex; align-items: center; gap: 7px; font-weight: 600; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 5px 11px 5px 9px; border-radius: 99px; color: var(--accent); background: var(--accent-soft); }
+  .status-chip .sdot { width: 8px; height: 8px; border-radius: 99px; background: var(--accent); }
+  .badge { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 6px 13px; border-radius: 99px; }
+  .badge svg { width: 14px; height: 14px; }
+  .mea-ribbon { display: inline-flex; align-items: center; gap: 6px; background: var(--mea); color: #fff; font-size: 11.5px; font-weight: 700; letter-spacing: .02em; padding: 4px 11px 4px 8px; border-radius: 99px; box-shadow: 0 4px 10px -3px color-mix(in srgb, var(--mea) 55%, transparent); white-space: nowrap; }
+  .mea-ribbon .logo { width: 16px; height: 16px; border-radius: 4px; background: #fff; color: var(--mea); display: grid; place-items: center; font-size: 10px; }
+  /* marqueur « partagé dans un groupe » NON mis en avant : neutre, discret */
+  .groupe-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); background: var(--bg); border: 1px solid var(--line); border-radius: 99px; padding: 3px 10px 3px 8px; white-space: nowrap; }
+  .groupe-tag svg { width: 13px; height: 13px; color: var(--muted); }
+  .author.groupe { color: var(--ink-soft); }
+  .author.groupe .ava { background: var(--primary-soft); color: var(--primary); }
+
+  /* ====== Carte horizontale (exploite la largeur ~560px) ====== */
+  .card { display: flex; background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(20,18,40,.04), 0 8px 22px -16px rgba(20,18,40,.3); height: 100%; }
+  .card .main { flex: 1; min-width: 0; padding: 18px 20px; display: flex; flex-direction: column; gap: 11px; }
+  .card .head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .card .theme { font-size: 22px; line-height: 1.12; }
+  .card .obj { font-size: 14.5px; color: var(--ink-soft); line-height: 1.42; }
+  .card .obj.vide { color: var(--muted); font-style: italic; }
+  .card .kw-row { margin-top: auto; padding-top: 4px; }
+  /* rail droit : méta + actions toujours visibles */
+  .card .rail { flex: 0 0 212px; border-left: 1px solid var(--line); padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; background: color-mix(in srgb, var(--bg) 45%, var(--card)); }
+  .rail .meta { display: flex; flex-direction: column; gap: 9px; }
+  .metaitem { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .metaitem b { font-family: var(--font-heading); font-weight: 600; font-size: 15px; color: var(--ink); letter-spacing: 0; text-transform: none; }
+  .rail .author { padding-top: 12px; border-top: 1px solid var(--line); }
+  .rail .acts { margin-top: auto; display: flex; flex-direction: column; gap: 9px; }
+
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--primary); color: #fff; border: none; border-radius: 10px; padding: 10px 14px; font-family: var(--font-body); font-size: 13.5px; font-weight: 600; cursor: pointer; box-shadow: 0 6px 16px -8px var(--primary); transition: background .2s; }
+  .btn-primary:hover { background: var(--primary-d); }
+  .iconrow { display: flex; gap: 7px; justify-content: space-between; }
+  .icon-btn { width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--line); background: var(--card); color: var(--ink-soft); display: grid; place-items: center; cursor: pointer; transition: all .18s; }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .icon-btn:hover { color: var(--primary); border-color: color-mix(in srgb, var(--primary) 40%, var(--line)); background: var(--primary-soft); }
+  .icon-btn.danger:hover { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, var(--line)); background: #fdecec; }
+
+  /* ---- variantes concept ---- */
+  /* 01 Tranche statut */
+  .c1 .card { border-left: 6px solid var(--accent); }
+  .c1 .card.is-mea { border-color: color-mix(in srgb, var(--mea) 32%, var(--line)); border-left-color: var(--accent); }
+  /* 02 En-tête teinté → fond lavé par le statut + badge plein */
+  .c2 .card { background: linear-gradient(115deg, var(--accent-soft), var(--card) 52%); }
+  .c2 .card .rail { background: color-mix(in srgb, var(--accent-soft) 35%, var(--card)); border-left-color: color-mix(in srgb, var(--accent) 16%, var(--line)); }
+  /* 03 Magazine → coins nets, overline, citation */
+  .c3 .card { border-radius: 6px; }
+  .c3 .card.is-mea { box-shadow: inset 4px 0 0 var(--mea), 0 1px 2px rgba(20,18,40,.04); }
+  .c3 .overline { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+  .c3 .overline .st { color: var(--accent); display: inline-flex; align-items: center; gap: 7px; }
+  .c3 .overline .st .sdot { width: 8px; height: 8px; border-radius: 99px; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+  .c3 .overline .bar { flex: 1; height: 1px; background: var(--line); }
+  .c3 .overline .cats { color: var(--muted); letter-spacing: .1em; }
+  .c3 .card .theme { font-size: 25px; }
+  .c3 .card .obj { font-style: italic; font-size: 15px; position: relative; padding-left: 20px; }
+  .c3 .card .obj::before { content: "\201C"; position: absolute; left: -2px; top: -8px; font-family: Georgia, serif; font-size: 36px; color: var(--accent); line-height: 1; font-style: normal; }
+  .c3 .card .obj.vide { padding-left: 0; }
+  .c3 .card .obj.vide::before { content: ""; }
+  .c3 .card .rail { background: var(--card); }
+
+  /* ====== Téléphone (mobile = carte verticale) ====== */
+  .phone-wrap { margin-top: 36px; }
+  .phone { width: 372px; border-radius: 40px; padding: 13px; background: #0e0d14; box-shadow: 0 30px 60px -30px rgba(20,18,40,.6), inset 0 0 0 2px #2a2838; }
+  .phone .screen { background: var(--bg); border-radius: 28px; overflow: hidden; padding: 16px 13px; }
+  .phone .notch { width: 110px; height: 6px; border-radius: 99px; background: #2a2838; margin: 2px auto 14px; }
+  .phone .stackm { display: flex; flex-direction: column; gap: 14px; }
+  /* la carte horizontale repasse en vertical dans le téléphone */
+  .phone .card { flex-direction: column; }
+  .phone .card .rail { flex-basis: auto; border-left: none; border-top: 1px solid var(--line); background: transparent; padding: 14px 20px 16px; }
+  .phone .card .main { gap: 10px; padding-bottom: 8px; }
+  .phone .card .theme { font-size: 19px; }
+  .phone .card .kw-row { margin-top: 6px; }
+  .phone .rail .meta { flex-direction: row; flex-wrap: wrap; gap: 6px 16px; }
+  .phone .metaitem { flex-direction: row; gap: 6px; }
+  /* split button MD3 sur mobile */
+  .split { display: flex; width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 16px -8px var(--primary); }
+  .split .main2 { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--primary); color: #fff; border: none; padding: 12px; font-weight: 600; font-size: 14px; font-family: var(--font-body); cursor: pointer; }
+  .split .more { width: 50px; background: var(--primary-d); color: #fff; border: none; display: grid; place-items: center; cursor: pointer; border-left: 1px solid rgba(255,255,255,.22); }
+  .split .more svg { width: 18px; height: 18px; }
+  .menu { margin-top: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 6px; box-shadow: 0 14px 30px -16px rgba(20,18,40,.4); }
+  .menu .item { display: flex; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 8px; font-size: 14px; color: var(--ink-soft); }
+  .menu .item svg { width: 17px; height: 17px; }
+  .menu .item.danger { color: var(--danger); }
+  .menu hr { border: none; border-top: 1px solid var(--line); margin: 4px 2px; }
+  .ic { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+  <header class="page-head">
+    <div class="kicker">Place aux coachs · Refonte des cartes</div>
+    <h1>3 directions — grille pleine largeur</h1>
+    <p>Grille réelle reproduite : <strong>3 colonnes</strong> (≥1920px) de cartes larges (~560px). À cette largeur, une carte verticale sonne creux : je passe en <strong>mise en page horizontale</strong> — contenu à gauche (statut, catégories, thème, objectif), <strong>rail d'actions + méta toujours visible à droite</strong>. Le « groupe mis en avant » reste un marqueur additif (ruban orange) qui ne change pas la structure. Preview mobile dessous (carte repliée en vertical + split button).</p>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--pret)"></i> Prêt</span>
+      <span><i class="dot" style="background:var(--termine)"></i> Terminé</span>
+      <span><i class="dot" style="background:var(--encours)"></i> En cours</span>
+      <span><i class="dot" style="background:var(--brouillon)"></i> Brouillon</span>
+      <span><i class="dot" style="background:var(--mea)"></i> Groupe mis en avant (ruban orange)</span>
+      <span><i class="dot" style="background:var(--muted)"></i> Groupe non mis en avant (pastille neutre)</span>
+    </div>
+  </header>
+
+  <!-- ============================== CONCEPT 1 ============================== -->
+  <section class="concept c1">
+    <div class="concept-head">
+      <span class="concept-num">01</span><h2>Tranche statut</h2>
+      <span class="tag">Scan rapide · code couleur</span>
+      <p class="why">Tranche verticale colorée par le statut. Contenu prioritaire à gauche, rail d'actions à droite (CTA + Animer · PDF · Partager · Dupliquer · Supprimer) avec la méta (situations, date, durée, effectif) au-dessus. Le ruban orange « mis en avant » se pose en haut à droite.</p>
+    </div>
+    <div class="col-label">Desktop · grille 3 colonnes</div>
+    <div class="grid">
+
+      <article class="card" style="--accent:var(--pret);--accent-soft:var(--pret-soft)">
+        <div class="main">
+          <div class="head-row"><span class="status-chip"><i class="sdot"></i>Prêt</span><div class="cats"><span class="cat-strong">U15</span></div></div>
+          <h3 class="theme">Attaque placée — fixer &amp; renverser</h3>
+          <p class="obj">Créer le surnombre côté faible par une passe rapide après fixation de l'aile forte.</p>
+          <div class="kw-row"><span class="kw">Attaque 1/2 terrain</span><span class="kw">Renversement</span><span class="kw more">+3</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta">
+            <div class="metaitem">Situations <b>4</b></div>
+            <div class="metaitem">Durée <b>90 min</b></div>
+            <div class="metaitem">Effectif <b>12</b></div>
+            <div class="metaitem">Date <b>6 juin</b></div>
+          </div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Dupliquer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card is-mea" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+        <div class="main">
+          <div class="head-row"><span class="status-chip"><i class="sdot"></i>Terminé</span><span class="mea-ribbon"><span class="logo">CG</span>Comité de Gironde</span></div>
+          <div class="cats"><span class="cat-strong">U13</span><span class="cat-strong">U15</span></div>
+          <h3 class="theme">Montée de balle &amp; jeu de transition</h3>
+          <p class="obj">Exploiter la récupération pour marquer avant le repli défensif adverse.</p>
+          <div class="kw-row"><span class="kw">Contre-attaque</span><span class="kw">Transition</span><span class="kw more">+4</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta">
+            <div class="metaitem">Situations <b>6</b></div>
+            <div class="metaitem">Durée <b>75 min</b></div>
+            <div class="metaitem">Date <b>6 juin</b></div>
+          </div>
+          <div class="author mea"><span class="ava">CG</span>Comité de Gironde</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Partager"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--encours);--accent-soft:var(--encours-soft)">
+        <div class="main">
+          <div class="head-row"><span class="status-chip"><i class="sdot"></i>En cours</span><div class="cats"><span class="cat-strong">U18</span><span class="cat-strong">Seniors</span></div></div>
+          <h3 class="theme">Défense 1-5 agressive</h3>
+          <p class="obj">Provoquer la perte de balle par des sorties coordonnées sur le porteur.</p>
+          <div class="kw-row"><span class="kw">Défense</span><span class="kw">Duel</span><span class="kw more">+2</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta">
+            <div class="metaitem">Situations <b>2</b></div>
+            <div class="metaitem">Durée <b>60 min</b></div>
+            <div class="metaitem">Date <b>6 juin</b></div>
+          </div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Dupliquer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+        <div class="main">
+          <div class="head-row"><span class="status-chip"><i class="sdot"></i>Terminé</span><span class="groupe-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>ASPTT Bordeaux</span></div>
+          <div class="cats"><span class="cat-strong">U11</span></div>
+          <h3 class="theme">Gardien — duel en face-à-face</h3>
+          <p class="obj">Améliorer la lecture du tireur et le timing de sortie sur jet de 7 m.</p>
+          <div class="kw-row"><span class="kw">Gardien</span><span class="kw">Tir</span><span class="kw more">+1</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta">
+            <div class="metaitem">Situations <b>5</b></div>
+            <div class="metaitem">Durée <b>80 min</b></div>
+            <div class="metaitem">Date <b>2 juin</b></div>
+          </div>
+          <div class="author groupe"><span class="ava">ML</span>Marie L. · ASPTT Bordeaux</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Dupliquer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card is-mea" style="--accent:var(--pret);--accent-soft:var(--pret-soft)">
+        <div class="main">
+          <div class="head-row"><span class="status-chip"><i class="sdot"></i>Prêt</span><span class="mea-ribbon"><span class="logo">HI</span>HBC Izon</span></div>
+          <div class="cats"><span class="cat-strong">Seniors</span></div>
+          <h3 class="theme">Jeu en supériorité numérique</h3>
+          <p class="obj">Exploiter le surnombre temporaire après une exclusion adverse.</p>
+          <div class="kw-row"><span class="kw">Attaque</span><span class="kw">Supériorité</span><span class="kw more">+2</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta">
+            <div class="metaitem">Situations <b>3</b></div>
+            <div class="metaitem">Durée <b>90 min</b></div>
+            <div class="metaitem">Date <b>1 juin</b></div>
+          </div>
+          <div class="author mea"><span class="ava">HI</span>HBC Izon</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Partager"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--brouillon);--accent-soft:var(--brouillon-soft)">
+        <div class="main">
+          <div class="head-row"><span class="status-chip"><i class="sdot"></i>Brouillon</span><div class="cats"><span class="cat-strong">U9</span></div></div>
+          <h3 class="theme">Motricité &amp; passes en mouvement</h3>
+          <p class="obj vide">Objectif non spécifié</p>
+          <div class="kw-row"></div>
+        </div>
+        <div class="rail">
+          <div class="meta">
+            <div class="metaitem">Situations <b>1</b></div>
+            <div class="metaitem">Date <b>30 mai</b></div>
+          </div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow" style="justify-content:flex-start;gap:8px;">
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="phone-wrap">
+      <div class="col-label">Mobile</div>
+      <div class="phone"><div class="screen"><div class="notch"></div><div class="stackm">
+        <article class="card is-mea" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+          <div class="main">
+            <div class="head-row"><span class="status-chip"><i class="sdot"></i>Terminé</span><span class="mea-ribbon"><span class="logo">CG</span>Gironde</span></div>
+            <div class="cats"><span class="cat-strong">U13</span><span class="cat-strong">U15</span></div>
+            <h3 class="theme">Montée de balle &amp; transition</h3>
+            <p class="obj">Marquer avant le repli défensif adverse.</p>
+            <div class="kw-row"><span class="kw">Contre-attaque</span><span class="kw more">+5</span></div>
+          </div>
+          <div class="rail">
+            <div class="meta"><div class="metaitem">Situations <b>6</b></div><div class="metaitem">Durée <b>75 min</b></div></div>
+            <div class="author mea" style="border-top:1px solid var(--line);"><span class="ava">CG</span>Comité de Gironde</div>
+            <div class="split">
+              <button class="main2"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>Animer</button>
+              <button class="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+            <div class="menu">
+              <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Afficher l'entraînement</div>
+              <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Télécharger le PDF</div>
+              <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>Partager au groupe</div>
+              <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Dupliquer</div>
+              <hr/>
+              <div class="item danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>Supprimer</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--accent:var(--encours);--accent-soft:var(--encours-soft)">
+          <div class="main">
+            <div class="head-row"><span class="status-chip"><i class="sdot"></i>En cours</span><div class="cats"><span class="cat-strong">U18</span></div></div>
+            <h3 class="theme">Défense 1-5 agressive</h3>
+            <p class="obj">Provoquer la perte de balle sur le porteur.</p>
+          </div>
+          <div class="rail">
+            <div class="meta"><div class="metaitem">Situations <b>2</b></div><div class="metaitem">Durée <b>60 min</b></div></div>
+            <div class="split">
+              <button class="main2"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>Animer</button>
+              <button class="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+          </div>
+        </article>
+      </div></div></div>
+    </div>
+  </section>
+
+  <!-- ============================== CONCEPT 2 ============================== -->
+  <section class="concept c2">
+    <div class="concept-head">
+      <span class="concept-num">02</span><h2>Fond teinté</h2>
+      <span class="tag">Color-blocking · badge plein</span>
+      <p class="why">La carte entière est légèrement lavée par la couleur du <strong>statut</strong> + badge plein. Le groupe mis en avant ajoute son ruban orange sans recolorer la carte. Même rail d'actions à droite.</p>
+    </div>
+    <div class="col-label">Desktop · grille 3 colonnes</div>
+    <div class="grid">
+
+      <article class="card" style="--accent:var(--pret);--accent-soft:var(--pret-soft)">
+        <div class="main">
+          <div class="head-row"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg>Prêt</span><div class="cats"><span class="cat-outline">U15</span></div></div>
+          <h3 class="theme">Attaque placée — fixer &amp; renverser</h3>
+          <p class="obj">Créer le surnombre côté faible par une passe rapide après fixation de l'aile forte.</p>
+          <div class="kw-row"><span class="kw">Attaque 1/2 terrain</span><span class="kw">Renversement</span><span class="kw more">+3</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>4</b></div><div class="metaitem">Durée <b>90 min</b></div><div class="metaitem">Date <b>6 juin</b></div></div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Dupliquer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card is-mea" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+        <div class="main">
+          <div class="head-row" style="flex-wrap:wrap;gap:8px;"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Terminé</span><span class="mea-ribbon"><span class="logo">CG</span>Comité de Gironde</span></div>
+          <div class="cats"><span class="cat-outline">U13</span><span class="cat-outline">U15</span></div>
+          <h3 class="theme">Montée de balle &amp; jeu de transition</h3>
+          <p class="obj">Exploiter la récupération pour marquer avant le repli défensif adverse.</p>
+          <div class="kw-row"><span class="kw">Contre-attaque</span><span class="kw">Transition</span><span class="kw more">+4</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>6</b></div><div class="metaitem">Durée <b>75 min</b></div><div class="metaitem">Date <b>6 juin</b></div></div>
+          <div class="author mea"><span class="ava">CG</span>Comité de Gironde</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Partager"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--encours);--accent-soft:var(--encours-soft)">
+        <div class="main">
+          <div class="head-row"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3a9 9 0 1 0 9 9"/></svg>En cours</span><div class="cats"><span class="cat-outline">U18</span><span class="cat-outline">Seniors</span></div></div>
+          <h3 class="theme">Défense 1-5 agressive</h3>
+          <p class="obj">Provoquer la perte de balle par des sorties coordonnées sur le porteur.</p>
+          <div class="kw-row"><span class="kw">Défense</span><span class="kw">Duel</span><span class="kw more">+2</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>2</b></div><div class="metaitem">Durée <b>60 min</b></div><div class="metaitem">Date <b>6 juin</b></div></div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Dupliquer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+        <div class="main">
+          <div class="head-row"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Terminé</span><span class="groupe-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>ASPTT Bordeaux</span></div>
+          <div class="cats"><span class="cat-outline">U11</span></div>
+          <h3 class="theme">Gardien — duel en face-à-face</h3>
+          <p class="obj">Améliorer la lecture du tireur et le timing de sortie sur jet de 7 m.</p>
+          <div class="kw-row"><span class="kw">Gardien</span><span class="kw">Tir</span><span class="kw more">+1</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>5</b></div><div class="metaitem">Durée <b>80 min</b></div><div class="metaitem">Date <b>2 juin</b></div></div>
+          <div class="author groupe"><span class="ava">ML</span>Marie L. · ASPTT Bordeaux</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Partager"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card is-mea" style="--accent:var(--pret);--accent-soft:var(--pret-soft)">
+        <div class="main">
+          <div class="head-row" style="flex-wrap:wrap;gap:8px;"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg>Prêt</span><span class="mea-ribbon"><span class="logo">HI</span>HBC Izon</span></div>
+          <div class="cats"><span class="cat-outline">Seniors</span></div>
+          <h3 class="theme">Jeu en supériorité numérique</h3>
+          <p class="obj">Exploiter le surnombre temporaire après une exclusion adverse.</p>
+          <div class="kw-row"><span class="kw">Attaque</span><span class="kw">Supériorité</span><span class="kw more">+2</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>3</b></div><div class="metaitem">Durée <b>90 min</b></div><div class="metaitem">Date <b>1 juin</b></div></div>
+          <div class="author mea"><span class="ava">HI</span>HBC Izon</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Partager"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--brouillon);--accent-soft:var(--brouillon-soft)">
+        <div class="main">
+          <div class="head-row"><span class="badge" style="background:var(--brouillon)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="3 3"><circle cx="12" cy="12" r="9"/></svg>Brouillon</span><div class="cats"><span class="cat-outline">U9</span></div></div>
+          <h3 class="theme">Motricité &amp; passes en mouvement</h3>
+          <p class="obj vide">Objectif non spécifié</p>
+          <div class="kw-row"></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>1</b></div><div class="metaitem">Date <b>30 mai</b></div></div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow" style="justify-content:flex-start;gap:8px;">
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="phone-wrap">
+      <div class="col-label">Mobile</div>
+      <div class="phone"><div class="screen"><div class="notch"></div><div class="stackm">
+        <article class="card is-mea" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+          <div class="main">
+            <div class="head-row" style="flex-wrap:wrap;gap:8px;"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Terminé</span><span class="mea-ribbon"><span class="logo">CG</span>Gironde</span></div>
+            <div class="cats"><span class="cat-outline">U13</span><span class="cat-outline">U15</span></div>
+            <h3 class="theme">Montée de balle &amp; transition</h3>
+            <p class="obj">Marquer avant le repli défensif adverse.</p>
+            <div class="kw-row"><span class="kw">Contre-attaque</span><span class="kw more">+5</span></div>
+          </div>
+          <div class="rail">
+            <div class="meta"><div class="metaitem">Situations <b>6</b></div><div class="metaitem">Durée <b>75 min</b></div></div>
+            <div class="author mea" style="border-top:1px solid var(--line);"><span class="ava">CG</span>Comité de Gironde</div>
+            <div class="split">
+              <button class="main2"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>Animer</button>
+              <button class="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--accent:var(--pret);--accent-soft:var(--pret-soft)">
+          <div class="main">
+            <div class="head-row"><span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/></svg>Prêt</span><div class="cats"><span class="cat-outline">U15</span></div></div>
+            <h3 class="theme">Attaque placée — renverser</h3>
+            <p class="obj">Créer le surnombre côté faible.</p>
+          </div>
+          <div class="rail">
+            <div class="meta"><div class="metaitem">Situations <b>4</b></div><div class="metaitem">Durée <b>90 min</b></div></div>
+            <div class="split">
+              <button class="main2"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>Animer</button>
+              <button class="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+          </div>
+        </article>
+      </div></div></div>
+    </div>
+  </section>
+
+  <!-- ============================== CONCEPT 3 ============================== -->
+  <section class="concept c3">
+    <div class="concept-head">
+      <span class="concept-num">03</span><h2>Magazine</h2>
+      <span class="tag">Éditorial · respiration</span>
+      <p class="why">Overline « statut • catégories », thème en gros titre, objectif cité. Le mis en avant ajoute un liseré orange + ruban. Rail d'actions épuré à droite.</p>
+    </div>
+    <div class="col-label">Desktop · grille 3 colonnes</div>
+    <div class="grid">
+
+      <article class="card" style="--accent:var(--pret);--accent-soft:var(--pret-soft)">
+        <div class="main">
+          <div class="overline"><span class="st"><i class="sdot"></i>Prêt</span><span class="bar"></span><span class="cats">U15</span></div>
+          <h3 class="theme">Attaque placée — fixer &amp; renverser</h3>
+          <p class="obj">Créer le surnombre côté faible par une passe rapide après fixation de l'aile forte.</p>
+          <div class="kw-row"><span class="kw">Attaque 1/2 terrain</span><span class="kw">Renversement</span><span class="kw more">+3</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>4</b></div><div class="metaitem">Durée <b>90 min</b></div><div class="metaitem">Date <b>6 juin</b></div></div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Dupliquer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card is-mea" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+        <div class="main">
+          <div class="overline"><span class="st"><i class="sdot"></i>Terminé</span><span class="bar"></span><span class="mea-ribbon"><span class="logo">CG</span>Comité de Gironde</span></div>
+          <h3 class="theme">Montée de balle &amp; jeu de transition</h3>
+          <p class="obj">Exploiter la récupération pour marquer avant le repli défensif adverse.</p>
+          <div class="kw-row"><span class="kw">U13 · U15</span><span class="kw">Contre-attaque</span><span class="kw more">+4</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>6</b></div><div class="metaitem">Durée <b>75 min</b></div><div class="metaitem">Date <b>6 juin</b></div></div>
+          <div class="author mea"><span class="ava">CG</span>Comité de Gironde</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Partager"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--encours);--accent-soft:var(--encours-soft)">
+        <div class="main">
+          <div class="overline"><span class="st"><i class="sdot"></i>En cours</span><span class="bar"></span><span class="cats">U18 · Seniors</span></div>
+          <h3 class="theme">Défense 1-5 agressive</h3>
+          <p class="obj">Provoquer la perte de balle par des sorties coordonnées sur le porteur.</p>
+          <div class="kw-row"><span class="kw">Défense</span><span class="kw">Duel</span><span class="kw more">+2</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>2</b></div><div class="metaitem">Durée <b>60 min</b></div><div class="metaitem">Date <b>6 juin</b></div></div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Dupliquer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+        <div class="main">
+          <div class="overline"><span class="st"><i class="sdot"></i>Terminé</span><span class="bar"></span><span class="groupe-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>ASPTT Bordeaux</span></div>
+          <h3 class="theme">Gardien — duel en face-à-face</h3>
+          <p class="obj">Améliorer la lecture du tireur et le timing de sortie sur jet de 7 m.</p>
+          <div class="kw-row"><span class="kw">U11</span><span class="kw">Gardien</span><span class="kw more">+2</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>5</b></div><div class="metaitem">Durée <b>80 min</b></div><div class="metaitem">Date <b>2 juin</b></div></div>
+          <div class="author groupe"><span class="ava">ML</span>Marie L. · ASPTT Bordeaux</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Partager"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card is-mea" style="--accent:var(--pret);--accent-soft:var(--pret-soft)">
+        <div class="main">
+          <div class="overline"><span class="st"><i class="sdot"></i>Prêt</span><span class="bar"></span><span class="mea-ribbon"><span class="logo">HI</span>HBC Izon</span></div>
+          <h3 class="theme">Jeu en supériorité numérique</h3>
+          <p class="obj">Exploiter le surnombre temporaire après une exclusion adverse.</p>
+          <div class="kw-row"><span class="kw">Seniors</span><span class="kw">Attaque</span><span class="kw more">+2</span></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>3</b></div><div class="metaitem">Durée <b>90 min</b></div><div class="metaitem">Date <b>1 juin</b></div></div>
+          <div class="author mea"><span class="ava">HI</span>HBC Izon</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow">
+              <button class="icon-btn" title="Animer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg></button>
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn" title="Partager"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:var(--brouillon);--accent-soft:var(--brouillon-soft)">
+        <div class="main">
+          <div class="overline"><span class="st"><i class="sdot"></i>Brouillon</span><span class="bar"></span><span class="cats">U9</span></div>
+          <h3 class="theme">Motricité &amp; passes en mouvement</h3>
+          <p class="obj vide">Objectif non spécifié</p>
+          <div class="kw-row"></div>
+        </div>
+        <div class="rail">
+          <div class="meta"><div class="metaitem">Situations <b>1</b></div><div class="metaitem">Date <b>30 mai</b></div></div>
+          <div class="author"><span class="ava">JD</span>Jérôme D.</div>
+          <div class="acts">
+            <button class="btn-primary">Afficher</button>
+            <div class="iconrow" style="justify-content:flex-start;gap:8px;">
+              <button class="icon-btn" title="PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+              <button class="icon-btn danger" title="Supprimer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="phone-wrap">
+      <div class="col-label">Mobile</div>
+      <div class="phone"><div class="screen"><div class="notch"></div><div class="stackm">
+        <article class="card is-mea" style="--accent:var(--termine);--accent-soft:var(--termine-soft)">
+          <div class="main">
+            <div class="overline"><span class="st"><i class="sdot"></i>Terminé</span><span class="bar"></span><span class="mea-ribbon"><span class="logo">CG</span>Gironde</span></div>
+            <h3 class="theme">Montée de balle &amp; transition</h3>
+            <p class="obj">Marquer avant le repli défensif adverse.</p>
+            <div class="kw-row"><span class="kw">U13 · U15</span><span class="kw more">+5</span></div>
+          </div>
+          <div class="rail">
+            <div class="meta"><div class="metaitem">Situations <b>6</b></div><div class="metaitem">Durée <b>75 min</b></div></div>
+            <div class="author mea" style="border-top:1px solid var(--line);"><span class="ava">CG</span>Comité de Gironde</div>
+            <div class="split">
+              <button class="main2"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>Animer</button>
+              <button class="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--accent:var(--encours);--accent-soft:var(--encours-soft)">
+          <div class="main">
+            <div class="overline"><span class="st"><i class="sdot"></i>En cours</span><span class="bar"></span><span class="cats">U18</span></div>
+            <h3 class="theme">Défense 1-5 agressive</h3>
+            <p class="obj">Provoquer la perte de balle sur le porteur.</p>
+          </div>
+          <div class="rail">
+            <div class="meta"><div class="metaitem">Situations <b>2</b></div><div class="metaitem">Durée <b>60 min</b></div></div>
+            <div class="split">
+              <button class="main2"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>Animer</button>
+              <button class="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            </div>
+          </div>
+        </article>
+      </div></div></div>
+    </div>
+  </section>
+
+</body>
+</html>

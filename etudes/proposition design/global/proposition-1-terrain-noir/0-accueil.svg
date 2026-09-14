@@ -1,0 +1,417 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 4200" width="1440" height="4200">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .font-oswald { font-family: 'Oswald', sans-serif; }
+      .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+    <!-- Neon glow filters -->
+    <filter id="glowBlue" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#00D4FF" flood-opacity="0.6"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowOrange" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#FF6B35" flood-opacity="0.5"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowGreen" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#BCFF00" flood-opacity="0.5"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowText" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feFlood flood-color="#00D4FF" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <!-- Glassmorphism -->
+    <filter id="glass">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
+    </filter>
+    <!-- Grid pattern -->
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#ffffff" stroke-width="0.3" opacity="0.05"/>
+    </pattern>
+    <!-- Diagonal lines pattern -->
+    <pattern id="diagonals" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="20" stroke="#00D4FF" stroke-width="0.5" opacity="0.03"/>
+    </pattern>
+    <!-- Gradient definitions -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0A0F"/>
+      <stop offset="50%" stop-color="#0E0E18"/>
+      <stop offset="100%" stop-color="#0A0A0F"/>
+    </linearGradient>
+    <linearGradient id="neonGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00D4FF"/>
+      <stop offset="50%" stop-color="#7B61FF"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00D4FF"/>
+      <stop offset="100%" stop-color="#BCFF00"/>
+    </linearGradient>
+    <linearGradient id="ctaGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#FF3D71"/>
+    </linearGradient>
+    <linearGradient id="statGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#12121A"/>
+      <stop offset="100%" stop-color="#0A0A14"/>
+    </linearGradient>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1565C0"/>
+      <stop offset="100%" stop-color="#0D47A1"/>
+    </linearGradient>
+    <clipPath id="courtClip">
+      <rect x="370" y="520" width="700" height="340" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <!-- === BACKGROUND === -->
+  <rect width="1440" height="4200" fill="url(#bgGrad)"/>
+  <rect width="1440" height="4200" fill="url(#grid)"/>
+  <rect width="1440" height="4200" fill="url(#diagonals)"/>
+
+  <!-- Decorative diagonal slash top right -->
+  <polygon points="1200,0 1440,0 1440,300" fill="#00D4FF" opacity="0.03"/>
+  <polygon points="1250,0 1440,0 1440,240" fill="#FF6B35" opacity="0.02"/>
+
+  <!-- === NAVBAR === -->
+  <rect width="1440" height="72" fill="#0A0A0F" opacity="0.9"/>
+  <line x1="0" y1="72" x2="1440" y2="72" stroke="#ffffff" stroke-width="1" opacity="0.06"/>
+
+  <!-- Logo -->
+  <circle cx="60" cy="36" r="16" fill="none" stroke="#00D4FF" stroke-width="2" opacity="0.8"/>
+  <circle cx="60" cy="36" r="6" fill="#FF6B35"/>
+  <text x="88" y="42" class="font-oswald" fill="#ffffff" font-size="18" font-weight="600" letter-spacing="2">PLACE AUX COACHS</text>
+
+  <!-- Nav links -->
+  <text x="620" y="42" class="font-inter" fill="#ffffff" font-size="14" font-weight="400" opacity="0.6">Fonctionnalités</text>
+  <text x="770" y="42" class="font-inter" fill="#ffffff" font-size="14" font-weight="400" opacity="0.6">Communauté</text>
+  <text x="890" y="42" class="font-inter" fill="#ffffff" font-size="14" font-weight="400" opacity="0.6">Tarifs</text>
+
+  <!-- CTA Connexion -->
+  <rect x="1280" y="18" width="120" height="38" rx="4" fill="url(#ctaGrad)" filter="url(#glowOrange)"/>
+  <text x="1340" y="42" class="font-oswald" fill="#ffffff" font-size="14" font-weight="600" text-anchor="middle" letter-spacing="1">CONNEXION</text>
+
+  <!-- === HERO SECTION === -->
+  <!-- Ambient orbs -->
+  <circle cx="200" cy="350" r="200" fill="#00D4FF" opacity="0.04"/>
+  <circle cx="1200" cy="300" r="250" fill="#FF6B35" opacity="0.03"/>
+  <circle cx="700" cy="500" r="180" fill="#7B61FF" opacity="0.03"/>
+
+  <!-- Diagonal speed lines -->
+  <line x1="100" y1="150" x2="250" y2="120" stroke="#00D4FF" stroke-width="2" opacity="0.15"/>
+  <line x1="120" y1="170" x2="220" y2="150" stroke="#00D4FF" stroke-width="1" opacity="0.1"/>
+  <line x1="1200" y1="200" x2="1350" y2="170" stroke="#FF6B35" stroke-width="2" opacity="0.12"/>
+  <line x1="1220" y1="220" x2="1320" y2="200" stroke="#FF6B35" stroke-width="1" opacity="0.08"/>
+
+  <!-- Main headline -->
+  <text x="720" y="240" class="font-oswald" fill="#ffffff" font-size="80" font-weight="700" text-anchor="middle" letter-spacing="3">NE COACHEZ</text>
+  <text x="720" y="340" class="font-oswald" font-size="80" font-weight="700" text-anchor="middle" letter-spacing="3" filter="url(#glowText)">
+    <tspan fill="url(#heroGrad)">PLUS JAMAIS</tspan>
+  </text>
+  <text x="720" y="440" class="font-oswald" fill="#ffffff" font-size="80" font-weight="700" text-anchor="middle" letter-spacing="3">SEUL</text>
+
+  <!-- Subtitle -->
+  <text x="720" y="490" class="font-inter" fill="#ffffff" font-size="18" font-weight="300" text-anchor="middle" opacity="0.5">Votre application de création et de gestion d'entraînements de handball</text>
+
+  <!-- CTA Buttons -->
+  <rect x="530" y="530" width="200" height="52" rx="4" fill="url(#ctaGrad)" filter="url(#glowOrange)"/>
+  <text x="630" y="562" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" text-anchor="middle" letter-spacing="1">COMMENCER</text>
+
+  <rect x="760" y="530" width="200" height="52" rx="4" fill="transparent" stroke="#ffffff" stroke-width="1" opacity="0.4"/>
+  <text x="860" y="562" class="font-inter" fill="#ffffff" font-size="14" font-weight="400" text-anchor="middle" opacity="0.7">Découvrir →</text>
+
+  <!-- === COURT PREVIEW === -->
+  <g filter="url(#softShadow)">
+    <rect x="320" y="620" width="800" height="390" rx="12" fill="#12121A" stroke="#00D4FF" stroke-width="1" opacity="0.8"/>
+    <!-- Inner court -->
+    <rect x="370" y="645" width="700" height="340" rx="6" fill="url(#courtGrad)"/>
+    <!-- Court lines -->
+    <line x1="720" y1="645" x2="720" y2="985" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+    <circle cx="720" cy="815" r="40" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+    <!-- Goal areas -->
+    <path d="M 370 720 Q 470 815 370 910" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.4" stroke-dasharray="6,4"/>
+    <path d="M 1070 720 Q 970 815 1070 910" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.4" stroke-dasharray="6,4"/>
+    <!-- 6m lines -->
+    <path d="M 370 750 Q 440 815 370 880" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+    <path d="M 1070 750 Q 1000 815 1070 880" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+    <!-- Players - Red team -->
+    <circle cx="550" cy="770" r="12" fill="#FF3D71" filter="url(#glowOrange)"/>
+    <circle cx="550" cy="860" r="12" fill="#FF3D71"/>
+    <circle cx="600" cy="815" r="12" fill="#FF3D71"/>
+    <circle cx="480" cy="815" r="12" fill="#FF3D71"/>
+    <!-- Players - Blue team -->
+    <circle cx="850" cy="770" r="12" fill="#00D4FF" filter="url(#glowBlue)"/>
+    <circle cx="850" cy="860" r="12" fill="#00D4FF"/>
+    <circle cx="900" cy="815" r="12" fill="#00D4FF"/>
+    <!-- Ball -->
+    <circle cx="650" cy="800" r="6" fill="#BCFF00" filter="url(#glowGreen)"/>
+    <!-- Trajectory -->
+    <path d="M 600 815 L 750 780" stroke="#BCFF00" stroke-width="2" stroke-dasharray="8,4" opacity="0.6" marker-end="none"/>
+    <!-- Neon border glow -->
+    <rect x="320" y="620" width="800" height="390" rx="12" fill="none" stroke="#00D4FF" stroke-width="1" opacity="0.3"/>
+  </g>
+
+  <!-- Floating badge -->
+  <rect x="1050" y="630" width="80" height="28" rx="4" fill="#BCFF00" opacity="0.9"/>
+  <text x="1090" y="649" class="font-oswald" fill="#0A0A0F" font-size="11" font-weight="600" text-anchor="middle" letter-spacing="1">LIVE</text>
+
+  <!-- === FEATURES SECTION === -->
+  <text x="720" y="1120" class="font-oswald" fill="#ffffff" font-size="42" font-weight="700" text-anchor="middle" letter-spacing="2">VOTRE BOÎTE À OUTILS</text>
+  <line x1="660" y1="1140" x2="780" y2="1140" stroke="url(#heroGrad)" stroke-width="3"/>
+  <text x="720" y="1170" class="font-inter" fill="#ffffff" font-size="16" font-weight="300" text-anchor="middle" opacity="0.4">Tout ce dont un coach a besoin, dans une seule app</text>
+
+  <!-- Feature Card 1 - Glassmorphism -->
+  <g transform="translate(100, 1220)">
+    <rect width="380" height="280" rx="12" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1"/>
+    <rect width="380" height="4" rx="2" fill="#00D4FF"/>
+    <!-- Icon area -->
+    <rect x="30" y="30" width="56" height="56" rx="12" fill="#00D4FF" opacity="0.1"/>
+    <text x="58" y="68" font-size="28" text-anchor="middle">✏️</text>
+    <!-- Diagonal slash decoration -->
+    <line x1="330" y1="20" x2="370" y2="60" stroke="#00D4FF" stroke-width="2" opacity="0.2"/>
+    <line x1="340" y1="20" x2="380" y2="60" stroke="#00D4FF" stroke-width="1" opacity="0.1"/>
+    <text x="30" y="120" class="font-oswald" fill="#ffffff" font-size="22" font-weight="600" letter-spacing="1">DESSINEZ VOS EXERCICES</text>
+    <text x="30" y="150" class="font-inter" fill="#ffffff" font-size="14" font-weight="300" opacity="0.5">Créez visuellement sur un terrain de handball</text>
+    <text x="30" y="175" class="font-inter" fill="#ffffff" font-size="14" font-weight="300" opacity="0.5">interactif avec joueurs, plots et trajectoires.</text>
+    <!-- Mini court preview -->
+    <rect x="30" y="200" width="320" height="55" rx="4" fill="#1565C0" opacity="0.3"/>
+    <line x1="190" y1="200" x2="190" y2="255" stroke="#fff" stroke-width="0.5" opacity="0.3"/>
+    <circle cx="150" cy="228" r="5" fill="#FF3D71" opacity="0.7"/>
+    <circle cx="230" cy="228" r="5" fill="#00D4FF" opacity="0.7"/>
+    <circle cx="190" cy="228" r="3" fill="#BCFF00" opacity="0.7"/>
+  </g>
+
+  <!-- Feature Card 2 -->
+  <g transform="translate(530, 1220)">
+    <rect width="380" height="280" rx="12" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1"/>
+    <rect width="380" height="4" rx="2" fill="#FF6B35"/>
+    <rect x="30" y="30" width="56" height="56" rx="12" fill="#FF6B35" opacity="0.1"/>
+    <text x="58" y="68" font-size="28" text-anchor="middle">⚡</text>
+    <line x1="330" y1="20" x2="370" y2="60" stroke="#FF6B35" stroke-width="2" opacity="0.2"/>
+    <line x1="340" y1="20" x2="380" y2="60" stroke="#FF6B35" stroke-width="1" opacity="0.1"/>
+    <text x="30" y="120" class="font-oswald" fill="#ffffff" font-size="22" font-weight="600" letter-spacing="1">PRÊT EN 3 ÉTAPES</text>
+    <text x="30" y="150" class="font-inter" fill="#ffffff" font-size="14" font-weight="300" opacity="0.5">Créez, organisez et partagez vos</text>
+    <text x="30" y="175" class="font-inter" fill="#ffffff" font-size="14" font-weight="300" opacity="0.5">entraînements en quelques minutes.</text>
+    <!-- 3 steps mini -->
+    <g transform="translate(30, 200)">
+      <circle cx="30" cy="25" r="18" fill="none" stroke="#FF6B35" stroke-width="2" opacity="0.5"/>
+      <text x="30" y="31" class="font-oswald" fill="#FF6B35" font-size="16" font-weight="600" text-anchor="middle">1</text>
+      <line x1="55" y1="25" x2="115" y2="25" stroke="#ffffff" stroke-width="1" opacity="0.15"/>
+      <circle cx="140" cy="25" r="18" fill="none" stroke="#FF6B35" stroke-width="2" opacity="0.5"/>
+      <text x="140" y="31" class="font-oswald" fill="#FF6B35" font-size="16" font-weight="600" text-anchor="middle">2</text>
+      <line x1="165" y1="25" x2="225" y2="25" stroke="#ffffff" stroke-width="1" opacity="0.15"/>
+      <circle cx="250" cy="25" r="18" fill="none" stroke="#FF6B35" stroke-width="2" opacity="0.5"/>
+      <text x="250" y="31" class="font-oswald" fill="#FF6B35" font-size="16" font-weight="600" text-anchor="middle">3</text>
+    </g>
+  </g>
+
+  <!-- Feature Card 3 -->
+  <g transform="translate(960, 1220)">
+    <rect width="380" height="280" rx="12" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1"/>
+    <rect width="380" height="4" rx="2" fill="#BCFF00"/>
+    <rect x="30" y="30" width="56" height="56" rx="12" fill="#BCFF00" opacity="0.1"/>
+    <text x="58" y="68" font-size="28" text-anchor="middle">🤝</text>
+    <line x1="330" y1="20" x2="370" y2="60" stroke="#BCFF00" stroke-width="2" opacity="0.2"/>
+    <line x1="340" y1="20" x2="380" y2="60" stroke="#BCFF00" stroke-width="1" opacity="0.1"/>
+    <text x="30" y="120" class="font-oswald" fill="#ffffff" font-size="22" font-weight="600" letter-spacing="1">PARTAGEZ &amp; COLLABOREZ</text>
+    <text x="30" y="150" class="font-inter" fill="#ffffff" font-size="14" font-weight="300" opacity="0.5">Rejoignez des groupes de travail et</text>
+    <text x="30" y="175" class="font-inter" fill="#ffffff" font-size="14" font-weight="300" opacity="0.5">accédez aux entraînements communautaires.</text>
+    <!-- Community icons -->
+    <circle cx="70" cy="230" r="16" fill="#BCFF00" opacity="0.2" stroke="#BCFF00" stroke-width="1" stroke-opacity="0.3"/>
+    <circle cx="110" cy="230" r="16" fill="#BCFF00" opacity="0.2" stroke="#BCFF00" stroke-width="1" stroke-opacity="0.3"/>
+    <circle cx="150" cy="230" r="16" fill="#BCFF00" opacity="0.2" stroke="#BCFF00" stroke-width="1" stroke-opacity="0.3"/>
+    <text x="190" y="236" class="font-inter" fill="#BCFF00" font-size="13" opacity="0.5">+250 coachs</text>
+  </g>
+
+  <!-- === PARTNERSHIP SECTION === -->
+  <g transform="translate(0, 1600)">
+    <rect width="1440" height="400" fill="#0D0D16"/>
+    <rect width="1440" height="400" fill="url(#diagonals)"/>
+
+    <!-- Diagonal accent -->
+    <polygon points="0,0 200,0 0,400" fill="#00D4FF" opacity="0.02"/>
+
+    <text x="720" y="80" class="font-oswald" fill="#ffffff" font-size="42" font-weight="700" text-anchor="middle" letter-spacing="2">BIENTÔT EN PARTENARIAT</text>
+    <line x1="640" y1="100" x2="800" y2="100" stroke="url(#heroGrad)" stroke-width="3"/>
+
+    <!-- Partner logos placeholder -->
+    <g transform="translate(220, 150)">
+      <rect width="180" height="80" rx="8" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+      <text x="90" y="48" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.3">Fédération</text>
+    </g>
+    <g transform="translate(450, 150)">
+      <rect width="180" height="80" rx="8" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+      <text x="90" y="48" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.3">Clubs</text>
+    </g>
+    <g transform="translate(680, 150)">
+      <rect width="180" height="80" rx="8" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+      <text x="90" y="48" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.3">Ligues</text>
+    </g>
+    <g transform="translate(910, 150)">
+      <rect width="180" height="80" rx="8" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+      <text x="90" y="48" class="font-inter" fill="#ffffff" font-size="14" text-anchor="middle" opacity="0.3">Écoles</text>
+    </g>
+
+    <!-- CTA Soutenir -->
+    <rect x="580" y="280" width="280" height="52" rx="4" fill="transparent" stroke="#BCFF00" stroke-width="2"/>
+    <text x="720" y="312" class="font-oswald" fill="#BCFF00" font-size="15" font-weight="600" text-anchor="middle" letter-spacing="1">SOUTENEZ LE PROJET</text>
+  </g>
+
+  <!-- === STATS SECTION === -->
+  <g transform="translate(0, 2100)">
+    <rect width="1440" height="400" fill="url(#statGrad)"/>
+
+    <text x="720" y="70" class="font-oswald" fill="#ffffff" font-size="42" font-weight="700" text-anchor="middle" letter-spacing="2">QUELQUES CHIFFRES</text>
+    <line x1="660" y1="90" x2="780" y2="90" stroke="url(#heroGrad)" stroke-width="3"/>
+
+    <!-- Stat 1 -->
+    <g transform="translate(180, 130)">
+      <text x="0" y="80" class="font-oswald" fill="#00D4FF" font-size="72" font-weight="700" filter="url(#glowBlue)">6+</text>
+      <text x="0" y="110" class="font-inter" fill="#ffffff" font-size="16" font-weight="300" opacity="0.5">Coachs actifs</text>
+      <!-- Decorative line -->
+      <line x1="0" y1="125" x2="80" y2="125" stroke="#00D4FF" stroke-width="2" opacity="0.3"/>
+    </g>
+
+    <!-- Stat 2 -->
+    <g transform="translate(560, 130)">
+      <text x="0" y="80" class="font-oswald" fill="#FF6B35" font-size="72" font-weight="700" filter="url(#glowOrange)">50+</text>
+      <text x="0" y="110" class="font-inter" fill="#ffffff" font-size="16" font-weight="300" opacity="0.5">Entraînements créés</text>
+      <line x1="0" y1="125" x2="80" y2="125" stroke="#FF6B35" stroke-width="2" opacity="0.3"/>
+    </g>
+
+    <!-- Stat 3 -->
+    <g transform="translate(960, 130)">
+      <text x="0" y="80" class="font-oswald" fill="#BCFF00" font-size="72" font-weight="700" filter="url(#glowGreen)">7+</text>
+      <text x="0" y="110" class="font-inter" fill="#ffffff" font-size="16" font-weight="300" opacity="0.5">Exercices partagés</text>
+      <line x1="0" y1="125" x2="80" y2="125" stroke="#BCFF00" stroke-width="2" opacity="0.3"/>
+    </g>
+  </g>
+
+  <!-- === TESTIMONIALS === -->
+  <g transform="translate(0, 2600)">
+    <text x="720" y="70" class="font-oswald" fill="#ffffff" font-size="42" font-weight="700" text-anchor="middle" letter-spacing="2">PAROLES DE COACHS</text>
+    <line x1="660" y1="90" x2="780" y2="90" stroke="url(#heroGrad)" stroke-width="3"/>
+
+    <!-- Testimonial 1 -->
+    <g transform="translate(100, 130)">
+      <rect width="580" height="200" rx="12" fill="#ffffff" opacity="0.03" stroke="#00D4FF" stroke-width="1" stroke-opacity="0.15"/>
+      <text x="30" y="40" fill="#00D4FF" font-size="48" opacity="0.3">"</text>
+      <text x="30" y="80" class="font-inter" fill="#ffffff" font-size="15" font-weight="300" opacity="0.7">Un outil indispensable pour préparer mes séances.</text>
+      <text x="30" y="105" class="font-inter" fill="#ffffff" font-size="15" font-weight="300" opacity="0.7">Je gagne un temps fou chaque semaine !</text>
+      <!-- Author -->
+      <circle cx="50" cy="160" r="18" fill="#00D4FF" opacity="0.2"/>
+      <text x="50" y="166" class="font-oswald" fill="#00D4FF" font-size="14" text-anchor="middle">JD</text>
+      <text x="80" y="156" class="font-inter" fill="#ffffff" font-size="13" font-weight="500">Jean Dupont</text>
+      <text x="80" y="174" class="font-inter" fill="#ffffff" font-size="12" font-weight="300" opacity="0.4">Coach U15 - Nantes HB</text>
+    </g>
+
+    <!-- Testimonial 2 -->
+    <g transform="translate(760, 130)">
+      <rect width="580" height="200" rx="12" fill="#ffffff" opacity="0.03" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.15"/>
+      <text x="30" y="40" fill="#FF6B35" font-size="48" opacity="0.3">"</text>
+      <text x="30" y="80" class="font-inter" fill="#ffffff" font-size="15" font-weight="300" opacity="0.7">La communauté est géniale, on s'échange</text>
+      <text x="30" y="105" class="font-inter" fill="#ffffff" font-size="15" font-weight="300" opacity="0.7">des exercices et ça enrichit tout le monde.</text>
+      <circle cx="50" cy="160" r="18" fill="#FF6B35" opacity="0.2"/>
+      <text x="50" y="166" class="font-oswald" fill="#FF6B35" font-size="14" text-anchor="middle">ML</text>
+      <text x="80" y="156" class="font-inter" fill="#ffffff" font-size="13" font-weight="500">Marie Laurent</text>
+      <text x="80" y="174" class="font-inter" fill="#ffffff" font-size="12" font-weight="300" opacity="0.4">Coach Seniors F - Toulon</text>
+    </g>
+  </g>
+
+  <!-- === WHY SECTION === -->
+  <g transform="translate(0, 3050)">
+    <rect width="1440" height="450" fill="#0D0D16"/>
+    <rect width="1440" height="450" fill="url(#diagonals)"/>
+
+    <text x="720" y="80" class="font-oswald" fill="#ffffff" font-size="42" font-weight="700" text-anchor="middle" letter-spacing="2">POURQUOI PLACE AUX COACHS ?</text>
+    <line x1="610" y1="100" x2="830" y2="100" stroke="url(#heroGrad)" stroke-width="3"/>
+
+    <!-- Reason cards -->
+    <g transform="translate(100, 150)">
+      <rect width="280" height="240" rx="8" fill="#ffffff" opacity="0.03"/>
+      <rect x="0" y="0" width="4" height="240" rx="2" fill="#00D4FF"/>
+      <text x="30" y="50" class="font-oswald" fill="#00D4FF" font-size="40" font-weight="700">01</text>
+      <text x="30" y="90" class="font-oswald" fill="#ffffff" font-size="18" font-weight="600" letter-spacing="1">GRATUIT</text>
+      <text x="30" y="120" class="font-inter" fill="#ffffff" font-size="13" opacity="0.5">Accès complet sans</text>
+      <text x="30" y="140" class="font-inter" fill="#ffffff" font-size="13" opacity="0.5">aucun frais. Pour tous.</text>
+    </g>
+
+    <g transform="translate(430, 150)">
+      <rect width="280" height="240" rx="8" fill="#ffffff" opacity="0.03"/>
+      <rect x="0" y="0" width="4" height="240" rx="2" fill="#FF6B35"/>
+      <text x="30" y="50" class="font-oswald" fill="#FF6B35" font-size="40" font-weight="700">02</text>
+      <text x="30" y="90" class="font-oswald" fill="#ffffff" font-size="18" font-weight="600" letter-spacing="1">VISUEL</text>
+      <text x="30" y="120" class="font-inter" fill="#ffffff" font-size="13" opacity="0.5">Éditeur intuitif avec</text>
+      <text x="30" y="140" class="font-inter" fill="#ffffff" font-size="13" opacity="0.5">terrain interactif.</text>
+    </g>
+
+    <g transform="translate(760, 150)">
+      <rect width="280" height="240" rx="8" fill="#ffffff" opacity="0.03"/>
+      <rect x="0" y="0" width="4" height="240" rx="2" fill="#BCFF00"/>
+      <text x="30" y="50" class="font-oswald" fill="#BCFF00" font-size="40" font-weight="700">03</text>
+      <text x="30" y="90" class="font-oswald" fill="#ffffff" font-size="18" font-weight="600" letter-spacing="1">COLLABORATIF</text>
+      <text x="30" y="120" class="font-inter" fill="#ffffff" font-size="13" opacity="0.5">Partagez avec votre</text>
+      <text x="30" y="140" class="font-inter" fill="#ffffff" font-size="13" opacity="0.5">club et la communauté.</text>
+    </g>
+
+    <g transform="translate(1090, 150)">
+      <rect width="280" height="240" rx="8" fill="#ffffff" opacity="0.03"/>
+      <rect x="0" y="0" width="4" height="240" rx="2" fill="#7B61FF"/>
+      <text x="30" y="50" class="font-oswald" fill="#7B61FF" font-size="40" font-weight="700">04</text>
+      <text x="30" y="90" class="font-oswald" fill="#ffffff" font-size="18" font-weight="600" letter-spacing="1">EXPORT PDF</text>
+      <text x="30" y="120" class="font-inter" fill="#ffffff" font-size="13" opacity="0.5">Imprimez vos séances</text>
+      <text x="30" y="140" class="font-inter" fill="#ffffff" font-size="13" opacity="0.5">pour le gymnase.</text>
+    </g>
+  </g>
+
+  <!-- === CTA FINAL === -->
+  <g transform="translate(0, 3600)">
+    <rect width="1440" height="300" fill="#0A0A0F"/>
+    <circle cx="720" cy="150" r="300" fill="#00D4FF" opacity="0.02"/>
+    <circle cx="720" cy="150" r="200" fill="#FF6B35" opacity="0.02"/>
+
+    <text x="720" y="110" class="font-oswald" fill="#ffffff" font-size="48" font-weight="700" text-anchor="middle" letter-spacing="2">PRÊT À COMMENCER ?</text>
+    <text x="720" y="150" class="font-inter" fill="#ffffff" font-size="16" text-anchor="middle" opacity="0.4">Rejoignez la communauté des coachs de handball</text>
+
+    <rect x="590" y="180" width="260" height="56" rx="4" fill="url(#ctaGrad)" filter="url(#glowOrange)"/>
+    <text x="720" y="214" class="font-oswald" fill="#ffffff" font-size="17" font-weight="600" text-anchor="middle" letter-spacing="2">CRÉER MON COMPTE</text>
+  </g>
+
+  <!-- === FOOTER === -->
+  <g transform="translate(0, 3950)">
+    <rect width="1440" height="250" fill="#06060A"/>
+    <line x1="100" y1="1" x2="1340" y2="1" stroke="#ffffff" stroke-width="1" opacity="0.05"/>
+
+    <!-- Logo -->
+    <circle cx="160" cy="50" r="14" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity="0.5"/>
+    <circle cx="160" cy="50" r="5" fill="#FF6B35" opacity="0.7"/>
+    <text x="185" y="56" class="font-oswald" fill="#ffffff" font-size="15" font-weight="600" letter-spacing="1.5" opacity="0.6">PLACE AUX COACHS</text>
+
+    <!-- Links -->
+    <text x="600" y="50" class="font-inter" fill="#ffffff" font-size="13" opacity="0.3">Fonctionnalités</text>
+    <text x="740" y="50" class="font-inter" fill="#ffffff" font-size="13" opacity="0.3">Communauté</text>
+    <text x="860" y="50" class="font-inter" fill="#ffffff" font-size="13" opacity="0.3">Contact</text>
+    <text x="950" y="50" class="font-inter" fill="#ffffff" font-size="13" opacity="0.3">Mentions légales</text>
+
+    <!-- Bottom -->
+    <line x1="100" y1="100" x2="1340" y2="100" stroke="#ffffff" stroke-width="0.5" opacity="0.05"/>
+    <text x="720" y="140" class="font-inter" fill="#ffffff" font-size="12" text-anchor="middle" opacity="0.2">© 2026 Place aux Coachs — Conçu avec passion pour le handball</text>
+
+    <!-- Speed lines decoration -->
+    <line x1="100" y1="180" x2="200" y2="175" stroke="#00D4FF" stroke-width="1" opacity="0.1"/>
+    <line x1="1240" y1="180" x2="1340" y2="175" stroke="#FF6B35" stroke-width="1" opacity="0.1"/>
+  </g>
+</svg>

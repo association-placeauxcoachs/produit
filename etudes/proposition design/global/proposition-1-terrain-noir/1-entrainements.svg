@@ -1,0 +1,285 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .font-oswald { font-family: 'Oswald', sans-serif; }
+      .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+    <filter id="glowBlue" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#00D4FF" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowOrange" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#FF6B35" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowGreen" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#BCFF00" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#ffffff" stroke-width="0.3" opacity="0.04"/>
+    </pattern>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0E0E18"/>
+      <stop offset="100%" stop-color="#0A0A0F"/>
+    </linearGradient>
+    <linearGradient id="sideGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#08080D"/>
+      <stop offset="100%" stop-color="#0A0A12"/>
+    </linearGradient>
+    <linearGradient id="ctaGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#FF3D71"/>
+    </linearGradient>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1565C0"/>
+      <stop offset="100%" stop-color="#0D47A1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="url(#bgGrad)"/>
+  <rect width="1440" height="900" fill="url(#grid)"/>
+
+  <!-- === SIDEBAR === -->
+  <rect width="240" height="900" fill="url(#sideGrad)"/>
+  <line x1="240" y1="0" x2="240" y2="900" stroke="#ffffff" stroke-width="1" opacity="0.05"/>
+
+  <!-- Logo -->
+  <circle cx="40" cy="36" r="14" fill="none" stroke="#00D4FF" stroke-width="1.5" opacity="0.7"/>
+  <circle cx="40" cy="36" r="5" fill="#FF6B35"/>
+  <text x="62" y="42" class="font-oswald" fill="#ffffff" font-size="14" font-weight="600" letter-spacing="1.5">PLACE AUX COACHS</text>
+
+  <!-- Separator -->
+  <line x1="20" y1="72" x2="220" y2="72" stroke="#ffffff" stroke-width="0.5" opacity="0.05"/>
+
+  <!-- Nav items -->
+  <!-- Active: Entraînements -->
+  <rect x="12" y="90" width="216" height="42" rx="6" fill="#00D4FF" opacity="0.08"/>
+  <rect x="12" y="90" width="3" height="42" rx="2" fill="#00D4FF" filter="url(#glowBlue)"/>
+  <text x="50" y="116" class="font-inter" fill="#00D4FF" font-size="14" font-weight="500">Entraînements</text>
+
+  <!-- Communauté -->
+  <text x="50" y="158" class="font-inter" fill="#ffffff" font-size="14" font-weight="400" opacity="0.4">Communauté</text>
+
+  <!-- Groupes -->
+  <text x="24" y="210" class="font-inter" fill="#ffffff" font-size="11" font-weight="600" opacity="0.2" letter-spacing="1.5">GROUPES DE TRAVAIL</text>
+  <text x="50" y="240" class="font-inter" fill="#ffffff" font-size="14" font-weight="400" opacity="0.4">Mon club HB</text>
+  <text x="50" y="268" class="font-inter" fill="#ffffff" font-size="14" font-weight="400" opacity="0.4">Formation U15</text>
+  <circle cx="210" cy="234" r="3" fill="#BCFF00" opacity="0.5"/>
+
+  <!-- Bottom nav -->
+  <g transform="translate(0, 750)">
+    <line x1="20" y1="0" x2="220" y2="0" stroke="#ffffff" stroke-width="0.5" opacity="0.05"/>
+    <!-- User avatar -->
+    <circle cx="40" cy="50" r="18" fill="#00D4FF" opacity="0.15" stroke="#00D4FF" stroke-width="1" stroke-opacity="0.3"/>
+    <text x="40" y="56" class="font-oswald" fill="#00D4FF" font-size="13" text-anchor="middle">PR</text>
+    <text x="68" y="46" class="font-inter" fill="#ffffff" font-size="13" font-weight="500" opacity="0.7">Preview</text>
+    <text x="68" y="62" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">preview@placeauxcoachs.fr</text>
+
+    <text x="50" y="104" class="font-inter" fill="#ffffff" font-size="13" opacity="0.35">Profil</text>
+    <text x="50" y="128" class="font-inter" fill="#ffffff" font-size="13" opacity="0.35">Déconnexion</text>
+  </g>
+
+  <!-- === MAIN CONTENT === -->
+  <!-- Top bar -->
+  <rect x="240" y="0" width="1200" height="72" fill="#0A0A0F" opacity="0.6"/>
+  <line x1="240" y1="72" x2="1440" y2="72" stroke="#ffffff" stroke-width="0.5" opacity="0.05"/>
+
+  <!-- Search bar -->
+  <rect x="290" y="18" width="500" height="38" rx="6" fill="#ffffff" opacity="0.04" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+  <text x="320" y="42" class="font-inter" fill="#ffffff" font-size="13" opacity="0.25">Rechercher un entraînement...</text>
+  <!-- Search icon -->
+  <circle cx="308" cy="37" r="7" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.25"/>
+  <line x1="313" y1="42" x2="317" y2="46" stroke="#ffffff" stroke-width="1.2" opacity="0.25"/>
+
+  <!-- Filter tabs -->
+  <text x="840" y="42" class="font-oswald" fill="#00D4FF" font-size="13" font-weight="500" letter-spacing="1">MES ENTRAÎNEMENTS</text>
+  <line x1="840" y1="50" x2="970" y2="50" stroke="#00D4FF" stroke-width="2"/>
+  <text x="1000" y="42" class="font-oswald" fill="#ffffff" font-size="13" font-weight="400" opacity="0.35" letter-spacing="1">COMMUNAUTÉ</text>
+  <text x="1120" y="42" class="font-oswald" fill="#ffffff" font-size="13" font-weight="400" opacity="0.35" letter-spacing="1">GROUPES</text>
+
+  <!-- Create button -->
+  <rect x="1290" y="18" width="110" height="38" rx="4" fill="url(#ctaGrad)" filter="url(#glowOrange)"/>
+  <text x="1345" y="42" class="font-oswald" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="1">+ CRÉER</text>
+
+  <!-- === TRAINING CARDS GRID === -->
+  <!-- Row 1 -->
+  <!-- Card 1 -->
+  <g transform="translate(280, 100)">
+    <rect width="360" height="240" rx="10" fill="#ffffff" opacity="0.03" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.06"/>
+    <!-- Status bar top -->
+    <rect width="360" height="3" rx="2" fill="#BCFF00"/>
+    <!-- Court thumbnail -->
+    <rect x="15" y="18" width="330" height="110" rx="6" fill="url(#courtGrad)"/>
+    <line x1="180" y1="18" x2="180" y2="128" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="180" cy="73" r="15" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <!-- Players on thumbnail -->
+    <circle cx="120" cy="60" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="120" cy="85" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="140" cy="73" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="230" cy="60" r="5" fill="#00D4FF" opacity="0.8"/>
+    <circle cx="230" cy="85" r="5" fill="#00D4FF" opacity="0.8"/>
+    <circle cx="160" cy="70" r="3" fill="#BCFF00" opacity="0.9"/>
+    <!-- Title -->
+    <text x="15" y="155" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" letter-spacing="0.5">Améliorer le jeu du PB dans l'exploitation</text>
+    <!-- Tags -->
+    <rect x="15" y="170" width="48" height="20" rx="3" fill="#00D4FF" opacity="0.12"/>
+    <text x="39" y="184" class="font-inter" fill="#00D4FF" font-size="10" text-anchor="middle">U15</text>
+    <rect x="70" y="170" width="70" height="20" rx="3" fill="#FF6B35" opacity="0.12"/>
+    <text x="105" y="184" class="font-inter" fill="#FF6B35" font-size="10" text-anchor="middle">Attaque</text>
+    <rect x="148" y="170" width="58" height="20" rx="3" fill="#BCFF00" opacity="0.1"/>
+    <text x="177" y="184" class="font-inter" fill="#BCFF00" font-size="10" text-anchor="middle">3 sit.</text>
+    <!-- Bottom info -->
+    <text x="15" y="220" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">12 mars 2026</text>
+    <!-- Status badge -->
+    <rect x="280" y="203" width="60" height="22" rx="4" fill="#BCFF00" opacity="0.15"/>
+    <text x="310" y="218" class="font-inter" fill="#BCFF00" font-size="10" font-weight="500" text-anchor="middle">Prêt</text>
+  </g>
+
+  <!-- Card 2 -->
+  <g transform="translate(660, 100)">
+    <rect width="360" height="240" rx="10" fill="#ffffff" opacity="0.03" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.06"/>
+    <rect width="360" height="3" rx="2" fill="#FF6B35"/>
+    <rect x="15" y="18" width="330" height="110" rx="6" fill="url(#courtGrad)"/>
+    <line x1="180" y1="18" x2="180" y2="128" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="180" cy="73" r="15" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="130" cy="55" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="130" cy="90" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="250" cy="60" r="5" fill="#FFEB3B" opacity="0.8"/>
+    <circle cx="250" cy="85" r="5" fill="#FFEB3B" opacity="0.8"/>
+    <text x="15" y="155" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" letter-spacing="0.5">Entrainement du jeu de PB lors d'opposition</text>
+    <rect x="15" y="170" width="60" height="20" rx="3" fill="#00D4FF" opacity="0.12"/>
+    <text x="45" y="184" class="font-inter" fill="#00D4FF" font-size="10" text-anchor="middle">Seniors</text>
+    <rect x="82" y="170" width="70" height="20" rx="3" fill="#FF6B35" opacity="0.12"/>
+    <text x="117" y="184" class="font-inter" fill="#FF6B35" font-size="10" text-anchor="middle">Défense</text>
+    <text x="15" y="220" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">10 mars 2026</text>
+    <rect x="270" y="203" width="72" height="22" rx="4" fill="#FF6B35" opacity="0.15"/>
+    <text x="306" y="218" class="font-inter" fill="#FF6B35" font-size="10" font-weight="500" text-anchor="middle">En cours</text>
+  </g>
+
+  <!-- Card 3 -->
+  <g transform="translate(1040, 100)">
+    <rect width="360" height="240" rx="10" fill="#ffffff" opacity="0.03" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.06"/>
+    <rect width="360" height="3" rx="2" fill="#00D4FF"/>
+    <rect x="15" y="18" width="330" height="110" rx="6" fill="url(#courtGrad)"/>
+    <line x1="180" y1="18" x2="180" y2="128" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="180" cy="73" r="15" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="140" cy="65" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="140" cy="80" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="220" cy="65" r="5" fill="#FFEB3B" opacity="0.8"/>
+    <text x="15" y="155" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" letter-spacing="0.5">Initiation à jeu du PB lors l'opposition en</text>
+    <rect x="15" y="170" width="48" height="20" rx="3" fill="#00D4FF" opacity="0.12"/>
+    <text x="39" y="184" class="font-inter" fill="#00D4FF" font-size="10" text-anchor="middle">U13</text>
+    <rect x="70" y="170" width="75" height="20" rx="3" fill="#7B61FF" opacity="0.12"/>
+    <text x="108" y="184" class="font-inter" fill="#7B61FF" font-size="10" text-anchor="middle">Initiation</text>
+    <text x="15" y="220" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">8 mars 2026</text>
+    <rect x="268" y="203" width="72" height="22" rx="4" fill="#00D4FF" opacity="0.15"/>
+    <text x="304" y="218" class="font-inter" fill="#00D4FF" font-size="10" font-weight="500" text-anchor="middle">Terminé</text>
+  </g>
+
+  <!-- Row 2 -->
+  <!-- Card 4 -->
+  <g transform="translate(280, 365)">
+    <rect width="360" height="240" rx="10" fill="#ffffff" opacity="0.03" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.06"/>
+    <rect width="360" height="3" rx="2" fill="#ffffff" opacity="0.2"/>
+    <rect x="15" y="18" width="330" height="110" rx="6" fill="url(#courtGrad)"/>
+    <line x1="180" y1="18" x2="180" y2="128" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="180" cy="73" r="15" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="100" cy="73" r="5" fill="#FF3D71" opacity="0.8"/>
+    <text x="15" y="155" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" letter-spacing="0.5">Entraînement du PDE et son enchaînement</text>
+    <rect x="15" y="170" width="48" height="20" rx="3" fill="#00D4FF" opacity="0.12"/>
+    <text x="39" y="184" class="font-inter" fill="#00D4FF" font-size="10" text-anchor="middle">U18</text>
+    <text x="15" y="220" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">5 mars 2026</text>
+    <rect x="268" y="203" width="72" height="22" rx="4" fill="#ffffff" opacity="0.06"/>
+    <text x="304" y="218" class="font-inter" fill="#ffffff" font-size="10" font-weight="500" text-anchor="middle" opacity="0.35">Brouillon</text>
+  </g>
+
+  <!-- Card 5 -->
+  <g transform="translate(660, 365)">
+    <rect width="360" height="240" rx="10" fill="#ffffff" opacity="0.03" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.06"/>
+    <rect width="360" height="3" rx="2" fill="#BCFF00"/>
+    <rect x="15" y="18" width="330" height="110" rx="6" fill="url(#courtGrad)"/>
+    <line x1="180" y1="18" x2="180" y2="128" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="180" cy="73" r="15" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="120" cy="50" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="120" cy="73" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="120" cy="95" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="240" cy="60" r="5" fill="#FFEB3B" opacity="0.8"/>
+    <circle cx="240" cy="85" r="5" fill="#FFEB3B" opacity="0.8"/>
+    <text x="15" y="155" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" letter-spacing="0.5">Exploitation du surnombre en attaque</text>
+    <rect x="15" y="170" width="60" height="20" rx="3" fill="#00D4FF" opacity="0.12"/>
+    <text x="45" y="184" class="font-inter" fill="#00D4FF" font-size="10" text-anchor="middle">Seniors</text>
+    <rect x="82" y="170" width="90" height="20" rx="3" fill="#FF6B35" opacity="0.12"/>
+    <text x="127" y="184" class="font-inter" fill="#FF6B35" font-size="10" text-anchor="middle">Surnombre</text>
+    <text x="15" y="220" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">3 mars 2026</text>
+    <rect x="280" y="203" width="60" height="22" rx="4" fill="#BCFF00" opacity="0.15"/>
+    <text x="310" y="218" class="font-inter" fill="#BCFF00" font-size="10" font-weight="500" text-anchor="middle">Prêt</text>
+  </g>
+
+  <!-- Card 6 -->
+  <g transform="translate(1040, 365)">
+    <rect width="360" height="240" rx="10" fill="#ffffff" opacity="0.03" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.06"/>
+    <rect width="360" height="3" rx="2" fill="#FF6B35"/>
+    <rect x="15" y="18" width="330" height="110" rx="6" fill="url(#courtGrad)"/>
+    <line x1="180" y1="18" x2="180" y2="128" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="180" cy="73" r="15" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="110" cy="60" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="110" cy="85" r="5" fill="#FF3D71" opacity="0.8"/>
+    <circle cx="250" cy="73" r="5" fill="#FFEB3B" opacity="0.8"/>
+    <text x="15" y="155" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" letter-spacing="0.5">Améliorer le comportement du PB face à</text>
+    <rect x="15" y="170" width="48" height="20" rx="3" fill="#00D4FF" opacity="0.12"/>
+    <text x="39" y="184" class="font-inter" fill="#00D4FF" font-size="10" text-anchor="middle">U15</text>
+    <rect x="70" y="170" width="100" height="20" rx="3" fill="#FF6B35" opacity="0.12"/>
+    <text x="120" y="184" class="font-inter" fill="#FF6B35" font-size="10" text-anchor="middle">Comportement</text>
+    <text x="15" y="220" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">1 mars 2026</text>
+    <rect x="270" y="203" width="72" height="22" rx="4" fill="#FF6B35" opacity="0.15"/>
+    <text x="306" y="218" class="font-inter" fill="#FF6B35" font-size="10" font-weight="500" text-anchor="middle">En cours</text>
+  </g>
+
+  <!-- Row 3 (partial) -->
+  <g transform="translate(280, 630)">
+    <rect width="360" height="240" rx="10" fill="#ffffff" opacity="0.03" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.06"/>
+    <rect width="360" height="3" rx="2" fill="#BCFF00"/>
+    <rect x="15" y="18" width="330" height="110" rx="6" fill="url(#courtGrad)"/>
+    <line x1="180" y1="18" x2="180" y2="128" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="180" cy="73" r="15" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <text x="15" y="155" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" letter-spacing="0.5">Jeu en supériorité</text>
+    <text x="15" y="220" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">28 fév 2026</text>
+    <rect x="280" y="203" width="60" height="22" rx="4" fill="#BCFF00" opacity="0.15"/>
+    <text x="310" y="218" class="font-inter" fill="#BCFF00" font-size="10" font-weight="500" text-anchor="middle">Prêt</text>
+  </g>
+
+  <g transform="translate(660, 630)">
+    <rect width="360" height="240" rx="10" fill="#ffffff" opacity="0.03" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.06"/>
+    <rect width="360" height="3" rx="2" fill="#00D4FF"/>
+    <rect x="15" y="18" width="330" height="110" rx="6" fill="url(#courtGrad)"/>
+    <line x1="180" y1="18" x2="180" y2="128" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="180" cy="73" r="15" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.3"/>
+    <text x="15" y="155" class="font-oswald" fill="#ffffff" font-size="16" font-weight="600" letter-spacing="0.5">Améliorer le jeu du TAR lors l'opposition</text>
+    <text x="15" y="220" class="font-inter" fill="#ffffff" font-size="11" opacity="0.3">25 fév 2026</text>
+    <rect x="268" y="203" width="72" height="22" rx="4" fill="#00D4FF" opacity="0.15"/>
+    <text x="304" y="218" class="font-inter" fill="#00D4FF" font-size="10" font-weight="500" text-anchor="middle">Terminé</text>
+  </g>
+
+  <!-- Pagination -->
+  <g transform="translate(700, 870)">
+    <text x="0" y="0" class="font-inter" fill="#ffffff" font-size="12" opacity="0.25">← Précédent</text>
+    <rect x="100" y="-14" width="28" height="22" rx="4" fill="#00D4FF" opacity="0.2"/>
+    <text x="114" y="2" class="font-inter" fill="#00D4FF" font-size="12" text-anchor="middle">1</text>
+    <text x="146" y="2" class="font-inter" fill="#ffffff" font-size="12" opacity="0.3" text-anchor="middle">2</text>
+    <text x="178" y="2" class="font-inter" fill="#ffffff" font-size="12" opacity="0.3" text-anchor="middle">3</text>
+    <text x="220" y="0" class="font-inter" fill="#ffffff" font-size="12" opacity="0.25">Suivant →</text>
+  </g>
+
+  <!-- Footer bar -->
+  <rect x="240" y="890" width="1200" height="10" fill="#06060A"/>
+  <rect x="240" y="890" width="300" height="2" fill="#00D4FF" opacity="0.3"/>
+</svg>

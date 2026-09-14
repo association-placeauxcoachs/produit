@@ -1,0 +1,261 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 2400" width="390" height="2400">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .font-urban { font-family: 'Urbanist', sans-serif; }
+      .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+    <linearGradient id="bgPastel" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#F8F5FF"/>
+      <stop offset="50%" stop-color="#FFF8F5"/>
+      <stop offset="100%" stop-color="#F3F0FF"/>
+    </linearGradient>
+    <linearGradient id="ctaViolet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5B8DEF"/>
+      <stop offset="100%" stop-color="#7C5CFC"/>
+    </linearGradient>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1976D2"/>
+      <stop offset="100%" stop-color="#1565C0"/>
+    </linearGradient>
+    <radialGradient id="blobViolet" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#C5B3FF" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#C5B3FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobPeach" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#FFD4B8" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FFD4B8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="cardShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#7C5CFC" flood-opacity="0.05"/>
+    </filter>
+    <filter id="cardHover">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#7C5CFC" flood-opacity="0.09"/>
+    </filter>
+    <filter id="btnShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#7C5CFC" flood-opacity="0.2"/>
+    </filter>
+    <filter id="softGlow"><feGaussianBlur stdDeviation="30"/></filter>
+  </defs>
+
+  <!-- BG -->
+  <rect width="390" height="2400" fill="url(#bgPastel)"/>
+  <ellipse cx="320" cy="300" rx="150" ry="120" fill="url(#blobViolet)" filter="url(#softGlow)"/>
+  <ellipse cx="60" cy="1200" rx="120" ry="100" fill="url(#blobPeach)" filter="url(#softGlow)"/>
+  <ellipse cx="350" cy="2000" rx="130" ry="110" fill="url(#blobViolet)" filter="url(#softGlow)"/>
+
+  <!-- MOBILE HEADER -->
+  <rect width="390" height="56" fill="#ffffff" opacity="0.85"/>
+  <line x1="0" y1="56" x2="390" y2="56" stroke="#7C5CFC" stroke-width="0.5" opacity="0.06"/>
+
+  <!-- Hamburger -->
+  <line x1="20" y1="22" x2="36" y2="22" stroke="#1E1340" stroke-width="2" opacity="0.4"/>
+  <line x1="20" y1="28" x2="32" y2="28" stroke="#1E1340" stroke-width="2" opacity="0.4"/>
+  <line x1="20" y1="34" x2="28" y2="34" stroke="#1E1340" stroke-width="2" opacity="0.4"/>
+
+  <!-- Logo -->
+  <circle cx="195" cy="28" r="10" fill="#7C5CFC" opacity="0.12"/>
+  <circle cx="195" cy="28" r="5" fill="#7C5CFC" opacity="0.3"/>
+  <circle cx="195" cy="28" r="2.5" fill="#7C5CFC"/>
+
+  <!-- Avatar -->
+  <circle cx="362" cy="28" r="14" fill="#F5EEFF" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.15"/>
+  <text x="362" y="33" class="font-urban" fill="#7C5CFC" font-size="9" font-weight="700" text-anchor="middle">PR</text>
+
+  <!-- SEARCH BAR -->
+  <rect x="16" y="68" width="358" height="42" rx="21" fill="#ffffff" stroke="#7C5CFC" stroke-width="1" stroke-opacity="0.08"/>
+  <circle cx="36" cy="89" r="6" fill="none" stroke="#1E1340" stroke-width="1.2" opacity="0.2"/>
+  <line x1="40" y1="93" x2="44" y2="97" stroke="#1E1340" stroke-width="1.2" opacity="0.2"/>
+  <text x="54" y="94" class="font-inter" fill="#1E1340" font-size="12" opacity="0.22">Rechercher un entraînement...</text>
+
+  <!-- TABS (scrollable pills) -->
+  <rect x="16" y="124" width="120" height="32" rx="16" fill="#7C5CFC" opacity="0.08"/>
+  <text x="76" y="144" class="font-urban" fill="#7C5CFC" font-size="11" font-weight="700" text-anchor="middle">Mes entraînements</text>
+
+  <text x="152" y="144" class="font-urban" fill="#1E1340" font-size="11" font-weight="500" opacity="0.3">Communauté</text>
+  <text x="248" y="144" class="font-urban" fill="#1E1340" font-size="11" font-weight="500" opacity="0.3">Groupes</text>
+
+  <!-- FAB Create button -->
+  <circle cx="350" cy="2340" r="28" fill="url(#ctaViolet)" filter="url(#btnShadow)"/>
+  <text x="350" y="2346" class="font-urban" fill="#ffffff" font-size="24" font-weight="300" text-anchor="middle">+</text>
+
+  <!-- === CARDS (single column) === -->
+
+  <!-- Card 1 — Prêt (green) -->
+  <g transform="translate(16, 172)" filter="url(#cardHover)">
+    <rect width="358" height="220" rx="16" fill="#ffffff"/>
+    <rect y="0" width="358" height="4" rx="2" fill="#22C55E"/>
+    <rect x="12" y="16" width="334" height="85" rx="10" fill="url(#courtGrad)"/>
+    <line x1="179" y1="16" x2="179" y2="101" stroke="#fff" stroke-width="0.7" opacity="0.3"/>
+    <circle cx="179" cy="58" r="10" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.3"/>
+    <circle cx="130" cy="48" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="130" cy="68" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="228" cy="48" r="4" fill="#FFCA28" opacity="0.8"/>
+    <circle cx="228" cy="68" r="4" fill="#FFCA28" opacity="0.8"/>
+    <circle cx="158" cy="55" r="3" fill="#BCFF00"/>
+    <text x="12" y="128" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Améliorer le jeu du PB dans</text>
+    <text x="12" y="145" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">l'exploitation</text>
+    <rect x="12" y="158" width="36" height="18" rx="9" fill="#F5EEFF"/>
+    <text x="30" y="170" class="font-inter" fill="#7C5CFC" font-size="9" font-weight="600" text-anchor="middle">U15</text>
+    <rect x="54" y="158" width="52" height="18" rx="9" fill="#FFF0EC"/>
+    <text x="80" y="170" class="font-inter" fill="#F06850" font-size="9" font-weight="600" text-anchor="middle">Attaque</text>
+    <rect x="112" y="158" width="42" height="18" rx="9" fill="#EEF7FF"/>
+    <text x="133" y="170" class="font-inter" fill="#5B8DEF" font-size="9" font-weight="600" text-anchor="middle">3 sit.</text>
+    <text x="12" y="200" class="font-inter" fill="#1E1340" font-size="10" opacity="0.25">12 mars 2026</text>
+    <rect x="280" y="186" width="62" height="22" rx="11" fill="#ECFDF5"/>
+    <circle cx="295" cy="197" r="3" fill="#22C55E"/>
+    <text x="314" y="201" class="font-inter" fill="#16A34A" font-size="9" font-weight="600">Prêt</text>
+  </g>
+
+  <!-- Card 2 — En cours (coral) -->
+  <g transform="translate(16, 408)" filter="url(#cardShadow)">
+    <rect width="358" height="220" rx="16" fill="#ffffff"/>
+    <rect y="0" width="358" height="4" rx="2" fill="#F06850"/>
+    <rect x="12" y="16" width="334" height="85" rx="10" fill="url(#courtGrad)"/>
+    <line x1="179" y1="16" x2="179" y2="101" stroke="#fff" stroke-width="0.7" opacity="0.3"/>
+    <circle cx="179" cy="58" r="10" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.3"/>
+    <circle cx="135" cy="52" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="222" cy="64" r="4" fill="#FFCA28" opacity="0.8"/>
+    <text x="12" y="128" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Entrainement du jeu de PB</text>
+    <text x="12" y="145" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">lors d'opposition</text>
+    <rect x="12" y="158" width="50" height="18" rx="9" fill="#F5EEFF"/>
+    <text x="37" y="170" class="font-inter" fill="#7C5CFC" font-size="9" font-weight="600" text-anchor="middle">Seniors</text>
+    <rect x="68" y="158" width="52" height="18" rx="9" fill="#FFF0EC"/>
+    <text x="94" y="170" class="font-inter" fill="#F06850" font-size="9" font-weight="600" text-anchor="middle">Défense</text>
+    <text x="12" y="200" class="font-inter" fill="#1E1340" font-size="10" opacity="0.25">10 mars 2026</text>
+    <rect x="268" y="186" width="76" height="22" rx="11" fill="#FFF0EC"/>
+    <circle cx="283" cy="197" r="3" fill="#F06850"/>
+    <text x="306" y="201" class="font-inter" fill="#F06850" font-size="9" font-weight="600">En cours</text>
+  </g>
+
+  <!-- Card 3 — Terminé (violet) -->
+  <g transform="translate(16, 644)" filter="url(#cardShadow)">
+    <rect width="358" height="220" rx="16" fill="#ffffff"/>
+    <rect y="0" width="358" height="4" rx="2" fill="#7C5CFC"/>
+    <rect x="12" y="16" width="334" height="85" rx="10" fill="url(#courtGrad)"/>
+    <line x1="179" y1="16" x2="179" y2="101" stroke="#fff" stroke-width="0.7" opacity="0.3"/>
+    <circle cx="179" cy="58" r="10" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.3"/>
+    <circle cx="140" cy="50" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="140" cy="68" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="218" cy="58" r="4" fill="#FFCA28" opacity="0.8"/>
+    <text x="12" y="128" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Initiation au jeu du PB lors</text>
+    <text x="12" y="145" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">l'opposition</text>
+    <rect x="12" y="158" width="36" height="18" rx="9" fill="#F5EEFF"/>
+    <text x="30" y="170" class="font-inter" fill="#7C5CFC" font-size="9" font-weight="600" text-anchor="middle">U13</text>
+    <rect x="54" y="158" width="55" height="18" rx="9" fill="#EEF7FF"/>
+    <text x="81" y="170" class="font-inter" fill="#5B8DEF" font-size="9" font-weight="600" text-anchor="middle">Initiation</text>
+    <text x="12" y="200" class="font-inter" fill="#1E1340" font-size="10" opacity="0.25">8 mars 2026</text>
+    <rect x="272" y="186" width="70" height="22" rx="11" fill="#F5EEFF"/>
+    <circle cx="287" cy="197" r="3" fill="#7C5CFC"/>
+    <text x="308" y="201" class="font-inter" fill="#7C5CFC" font-size="9" font-weight="600">Terminé</text>
+  </g>
+
+  <!-- Card 4 — Brouillon (gray) -->
+  <g transform="translate(16, 880)" filter="url(#cardShadow)">
+    <rect width="358" height="220" rx="16" fill="#ffffff"/>
+    <rect y="0" width="358" height="4" rx="2" fill="#CBD5E1"/>
+    <rect x="12" y="16" width="334" height="85" rx="10" fill="url(#courtGrad)" opacity="0.4"/>
+    <text x="12" y="128" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Entraînement du PDE et son</text>
+    <text x="12" y="145" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">enchaînement</text>
+    <rect x="12" y="158" width="36" height="18" rx="9" fill="#F5EEFF"/>
+    <text x="30" y="170" class="font-inter" fill="#7C5CFC" font-size="9" font-weight="600" text-anchor="middle">U18</text>
+    <text x="12" y="200" class="font-inter" fill="#1E1340" font-size="10" opacity="0.25">5 mars 2026</text>
+    <rect x="264" y="186" width="78" height="22" rx="11" fill="#F1F5F9"/>
+    <circle cx="279" cy="197" r="3" fill="#94A3B8"/>
+    <text x="302" y="201" class="font-inter" fill="#64748B" font-size="9" font-weight="600">Brouillon</text>
+  </g>
+
+  <!-- Card 5 — Prêt -->
+  <g transform="translate(16, 1116)" filter="url(#cardShadow)">
+    <rect width="358" height="220" rx="16" fill="#ffffff"/>
+    <rect y="0" width="358" height="4" rx="2" fill="#22C55E"/>
+    <rect x="12" y="16" width="334" height="85" rx="10" fill="url(#courtGrad)"/>
+    <line x1="179" y1="16" x2="179" y2="101" stroke="#fff" stroke-width="0.7" opacity="0.3"/>
+    <circle cx="130" cy="42" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="130" cy="58" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="130" cy="74" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="228" cy="48" r="4" fill="#FFCA28" opacity="0.8"/>
+    <circle cx="228" cy="68" r="4" fill="#FFCA28" opacity="0.8"/>
+    <text x="12" y="128" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Exploitation du surnombre</text>
+    <text x="12" y="145" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">en attaque</text>
+    <rect x="12" y="158" width="50" height="18" rx="9" fill="#F5EEFF"/>
+    <text x="37" y="170" class="font-inter" fill="#7C5CFC" font-size="9" font-weight="600" text-anchor="middle">Seniors</text>
+    <rect x="68" y="158" width="70" height="18" rx="9" fill="#FFF0EC"/>
+    <text x="103" y="170" class="font-inter" fill="#F06850" font-size="9" font-weight="600" text-anchor="middle">Surnombre</text>
+    <text x="12" y="200" class="font-inter" fill="#1E1340" font-size="10" opacity="0.25">3 mars 2026</text>
+    <rect x="280" y="186" width="62" height="22" rx="11" fill="#ECFDF5"/>
+    <circle cx="295" cy="197" r="3" fill="#22C55E"/>
+    <text x="314" y="201" class="font-inter" fill="#16A34A" font-size="9" font-weight="600">Prêt</text>
+  </g>
+
+  <!-- Card 6 — En cours -->
+  <g transform="translate(16, 1352)" filter="url(#cardShadow)">
+    <rect width="358" height="220" rx="16" fill="#ffffff"/>
+    <rect y="0" width="358" height="4" rx="2" fill="#F06850"/>
+    <rect x="12" y="16" width="334" height="85" rx="10" fill="url(#courtGrad)"/>
+    <line x1="179" y1="16" x2="179" y2="101" stroke="#fff" stroke-width="0.7" opacity="0.3"/>
+    <circle cx="120" cy="52" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="120" cy="68" r="4" fill="#F06850" opacity="0.8"/>
+    <circle cx="238" cy="58" r="4" fill="#FFCA28" opacity="0.8"/>
+    <text x="12" y="128" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Améliorer le comportement</text>
+    <text x="12" y="145" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">du PB face</text>
+    <rect x="12" y="158" width="36" height="18" rx="9" fill="#F5EEFF"/>
+    <text x="30" y="170" class="font-inter" fill="#7C5CFC" font-size="9" font-weight="600" text-anchor="middle">U15</text>
+    <text x="12" y="200" class="font-inter" fill="#1E1340" font-size="10" opacity="0.25">1 mars 2026</text>
+    <rect x="268" y="186" width="76" height="22" rx="11" fill="#FFF0EC"/>
+    <circle cx="283" cy="197" r="3" fill="#F06850"/>
+    <text x="306" y="201" class="font-inter" fill="#F06850" font-size="9" font-weight="600">En cours</text>
+  </g>
+
+  <!-- Card 7 — Prêt -->
+  <g transform="translate(16, 1588)" filter="url(#cardShadow)">
+    <rect width="358" height="220" rx="16" fill="#ffffff"/>
+    <rect y="0" width="358" height="4" rx="2" fill="#22C55E"/>
+    <rect x="12" y="16" width="334" height="85" rx="10" fill="url(#courtGrad)"/>
+    <text x="12" y="128" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Jeu en supériorité</text>
+    <text x="12" y="200" class="font-inter" fill="#1E1340" font-size="10" opacity="0.25">28 fév 2026</text>
+    <rect x="280" y="186" width="62" height="22" rx="11" fill="#ECFDF5"/>
+    <circle cx="295" cy="197" r="3" fill="#22C55E"/>
+    <text x="314" y="201" class="font-inter" fill="#16A34A" font-size="9" font-weight="600">Prêt</text>
+  </g>
+
+  <!-- Card 8 — Terminé -->
+  <g transform="translate(16, 1824)" filter="url(#cardShadow)">
+    <rect width="358" height="220" rx="16" fill="#ffffff"/>
+    <rect y="0" width="358" height="4" rx="2" fill="#7C5CFC"/>
+    <rect x="12" y="16" width="334" height="85" rx="10" fill="url(#courtGrad)"/>
+    <text x="12" y="128" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">Améliorer le jeu du TAR lors</text>
+    <text x="12" y="145" class="font-urban" fill="#1E1340" font-size="14" font-weight="700">l'opposition</text>
+    <text x="12" y="200" class="font-inter" fill="#1E1340" font-size="10" opacity="0.25">25 fév 2026</text>
+    <rect x="272" y="186" width="70" height="22" rx="11" fill="#F5EEFF"/>
+    <circle cx="287" cy="197" r="3" fill="#7C5CFC"/>
+    <text x="308" y="201" class="font-inter" fill="#7C5CFC" font-size="9" font-weight="600">Terminé</text>
+  </g>
+
+  <!-- Pagination -->
+  <g transform="translate(195, 2100)">
+    <text x="-80" y="0" class="font-inter" fill="#1E1340" font-size="11" opacity="0.2" text-anchor="middle">← Préc.</text>
+    <rect x="-15" y="-12" width="26" height="22" rx="11" fill="#7C5CFC" opacity="0.08"/>
+    <text x="-2" y="3" class="font-inter" fill="#7C5CFC" font-size="11" font-weight="600" text-anchor="middle">1</text>
+    <text x="28" y="3" class="font-inter" fill="#1E1340" font-size="11" opacity="0.25" text-anchor="middle">2</text>
+    <text x="56" y="3" class="font-inter" fill="#1E1340" font-size="11" opacity="0.25" text-anchor="middle">3</text>
+    <text x="90" y="0" class="font-inter" fill="#1E1340" font-size="11" opacity="0.2" text-anchor="middle">Suiv. →</text>
+  </g>
+
+  <!-- BOTTOM NAV BAR -->
+  <rect x="0" y="2340" width="390" height="60" fill="#ffffff" opacity="0.92"/>
+  <line x1="0" y1="2340" x2="390" y2="2340" stroke="#7C5CFC" stroke-width="0.5" opacity="0.06"/>
+
+  <!-- Home icon -->
+  <text x="65" y="2378" class="font-inter" fill="#1E1340" font-size="18" text-anchor="middle" opacity="0.25">🏠</text>
+  <text x="65" y="2393" class="font-inter" fill="#1E1340" font-size="8" text-anchor="middle" opacity="0.2">Accueil</text>
+
+  <!-- Training icon — active -->
+  <text x="195" y="2378" class="font-inter" fill="#F06850" font-size="18" text-anchor="middle">📋</text>
+  <text x="195" y="2393" class="font-urban" fill="#F06850" font-size="8" font-weight="700" text-anchor="middle">Entraînements</text>
+  <rect x="175" y="2340" width="40" height="3" rx="1.5" fill="#F06850"/>
+
+  <!-- Groups icon -->
+  <text x="325" y="2378" class="font-inter" fill="#1E1340" font-size="18" text-anchor="middle" opacity="0.25">👥</text>
+  <text x="325" y="2393" class="font-inter" fill="#1E1340" font-size="8" text-anchor="middle" opacity="0.2">Groupes</text>
+</svg>

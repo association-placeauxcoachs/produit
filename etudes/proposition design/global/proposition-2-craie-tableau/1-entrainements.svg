@@ -1,0 +1,339 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <!-- Chalk dust texture -->
+    <filter id="chalkDust" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" seed="3" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feComponentTransfer in="grayNoise" result="softNoise">
+        <feFuncA type="linear" slope="0.07" intercept="0"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="softNoise" mode="screen"/>
+    </filter>
+    <filter id="chalkText" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="chalkLine" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="10" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="paperShadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <filter id="paperTexture">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="15" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+      <feComponentTransfer in="gray" result="faint">
+        <feFuncA type="linear" slope="0.05" intercept="0"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faint" mode="multiply"/>
+    </filter>
+    <filter id="woodTexture">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02 0.3" numOctaves="5" seed="22" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+      <feComponentTransfer in="gray" result="faint">
+        <feFuncA type="linear" slope="0.12" intercept="0"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faint" mode="overlay"/>
+    </filter>
+    <linearGradient id="boardGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1B3D2F"/>
+      <stop offset="40%" stop-color="#234A38"/>
+      <stop offset="100%" stop-color="#1B3D2F"/>
+    </linearGradient>
+    <linearGradient id="sidebarGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2A1F14"/>
+      <stop offset="100%" stop-color="#3D2B1A"/>
+    </linearGradient>
+    <linearGradient id="tapeGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#D4C5A0" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#D4C5A0" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#D4C5A0" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- === MAIN CHALKBOARD BACKGROUND === -->
+  <rect width="1440" height="900" fill="url(#boardGrad)"/>
+  <rect width="1440" height="900" filter="url(#chalkDust)" fill="transparent"/>
+
+  <!-- Chalk dust particles -->
+  <g opacity="0.1" fill="#F5F0E8">
+    <circle cx="400" cy="150" r="0.8"/><circle cx="600" cy="200" r="1.1"/><circle cx="850" cy="100" r="0.7"/>
+    <circle cx="1100" cy="250" r="0.9"/><circle cx="500" cy="400" r="1.0"/><circle cx="900" cy="500" r="0.8"/>
+    <circle cx="1200" cy="350" r="1.2"/><circle cx="700" cy="700" r="0.6"/><circle cx="1000" cy="600" r="1.0"/>
+    <circle cx="450" cy="800" r="0.9"/><circle cx="1300" cy="750" r="0.7"/>
+  </g>
+
+  <!-- === LEFT SIDEBAR (Wood-textured dark panel) === -->
+  <rect x="0" y="0" width="260" height="900" fill="url(#sidebarGrad)" filter="url(#woodTexture)"/>
+  <g opacity="0.06" stroke="#F5F0E8" stroke-width="0.5">
+    <line x1="40" y1="0" x2="42" y2="900"/><line x1="100" y1="0" x2="98" y2="900"/>
+    <line x1="160" y1="0" x2="163" y2="900"/><line x1="220" y1="0" x2="218" y2="900"/>
+  </g>
+  <line x1="260" y1="0" x2="260" y2="900" stroke="#F5F0E8" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- Sidebar logo -->
+  <g transform="translate(30, 28)">
+    <circle cx="14" cy="14" r="12" fill="none" stroke="#FFD93D" stroke-width="1.5" filter="url(#chalkLine)" opacity="0.85"/>
+    <path d="M7 8 Q14 4 21 8 Q18 14 21 20 Q14 24 7 20 Q10 14 7 8Z" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.7"/>
+  </g>
+  <text x="62" y="46" font-family="'Caveat', cursive" font-size="20" fill="#F5F0E8" filter="url(#chalkText)" opacity="0.9">Place aux Coachs</text>
+  <line x1="20" y1="70" x2="240" y2="70" stroke="#F5F0E8" stroke-width="0.5" opacity="0.12"/>
+
+  <!-- Nav items -->
+  <rect x="10" y="85" width="240" height="42" rx="4" fill="#F5F0E8" opacity="0.08"/>
+  <g transform="translate(30, 96)">
+    <rect x="2" y="2" width="14" height="18" rx="2" fill="none" stroke="#FFD93D" stroke-width="1.3"/>
+    <line x1="6" y1="7" x2="13" y2="7" stroke="#FFD93D" stroke-width="1" opacity="0.7"/>
+    <line x1="6" y1="11" x2="13" y2="11" stroke="#FFD93D" stroke-width="1" opacity="0.7"/>
+    <line x1="6" y1="15" x2="11" y2="15" stroke="#FFD93D" stroke-width="1" opacity="0.7"/>
+  </g>
+  <text x="68" y="113" font-family="'Caveat', cursive" font-size="18" fill="#FFD93D" filter="url(#chalkText)">Entraînements</text>
+
+  <g transform="translate(30, 142)">
+    <path d="M9 18 L9 11 L2 11 L9 3 L16 11 L9 11" fill="none" stroke="#F5F0E8" stroke-width="1.2" opacity="0.5"/>
+  </g>
+  <text x="68" y="159" font-family="'Caveat', cursive" font-size="17" fill="#F5F0E8" opacity="0.6" filter="url(#chalkText)">Accueil</text>
+
+  <g transform="translate(30, 182)">
+    <circle cx="6" cy="8" r="5" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.5"/>
+    <circle cx="14" cy="8" r="5" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.5"/>
+  </g>
+  <text x="68" y="199" font-family="'Caveat', cursive" font-size="17" fill="#F5F0E8" opacity="0.6" filter="url(#chalkText)">Groupes de travail</text>
+
+  <g transform="translate(30, 222)">
+    <circle cx="9" cy="6" r="5" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.5"/>
+    <path d="M1 20 Q9 14 17 20" fill="none" stroke="#F5F0E8" stroke-width="1" opacity="0.5"/>
+  </g>
+  <text x="68" y="239" font-family="'Caveat', cursive" font-size="17" fill="#F5F0E8" opacity="0.6" filter="url(#chalkText)">Profil</text>
+
+  <line x1="20" y1="830" x2="240" y2="830" stroke="#F5F0E8" stroke-width="0.5" opacity="0.1"/>
+  <text x="30" y="860" font-family="'Caveat', cursive" font-size="15" fill="#F5F0E8" opacity="0.4" filter="url(#chalkText)">Déconnexion</text>
+
+  <!-- === MAIN CONTENT AREA === -->
+  <text x="310" y="55" font-family="'Caveat', cursive" font-size="36" fill="#F5F0E8" filter="url(#chalkText)">Mes entraînements</text>
+  <path d="M310 63 Q420 68 530 62 Q600 59 660 65" fill="none" stroke="#FFD93D" stroke-width="1.8" opacity="0.4" filter="url(#chalkLine)"/>
+
+  <!-- Create button -->
+  <g transform="translate(1290, 28)">
+    <circle cx="22" cy="22" r="22" fill="none" stroke="#FFD93D" stroke-width="2" stroke-dasharray="6,3" filter="url(#chalkLine)" opacity="0.8"/>
+    <line x1="12" y1="22" x2="32" y2="22" stroke="#FFD93D" stroke-width="2.5"/>
+    <line x1="22" y1="12" x2="22" y2="32" stroke="#FFD93D" stroke-width="2.5"/>
+    <text x="22" y="60" text-anchor="middle" font-family="'Caveat', cursive" font-size="13" fill="#FFD93D" opacity="0.7">Créer</text>
+  </g>
+
+  <!-- Search bar (lined paper strip) -->
+  <g transform="translate(310, 80)">
+    <rect width="600" height="40" rx="4" fill="#FFF8E7" opacity="0.9" filter="url(#paperTexture)"/>
+    <line x1="15" y1="14" x2="585" y2="14" stroke="#B8C4D0" stroke-width="0.5" opacity="0.3"/>
+    <line x1="15" y1="26" x2="585" y2="26" stroke="#B8C4D0" stroke-width="0.5" opacity="0.3"/>
+    <line x1="45" y1="0" x2="45" y2="40" stroke="#FF6B6B" stroke-width="0.5" opacity="0.3"/>
+    <circle cx="25" cy="20" r="7" fill="none" stroke="#888" stroke-width="1.3"/>
+    <line x1="30" y1="25" x2="35" y2="30" stroke="#888" stroke-width="1.3"/>
+    <text x="55" y="25" font-family="'Crimson Text', serif" font-size="14" fill="#999">Rechercher un entraînement...</text>
+  </g>
+
+  <!-- Filter tabs -->
+  <g transform="translate(310, 140)">
+    <text x="0" y="15" font-family="'Caveat', cursive" font-size="18" fill="#FFD93D" filter="url(#chalkText)">Tous</text>
+    <line x1="0" y1="20" x2="38" y2="20" stroke="#FFD93D" stroke-width="2" filter="url(#chalkLine)"/>
+    <text x="70" y="15" font-family="'Caveat', cursive" font-size="18" fill="#F5F0E8" opacity="0.6" filter="url(#chalkText)">Brouillons</text>
+    <text x="180" y="15" font-family="'Caveat', cursive" font-size="18" fill="#F5F0E8" opacity="0.6" filter="url(#chalkText)">En cours</text>
+    <text x="280" y="15" font-family="'Caveat', cursive" font-size="18" fill="#F5F0E8" opacity="0.6" filter="url(#chalkText)">Prêts</text>
+    <text x="350" y="15" font-family="'Caveat', cursive" font-size="18" fill="#F5F0E8" opacity="0.6" filter="url(#chalkText)">Terminés</text>
+  </g>
+
+  <!-- === TRAINING CARDS GRID === -->
+
+  <!-- Card 1 -->
+  <g transform="translate(300, 180) rotate(-1.2, 175, 155)" filter="url(#paperShadow)">
+    <rect width="350" height="310" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <g transform="translate(155, -15)">
+      <path d="M0 0 L0 30 Q0 38 8 38 L8 10 Q8 5 13 5 L13 35 Q13 45 5 45 L-5 45 Q-8 45 -8 38 L-8 0" fill="none" stroke="#999" stroke-width="1.8"/>
+    </g>
+    <rect x="20" y="20" width="310" height="120" rx="3" fill="#2D5A3F" opacity="0.15"/>
+    <g transform="translate(80, 35)">
+      <rect width="190" height="90" rx="2" fill="none" stroke="#2D5A3F" stroke-width="1" opacity="0.4"/>
+      <line x1="95" y1="0" x2="95" y2="90" stroke="#2D5A3F" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,3"/>
+      <circle cx="95" cy="45" r="15" fill="none" stroke="#2D5A3F" stroke-width="0.8" opacity="0.3"/>
+      <circle cx="50" cy="30" r="4" fill="#FF6B6B" opacity="0.5"/><circle cx="65" cy="50" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="130" cy="35" r="4" fill="#6BC5F8" opacity="0.5"/><circle cx="145" cy="55" r="4" fill="#6BC5F8" opacity="0.5"/>
+    </g>
+    <text x="20" y="170" font-family="'Caveat', cursive" font-size="22" fill="#1B3D2F">Montée de balle rapide</text>
+    <text x="20" y="195" font-family="'Crimson Text', serif" font-size="13" fill="#666">Travail de la contre-attaque et</text>
+    <text x="20" y="212" font-family="'Crimson Text', serif" font-size="13" fill="#666">de la montée de balle en supériorité.</text>
+    <g transform="translate(20, 225)">
+      <rect width="60" height="22" rx="10" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.6"/>
+      <text x="30" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#8B7000">U15</text>
+      <rect x="70" width="80" height="22" rx="10" fill="none" stroke="#6BC5F8" stroke-width="1" opacity="0.6"/>
+      <text x="110" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#2E7BAD">Attaque</text>
+    </g>
+    <text x="20" y="280" font-family="'Crimson Text', serif" font-size="12" fill="#999">12 mars 2026</text>
+    <g transform="translate(260, 265)">
+      <circle cx="8" cy="8" r="6" fill="#FFD93D" opacity="0.7"/>
+      <text x="20" y="12" font-family="'Caveat', cursive" font-size="13" fill="#8B7000">En cours</text>
+    </g>
+  </g>
+
+  <!-- Card 2 -->
+  <g transform="translate(670, 180) rotate(0.8, 175, 155)" filter="url(#paperShadow)">
+    <rect width="350" height="310" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <rect x="130" y="-8" width="90" height="18" rx="1" fill="url(#tapeGrad)"/>
+    <rect x="20" y="20" width="310" height="120" rx="3" fill="#2D5A3F" opacity="0.15"/>
+    <g transform="translate(80, 35)">
+      <rect width="190" height="90" rx="2" fill="none" stroke="#2D5A3F" stroke-width="1" opacity="0.4"/>
+      <line x1="95" y1="0" x2="95" y2="90" stroke="#2D5A3F" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,3"/>
+      <circle cx="95" cy="45" r="15" fill="none" stroke="#2D5A3F" stroke-width="0.8" opacity="0.3"/>
+      <circle cx="40" cy="45" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="60" cy="25" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="60" cy="65" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="150" cy="45" r="4" fill="#6BC5F8" opacity="0.5"/>
+    </g>
+    <text x="20" y="170" font-family="'Caveat', cursive" font-size="22" fill="#1B3D2F">Défense 0-6 renforcée</text>
+    <text x="20" y="195" font-family="'Crimson Text', serif" font-size="13" fill="#666">Renforcement du bloc défensif</text>
+    <text x="20" y="212" font-family="'Crimson Text', serif" font-size="13" fill="#666">et travail des glissements latéraux.</text>
+    <g transform="translate(20, 225)">
+      <rect width="75" height="22" rx="10" fill="none" stroke="#FF6B6B" stroke-width="1" opacity="0.6"/>
+      <text x="37" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#AA3333">Seniors</text>
+      <rect x="85" width="80" height="22" rx="10" fill="none" stroke="#6BC5F8" stroke-width="1" opacity="0.6"/>
+      <text x="125" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#2E7BAD">Défense</text>
+    </g>
+    <text x="20" y="280" font-family="'Crimson Text', serif" font-size="12" fill="#999">10 mars 2026</text>
+    <g transform="translate(275, 265)">
+      <circle cx="8" cy="8" r="6" fill="#4CAF50" opacity="0.7"/>
+      <text x="20" y="12" font-family="'Caveat', cursive" font-size="13" fill="#2E7D32">Prêt</text>
+    </g>
+  </g>
+
+  <!-- Card 3 -->
+  <g transform="translate(1040, 180) rotate(-0.5, 175, 155)" filter="url(#paperShadow)">
+    <rect width="350" height="310" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <circle cx="175" cy="2" r="7" fill="#CC3333" opacity="0.8"/>
+    <circle cx="175" cy="2" r="2.5" fill="#FFE0E0" opacity="0.6"/>
+    <rect x="20" y="20" width="310" height="120" rx="3" fill="#2D5A3F" opacity="0.15"/>
+    <g transform="translate(110, 40)">
+      <rect width="130" height="80" rx="2" fill="none" stroke="#2D5A3F" stroke-width="1" opacity="0.4"/>
+      <line x1="65" y1="0" x2="65" y2="80" stroke="#2D5A3F" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,3"/>
+      <circle cx="30" cy="40" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="100" cy="40" r="4" fill="#6BC5F8" opacity="0.5"/>
+      <circle cx="65" cy="40" r="3" fill="#F5F0E8" opacity="0.6"/>
+    </g>
+    <text x="20" y="170" font-family="'Caveat', cursive" font-size="22" fill="#1B3D2F">Échauffement ludique</text>
+    <text x="20" y="195" font-family="'Crimson Text', serif" font-size="13" fill="#666">Jeux d'échauffement adaptés pour</text>
+    <text x="20" y="212" font-family="'Crimson Text', serif" font-size="13" fill="#666">les catégories jeunes (U11-U13).</text>
+    <g transform="translate(20, 225)">
+      <rect width="55" height="22" rx="10" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.6"/>
+      <text x="27" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#8B7000">U11</text>
+      <rect x="65" width="55" height="22" rx="10" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.6"/>
+      <text x="92" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#8B7000">U13</text>
+      <rect x="130" width="105" height="22" rx="10" fill="none" stroke="#FF6B6B" stroke-width="1" opacity="0.6"/>
+      <text x="182" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#AA3333">Échauffement</text>
+    </g>
+    <text x="20" y="280" font-family="'Crimson Text', serif" font-size="12" fill="#999">8 mars 2026</text>
+    <g transform="translate(245, 265)">
+      <circle cx="8" cy="8" r="6" fill="#999" opacity="0.6"/>
+      <text x="20" y="12" font-family="'Caveat', cursive" font-size="13" fill="#777">Brouillon</text>
+    </g>
+  </g>
+
+  <!-- === SECOND ROW === -->
+
+  <!-- Card 4 -->
+  <g transform="translate(300, 510) rotate(1.5, 175, 155)" filter="url(#paperShadow)">
+    <rect width="350" height="310" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <rect x="140" y="-8" width="70" height="18" rx="1" fill="url(#tapeGrad)" transform="rotate(-2, 175, 1)"/>
+    <rect x="20" y="20" width="310" height="120" rx="3" fill="#2D5A3F" opacity="0.15"/>
+    <g transform="translate(85, 40)">
+      <rect width="180" height="80" rx="2" fill="none" stroke="#2D5A3F" stroke-width="1" opacity="0.4"/>
+      <circle cx="45" cy="20" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="45" cy="40" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="45" cy="60" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="135" cy="20" r="4" fill="#6BC5F8" opacity="0.5"/>
+      <circle cx="135" cy="40" r="4" fill="#6BC5F8" opacity="0.5"/>
+      <circle cx="135" cy="60" r="4" fill="#6BC5F8" opacity="0.5"/>
+      <path d="M49 20 L90 40" fill="none" stroke="#333" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.4"/>
+      <path d="M49 60 L90 40" fill="none" stroke="#333" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.4"/>
+    </g>
+    <text x="20" y="170" font-family="'Caveat', cursive" font-size="22" fill="#1B3D2F">Circulation de balle</text>
+    <text x="20" y="195" font-family="'Crimson Text', serif" font-size="13" fill="#666">Enchaînements offensifs avec passes</text>
+    <text x="20" y="212" font-family="'Crimson Text', serif" font-size="13" fill="#666">et décalages sur grand espace.</text>
+    <g transform="translate(20, 225)">
+      <rect width="60" height="22" rx="10" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.6"/>
+      <text x="30" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#8B7000">U18</text>
+      <rect x="70" width="80" height="22" rx="10" fill="none" stroke="#6BC5F8" stroke-width="1" opacity="0.6"/>
+      <text x="110" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#2E7BAD">Attaque</text>
+    </g>
+    <text x="20" y="280" font-family="'Crimson Text', serif" font-size="12" fill="#999">5 mars 2026</text>
+    <g transform="translate(260, 265)">
+      <circle cx="8" cy="8" r="6" fill="#6BC5F8" opacity="0.7"/>
+      <text x="20" y="12" font-family="'Caveat', cursive" font-size="13" fill="#2E7BAD">Terminé</text>
+    </g>
+  </g>
+
+  <!-- Card 5 -->
+  <g transform="translate(670, 510) rotate(-0.9, 175, 155)" filter="url(#paperShadow)">
+    <rect width="350" height="310" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <g transform="translate(155, -15)">
+      <path d="M0 0 L0 30 Q0 38 8 38 L8 10 Q8 5 13 5 L13 35 Q13 45 5 45 L-5 45 Q-8 45 -8 38 L-8 0" fill="none" stroke="#777" stroke-width="1.8"/>
+    </g>
+    <rect x="20" y="20" width="310" height="120" rx="3" fill="#2D5A3F" opacity="0.15"/>
+    <g transform="translate(100, 40)">
+      <rect width="150" height="80" rx="2" fill="none" stroke="#2D5A3F" stroke-width="1" opacity="0.4"/>
+      <circle cx="50" cy="40" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="100" cy="40" r="4" fill="#6BC5F8" opacity="0.5"/>
+      <circle cx="75" cy="20" r="3" fill="#F5F0E8" opacity="0.5"/>
+    </g>
+    <text x="20" y="170" font-family="'Caveat', cursive" font-size="22" fill="#1B3D2F">Tirs en pivot</text>
+    <text x="20" y="195" font-family="'Crimson Text', serif" font-size="13" fill="#666">Exercices de tir en position pivot :</text>
+    <text x="20" y="212" font-family="'Crimson Text', serif" font-size="13" fill="#666">réception, orientation et finition.</text>
+    <g transform="translate(20, 225)">
+      <rect width="75" height="22" rx="10" fill="none" stroke="#FF6B6B" stroke-width="1" opacity="0.6"/>
+      <text x="37" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#AA3333">Seniors</text>
+      <rect x="85" width="50" height="22" rx="10" fill="none" stroke="#6BC5F8" stroke-width="1" opacity="0.6"/>
+      <text x="110" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#2E7BAD">Tir</text>
+    </g>
+    <text x="20" y="280" font-family="'Crimson Text', serif" font-size="12" fill="#999">1 mars 2026</text>
+    <g transform="translate(260, 265)">
+      <circle cx="8" cy="8" r="6" fill="#FFD93D" opacity="0.7"/>
+      <text x="20" y="12" font-family="'Caveat', cursive" font-size="13" fill="#8B7000">En cours</text>
+    </g>
+  </g>
+
+  <!-- Card 6 -->
+  <g transform="translate(1040, 510) rotate(0.3, 175, 155)" filter="url(#paperShadow)">
+    <rect width="350" height="310" rx="3" fill="#FFF8E7" filter="url(#paperTexture)"/>
+    <circle cx="175" cy="2" r="7" fill="#2266AA" opacity="0.8"/>
+    <circle cx="175" cy="2" r="2.5" fill="#AACCFF" opacity="0.6"/>
+    <rect x="20" y="20" width="310" height="120" rx="3" fill="#2D5A3F" opacity="0.15"/>
+    <g transform="translate(100, 45)">
+      <rect width="150" height="70" rx="2" fill="none" stroke="#2D5A3F" stroke-width="1" opacity="0.4"/>
+      <circle cx="35" cy="35" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="55" cy="20" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="55" cy="50" r="4" fill="#FF6B6B" opacity="0.5"/>
+      <circle cx="115" cy="35" r="4" fill="#6BC5F8" opacity="0.5"/>
+      <circle cx="95" cy="20" r="4" fill="#6BC5F8" opacity="0.5"/>
+      <circle cx="95" cy="50" r="4" fill="#6BC5F8" opacity="0.5"/>
+    </g>
+    <text x="20" y="170" font-family="'Caveat', cursive" font-size="22" fill="#1B3D2F">Jeu en supériorité</text>
+    <text x="20" y="195" font-family="'Crimson Text', serif" font-size="13" fill="#666">Situations de jeu en surnombre</text>
+    <text x="20" y="212" font-family="'Crimson Text', serif" font-size="13" fill="#666">offensif (3v2, 4v3, 5v4).</text>
+    <g transform="translate(20, 225)">
+      <rect width="60" height="22" rx="10" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.6"/>
+      <text x="30" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#8B7000">U15</text>
+      <rect x="70" width="60" height="22" rx="10" fill="none" stroke="#FFD93D" stroke-width="1" opacity="0.6"/>
+      <text x="100" y="15" text-anchor="middle" font-family="'Caveat', cursive" font-size="12" fill="#8B7000">U18</text>
+    </g>
+    <text x="20" y="280" font-family="'Crimson Text', serif" font-size="12" fill="#999">25 fév. 2026</text>
+    <g transform="translate(275, 265)">
+      <circle cx="8" cy="8" r="6" fill="#4CAF50" opacity="0.7"/>
+      <text x="20" y="12" font-family="'Caveat', cursive" font-size="13" fill="#2E7D32">Prêt</text>
+    </g>
+  </g>
+
+  <!-- Decorative chalk marks -->
+  <g opacity="0.06" filter="url(#chalkLine)">
+    <line x1="280" y1="860" x2="300" y2="880" stroke="#F5F0E8" stroke-width="2"/>
+    <line x1="300" y1="860" x2="280" y2="880" stroke="#F5F0E8" stroke-width="2"/>
+    <circle cx="1380" cy="870" r="8" fill="none" stroke="#F5F0E8" stroke-width="2"/>
+  </g>
+</svg>

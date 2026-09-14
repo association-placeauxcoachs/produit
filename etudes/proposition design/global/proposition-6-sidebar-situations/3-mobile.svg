@@ -1,0 +1,309 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1400" width="800" height="1400">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      .font-urban { font-family: 'Urbanist', sans-serif; }
+      .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
+    <linearGradient id="bgPastel" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#F8F5FF"/>
+      <stop offset="50%" stop-color="#FFF8F5"/>
+      <stop offset="100%" stop-color="#F3F0FF"/>
+    </linearGradient>
+    <linearGradient id="ctaViolet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5B8DEF"/>
+      <stop offset="100%" stop-color="#7C5CFC"/>
+    </linearGradient>
+    <linearGradient id="courtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1976D2"/>
+      <stop offset="100%" stop-color="#1565C0"/>
+    </linearGradient>
+    <filter id="cardShadow"><feDropShadow dx="0" dy="3" stdDeviation="10" flood-color="#7C5CFC" flood-opacity="0.07"/></filter>
+    <filter id="courtShadow"><feDropShadow dx="0" dy="6" stdDeviation="16" flood-color="#7C5CFC" flood-opacity="0.10"/></filter>
+    <filter id="btnShadow"><feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#7C5CFC" flood-opacity="0.18"/></filter>
+  </defs>
+
+  <rect width="800" height="1400" fill="url(#bgPastel)"/>
+
+  <!-- ====================================================== -->
+  <!-- VARIANTE A : Vue normale (390px)                       -->
+  <!-- ====================================================== -->
+  <text x="40" y="32" class="font-urban" fill="#1E1340" font-size="13" font-weight="800" opacity="0.5">A — Vue mobile (390px)</text>
+
+  <g transform="translate(40, 56)">
+    <!-- Frame téléphone -->
+    <rect width="370" height="1300" rx="32" fill="#ffffff" stroke="#1E1340" stroke-width="0.6" stroke-opacity="0.1"/>
+
+    <!-- Status bar -->
+    <rect width="370" height="36" rx="32" fill="#1E1340" opacity="0.02"/>
+    <text x="20" y="22" class="font-inter" fill="#1E1340" font-size="10" font-weight="600" opacity="0.6">9:41</text>
+    <text x="320" y="22" class="font-inter" fill="#1E1340" font-size="10" opacity="0.4">●●●●</text>
+
+    <!-- Header sticky -->
+    <g transform="translate(0, 36)">
+      <rect width="370" height="124" fill="#FEFCFF"/>
+      <line x1="16" y1="124" x2="354" y2="124" stroke="#7C5CFC" stroke-width="0.5" opacity="0.1"/>
+
+      <!-- Top bar : back / title / menu -->
+      <g transform="translate(16, 14)">
+        <rect width="32" height="32" rx="9" fill="#F5EEFF"/>
+        <path d="M 19 16 L 13 16 M 16 13 L 13 16 L 16 19" stroke="#7C5CFC" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </g>
+      <text x="64" y="28" class="font-inter" fill="#1E1340" font-size="9" opacity="0.4">Entraînement</text>
+      <text x="64" y="42" class="font-urban" fill="#1E1340" font-size="13" font-weight="800">Améliorer le jeu du PB…</text>
+
+      <g transform="translate(286, 14)">
+        <rect width="32" height="32" rx="9" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="16" y="22" font-size="14" text-anchor="middle">⋯</text>
+        <rect x="40" y="0" width="32" height="32" rx="9" fill="url(#ctaViolet)"/>
+        <text x="56" y="22" font-size="13" text-anchor="middle">💾</text>
+      </g>
+
+      <!-- Métadonnées défilantes (chips) -->
+      <g transform="translate(16, 64)">
+        <rect width="74" height="22" rx="11" fill="#F5EEFF"/>
+        <text x="14" y="14" font-size="9.5">🏷</text>
+        <text x="44" y="15" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="700" text-anchor="middle">Attaque</text>
+
+        <rect x="80" y="0" width="92" height="22" rx="11" fill="#F5EEFF"/>
+        <text x="90" y="14" font-size="9.5">📅</text>
+        <text x="126" y="15" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="700" text-anchor="middle">12/03/26</text>
+
+        <rect x="178" y="0" width="44" height="22" rx="11" fill="#F5EEFF"/>
+        <text x="200" y="15" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="700" text-anchor="middle">U15</text>
+
+        <rect x="228" y="0" width="56" height="22" rx="11" fill="#F5EEFF"/>
+        <text x="256" y="15" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="700" text-anchor="middle">1h30</text>
+
+        <rect x="290" y="0" width="44" height="22" rx="11" fill="#F5EEFF"/>
+        <text x="312" y="15" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="700" text-anchor="middle">16 j.</text>
+      </g>
+
+      <!-- Statut -->
+      <g transform="translate(16, 96)">
+        <rect width="50" height="20" rx="10" fill="#ECFDF5"/>
+        <circle cx="12" cy="10" r="3" fill="#22C55E"/>
+        <text x="22" y="14" class="font-inter" fill="#16A34A" font-size="9" font-weight="600">Prêt</text>
+        <text x="60" y="14" class="font-inter" fill="#1E1340" font-size="9" opacity="0.4">enregistré il y a 2 min</text>
+      </g>
+    </g>
+
+    <!-- Sélecteur situation horizontal (carrousel) -->
+    <g transform="translate(0, 174)">
+      <text x="16" y="14" class="font-urban" fill="#1E1340" font-size="9" font-weight="700" opacity="0.4" letter-spacing="1.2">SITUATIONS</text>
+      <text x="354" y="14" class="font-inter" fill="#7C5CFC" font-size="10" font-weight="600" text-anchor="end">1 / 3</text>
+
+      <g transform="translate(16, 22)">
+        <!-- 01 actif -->
+        <rect width="118" height="56" rx="11" fill="#F06850"/>
+        <text x="12" y="20" class="font-urban" fill="#fff" font-size="9" font-weight="700">01</text>
+        <text x="12" y="38" class="font-urban" fill="#fff" font-size="11" font-weight="700">Échauffement</text>
+        <text x="12" y="50" class="font-inter" fill="#fff" font-size="8.5" opacity="0.85">3 sch · 8 él.</text>
+
+        <!-- 02 -->
+        <rect x="126" y="0" width="118" height="56" rx="11" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="138" y="20" class="font-urban" fill="#1E1340" font-size="9" font-weight="700" opacity="0.5">02</text>
+        <text x="138" y="38" class="font-urban" fill="#1E1340" font-size="11" font-weight="700">Montée balle</text>
+        <text x="138" y="50" class="font-inter" fill="#1E1340" font-size="8.5" opacity="0.4">2 sch · 6 él.</text>
+
+        <!-- 03 partiellement visible -->
+        <rect x="252" y="0" width="86" height="56" rx="11" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="264" y="20" class="font-urban" fill="#1E1340" font-size="9" font-weight="700" opacity="0.5">03</text>
+        <text x="264" y="38" class="font-urban" fill="#1E1340" font-size="11" font-weight="700">Surno…</text>
+      </g>
+    </g>
+
+    <!-- Titre situation + actions -->
+    <g transform="translate(16, 308)">
+      <text class="font-urban" fill="#1E1340" font-size="15" font-weight="800">Échauffement avec passe et va</text>
+
+      <!-- chips motsCles -->
+      <g transform="translate(0, 14)">
+        <rect width="60" height="20" rx="10" fill="#F5EEFF"/>
+        <text x="30" y="13" class="font-inter" fill="#7C5CFC" font-size="9.5" font-weight="600" text-anchor="middle">passe</text>
+        <rect x="66" y="0" width="64" height="20" rx="10" fill="#F5EEFF"/>
+        <text x="98" y="13" class="font-inter" fill="#7C5CFC" font-size="9.5" font-weight="600" text-anchor="middle">collectif</text>
+        <rect x="136" y="0" width="60" height="20" rx="10" fill="none" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.25" stroke-dasharray="4 3"/>
+        <text x="166" y="13" class="font-inter" fill="#7C5CFC" font-size="9.5" font-weight="600" text-anchor="middle">+ ajout</text>
+      </g>
+    </g>
+
+    <!-- Onglets schémas -->
+    <g transform="translate(16, 360)">
+      <rect width="338" height="32" rx="9" fill="#ffffff" filter="url(#cardShadow)"/>
+      <rect x="4" y="3" width="78" height="26" rx="7" fill="#F5EEFF"/>
+      <text x="43" y="20" class="font-urban" fill="#7C5CFC" font-size="10.5" font-weight="700" text-anchor="middle">Sch. 1</text>
+      <text x="118" y="20" class="font-urban" fill="#1E1340" font-size="10.5" font-weight="600" text-anchor="middle" opacity="0.4">Sch. 2</text>
+      <text x="178" y="20" class="font-urban" fill="#1E1340" font-size="10.5" font-weight="600" text-anchor="middle" opacity="0.4">Sch. 3</text>
+      <rect x="220" y="3" width="26" height="26" rx="7" fill="#F5EEFF"/>
+      <text x="233" y="20" class="font-urban" fill="#7C5CFC" font-size="13" font-weight="700" text-anchor="middle">+</text>
+      <rect x="270" y="3" width="64" height="26" rx="7" fill="#F8F5FF"/>
+      <text x="302" y="20" class="font-inter" fill="#7C5CFC" font-size="9.5" font-weight="600" text-anchor="middle">⤢ plein écran</text>
+    </g>
+
+    <!-- Terrain -->
+    <g transform="translate(16, 404)" filter="url(#courtShadow)">
+      <rect width="338" height="180" rx="11" fill="#ffffff"/>
+      <rect x="8" y="8" width="322" height="164" rx="8" fill="url(#courtGrad)"/>
+      <line x1="169" y1="8" x2="169" y2="172" stroke="#fff" stroke-width="1" opacity="0.35"/>
+      <circle cx="169" cy="90" r="22" fill="none" stroke="#fff" stroke-width="1" opacity="0.35"/>
+      <path d="M 8 50 Q 60 90 8 130" fill="#C8850A" opacity="0.4"/>
+      <path d="M 330 50 Q 278 90 330 130" fill="#C8850A" opacity="0.4"/>
+      <circle cx="100" cy="60" r="8" fill="#F06850" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="90" cy="100" r="8" fill="#F06850" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="100" cy="140" r="8" fill="#F06850" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="140" cy="80" r="8" fill="#F06850" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="140" cy="120" r="8" fill="#F06850" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="230" cy="70" r="8" fill="#FFCA28" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="220" cy="110" r="8" fill="#FFCA28" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="230" cy="140" r="8" fill="#FFCA28" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="30" cy="90" r="8" fill="#9C27B0" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="308" cy="90" r="8" fill="#9C27B0" stroke="#fff" stroke-width="1.5"/>
+      <circle cx="170" cy="90" r="5" fill="#BCFF00" stroke="#fff" stroke-width="1.5"/>
+    </g>
+
+    <!-- 4 cartes empilées -->
+    <g transform="translate(16, 600)">
+      <g filter="url(#cardShadow)">
+        <rect width="338" height="64" rx="11" fill="#ffffff"/>
+        <rect width="3" height="64" fill="#F06850"/>
+        <text x="14" y="20" font-size="13">📋</text>
+        <text x="36" y="22" class="font-urban" fill="#1E1340" font-size="11" font-weight="700">À FAIRE</text>
+        <text x="36" y="40" class="font-inter" fill="#1E1340" font-size="10" opacity="0.55">Passes en colonne, engagement vers le pivot</text>
+        <text x="36" y="54" class="font-inter" fill="#1E1340" font-size="10" opacity="0.55">opposé. Rotation toutes les 3 min.</text>
+      </g>
+      <g transform="translate(0, 76)" filter="url(#cardShadow)">
+        <rect width="338" height="64" rx="11" fill="#ffffff"/>
+        <rect width="3" height="64" fill="#7C5CFC"/>
+        <text x="14" y="20" font-size="13">👁</text>
+        <text x="36" y="22" class="font-urban" fill="#1E1340" font-size="11" font-weight="700">À VÉRIFIER</text>
+        <text x="36" y="40" class="font-inter" fill="#1E1340" font-size="10" opacity="0.55">Hauteur poitrine, timing, appel de balle.</text>
+      </g>
+      <g transform="translate(0, 152)" filter="url(#cardShadow)">
+        <rect width="338" height="64" rx="11" fill="#ffffff"/>
+        <rect width="3" height="64" fill="#E5A100"/>
+        <text x="14" y="20" font-size="13">💬</text>
+        <text x="36" y="22" class="font-urban" fill="#1E1340" font-size="11" font-weight="700">À DIRE AUX JOUEURS</text>
+        <text x="36" y="40" class="font-inter" fill="#1E1340" font-size="10" opacity="0.55">« Lève la tête ! » « Appelez la balle ! »</text>
+      </g>
+      <g transform="translate(0, 228)" filter="url(#cardShadow)">
+        <rect width="338" height="64" rx="11" fill="#ffffff"/>
+        <rect width="3" height="64" fill="#22C55E"/>
+        <text x="14" y="20" font-size="13">🔄</text>
+        <text x="36" y="22" class="font-urban" fill="#1E1340" font-size="11" font-weight="700">À FAIRE ÉVOLUER</text>
+        <text x="36" y="40" class="font-inter" fill="#1E1340" font-size="10" opacity="0.55">Défenseur semi-actif puis actif.</text>
+      </g>
+    </g>
+
+    <!-- Barre d'actions sticky bas -->
+    <g transform="translate(0, 1216)">
+      <rect width="370" height="84" fill="#FEFCFF"/>
+      <line x1="16" y1="0" x2="354" y2="0" stroke="#7C5CFC" stroke-width="0.5" opacity="0.1"/>
+
+      <!-- Pagination situations -->
+      <g transform="translate(16, 14)">
+        <rect width="60" height="32" rx="9" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="30" y="22" class="font-urban" fill="#7C5CFC" font-size="14" text-anchor="middle">‹</text>
+      </g>
+      <g transform="translate(82, 14)">
+        <rect width="166" height="32" rx="9" fill="#F5EEFF"/>
+        <text x="83" y="22" class="font-inter" fill="#7C5CFC" font-size="11" font-weight="700" text-anchor="middle">Situation 1 / 3</text>
+      </g>
+      <g transform="translate(254, 14)">
+        <rect width="60" height="32" rx="9" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="30" y="22" class="font-urban" fill="#7C5CFC" font-size="14" text-anchor="middle">›</text>
+      </g>
+      <g transform="translate(322, 14)">
+        <rect width="32" height="32" rx="9" fill="url(#ctaViolet)" filter="url(#btnShadow)"/>
+        <text x="16" y="22" class="font-urban" fill="#fff" font-size="16" font-weight="700" text-anchor="middle">+</text>
+      </g>
+
+      <!-- Indicateurs sauvegarde / hint -->
+      <text x="185" y="64" class="font-inter" fill="#1E1340" font-size="9" opacity="0.35" text-anchor="middle">Glisse pour changer de situation · ⋯ pour copier / supprimer</text>
+    </g>
+  </g>
+
+  <!-- ====================================================== -->
+  <!-- VARIANTE B : Menu ⋯ ouvert (bottom sheet)              -->
+  <!-- ====================================================== -->
+  <text x="450" y="32" class="font-urban" fill="#1E1340" font-size="13" font-weight="800" opacity="0.5">B — Menu actions ouvert</text>
+
+  <g transform="translate(450, 56)">
+    <rect width="320" height="1300" rx="32" fill="#1E1340" opacity="0.4"/>
+    <rect width="320" height="900" rx="32" fill="#1E1340" opacity="0.55"/>
+
+    <!-- Bottom sheet -->
+    <g transform="translate(0, 600)">
+      <rect width="320" height="700" rx="24" fill="#ffffff"/>
+      <rect x="142" y="10" width="36" height="4" rx="2" fill="#1E1340" opacity="0.15"/>
+
+      <!-- Header sheet : entraînement -->
+      <text x="20" y="46" class="font-urban" fill="#1E1340" font-size="9" font-weight="700" opacity="0.4" letter-spacing="1.2">ENTRAÎNEMENT</text>
+
+      <g transform="translate(16, 60)">
+        <rect width="288" height="44" rx="11" fill="url(#ctaViolet)" filter="url(#btnShadow)"/>
+        <text x="20" y="29" font-size="14">💾</text>
+        <text x="144" y="30" class="font-urban" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">Enregistrer l'entraînement</text>
+      </g>
+
+      <g transform="translate(16, 116)">
+        <rect width="288" height="44" rx="11" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="20" y="29" font-size="14">📄</text>
+        <text x="44" y="30" class="font-inter" fill="#1E1340" font-size="12" font-weight="600">Télécharger en PDF</text>
+      </g>
+
+      <g transform="translate(16, 168)">
+        <rect width="288" height="44" rx="11" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="20" y="29" font-size="14">📑</text>
+        <text x="44" y="30" class="font-inter" fill="#1E1340" font-size="12" font-weight="600">Dupliquer l'entraînement</text>
+      </g>
+
+      <g transform="translate(16, 220)">
+        <rect width="288" height="44" rx="11" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="20" y="29" font-size="14">🔗</text>
+        <text x="44" y="30" class="font-inter" fill="#1E1340" font-size="12" font-weight="600">Partager dans un groupe</text>
+      </g>
+
+      <g transform="translate(16, 272)">
+        <rect width="288" height="44" rx="11" fill="#FFF5F3" stroke="#F06850" stroke-width="0.8" stroke-opacity="0.3"/>
+        <text x="20" y="29" font-size="14">🗑</text>
+        <text x="44" y="30" class="font-inter" fill="#F06850" font-size="12" font-weight="600">Supprimer l'entraînement</text>
+      </g>
+
+      <line x1="16" y1="338" x2="304" y2="338" stroke="#7C5CFC" stroke-width="0.5" opacity="0.1"/>
+
+      <!-- Section situation courante -->
+      <text x="20" y="362" class="font-urban" fill="#1E1340" font-size="9" font-weight="700" opacity="0.4" letter-spacing="1.2">SITUATION 01</text>
+
+      <g transform="translate(16, 376)">
+        <rect width="288" height="44" rx="11" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="20" y="29" font-size="14">＋</text>
+        <text x="44" y="30" class="font-inter" fill="#1E1340" font-size="12" font-weight="600">Ajouter un schéma</text>
+      </g>
+
+      <g transform="translate(16, 428)">
+        <rect width="288" height="44" rx="11" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="20" y="29" font-size="14">📋</text>
+        <text x="44" y="30" class="font-inter" fill="#1E1340" font-size="12" font-weight="600">Copier la situation</text>
+      </g>
+
+      <g transform="translate(16, 480)">
+        <rect width="288" height="44" rx="11" fill="#ffffff" stroke="#7C5CFC" stroke-width="0.8" stroke-opacity="0.18"/>
+        <text x="20" y="29" font-size="14">📑</text>
+        <text x="44" y="30" class="font-inter" fill="#1E1340" font-size="12" font-weight="600">Dupliquer la situation</text>
+      </g>
+
+      <g transform="translate(16, 532)">
+        <rect width="288" height="44" rx="11" fill="#FFF5F3" stroke="#F06850" stroke-width="0.8" stroke-opacity="0.3"/>
+        <text x="20" y="29" font-size="14">🗑</text>
+        <text x="44" y="30" class="font-inter" fill="#F06850" font-size="12" font-weight="600">Supprimer la situation</text>
+      </g>
+
+      <!-- Annuler -->
+      <g transform="translate(16, 600)">
+        <rect width="288" height="44" rx="11" fill="#F5EEFF"/>
+        <text x="144" y="30" class="font-urban" fill="#7C5CFC" font-size="12" font-weight="700" text-anchor="middle">Annuler</text>
+      </g>
+    </g>
+  </g>
+</svg>
