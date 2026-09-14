@@ -1,6 +1,5 @@
 name: Bug
 description: Signaler quelque chose qui ne fonctionne pas comme attendu
-title: "[Bug] "
 labels: ["bug"]
 body:
   - type: markdown

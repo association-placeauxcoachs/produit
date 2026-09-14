@@ -12,7 +12,7 @@ Le code de l'application est dans un dépôt séparé.
 
 Il faut un compte GitHub, gratuit. Sans compte, écrivez à [support@placeauxcoachs.fr](mailto:support@placeauxcoachs.fr) ou utilisez le bouton de retour en bas de chaque page de l'application : le message sera recopié ici.
 
-Vous pouvez aussi **voter** pour une idée existante en ajoutant une réaction 👍 à l'issue.
+Vous pouvez aussi **voter** pour une idée existante en ajoutant une réaction 👍 à l'issue, ou la **compléter** par un commentaire : un cas d'usage, une précision, une user story.
 
 ## Où en sont les sujets
 

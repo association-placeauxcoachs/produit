@@ -21,31 +21,39 @@ Le produit se décide à deux, et la répartition est explicite :
 
 ## D'où viennent les idées
 
-- **Le référent métier** — le canal structuré, qui produit le gros des demandes. Étiquette `source:thomas`.
+- **Le référent métier** — le canal structuré, qui produit le gros des demandes. Étiquette `source:referent`.
 - **Les entraîneurs eux-mêmes** — directement dans les issues de ce dépôt, par email ou via le bouton de retour de l'application. Étiquette `source:entraineur`.
 - **La mesure d'usage** — ce que montrent les chiffres de fréquentation. Étiquette `source:usage`.
+- **Le développeur** — ses propres idées et les études de design. Étiquette `source:developpeur`.
 
 Un retour spontané d'entraîneur est plus rare mais plus précieux : il vient de quelqu'un qui utilise l'outil sans avoir de rôle dans le projet. Il est instruit avec le même sérieux qu'une demande du référent.
 
 ## Le chemin d'une idée
 
-**1. Une idée, ou une gêne, est exprimée** dans une issue « Fonctionnalité ». Aucune mise en forme n'est attendue à ce stade. Colonne **À instruire**.
+**1. Une idée, ou une gêne, est exprimée** dans une issue « Fonctionnalité », avec le formulaire. Seul le problème est obligatoire : les autres rubriques peuvent rester vides. Le titre nomme le sujet, sans préfixe. Colonne **À instruire**.
 
-**2. Le besoin est mis en forme** avec le [guide de travail](guide-de-travail.md) et l'[assistant produit](assistant-produit.md) : problème reformulé, user stories, critères d'acceptation, valeur de 1 à 5. Colonne **Instruit**.
+**2. Le besoin est instruit en commentaire.** Le référent métier, ou toute autre personne, complète l'issue par un commentaire, avec le [guide de travail](guide-de-travail.md) et l'[assistant produit](assistant-produit.md) : fonctionnalité proposée, user stories, critères d'acceptation. Le développeur reporte ensuite ce qui est validé dans les rubriques de l'issue, qui reste la référence. Colonne **Instruit**.
 
-**3. On priorise ensemble** au point des quinze jours. Le développeur renseigne l'effort (S, M, L), le référent la valeur. Colonne **Priorisé**.
+**3. On priorise ensemble** au point des quinze jours. Le référent pose la **Valeur** (1 à 5), le développeur l'**Effort** (S, M, L), tous deux dans les champs du tableau. La valeur indiquée dans le formulaire n'est qu'un avis de la personne qui dépose l'idée. Colonne **Priorisé**.
 
 **4. Le développement démarre.** Une fonctionnalité trop grosse est découpée en sous-issues `technique`, chacune correspondant à un change OpenSpec. Colonnes **En cours** puis **En revue**.
 
 **5. La fonctionnalité est livrée**, et l'issue indique quoi tester. Colonne **Livré**.
+
+**Un bug** suit un chemin plus court : il n'a pas à être instruit. Il est confirmé, puis priorisé au point suivant, ou corrigé tout de suite s'il empêche d'utiliser l'application.
+
+**Les décisions** qui gouvernent la priorisation, comme l'arbitrage ci-dessous, sont des issues épinglées. Elles ne figurent pas au tableau.
 
 ## Étiquettes
 
 | Axe | Étiquettes |
 |---|---|
 | Type | `fonctionnalite`, `bug`, `technique` |
-| Source | `source:thomas`, `source:entraineur`, `source:usage` |
-| Thème | `editeur`, `organisation`, `bibliotheque`, `communaute`, `prise-en-main` |
+| Source | `source:referent`, `source:entraineur`, `source:usage`, `source:developpeur` |
+| Thème | `editeur`, `organisation`, `bibliotheque`, `communaute` |
+| Priorité | `prise-en-main` |
+
+Une issue porte **un type, une source et un thème**. `prise-en-main` s'ajoute au thème lorsque le sujet aide un nouvel entraîneur à créer son premier entraînement : c'est ce qui le fait examiner en premier.
 
 ## Le principe qui gouverne les arbitrages
 

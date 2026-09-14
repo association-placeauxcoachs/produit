@@ -149,7 +149,10 @@ Une IA (Claude, ChatGPT, Gemini…) peut aider à :
 - vérifier qu'une fonctionnalité est bien définie ;
 - challenger un périmètre trop large.
 
-Donnez-lui le contenu de [`assistant-produit.md`](assistant-produit.md) en début de conversation, puis décrivez votre idée. Sa réponse se colle directement dans le formulaire « Fonctionnalité » des issues.
+Donnez-lui le contenu de [`assistant-produit.md`](assistant-produit.md) en début de conversation, puis décrivez votre idée. Sa réponse suit les rubriques du formulaire « Fonctionnalité » :
+
+- **pour une nouvelle idée**, collez-la dans le formulaire ;
+- **pour une idée déjà déposée**, collez-la en **commentaire** de l'issue. Le développeur reporte ensuite dans l'issue ce qui est validé.
 
 ---
 

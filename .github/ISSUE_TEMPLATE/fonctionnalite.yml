@@ -1,6 +1,5 @@
 name: Fonctionnalité
 description: Proposer une idée ou décrire une gêne rencontrée dans l'application
-title: "[Fonctionnalité] "
 labels: ["fonctionnalite"]
 body:
   - type: markdown
@@ -8,6 +7,8 @@ body:
       value: |
         Merci de prendre le temps de proposer une idée ! Pas besoin de vocabulaire technique : racontez ce que vous vivez sur le terrain.
         Seul le premier champ est obligatoire. Pour aller plus loin, le [guide de travail](https://github.com/association-placeauxcoachs/produit/blob/main/guide-de-travail.md) et l'[assistant produit](https://github.com/association-placeauxcoachs/produit/blob/main/assistant-produit.md) aident à remplir les autres.
+        Pour compléter une idée déjà déposée, ne créez pas de nouvelle issue : ajoutez un commentaire sur l'issue existante.
+        Donnez-lui un titre court qui nomme le sujet, sans préfixe.
   - type: textarea
     id: probleme
     attributes:
@@ -40,6 +41,7 @@ body:
     id: valeur
     attributes:
       label: 🚀 Valeur pour les entraîneurs
+      description: Votre avis. La valeur retenue est posée par le référent métier au point de priorisation.
       options:
         - "1 — confort"
         - "2 — utile"
