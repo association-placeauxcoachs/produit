@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposition B — Le geste avant l'outil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="commun.css">
+</head>
+<body>
+<div class="intro">
+  <span class="kick">Éditeur de schéma · proposition B</span>
+  <h1>Le geste <em>avant</em> l'outil</h1>
+  <p>Le tableau magnétique du vestiaire n'a pas de barre d'outils : on <b>prend un aimant et on le pose</b>. Cette proposition supprime la notion d'« outil actif ». Un plateau de jetons à glisser, un appui long pour poser sans quitter le terrain, et tout ce qui concerne un élément apparaît <b>à côté de lui</b>, dans une pilule. Rien n'est jamais en mode : un appui sur le terrain vide ne fait rien de surprenant.</p>
+  <nav class="nav">
+    <a href="index.html">← Vue d'ensemble</a>
+    <a href="a-terrain-dabord.html">A · Terrain d'abord</a>
+    <a class="actif">B · Le geste avant l'outil</a>
+    <a href="c-storyboard.html">C · Storyboard</a>
+  </nav>
+</div>
+
+<div class="scene">
+  <!-- 1. Plateau -->
+  <div class="col">
+    <div class="lab"><b>1 · Le plateau de jetons</b>Pas d'outil à activer. On <i>glisse</i> un jeton depuis le plateau vers le terrain, comme un aimant. Deux couleurs de joueurs et le gardien sont déjà là : la couleur se choisit en prenant le bon jeton, pas après.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      <div class="top">
+        <button class="ib" aria-label="Retour">${retour}</button>
+        <div class="titre">Schéma 1<small>01 · Montée de balle</small></div>
+        <span class="etat-sauv">Enregistré</span>
+        <button class="ib" aria-label="Lasso">${lasso}</button>
+        <button class="ib" aria-label="Annuler">${undo}</button>
+      </div>
+      <div class="champ" id="b1">
+        <div style="position:absolute;left:214px;top:392px;width:40px;height:40px;border-radius:50%;background:rgba(28,23,38,.18)"></div>
+      </div>
+      <div class="plateau">
+        <div class="jetons">
+          <div class="jeton"><span class="g" style="background:var(--rouge)">A</span>Attaque</div>
+          <div class="jeton"><span class="g" style="background:var(--bleu)">D</span>Défense</div>
+          <div class="jeton"><span class="g" style="background:var(--vert)">GB</span>Gardien</div>
+          <div class="jeton"><span class="g" style="background:var(--jaune);color:var(--ink)">●</span>Balle</div>
+          <div class="jeton"><span class="g" style="background:#FF8000">▲</span>Plot</div>
+          <div class="jeton"><span class="g" style="background:var(--paper-2);color:var(--ink)">◎</span>Coupelle</div>
+          <div class="jeton fantome"><span class="g" style="color:var(--attenue)">${plus}</span>Plus</div>
+        </div>
+        <div class="aide"><b>Glisse</b> un jeton sur le terrain · <b>appui long</b> sur le terrain pour poser sans le plateau</div>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <!-- 2. Pilule -->
+  <div class="col">
+    <div class="lab"><b>2 · Un appui sur un élément</b>La pilule s'ouvre <i>près de l'élément</i>, du côté opposé au doigt : couleur, dupliquer, tracer, supprimer. Le glissé déplace toujours. Un second appui ailleurs referme.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      <div class="top">
+        <button class="ib" aria-label="Retour">${retour}</button>
+        <div class="titre">Schéma 1<small>01 · Montée de balle</small></div>
+        <span class="etat-sauv">Enregistré</span>
+        <button class="ib" aria-label="Lasso">${lasso}</button>
+        <button class="ib" aria-label="Annuler">${undo}</button>
+      </div>
+      <div class="champ" id="b2">
+        <div class="pilule" style="left:104px;top:120px">
+          <button class="p" aria-label="Couleur"><span style="width:20px;height:20px;border-radius:50%;background:var(--rouge);border:2px solid #fff"></span></button>
+          <button class="p" aria-label="Dupliquer">${dupliquer}</button>
+          <button class="p actif" aria-label="Tracer">${trajectoire}</button>
+          <button class="p" aria-label="Tourner">${rotation}</button>
+          <button class="p" aria-label="Supprimer">${corbeille}</button>
+        </div>
+      </div>
+      <div class="plateau">
+        <div class="jetons">
+          <div class="jeton"><span class="g" style="background:var(--rouge)">A</span>Attaque</div>
+          <div class="jeton"><span class="g" style="background:var(--bleu)">D</span>Défense</div>
+          <div class="jeton"><span class="g" style="background:var(--vert)">GB</span>Gardien</div>
+          <div class="jeton"><span class="g" style="background:var(--jaune);color:var(--ink)">●</span>Balle</div>
+          <div class="jeton"><span class="g" style="background:#FF8000">▲</span>Plot</div>
+          <div class="jeton"><span class="g" style="background:var(--paper-2);color:var(--ink)">◎</span>Coupelle</div>
+          <div class="jeton fantome"><span class="g" style="color:var(--attenue)">${plus}</span>Plus</div>
+        </div>
+        <div class="aide"><b>Tracer</b> : glisse depuis la pilule jusqu'à l'arrivée, la flèche se dessine</div>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <!-- 3. Menu radial -->
+  <div class="col">
+    <div class="lab"><b>3 · Appui long sur le terrain</b>Un menu radial autour du doigt : cinq choix, le jeton apparaît <i>exactement là</i> où on a appuyé. C'est la voie rapide quand le plateau est loin de la zone de travail, ou quand on a zoomé.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      <div class="top">
+        <button class="ib" aria-label="Retour">${retour}</button>
+        <div class="titre">Schéma 1<small>01 · Montée de balle</small></div>
+        <span class="etat-sauv">Enregistré</span>
+        <button class="ib" aria-label="Lasso">${lasso}</button>
+        <button class="ib" aria-label="Annuler">${undo}</button>
+      </div>
+      <div class="champ" id="b3">
+        <span class="chip-zoom">180 % · ajuster</span>
+        <div class="radial" style="left:90px;top:300px">
+          <span class="c"></span>
+          <button class="r" style="left:72px;top:-6px;background:var(--rouge)">${joueur}Attaque</button>
+          <button class="r" style="left:140px;top:44px;background:var(--bleu)">${joueur}Défense</button>
+          <button class="r" style="left:120px;top:130px">${ballon}Balle</button>
+          <button class="r" style="left:24px;top:130px">${plot}Plot</button>
+          <button class="r" style="left:4px;top:44px">${grille}Plus</button>
+        </div>
+      </div>
+      <div class="plateau">
+        <div class="jetons">
+          <div class="jeton"><span class="g" style="background:var(--rouge)">A</span>Attaque</div>
+          <div class="jeton"><span class="g" style="background:var(--bleu)">D</span>Défense</div>
+          <div class="jeton"><span class="g" style="background:var(--vert)">GB</span>Gardien</div>
+          <div class="jeton"><span class="g" style="background:var(--jaune);color:var(--ink)">●</span>Balle</div>
+          <div class="jeton"><span class="g" style="background:#FF8000">▲</span>Plot</div>
+          <div class="jeton"><span class="g" style="background:var(--paper-2);color:var(--ink)">◎</span>Coupelle</div>
+          <div class="jeton fantome"><span class="g" style="color:var(--attenue)">${plus}</span>Plus</div>
+        </div>
+        <div class="aide">Le plateau est <b>personnalisable</b> : appui long sur un jeton pour le remplacer</div>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="bloc">
+  <h2>Ce que la proposition change</h2>
+  <ul>
+    <li><b>Plus d'outil actif.</b> L'état « j'ai sélectionné Joueur, chaque appui pose un joueur » disparaît, et avec lui les poses involontaires (le cas du bouton « Réinitialiser » qui réactive l'outil Joueur en silence). Un appui sur le terrain vide ne fait rien ; un glissé depuis le plateau pose.</li>
+    <li><b>La couleur se choisit en prenant le jeton.</b> Attaque, Défense, Gardien : trois jetons, trois couleurs. Aujourd'hui colorer un joueur demande quatre gestes après la pose. Le plateau est personnalisable, pour un club qui joue en vert.</li>
+    <li><b>Tout ce qui concerne un élément est à côté de lui.</b> La pilule remplace le panneau flottant fixe en haut à droite. Elle se place du côté opposé au doigt pour ne pas être masquée par la main.</li>
+    <li><b>Tracer part de l'élément.</b> Depuis la pilule, on glisse jusqu'à l'arrivée : le tracé est lissé et rattaché à son point de départ. La flèche « libre » (annotation posée nulle part) reste possible depuis « Plus ».</li>
+    <li><b>Le menu radial rend le zoom utile.</b> Quand on a agrandi la 6 m, le plateau est hors de la zone de travail ; l'appui long pose sans quitter le terrain.</li>
+    <li><b>Le lasso est explicite</b>, dans la barre haute : on l'active, on entoure, on relâche. C'est l'alternative à la multi-sélection par touches que le tactile ne permet pas.</li>
+  </ul>
+  <h3>Ce qu'elle implique côté ordinateur</h3>
+  <p>Le plateau de jetons fonctionne aussi à la souris (glisser-déposer), et le menu radial devient un clic droit. La barre d'outils actuelle peut rester sur grand écran le temps de la transition, mais deux modèles mentaux cohabiteraient : l'idéal est de basculer les deux formats ensemble.</p>
+  <h3>Points de vigilance</h3>
+  <ul>
+    <li>Le glisser-déposer depuis un élément HTML vers une scène Konva demande une conversion de coordonnées écran → scène (zoom et rotation compris). C'est le point technique de la proposition.</li>
+    <li>Poser <b>beaucoup</b> d'éléments (une colonne de dix plots) est plus lent qu'avec un outil actif : c'est le rôle des modèles, à rendre plus visibles dans « Plus ».</li>
+    <li>Le menu radial doit être annoncé : rien ne signale un appui long. Un indice à la première ouverture, et l'aide de la feuille « Plus », suffisent.</li>
+    <li>La modification de l'épaisseur, des extrémités et du style de trait d'une flèche reste dans une feuille secondaire ouverte depuis la pilule (« Style »), non montrée ici.</li>
+  </ul>
+</div>
+
+<script src="commun.js"></script>
+<script>
+(function(){
+  const { ic, terrain, joueur, ballon, plot, traj, setPortrait } = window.M;
+  const noms = ['retour','undo','plusv','curseur','joueur','ballon','plot','grille','plus','lasso','trajectoire','corbeille','dupliquer','rotation'];
+  document.body.innerHTML = document.body.innerHTML.replace(/\$\{(\w+)\}/g, (m, n) => noms.includes(n) ? ic(n) : m);
+
+  setPortrait(true);
+  const R = 'var(--rouge)', B = 'var(--bleu)', V = 'var(--vert)';
+  const base = (opts) =>
+    joueur(60, 100, V, 'GB') + joueur(150, 40, R, 'A', opts) + joueur(170, 100, R, 'A') + joueur(150, 160, R, 'A') +
+    joueur(240, 70, B, 'D') + joueur(240, 130, B, 'D') + plot(300, 60) + plot(300, 140) + ballon(78, 100);
+
+  document.getElementById('b1').insertAdjacentHTML('afterbegin', terrain({ orientation: 'portrait', enfants: base() + joueur(330, 100, R, 'A', { fantome: true }) }));
+  document.getElementById('b2').insertAdjacentHTML('afterbegin', terrain({ orientation: 'portrait', enfants: base({ selection: true, halo: true }) }));
+  document.getElementById('b3').insertAdjacentHTML('afterbegin', `<svg class="terrain" viewBox="-40 0 150 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><g transform="rotate(90) translate(0 -200)"><rect x="0" y="0" width="400" height="200" fill="var(--terrain)"/><path d="M0 40 A60 60 0 0 1 60 100 A60 60 0 0 1 0 160 Z" fill="var(--terrain-zone)"/><path d="M0 40 A60 60 0 0 1 60 100 A60 60 0 0 1 0 160" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M0 10 A90 90 0 0 1 90 100 A90 90 0 0 1 0 190" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="5 4"/><path d="M70 94v12" stroke="#fff" stroke-width="1.6"/><rect x="-6" y="85" width="6" height="30" fill="none" stroke="#fff" stroke-width="2"/>${joueur(60, 100, V, 'GB') + joueur(150, 40, R, 'A') + joueur(170, 100, R, 'A') + ballon(78, 100)}</g></svg>`);
+})();
+</script>
+</body>
+</html>

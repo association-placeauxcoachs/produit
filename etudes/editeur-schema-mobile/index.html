@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Éditeur de schéma sur mobile — étude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="commun.css">
+</head>
+<body>
+<div class="intro">
+  <span class="kick">Place aux coachs · exploration</span>
+  <h1>Éditer un schéma <em>au doigt</em></h1>
+  <p>Sur téléphone, l'éditeur de schéma est aujourd'hui l'éditeur d'ordinateur, en plus petit. Le terrain occupe un cinquième de l'écran, les outils sont en haut, les cibles font 32 px, et rien ne se zoome. Cette étude part de l'existant, le mesure contre les repères du design mobile, puis propose <b>trois directions</b> — de la plus proche de l'existant à la plus ambitieuse.</p>
+  <nav class="nav">
+    <a class="actif">Vue d'ensemble</a>
+    <a href="a-terrain-dabord.html">A · Terrain d'abord</a>
+    <a href="b-geste-avant-outil.html">B · Le geste avant l'outil</a>
+    <a href="c-storyboard.html">C · Storyboard</a>
+  </nav>
+</div>
+
+<div class="bloc">
+  <h2>L'existant, sur un Pixel 7</h2>
+  <p>Captures de l'application en septembre 2026, avec des données de test.</p>
+  <div class="captures">
+    <figure><img src="etat-actuel-dessin.png" alt="Éditeur de schéma actuel en portrait : barre d'outils en haut, terrain en bande étroite, quatre cinquièmes de l'écran vides"><figcaption><b>Dessin.</b> Le terrain paysage sur un écran portrait : 20 % de la hauteur, un joueur fait 12 px. Les outils sont dans la zone la plus difficile à atteindre.</figcaption></figure>
+    <figure><img src="etat-actuel-selection.png" alt="Éditeur de schéma actuel avec un joueur sélectionné : le panneau de propriétés recouvre le quart droit du terrain"><figcaption><b>Sélection.</b> Le panneau de propriétés se pose sur le terrain et en masque le quart droit. Huit poignées de 10 px autour d'un joueur de 12 px.</figcaption></figure>
+    <figure><img src="etat-actuel-animation.png" alt="Éditeur de schéma actuel en mode Animation : bande de temps T0 T1 + sous le terrain"><figcaption><b>Animation.</b> La bande de temps est bien placée, mais « T0 T1 » ne dit rien de ce qui s'y passe, et le terrain reste minuscule.</figcaption></figure>
+  </div>
+
+  <h3>Ce que le code confirme</h3>
+  <ul>
+    <li><b>Aucun zoom, aucun déplacement.</b> Le terrain est ajusté au conteneur, point. Ni pince, ni deux doigts, ni molette.</li>
+    <li><b>Poser un plot demande trois gestes</b> : ouvrir la catégorie, choisir l'outil, viser. Colorer en demande quatre de plus, après la pose.</li>
+    <li><b>Terminer une flèche est un geste appris</b> : double-tap sur le fond, ou Entrée. Rien à l'écran ne le dit ; une flèche d'un seul point disparaît sans explication.</li>
+    <li><b>Pas de multi-sélection au doigt</b> : ni rectangle, ni ajout par appui. Grouper ou supprimer plusieurs éléments est impossible sur téléphone, qui est pourtant le seul chemin d'édition sur petit écran.</li>
+    <li><b>Toutes les cibles font 32 px</b>, sous les 44 px recommandés par Apple et le WCAG, sous les 48 dp de Material. Les poignées de trajectoire font 14 px.</li>
+    <li><b>Les libellés sont des infobulles au survol</b>, inopérantes au doigt. Sur téléphone, les boutons sont des icônes muettes.</li>
+    <li><b>Aucun retour sur l'enregistrement.</b> Le bouton « Enregistrer » est masqué sous 768 px ; la sauvegarde automatique tourne chaque seconde sans rien montrer.</li>
+    <li><b>Deux choses s'appellent « Animer »</b> : le mode Animation de l'éditeur (les temps) et le mode Animer de la séance (le diaporama). La proposition A garde « Animer » pour les temps et renomme le diaporama « Présenter ».</li>
+  </ul>
+
+  <h3>Les repères mobiles mobilisés</h3>
+  <ul>
+    <li><b>Zone du pouce</b> (Hoober) : les actions fréquentes en bas, les rares en haut. Une barre basse est 20 à 30 % plus rapide qu'une barre haute.</li>
+    <li><b>Cibles de 44 × 44 px</b> minimum, 8 px entre deux cibles, libellé sous l'icône.</li>
+    <li><b>Gestes standards</b> : appui = sélectionner, glissé = déplacer, pince = zoomer, appui long = menu. Toujours une alternative visible au geste (WCAG 2.5.7).</li>
+    <li><b>Zoom vers le doigt</b>, jamais vers le centre de l'écran ; retour au cadrage entier à un appui.</li>
+    <li><b>Feuilles basses plutôt que panneaux flottants</b> : ce qui se règle ne recouvre pas ce qu'on regarde.</li>
+  </ul>
+</div>
+
+<div class="cards">
+  <a class="card" href="a-terrain-dabord.html" style="--acc:var(--orange)">
+    <span class="n">A</span>
+    <h2>Le terrain d'abord</h2>
+    <p><b>On garde « outil puis pose »</b>, on retourne l'écran. Terrain tourné en portrait, navigation en haut — Dessiner, Animer, et le nom de la pièce sélectionnée —, feuille « Plus » pour le reste, flèche tracée au glissé, pince pour zoomer, Enregistrer toujours visible. Quinze écrans : téléphone en portrait et paysage, tablette, ordinateur.</p>
+    <span class="go">Voir les écrans →</span>
+  </a>
+  <a class="card" href="b-geste-avant-outil.html" style="--acc:var(--violet)">
+    <span class="n">B</span>
+    <h2>Le geste avant l'outil</h2>
+    <p><b>Plus d'outil actif.</b> Un plateau de jetons à glisser comme des aimants, un appui long pour poser sans quitter le terrain, une pilule d'actions à côté de l'élément. La couleur se choisit en prenant le jeton.</p>
+    <span class="go">Voir les écrans →</span>
+  </a>
+  <a class="card" href="c-storyboard.html" style="--acc:var(--st-pret,#2F7D4F)">
+    <span class="n">C</span>
+    <h2>Le storyboard</h2>
+    <p><b>Le temps 0 est le dessin.</b> Plus de bascule Dessin / Animation : une bande de film avec une vignette par temps, un transport, et en paysage une table tactique plein écran qui sert aussi à la lecture.</p>
+    <span class="go">Voir les écrans →</span>
+  </a>
+</div>
+
+<div class="bloc">
+  <h2>Comparer</h2>
+  <table>
+    <thead><tr><th>Critère</th><th>A · Terrain d'abord</th><th>B · Le geste avant l'outil</th><th>C · Storyboard</th></tr></thead>
+    <tbody>
+      <tr><td>Ce qu'il faut réapprendre</td><td>Rien : mêmes outils, mieux placés</td><td>Le glissé depuis le plateau et l'appui long</td><td>La bande de film ; le reste vient de A</td></tr>
+      <tr><td>Poser un joueur rouge</td><td>2 appuis (Joueur, terrain)</td><td>1 glissé</td><td>Comme A</td></tr>
+      <tr><td>Tracer une flèche</td><td>Tracer, puis glissé</td><td>Pilule, puis glissé</td><td>Comme A</td></tr>
+      <tr><td>Poser dix plots</td><td>Rapide (outil actif)</td><td>Lent sans modèle</td><td>Comme A</td></tr>
+      <tr><td>Cohérence avec l'ordinateur</td><td>Totale : même barre haute, outils à gauche, pièce à droite, temps sous le terrain</td><td>À faire évoluer ensemble</td><td>Totale pour le dessin ; la bande de film vaut aussi sur ordinateur</td></tr>
+      <tr><td>Animation</td><td>Même modèle ; les onglets Dessiner · Animer remplacent la bascule</td><td>Inchangée</td><td>Repensée</td></tr>
+      <tr><td>Points techniques</td><td>Rotation et zoom de la scène Konva, onglets en haut, feuille basse, tracé au glissé, multi-sélection tactile</td><td>Glisser-déposer HTML → Konva, menu radial, pilule positionnée</td><td>A + vignettes rendues hors écran et mises en cache, écran paysage</td></tr>
+      <tr><td>Effort</td><td>M</td><td>L</td><td>L (M si A est déjà faite)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="verdict">
+    <h3>Ce que je retiendrais</h3>
+    <p><b>Commencer par A.</b> Elle corrige tout ce qui rend l'éditeur inexploitable au doigt (taille du terrain, zoom, cibles, panneau qui masque, flèche impossible à finir, multi-sélection absente) sans toucher au modèle mental ni à l'ordinateur, et chaque brique est indépendante : la rotation du terrain, les onglets Dessiner · Animer, l'onglet de la pièce et le tracé au glissé peuvent se livrer séparément.</p>
+    <p><b>Puis C, qui s'y empile.</b> La bande de film règle le seul vrai problème de l'animation actuelle — on ne voit pas ce qu'il y a dans un temps — et l'écran paysage donne à la lecture la place qu'elle mérite au bord du terrain.</p>
+    <p><b>Garder B en réserve</b>, ou n'en prendre que deux idées : les jetons pré-colorés dans le dock (Attaque, Défense, Gardien à la place d'un Joueur unique) et la pilule près de l'élément à la place de la barre basse, si les tests montrent que descendre le regard vers le bas de l'écran coûte trop.</p>
+  </div>
+
+  <p class="src">Repères : références <em>Mobile UX</em>, <em>Canvas navigation</em> et <em>Canvas objects</em> du skill <a href="https://github.com/szilu/ux-designer-skill">ux-designer</a> ; <a href="https://github.com/awesome-skills/mobile-app-design">mobile-app-design</a> pour les tailles de cibles et la zone du pouce ; <a href="https://m3.material.io/">Material 3</a> (feuilles basses, dock) et les <a href="https://developer.apple.com/design/human-interface-guidelines/">Human Interface Guidelines</a> (44 pt, gestes de bord).</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposition A — Terrain d'abord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="commun.css">
+</head>
+<body>
+<div class="intro">
+  <span class="kick">Éditeur de schéma · proposition A</span>
+  <h1>Le terrain <em>d'abord</em></h1>
+  <p>On garde la logique actuelle — <b>on choisit un outil, puis on pose</b> — mais on renverse l'écran. Le terrain tourne avec le téléphone et occupe <b>70 % de la hauteur</b> au lieu de 20 %. En haut, à la place d'un titre que les schémas n'ont pas, <b>une seule navigation</b> : <b>Dessiner</b>, <b>Animer</b>, et un troisième onglet au nom de la pièce sélectionnée — <b>Joueur</b>, <b>Flèche</b>, <b>3 pièces</b>. En bas, dans la zone du pouce, seulement le contenu de l'onglet ouvert : le terrain garde toute la hauteur entre les deux. Rien ne se superpose au terrain, et <b>Enregistrer</b> est toujours visible. Les pièces sont celles de l'application, à leur taille réelle.</p>
+  <nav class="nav">
+    <a href="index.html">← Vue d'ensemble</a>
+    <a class="actif">A · Terrain d'abord</a>
+    <a href="b-geste-avant-outil.html">B · Le geste avant l'outil</a>
+    <a href="c-storyboard.html">C · Storyboard</a>
+  </nav>
+</div>
+
+<!-- ————————————————— DESSINER ————————————————— -->
+<div class="section-titre">
+  <span class="k">Section 1</span>
+  <h2>Dessiner</h2>
+  <p>L'onglet <b>Dessiner</b> est ouvert par défaut. Cinq emplacements fixes, nommés ; « Plus » ouvre tout le reste.</p>
+</div>
+<div class="scene">
+  <div class="col">
+    <div class="lab"><b>1 · Poser</b>Terrain tourné en portrait : 40 % plus grand qu'aujourd'hui, et la pince fait le reste. Les pièces restent droites, le terrain tourne sous elles. L'outil actif reste actif : chaque appui pose. En haut : retour, les onglets, Annuler, Enregistrer — grisé quand tout est enregistré.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=outils}
+      <div class="champ" id="e1"><span class="chip-zoom">100 % · ajuster</span><span class="hint"><b>Touche</b> le terrain pour poser un joueur · <b>pince</b> pour zoomer</span></div>
+      <div class="dock">
+        <button class="slot">${curseur}Sélection</button>
+        <button class="slot actif">${joueur}Joueur</button>
+        <button class="slot">${ballon}Balle</button>
+        <button class="slot">${plot}Plot</button>
+        <button class="slot">${plus}Plus</button>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="lab"><b>2 · Tous les outils</b>« Plus » ouvre une feuille : douze outils nommés, cases de 64 px, annotations en pointillé parce qu'elles ne s'animent pas. Modèles, disposition du terrain et aide y vivent aussi. Un appui sur un outil le met dans le dock à la place de « Plus » jusqu'au prochain choix.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=outils}
+      <div class="champ" id="e2"></div>
+      <div class="dock">
+        <button class="slot">${curseur}Sélection</button>
+        <button class="slot">${joueur}Joueur</button>
+        <button class="slot">${ballon}Balle</button>
+        <button class="slot">${plot}Plot</button>
+        <button class="slot actif">${plus}Plus</button>
+      </div>
+      <div class="voile"></div>
+      <div class="sheet">
+        <div class="grip"></div>
+        <h4>Matériel</h4>
+        <div class="grille">
+          <button class="cell actif">${joueur}Joueur</button>
+          <button class="cell">${ballon}Balle</button>
+          <button class="cell">${plot}Plot</button>
+          <button class="cell">${coupelle}Coupelle</button>
+          <button class="cell">${cerceau}Cerceau</button>
+          <button class="cell">${latte}Latte</button>
+          <button class="cell">${echelle}Échelle</button>
+          <button class="cell">${haie}Haie</button>
+        </div>
+        <h4>Annotations — visibles à tous les temps, jamais animées</h4>
+        <div class="grille">
+          <button class="cell annot">${trajectoire}Flèche</button>
+          <button class="cell annot">${separation}Séparation</button>
+          <button class="cell annot">${texte}Texte</button>
+          <button class="cell annot">${carre}Zone</button>
+        </div>
+        <h4>Mise en place</h4>
+        <div class="grille">
+          <button class="cell">${grille}Modèles</button>
+          <button class="cell">${terrain}Demi-terrain</button>
+          <button class="cell">${aide}Aide</button>
+          <button class="cell" style="color:#B3261E">${corbeille}Tout effacer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="lab"><b>3 · Zoomer sur la zone utile</b>Pince pour agrandir, deux doigts pour se déplacer, la puce « ajuster » pour revenir au terrain entier. Le zoom se fait vers les doigts, jamais vers le centre. À 180 %, un joueur fait 36 px : on pose au millimètre dans la 6 m.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=outils}
+      <div class="champ" id="e3"><span class="chip-zoom">180 % · ajuster</span></div>
+      <div class="dock">
+        <button class="slot">${curseur}Sélection</button>
+        <button class="slot">${joueur}Joueur</button>
+        <button class="slot">${ballon}Balle</button>
+        <button class="slot actif">${plot}Plot</button>
+        <button class="slot">${plus}Plus</button>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ————————————————— ÉLÉMENT SÉLECTIONNÉ ————————————————— -->
+<div class="section-titre">
+  <span class="k">Section 2</span>
+  <h2>Un élément sélectionné</h2>
+  <p>Un appui sur une pièce ouvre un troisième onglet en haut, <b>au nom de la pièce</b> : Joueur, Flèche, 3 pièces. Il montre ce qui se règle pour <b>cette</b> pièce, rien de plus, et se referme par sa croix, par un appui sur Dessiner ou Animer, par Échap ou par un appui sur le terrain vide. Le terrain se recadre pour rester visible au-dessus.</p>
+</div>
+<div class="scene">
+  <div class="col">
+    <div class="lab"><b>4 · Un joueur</b>Halo de saisie de 44 px, une seule poignée de rotation. En bas : la couleur (les cinq de l'application, puis « + » pour la grille de dix-huit), la taille en pas, et les actions nommées. <i>Tracer</i> lance une flèche depuis ce joueur.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=element;elt=Joueur}
+      <div class="champ" id="e4"><span class="hint"><b>Glisse</b> pour déplacer · <b>appui long</b> pour en sélectionner d'autres</span></div>
+      <div class="ctx">
+        <div class="titre-el"><span class="apercu" id="ap4"></span><div class="nom">Joueur<small>Rouge · rotation 0°</small></div></div>
+        <div class="prop"><label>Couleur</label><div class="ligne" style="justify-content:space-between">
+          <span class="sw" style="background:#000"></span>
+          <span class="sw actif" style="background:#FF0000"></span>
+          <span class="sw" style="background:#fff;border-color:var(--filet-fort)"></span>
+          <span class="sw" style="background:#00FF00"></span>
+          <span class="sw" style="background:#FFFF00"></span>
+          <span class="sw" style="display:grid;place-items:center;border-color:var(--filet-fort);font-weight:700">+</span>
+        </div></div>
+        <div class="prop"><label>Taille</label><div class="ligne"><span class="stepper"><button>−</button><span>100 %</span><button>+</button></span><button class="act" style="flex:0 0 auto;padding:0 12px">${rotation}Tourner</button></div></div>
+        <div class="ligne">
+          <button class="act">${dupliquer}Dupliquer</button>
+          <button class="act">${trajectoire}Tracer</button>
+          <button class="act danger">${corbeille}Supprimer</button>
+        </div>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="lab"><b>5 · Une flèche</b>Tout ce que règle le panneau actuel, en commandes segmentées de 40 px : largeur, style, tracé, extrémités. Les points de la flèche sont des poignées de 44 px ; on tire un milieu pour ajouter un point, double-appui pour le retirer.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=element;elt=Flèche}
+      <div class="champ" id="e5"></div>
+      <div class="ctx" style="gap:6px">
+        <div class="titre-el"><span class="apercu" id="ap5"></span><div class="nom">Flèche<small>Annotation · 3 points</small></div>
+          <span class="sw actif" style="background:#000;width:32px;height:32px;margin-left:auto"></span></div>
+        <div class="prop"><label>Largeur</label><div class="segm"><button>${trait1}Fin</button><button class="actif">${trait2}Moyen</button><button>${trait3}Épais</button></div></div>
+        <div class="prop"><label>Style</label><div class="segm"><button class="actif">${solide}Solide</button><button>${tirets}Tirets</button><button>${pointilles}Pointillés</button></div></div>
+        <div class="prop"><label>Tracé</label><div class="segm"><button>Anguleux</button><button class="actif">Lisse</button><button>Très lisse</button></div></div>
+        <div class="prop"><label>Début · Fin</label><div class="ligne"><div class="segm" style="flex:1"><button>Pointe</button><button>Rond</button><button class="actif">Rien</button></div><div class="segm" style="flex:1"><button class="actif">Pointe</button><button>Rond</button><button>Rien</button></div></div></div>
+        <div class="ligne">
+          <button class="act">${dupliquer}Dupliquer</button>
+          <button class="act danger">${corbeille}Supprimer</button>
+        </div>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="lab"><b>6 · Plusieurs pièces</b>Appui long sur une première pièce, puis appuis simples sur les suivantes ; ou lasso depuis « Sélection ». L'onglet ne montre que ce qui est commun : la couleur pour tous, et les actions de groupe. <i>Grouper</i> les fait bouger ensemble, y compris dans les temps.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=element;elt=3 pièces}
+      <div class="champ" id="e6"><span class="hint"><b>Appuie</b> sur d'autres pièces pour les ajouter</span></div>
+      <div class="ctx">
+        <div class="titre-el"><span class="apercu" id="ap6"></span><div class="nom">3 pièces<small>2 joueurs · 1 balle</small></div></div>
+        <div class="prop"><label>Couleur</label><div class="ligne" style="justify-content:space-between">
+          <span class="sw" style="background:#000"></span>
+          <span class="sw" style="background:#FF0000"></span>
+          <span class="sw" style="background:#fff;border-color:var(--filet-fort)"></span>
+          <span class="sw" style="background:#00FF00"></span>
+          <span class="sw" style="background:#FFFF00"></span>
+          <span class="sw" style="display:grid;place-items:center;border-color:var(--filet-fort);font-weight:700">+</span>
+        </div></div>
+        <div class="ligne">
+          <button class="act">${grouper}Grouper</button>
+          <button class="act">${dupliquer}Dupliquer</button>
+          <button class="act">${trajectoire}Tracer</button>
+          <button class="act danger">${corbeille}Supprimer</button>
+        </div>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="lab"><b>7 · Tracer une flèche</b>Fini le tap-tap-double-tap. Depuis <i>Tracer</i>, on pose le doigt sur la pièce et on <i>glisse</i> : le tracé suit, lissé, et se termine quand on relâche. La flèche reste alors sélectionnée, avec l'onglet Flèche de l'écran 5 pour la régler.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=trace}
+      <div class="champ" id="e7"><span class="hint"><b>Relâche</b> pour terminer la flèche</span></div>
+      <div class="ctx">
+        <div class="prop"><label>Style</label><div class="segm"><button class="actif">${tirets}Course</button><button>${solide}Passe</button><button>${pointilles}Dribble</button></div></div>
+        <p style="font-size:.7rem;color:var(--attenue)">Le style se choisit avant ou après : la flèche reste sélectionnée au relâcher.</p>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ————————————————— ANIMER ————————————————— -->
+<div class="section-titre">
+  <span class="k">Section 3</span>
+  <h2>Animer</h2>
+  <p>L'onglet <b>Animer</b> remplace la bascule Dessin / Animation : deux verbes, ce que le coach est en train de faire. Le modèle ne change pas — on ajoute un temps, on glisse les pièces, les tracés se génèrent. Les outils restent à un appui, sur l'onglet Dessiner.</p>
+</div>
+<div class="scene">
+  <div class="col">
+    <div class="lab"><b>8 · Poser un temps</b>Sur T1, l'arrière monte : son témoin reste atténué à sa place du départ, le tracé ① se dessine pendant le glissé, la balle suit en porté. T0 est la situation de départ ; « + Temps » en ajoute un. La note du temps est juste là. Le point orange sur Enregistrer dit qu'il y a du nouveau à sauvegarder.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=temps;badge=T1;sauver=1}
+      <div class="champ" id="e8"><span class="hint"><b>Relâche</b> : le déplacement devient le temps 1</span></div>
+      <div class="bande">
+        <div class="temps">
+          <button class="t">T0<small>Départ</small></button>
+          <button class="t actif">T1<small>1 déplacement</small></button>
+          <button class="t ajout">${plus}Temps</button>
+        </div>
+        <button class="lire" aria-label="Lire">${lire}</button>
+      </div>
+      <div class="note-temps"><b>T1</b><span>Ce qui se passe au temps 1…</span></div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="lab"><b>9 · Les outils pendant un temps</b>Un appui sur « Dessiner » en haut : le dock revient en bas, le temps courant reste affiché en badge sur l'onglet Animer. Une pièce posée ici s'ajoute au schéma, visible à tous les temps ; le rappel est dans l'indice, pas dans un toast.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=outils;badge=T2;sauver=1}
+      <div class="champ" id="e9"><span class="hint">Le plot s'ajoute au schéma, <b>visible à tous les temps</b></span></div>
+      <div class="dock">
+        <button class="slot">${curseur}Sélection</button>
+        <button class="slot">${joueur}Joueur</button>
+        <button class="slot">${ballon}Balle</button>
+        <button class="slot actif">${plot}Plot</button>
+        <button class="slot">${plus}Plus</button>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="lab"><b>10 · Lire sur place</b>« Lire » joue l'animation dans l'éditeur. L'onglet Animer passe en « Lecture » et le bas devient un transport : pause, barre parcourable au doigt avec un repère par temps, et la phrase du temps en cours. Un appui sur le terrain met en pause et rend l'édition.</div>
+    <div class="phone">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=lecture;badge=T2}
+      <div class="champ" id="e10"></div>
+      <div class="transport-lecture">
+        <div class="ligne">
+          <button class="ib" aria-label="Pause" style="background:var(--ink);color:var(--paper)">${pause}</button>
+          <div class="barre"><i style="width:62%"></i><s style="left:36%" data-t="T1"></s><s style="left:62%;background:var(--orange);border-color:var(--orange)" data-t="T2"></s><s style="left:88%;opacity:.5" data-t="T3"></s></div>
+          <span style="font-family:var(--mono);font-size:.62rem;color:var(--attenue)">0:04</span>
+        </div>
+        <div class="phrase-t"><b>T2</b><span>Montée des ailiers, passe dans la course</span></div>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ————————————————— PAYSAGE ————————————————— -->
+<div class="section-titre">
+  <span class="k">Section 4</span>
+  <h2>Et en paysage ?</h2>
+  <p>Le téléphone tourné, le terrain reprend sa forme habituelle et remplit la largeur. La barre haute ne change pas ; le contenu de l'onglet passe en <b>rail à droite</b>, sous le pouce droit. Rien à réapprendre : mêmes onglets, mêmes outils, même ordre.</p>
+</div>
+<div class="scene">
+  <div class="col">
+    <div class="lab"><b>11 · Dessiner en paysage</b>Le dock devient un rail vertical de 72 px. Le terrain fait 690 px de large, soit le même joueur qu'en portrait. Les onglets Animer et celui de la pièce ont chacun leur rail : la bande de temps se lit de haut en bas, le panneau d'un élément défile.</div>
+    <div class="phone paysage" style="flex-direction:column">
+      ${top:actif=outils}
+      <div style="flex:1;display:flex;min-height:0">
+        <div class="champ" id="e11"><span class="chip-zoom">100 % · ajuster</span></div>
+        <div class="rail">
+          <div class="grp">
+            <button class="slot">${curseur}Sélection</button>
+            <button class="slot actif">${joueur}Joueur</button>
+            <button class="slot">${ballon}Balle</button>
+            <button class="slot">${plot}Plot</button>
+            <button class="slot">${plus}Plus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="lab"><b>12 · Animer en paysage</b>L'onglet Animer ouvert : les temps s'empilent dans le rail, « + Temps » et Lire en bas sous le pouce. La note du temps courant s'affiche en bandeau sur le terrain, en haut, là où elle ne gêne rien.</div>
+    <div class="phone paysage" style="flex-direction:column">
+      ${top:actif=temps;badge=T1;sauver=1}
+      <div style="flex:1;display:flex;min-height:0">
+        <div class="champ" id="e12"><div class="phrase"><b>T1</b>Ce qui se passe au temps 1…</div></div>
+        <div class="rail">
+          <div class="grp">
+            <button class="slot">T0<small style="font-size:.5rem;font-weight:500">Départ</small></button>
+            <button class="slot actif">T1<small style="font-size:.5rem;font-weight:500;color:var(--peach)">1 dépl.</small></button>
+            <button class="slot" style="border:1px dashed var(--filet-fort)">${plus}Temps</button>
+          </div>
+          <div class="grp"><button class="slot principal">${lire}Lire</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ————————————————— TABLETTE ET ORDINATEUR ————————————————— -->
+<div class="section-titre">
+  <span class="k">Section 5</span>
+  <h2>Tablette et ordinateur</h2>
+  <p>Même principe partout : <b>une barre haute</b> avec Dessiner · Animer · la pièce, Annuler, Enregistrer, et <b>le contenu de l'onglet là où il y a de la place</b>. Sur téléphone, en bas. Sur tablette, en bas ou en rail à droite. Sur ordinateur, les outils à gauche, la pièce à droite, les temps sous le terrain — tout en même temps, sans onglet à ouvrir. Le terrain n'est jamais recouvert. Les cadres sont rendus à 75 %.</p>
+</div>
+<div class="scene">
+  <div class="col">
+    <div class="lab"><b>13 · Tablette en portrait</b>Le terrain garde son sens habituel : à 768 px de large, il est déjà lisible et la hauteur libérée accueille un dock complet — huit outils nommés, plus « Plus » pour les annotations et la mise en place. L'onglet Animer y met la bande de temps et la note, comme sur téléphone.</div>
+    <div class="cadre tablette">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=outils}
+      <div class="champ" id="e13"><span class="chip-zoom">100 % · ajuster</span></div>
+      <div class="dock large">
+        <button class="slot">${curseur}Sélection</button>
+        <button class="slot actif">${joueur}Joueur</button>
+        <button class="slot">${ballon}Balle</button>
+        <button class="slot">${plot}Plot</button>
+        <button class="slot">${coupelle}Coupelle</button>
+        <button class="slot">${cerceau}Cerceau</button>
+        <button class="slot">${latte}Latte</button>
+        <button class="slot">${trajectoire}Flèche</button>
+        <button class="slot">${texte}Texte</button>
+        <button class="slot">${plus}Plus</button>
+      </div>
+      <div class="homebar"></div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="lab"><b>14 · Tablette en paysage</b>Le contenu de l'onglet passe en <i>panneau ancré à droite</i>, 240 px, sous la main qui tient la tablette. Ici un joueur est sélectionné : le panneau montre ce qui se règle pour lui, et il reste là tant que la sélection dure. Sur Dessiner, ce même panneau porte le dock en colonne ; sur Animer, les temps empilés et la note.</div>
+    <div class="cadre tablette paysage">
+      <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
+      ${top:actif=element;elt=Joueur;large=1}
+      <div class="corps">
+        <div class="champ" id="e14"><span class="hint"><b>Glisse</b> pour déplacer · <b>appui long</b> pour en sélectionner d'autres</span></div>
+        <div class="panneau">
+          <div class="titre-el"><span class="apercu" id="ap14"></span><div class="nom">Joueur<small>Rouge · rotation 0°</small></div></div>
+          <label class="lab-p">Couleur</label>
+          <div class="ligne" style="justify-content:space-between">
+            <span class="sw" style="background:#000"></span><span class="sw actif" style="background:#FF0000"></span><span class="sw" style="background:#fff;border-color:var(--filet-fort)"></span><span class="sw" style="background:#00FF00"></span><span class="sw" style="background:#FFFF00"></span>
+          </div>
+          <div class="ligne"><span class="sw" style="display:grid;place-items:center;border-color:var(--filet-fort);font-weight:700">+</span><span style="font-size:.7rem;color:var(--attenue)">Plus de couleurs</span></div>
+          <label class="lab-p">Taille</label>
+          <div class="ligne"><span class="stepper"><button>−</button><span>100 %</span><button>+</button></span><button class="act" style="flex:0 0 auto;padding:0 12px">${rotation}Tourner</button></div>
+          <label class="lab-p">Actions</label>
+          <button class="act ligne-act">${dupliquer}Dupliquer</button>
+          <button class="act ligne-act">${trajectoire}Tracer une flèche</button>
+          <button class="act ligne-act danger">${corbeille}Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="scene" style="margin-top:44px">
+  <div class="col">
+    <div class="lab"><b>15 · Ordinateur, dans la page de l'entraînement</b>L'éditeur reste en ligne dans la situation, sans plein écran. La barre haute est la même — les onglets y sont des <i>sections</i> toujours visibles, pas des états : les outils sont dans un rail à gauche avec leur raccourci clavier, la pièce sélectionnée dans un panneau ancré à droite qui remplace le panneau flottant, et la bande de temps sous le terrain dès qu'un temps existe. Ici : Animer, T1, un joueur sélectionné, tout est visible d'un coup.</div>
+    <div class="cadre desktop">
+      <div class="carte-tete"><span class="num">01</span><span class="titre-sit">Montée de balle</span><span class="etiq">Démarquage</span><span class="etiq">Grand espace</span><span style="flex:1"></span>${dupliquer}${corbeille}</div>
+      <div class="top nav-haut desktop-top">
+        <div class="segments"><button>${crayon}Dessiner</button><button class="actif">${lire}Animer <span class="badge">T1</span></button><button class="actif" style="background:var(--orange)">${curseur}Joueur <span class="fermer">${croix}</span></button></div>
+        <span style="flex:1"></span>
+        <span class="raccourci">Ctrl+Z</span><button class="ib" aria-label="Annuler">${undo}</button>
+        <span class="raccourci">Ctrl+Y</span><button class="ib faible" aria-label="Rétablir">${redo}</button>
+        <button class="ib a-sauver" aria-label="Enregistrer">${sauvegarde}</button>
+        <button class="ib" aria-label="Plein écran">${plein}</button>
+        <button class="ib" aria-label="Options du schéma">${plusv}</button>
+      </div>
+      <div class="corps">
+        <div class="rail-g">
+          <button class="slot"><i>Échap</i>${curseur}Sélection</button>
+          <button class="slot"><i>J</i>${joueur}Joueur</button>
+          <button class="slot"><i>B</i>${ballon}Balle</button>
+          <button class="slot"><i>P</i>${plot}Plot</button>
+          <button class="slot"><i>C</i>${coupelle}Coupelle</button>
+          <button class="slot"><i>O</i>${cerceau}Cerceau</button>
+          <button class="slot"><i>L</i>${latte}Latte</button>
+          <button class="slot"><i>T</i>${trajectoire}Flèche</button>
+          <button class="slot"><i>X</i>${texte}Texte</button>
+          <button class="slot">${plus}Plus</button>
+        </div>
+        <div class="centre">
+          <div class="champ" id="e15"></div>
+          <div class="bande">
+            <div class="temps">
+              <button class="t">T0<small>Départ</small></button>
+              <button class="t actif">T1<small>1 déplacement</small></button>
+              <button class="t">T2<small>2 déplacements</small></button>
+              <button class="t ajout">${plus}Temps</button>
+            </div>
+            <div class="note-temps" style="flex:1;margin:0"><b>T1</b><span>Passe du GB à l'arrière</span></div>
+            <button class="lire" aria-label="Lire">${lire}</button>
+          </div>
+        </div>
+        <div class="panneau">
+          <div class="titre-el"><span class="apercu" id="ap15"></span><div class="nom">Joueur<small>Rouge · déplacé en T1</small></div></div>
+          <label class="lab-p">Couleur</label>
+          <div class="ligne" style="justify-content:space-between">
+            <span class="sw" style="background:#000"></span><span class="sw actif" style="background:#FF0000"></span><span class="sw" style="background:#fff;border-color:var(--filet-fort)"></span><span class="sw" style="background:#00FF00"></span><span class="sw" style="background:#FFFF00"></span>
+          </div>
+          <label class="lab-p">Tracé du déplacement</label>
+          <div class="segm"><button>Anguleux</button><button class="actif">Lisse</button><button>Très lisse</button></div>
+          <label class="lab-p">Taille</label>
+          <div class="ligne"><span class="stepper"><button>−</button><span>100 %</span><button>+</button></span><button class="act" style="flex:0 0 auto;padding:0 12px">${rotation}Tourner</button></div>
+          <label class="lab-p">Actions</label>
+          <button class="act ligne-act">${dupliquer}Dupliquer <kbd>Ctrl+D</kbd></button>
+          <button class="act ligne-act">${trajectoire}Tracer une flèche</button>
+          <button class="act ligne-act danger">${corbeille}Supprimer <kbd>Suppr</kbd></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bloc">
+  <h2>Ce que la proposition change</h2>
+  <ul>
+    <li><b>Le terrain tourne avec le téléphone.</b> En portrait, la longueur du terrain descend l'écran ; en paysage, il reprend sa forme habituelle. Les coordonnées des éléments ne changent pas : c'est le cadrage qui tourne, pas les données. Les pièces sont contre-tournées pour rester droites.</li>
+    <li><b>Zoom et déplacement au doigt.</b> Pince pour agrandir une zone, deux doigts pour se déplacer, une puce « ajuster » pour revenir au terrain entier. Aujourd'hui rien de tout cela n'existe.</li>
+    <li><b>Une navigation à trois onglets en haut</b>, à la place d'un titre que les schémas n'ont pas : Dessiner, Animer, et le nom de la pièce quand une est sélectionnée. Le bas de l'écran ne porte que le contenu de l'onglet ouvert, donc une seule rangée : le terrain garde 590 px de haut. On sait toujours où l'on est, et on change d'onglet en un appui, quel que soit le temps sélectionné.</li>
+    <li><b>Enregistrer est un bouton</b>, visible en permanence, grisé quand tout est enregistré et marqué d'un point orange sinon. La sauvegarde automatique locale continue ; le bouton écrit en base, comme « Enregistrer » sur ordinateur. Le retour enregistre aussi.</li>
+    <li><b>Les outils sont nommés et à un appui.</b> Sélection, Joueur, Balle, Plot dans le dock ; le reste dans la feuille « Plus », où chaque outil a un nom, et où le dernier choisi prend la place de « Plus ».</li>
+    <li><b>L'onglet de la pièce remplace le panneau flottant.</b> Il ne montre que ce qui se règle pour la pièce sélectionnée — un joueur n'a pas de « largeur de trait » — et se referme par sa croix. Le terrain se recadre au-dessus au lieu d'être recouvert.</li>
+    <li><b>Tracer une flèche est un glissé</b> qui part de la pièce et se termine au relâcher. Le style se choisit avant ou après.</li>
+    <li><b>Multi-sélection au doigt</b> : appui long puis appuis, ou lasso depuis Sélection. Grouper, dupliquer, supprimer redeviennent possibles sur téléphone.</li>
+    <li><b>Cibles de 44 px minimum partout</b>, poignées comprises. Annuler est toujours visible ; Rétablir vit dans un appui long sur Annuler, comme sur la plupart des applications de dessin.</li>
+  </ul>
+  <h3>Et la bascule Dessin / Animation ?</h3>
+  <p>Elle devient la navigation elle-même : <b>Dessiner · Animer</b>, deux verbes. Dans le code, le mode d'édition reste, il est simplement piloté par l'onglet : Animer ouvert avec un temps supérieur à zéro sélectionné vaut « animation », tout le reste vaut « dessin ». Le badge sur l'onglet Animer garde le temps courant sous les yeux quand on est passé sur Dessiner. Un schéma qui a des temps s'ouvre sur Animer, au dernier temps édité, mais les outils sont à un appui : plus d'aller-retour caché. Les étapes gardent leur nom de jargon, « temps 1, temps 2 ».</p>
+  <h3>Et l'autre « Animer » ?</h3>
+  <p>Le diaporama de la séance porte aujourd'hui le même mot. Il est proposé de le renommer <b>Présenter</b> : il montre la séance aux joueurs, il ne l'anime pas. Le bouton de la liste et de l'éditeur d'entraînement, le paramètre d'URL et le titre de l'overlay suivent.</p>
+  <h3>Un principe, trois formats</h3>
+  <p>La barre haute est identique partout. Ce qui change, c'est où va le contenu de l'onglet : sur téléphone il prend le bas de l'écran, un onglet à la fois ; sur tablette il prend le bas en portrait et un panneau ancré à droite en paysage ; sur ordinateur les trois sont visibles en même temps — rail d'outils à gauche avec les raccourcis, panneau de la pièce à droite, bande de temps sous le terrain — et les onglets de la barre haute servent de repère d'état plus que de navigation. Le panneau ancré à droite remplace le panneau flottant actuel, qui recouvre le terrain. Sur ordinateur, l'éditeur reste en ligne dans la page de l'entraînement, le plein écran restant à un clic.</p>
+  <h3>Ce qu'elle ne change pas</h3>
+  <p>Le modèle mental « je choisis un outil, puis je pose » reste celui d'aujourd'hui, comme sur ordinateur, et le modèle d'animation est intact. Un coach qui alterne téléphone et ordinateur ne réapprend rien.</p>
+  <h3>Points de vigilance</h3>
+  <ul>
+    <li>Le terrain tourné change la lecture : les buts sont en haut et en bas. L'export PDF et les vignettes restent en paysage.</li>
+    <li>Le glissé de tracé entre en concurrence avec le glissé de déplacement : il n'est actif que depuis « Tracer », jamais par défaut.</li>
+    <li>Les pièces contre-tournées : un joueur posé « face au but » sur ordinateur doit rester face au but sur téléphone. La rotation propre de la pièce se compose avec celle du cadrage.</li>
+    <li>L'onglet d'une flèche est haut ; le terrain garde au moins 300 px et se recadre sur la flèche. Sur un très petit écran, le panneau défile.</li>
+    <li>Une pièce posée pendant un temps est visible à tous les temps : c'est le modèle actuel, l'indice le rappelle à chaque pose depuis l'onglet Animer.</li>
+  </ul>
+</div>
+
+<script src="commun.js"></script>
+<script>
+(function(){
+  const { ic, terrain, joueur, ballon, plot, traj, setPortrait } = window.M;
+  const ICO = {
+    trait1: '<svg viewBox="0 0 24 12"><path d="M2 6h20" stroke="currentColor" stroke-width="1.5"/></svg>',
+    trait2: '<svg viewBox="0 0 24 12"><path d="M2 6h20" stroke="currentColor" stroke-width="3"/></svg>',
+    trait3: '<svg viewBox="0 0 24 12"><path d="M2 6h20" stroke="currentColor" stroke-width="5"/></svg>',
+    solide: '<svg viewBox="0 0 24 12"><path d="M2 6h20" stroke="currentColor" stroke-width="2"/></svg>',
+    tirets: '<svg viewBox="0 0 24 12"><path d="M2 6h20" stroke="currentColor" stroke-width="2" stroke-dasharray="5 3"/></svg>',
+    pointilles: '<svg viewBox="0 0 24 12"><path d="M2 6h20" stroke="currentColor" stroke-width="2" stroke-dasharray="1.5 3" stroke-linecap="round"/></svg>',
+    grouper: ic('grille'),
+  };
+  /* Barre haute : ← | Dessiner · Animer (· nom de la pièce) | Annuler | Enregistrer */
+  function top(params) {
+    const o = Object.fromEntries(params.split(';').filter(Boolean).map(kv => { const i = kv.indexOf('='); return [kv.slice(0, i), kv.slice(i + 1)]; }));
+    const seg = (cle, libelle, icone, extra) => `<button class="${o.actif === cle ? 'actif' : ''}">${ic(icone)}${libelle}${extra || ''}</button>`;
+    const enLecture = o.actif === 'lecture';
+    // Avec un troisième onglet (Élément, Tracé), les deux premiers passent en icône seule pour tenir sur 380 px
+    const compact = !o.large && (o.actif === 'element' || o.actif === 'trace');
+    let segments = `<button aria-label="Dessiner">${ic('crayon')}${compact ? '' : 'Dessiner'}</button>` +
+      `<button class="${o.actif === 'temps' || enLecture ? 'actif' : ''}" aria-label="Animer">${ic(enLecture ? 'pause' : 'lire')}${compact ? '' : (enLecture ? 'Lecture' : 'Animer')}${o.badge ? ` <span class="badge">${o.badge}</span>` : ''}</button>`;
+    if (o.actif === 'outils') segments = segments.replace('<button aria-label="Dessiner">', '<button class="actif" aria-label="Dessiner">');
+    // Le troisième onglet porte le nom de ce qui est sélectionné : Joueur, Flèche, 3 pièces…
+    if (o.actif === 'element') segments += seg('element', o.elt || 'Élément', 'curseur', ` <span class="fermer">${ic('croix')}</span>`);
+    if (o.actif === 'trace') segments += seg('trace', 'Tracé…', 'trajectoire', ` <span class="fermer">${ic('croix')}</span>`);
+    const sauver = o.sauver ? '<button class="ib a-sauver" aria-label="Enregistrer">' + ic('sauvegarde') + '</button>' : '<button class="ib faible" aria-label="Enregistrer — tout est enregistré">' + ic('sauvegarde') + '</button>';
+    return `<div class="top nav-haut">
+        <button class="ib" aria-label="Retour">${ic('retour')}</button>
+        <div class="segments">${segments}</div>
+        <span style="flex:1"></span>
+        <button class="ib" aria-label="Annuler (appui long : rétablir)">${ic('undo')}</button>
+        ${sauver}
+      </div>`;
+  }
+  const noms = ['crayon','sauvegarde','plein','plusv','grille','lire','pause','curseur','joueur','ballon','plot','plus','coupelle','cerceau','latte','echelle','haie','trajectoire','separation','texte','carre','terrain','aide','corbeille','dupliquer','rotation','croix','undo','redo'];
+  document.body.innerHTML = document.body.innerHTML
+    .replace(/\$\{top:([^}]*)\}/g, (m, params) => top(params))
+    .replace(/\$\{(\w+)\}/g, (m, n) => ICO[n] || (noms.includes(n) ? ic(n) : m));
+
+  setPortrait(true);
+  const R = '#FF0000', B = '#000000', N = '#000000';
+  // Situation de départ : montée de balle. GB et quatre attaquants rouges, deux défenseurs noirs, deux plots, la balle au GB.
+  const depart = (sel) => {
+    const s = sel || {};
+    return joueur(45, 100, R, '', s.gb) + joueur(140, 45, R, '', s.ag) + joueur(165, 100, R, '', s.ar) + joueur(140, 155, R, '', s.ad) +
+      joueur(250, 75, B) + joueur(250, 125, B) + plot(320, 55) + plot(320, 145) + (s.sansBalle ? '' : ballon(60, 100, s.balle));
+  };
+  const monte = (id, enfants, opts) => document.getElementById(id).insertAdjacentHTML('afterbegin', terrain(Object.assign({ orientation: 'portrait', enfants }, opts || {})));
+
+  monte('e1', depart());
+  monte('e2', depart());
+  // 3. zoom 180 % sur la 6 m du haut
+  monte('e3', depart() + plot(90, 60) + '<circle cx="90" cy="60" r="12" fill="none" stroke="var(--orange)" stroke-width="1.5" stroke-dasharray="4 3"/>', { viewBox: '35 -8 130 205' });
+  // 4. joueur sélectionné, poignée de rotation
+  monte('e4', depart({ ag: { selection: true, halo: true } }) +
+    '<line x1="140" y1="45" x2="140" y2="8" stroke="var(--orange)" stroke-width="1.5"/><circle cx="140" cy="8" r="7" fill="#fff" stroke="var(--orange)" stroke-width="2"/>');
+  // 5. flèche sélectionnée avec poignées, terrain recadré sur elle
+  monte('e5', depart() + traj([[140, 45], [210, 30], [290, 60]], 'passe', { couleur: N, poignees: true }) +
+    '<circle cx="140" cy="45" r="7" fill="#fff" stroke="var(--orange)" stroke-width="2"/><circle cx="290" cy="60" r="7" fill="#fff" stroke="var(--orange)" stroke-width="2"/>' +
+    '<circle cx="175" cy="37" r="5" fill="var(--orange)" opacity=".7"/><circle cx="250" cy="45" r="5" fill="var(--orange)" opacity=".7"/>', { viewBox: '-8 -8 216 330' });
+  // 6. trois pièces sélectionnées
+  monte('e6', depart({ ag: { selection: true }, ar: { selection: true }, sansBalle: true }) +
+    '<circle cx="60" cy="100" r="9" fill="rgba(235,93,33,.16)" stroke="var(--orange)" stroke-width="2"/>' + ballon(60, 100) +
+    '<rect x="30" y="30" width="150" height="90" fill="none" stroke="var(--orange)" stroke-width="1.5" stroke-dasharray="5 4"/>');
+  // 7. tracé par glissé
+  monte('e7', depart({ ag: { selection: true } }) + traj([[140, 45], [200, 30], [250, 45], [300, 95]], 'course', { couleur: N }) +
+    '<circle cx="300" cy="95" r="16" fill="rgba(28,23,38,.18)"/><circle cx="300" cy="95" r="9" fill="rgba(28,23,38,.35)"/>');
+  // 8. temps 1 : l'arrière monte, la balle suit
+  monte('e8', joueur(45, 100, R) + joueur(140, 45, R) + joueur(140, 155, R) + joueur(250, 75, B) + joueur(250, 125, B) + plot(320, 55) + plot(320, 145) +
+    joueur(165, 100, R, '', { fantome: true }) + ballon(180, 100, { fantome: true }) +
+    traj([[165, 100], [215, 100], [265, 100]], 'course', { numero: 1, couleur: N }) +
+    joueur(265, 100, R, '', { selection: true }) + ballon(280, 100) +
+    '<circle cx="265" cy="100" r="18" fill="rgba(28,23,38,.18)"/><circle cx="265" cy="100" r="10" fill="rgba(28,23,38,.3)"/>');
+  // 9. outils pendant T2 : les tracés restent visibles, un plot vient d'être posé
+  monte('e9', joueur(45, 100, R) + joueur(140, 45, R, '', { fantome: true }) + joueur(140, 155, R, '', { fantome: true }) + joueur(250, 75, B) + joueur(250, 125, B) + plot(320, 55) + plot(320, 145) +
+    '<g opacity=".45">' + traj([[165, 100], [215, 100], [265, 100]], 'course', { numero: 1, couleur: N }) + '</g>' +
+    traj([[140, 45], [210, 35], [300, 45]], 'course', { numero: 2, couleur: N }) + traj([[140, 155], [210, 165], [300, 155]], 'course', { numero: 2, couleur: N }) +
+    joueur(265, 100, R) + ballon(280, 100) + joueur(300, 45, R) + joueur(300, 155, R) +
+    plot(200, 100) + '<circle cx="200" cy="100" r="14" fill="none" stroke="var(--orange)" stroke-width="2" stroke-dasharray="4 3"/>');
+  // 10. lecture : instant entre T1 et T2, pièces en mouvement
+  monte('e10', joueur(45, 100, R) + joueur(250, 75, B) + joueur(250, 125, B) + plot(320, 55) + plot(320, 145) +
+    '<g opacity=".3">' + traj([[140, 45], [210, 35], [300, 45]], 'course', { couleur: N }) + traj([[140, 155], [210, 165], [300, 155]], 'course', { couleur: N }) + '</g>' +
+    joueur(265, 100, R) + joueur(230, 37, R) + joueur(230, 163, R) + ballon(280, 100));
+
+  // 11 et 12 : paysage
+  setPortrait(false);
+  document.getElementById('e11').insertAdjacentHTML('afterbegin', terrain({ orientation: 'paysage', enfants: depart(), marge: 10 }));
+  document.getElementById('e12').insertAdjacentHTML('afterbegin', terrain({ orientation: 'paysage', marge: 10, enfants:
+    joueur(45, 100, R) + joueur(140, 45, R) + joueur(140, 155, R) + joueur(250, 75, B) + joueur(250, 125, B) + plot(320, 55) + plot(320, 145) +
+    joueur(165, 100, R, '', { fantome: true }) + ballon(180, 100, { fantome: true }) +
+    traj([[165, 100], [215, 100], [265, 100]], 'course', { numero: 1, couleur: N }) + joueur(265, 100, R, '', { selection: true }) + ballon(280, 100) }));
+
+  // 13 à 15 : tablette et ordinateur, terrain en paysage
+  document.getElementById('e13').insertAdjacentHTML('afterbegin', terrain({ orientation: 'paysage', enfants: depart(), marge: 10 }));
+  document.getElementById('e14').insertAdjacentHTML('afterbegin', terrain({ orientation: 'paysage', marge: 10, enfants:
+    depart({ ag: { selection: true, halo: true } }) + '<line x1="140" y1="45" x2="140" y2="8" stroke="var(--orange)" stroke-width="1.5"/><circle cx="140" cy="8" r="7" fill="#fff" stroke="var(--orange)" stroke-width="2"/>' }));
+  document.getElementById('e15').insertAdjacentHTML('afterbegin', terrain({ orientation: 'paysage', marge: 10, enfants:
+    joueur(45, 100, R) + joueur(140, 45, R) + joueur(140, 155, R) + joueur(250, 75, B) + joueur(250, 125, B) + plot(320, 55) + plot(320, 145) +
+    joueur(165, 100, R, '', { fantome: true }) + ballon(180, 100, { fantome: true }) +
+    traj([[165, 100], [215, 100], [265, 100]], 'course', { numero: 1, couleur: N, poignees: true }) + joueur(265, 100, R, '', { selection: true, halo: true }) + ballon(280, 100) }));
+
+  // aperçus dans les en-têtes de l'onglet de la pièce
+  const ap = (id, contenu, vb) => { const n = document.getElementById(id); if (n) n.innerHTML = `<svg viewBox="${vb || '-12 -12 24 24'}" aria-hidden="true">${contenu}</svg>`; };
+  ap('ap4', joueur(0, 0, R, '', { echelle: 1.3 }));
+  ap('ap14', joueur(0, 0, R, '', { echelle: 1.3 }));
+  ap('ap15', joueur(0, 0, R, '', { echelle: 1.3 }));
+  ap('ap5', '<path d="M-10 4 C -4 -8, 4 -8, 10 4" fill="none" stroke="#fff" stroke-width="2"/><path d="M6 0 L10 4 L5 5" fill="none" stroke="#fff" stroke-width="2"/>');
+  ap('ap6', joueur(-5, -3, R, '', { echelle: 0.8 }) + joueur(5, 3, R, '', { echelle: 0.8 }));
+})();
+</script>
+</body>
+</html>
