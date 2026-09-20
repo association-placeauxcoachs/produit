@@ -76,6 +76,13 @@ svg{display:block}
 .grille .cell.annot{border-style:dashed}
 .voile{position:absolute;inset:0;background:rgba(28,23,38,.28);z-index:2}
 
+/* Le cadre du terrain ne change jamais de taille : le bas réserve une fois pour
+   toutes la hauteur du dock, et un contenu plus haut se pose DEVANT le terrain,
+   ce que le coach dégage en faisant glisser la scène. */
+.champ.reserve{padding-bottom:87px}
+.champ.reserve .hint{bottom:99px}
+.phone .ctx.devant{position:absolute;left:0;right:0;bottom:0;z-index:3;box-shadow:0 -12px 34px rgba(0,0,0,.34)}
+
 /* Barre contextuelle (élément sélectionné) */
 .ctx{flex:none;border-top:1px solid var(--filet);background:var(--surface);padding:8px 10px calc(8px + 14px);display:flex;flex-direction:column;gap:8px}
 .ctx .ligne{display:flex;align-items:center;gap:6px}

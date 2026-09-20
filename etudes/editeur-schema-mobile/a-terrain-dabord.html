@@ -113,7 +113,7 @@
 <div class="section-titre">
   <span class="k">Section 2</span>
   <h2>Un élément sélectionné</h2>
-  <p>Un appui sur une pièce ouvre un troisième onglet en haut, <b>au nom de la pièce</b> : Joueur, Flèche, 3 pièces. Il montre ce qui se règle pour <b>cette</b> pièce, rien de plus, et se referme par sa croix, par un appui sur Dessiner ou Animer, par Échap ou par un appui sur le terrain vide. Le terrain se recadre pour rester visible au-dessus.</p>
+  <p>Un appui sur une pièce ouvre un troisième onglet en haut, <b>au nom de la pièce</b> : Joueur, Flèche, 3 pièces. Il montre ce qui se règle pour <b>cette</b> pièce, rien de plus, et se referme par sa croix, par un appui sur Dessiner ou Animer, par Échap ou par un appui sur le terrain vide. <b>Le cadre du terrain ne change pas de taille</b> : le panneau se pose <i>devant</i> lui au lieu de le rétrécir — un recadrage déplacerait la pièce sous le doigt qui vient de la désigner, et ferait perdre le zoom choisi. Ce que le panneau masque se ramène au jour en faisant glisser la scène.</p>
 </div>
 <div class="scene">
   <div class="col">
@@ -121,8 +121,8 @@
     <div class="phone">
       <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
       ${top:actif=element;elt=Joueur}
-      <div class="champ" id="e4"><span class="hint"><b>Glisse</b> pour déplacer · <b>appui long</b> pour en sélectionner d'autres</span></div>
-      <div class="ctx">
+      <div class="champ reserve" id="e4"><span class="hint"><b>Glisse</b> pour déplacer · <b>appui long</b> pour en sélectionner d'autres</span></div>
+      <div class="ctx devant">
         <div class="titre-el"><span class="apercu" id="ap4"></span><div class="nom">Joueur<small>Rouge · rotation 0°</small></div></div>
         <div class="prop"><label>Couleur</label><div class="ligne" style="justify-content:space-between">
           <span class="sw" style="background:#000"></span>
@@ -148,8 +148,8 @@
     <div class="phone">
       <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
       ${top:actif=element;elt=Flèche}
-      <div class="champ" id="e5"></div>
-      <div class="ctx" style="gap:6px">
+      <div class="champ reserve" id="e5"><span class="hint"><b>Deux doigts</b> pour dégager ce que le panneau masque</span></div>
+      <div class="ctx devant" style="gap:6px">
         <div class="titre-el"><span class="apercu" id="ap5"></span><div class="nom">Flèche<small>Annotation · 3 points</small></div>
           <span class="sw actif" style="background:#000;width:32px;height:32px;margin-left:auto"></span></div>
         <div class="prop"><label>Largeur</label><div class="segm"><button>${trait1}Fin</button><button class="actif">${trait2}Moyen</button><button>${trait3}Épais</button></div></div>
@@ -170,8 +170,8 @@
     <div class="phone">
       <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
       ${top:actif=element;elt=3 pièces}
-      <div class="champ" id="e6"><span class="hint"><b>Appuie</b> sur d'autres pièces pour les ajouter</span></div>
-      <div class="ctx">
+      <div class="champ reserve" id="e6"><span class="hint"><b>Appuie</b> sur d'autres pièces pour les ajouter</span></div>
+      <div class="ctx devant">
         <div class="titre-el"><span class="apercu" id="ap6"></span><div class="nom">3 pièces<small>2 joueurs · 1 balle</small></div></div>
         <div class="prop"><label>Couleur</label><div class="ligne" style="justify-content:space-between">
           <span class="sw" style="background:#000"></span>
@@ -197,8 +197,8 @@
     <div class="phone">
       <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
       ${top:actif=trace}
-      <div class="champ" id="e7"><span class="hint"><b>Relâche</b> pour terminer la flèche</span></div>
-      <div class="ctx">
+      <div class="champ reserve" id="e7"><span class="hint"><b>Relâche</b> pour terminer la flèche</span></div>
+      <div class="ctx devant">
         <div class="prop"><label>Style</label><div class="segm"><button class="actif">${tirets}Course</button><button>${solide}Passe</button><button>${pointilles}Dribble</button></div></div>
         <p style="font-size:.7rem;color:var(--attenue)">Le style se choisit avant ou après : la flèche reste sélectionnée au relâcher.</p>
       </div>
@@ -317,11 +317,11 @@
 <div class="section-titre">
   <span class="k">Section 5</span>
   <h2>Tablette et ordinateur</h2>
-  <p>Même principe partout : <b>une barre haute</b> avec Dessiner · Animer · la pièce, Annuler, Enregistrer, et <b>le contenu de l'onglet là où il y a de la place</b>. Sur téléphone, en bas. Sur tablette, en bas ou en rail à droite. Sur ordinateur, les outils à gauche, la pièce à droite, les temps sous le terrain — tout en même temps, sans onglet à ouvrir. Le terrain n'est jamais recouvert. Les cadres sont rendus à 75 %.</p>
+  <p>Même principe partout : <b>une barre haute</b> avec Dessiner · Animer · la pièce, Annuler, Enregistrer. Ce qui change n'est pas la classe d'appareil mais <b>la place réellement disponible</b>, en trois régimes. <b>Tout tient</b> — ordinateur et tablette en paysage : plus d'onglet du tout, les outils en rail au bord, la pièce en panneau ancré, les temps sous le terrain, les trois visibles en même temps. <b>La hauteur est libre</b> — tablette en portrait : le contenu se pose en bande pleine largeur <i>sous</i> le terrain, jamais à côté, car un panneau latéral de 240 px sur 768 px de large laisserait au terrain moins que sur un téléphone. <b>Rien n'est libre</b> — téléphone : onglets, et le contenu se pose devant le terrain, qu'on déplace pour dégager la vue. Les cadres sont rendus à 75 %.</p>
 </div>
 <div class="scene">
   <div class="col">
-    <div class="lab"><b>13 · Tablette en portrait</b>Le terrain garde son sens habituel : à 768 px de large, il est déjà lisible et la hauteur libérée accueille un dock complet — huit outils nommés, plus « Plus » pour les annotations et la mise en place. L'onglet Animer y met la bande de temps et la note, comme sur téléphone.</div>
+    <div class="lab"><b>13 · Tablette en portrait</b>La largeur ne suffit pas pour un panneau latéral, mais la hauteur est libre : le contenu se pose en <i>bande pleine largeur sous le terrain</i>. Ici le dock, dix outils nommés d'un coup ; une pièce sélectionnée y met son panneau à la même place, à la même hauteur — le terrain ne change donc jamais de taille. Le terrain garde son sens habituel : à 768 px, il est déjà lisible sans rotation.</div>
     <div class="cadre tablette">
       <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
       ${top:actif=outils}
@@ -342,12 +342,35 @@
     </div>
   </div>
   <div class="col">
-    <div class="lab"><b>14 · Tablette en paysage</b>Le contenu de l'onglet passe en <i>panneau ancré à droite</i>, 240 px, sous la main qui tient la tablette. Ici un joueur est sélectionné : le panneau montre ce qui se règle pour lui, et il reste là tant que la sélection dure. Sur Dessiner, ce même panneau porte le dock en colonne ; sur Animer, les temps empilés et la note.</div>
+    <div class="lab"><b>14 · Tablette en paysage</b>Tout tient : la tablette tournée reçoit <i>la même disposition que l'ordinateur</i>, pas un téléphone agrandi. Les outils passent en rail au bord, la pièce sélectionnée en panneau ancré, les temps sous le terrain — les trois en même temps, sans onglet à ouvrir. Ce qui la distingue de l'écran 15 n'est pas la forme mais le doigt : cibles de 44 px, pas de raccourci clavier affiché.</div>
     <div class="cadre tablette paysage">
       <div class="statusb"><span>09:41</span><span>▮▮▮</span></div>
       ${top:actif=element;elt=Joueur;large=1}
       <div class="corps">
-        <div class="champ" id="e14"><span class="hint"><b>Glisse</b> pour déplacer · <b>appui long</b> pour en sélectionner d'autres</span></div>
+        <div class="rail-g">
+          <button class="slot">${curseur}Sélection</button>
+          <button class="slot actif">${joueur}Joueur</button>
+          <button class="slot">${ballon}Balle</button>
+          <button class="slot">${plot}Plot</button>
+          <button class="slot">${coupelle}Coupelle</button>
+          <button class="slot">${cerceau}Cerceau</button>
+          <button class="slot">${latte}Latte</button>
+          <button class="slot">${trajectoire}Flèche</button>
+          <button class="slot">${texte}Texte</button>
+          <button class="slot">${plus}Plus</button>
+        </div>
+        <div class="centre">
+          <div class="champ" id="e14"><span class="hint"><b>Glisse</b> pour déplacer · <b>appui long</b> pour en sélectionner d'autres</span></div>
+          <div class="bande">
+            <div class="temps">
+              <button class="t">T0<small>Départ</small></button>
+              <button class="t actif">T1<small>1 déplacement</small></button>
+              <button class="t ajout">${plus}Temps</button>
+            </div>
+            <div class="note-temps" style="flex:1;margin:0"><b>T1</b><span>Passe du GB à l'arrière</span></div>
+            <button class="lire" aria-label="Lire">${lire}</button>
+          </div>
+        </div>
         <div class="panneau">
           <div class="titre-el"><span class="apercu" id="ap14"></span><div class="nom">Joueur<small>Rouge · rotation 0°</small></div></div>
           <label class="lab-p">Couleur</label>
@@ -363,6 +386,7 @@
           <button class="act ligne-act danger">${corbeille}Supprimer</button>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>
@@ -434,7 +458,7 @@
     <li><b>Une navigation à trois onglets en haut</b>, à la place d'un titre que les schémas n'ont pas : Dessiner, Animer, et le nom de la pièce quand une est sélectionnée. Le bas de l'écran ne porte que le contenu de l'onglet ouvert, donc une seule rangée : le terrain garde 590 px de haut. On sait toujours où l'on est, et on change d'onglet en un appui, quel que soit le temps sélectionné.</li>
     <li><b>Enregistrer est un bouton</b>, visible en permanence, grisé quand tout est enregistré et marqué d'un point orange sinon. La sauvegarde automatique locale continue ; le bouton écrit en base, comme « Enregistrer » sur ordinateur. Le retour enregistre aussi.</li>
     <li><b>Les outils sont nommés et à un appui.</b> Sélection, Joueur, Balle, Plot dans le dock ; le reste dans la feuille « Plus », où chaque outil a un nom, et où le dernier choisi prend la place de « Plus ».</li>
-    <li><b>L'onglet de la pièce remplace le panneau flottant.</b> Il ne montre que ce qui se règle pour la pièce sélectionnée — un joueur n'a pas de « largeur de trait » — et se referme par sa croix. Le terrain se recadre au-dessus au lieu d'être recouvert.</li>
+    <li><b>L'onglet de la pièce remplace le panneau flottant.</b> Il ne montre que ce qui se règle pour la pièce sélectionnée — un joueur n'a pas de « largeur de trait » — et se referme par sa croix. Il se pose <i>devant</i> le terrain sans en changer la taille : le défaut du panneau actuel n'était pas de recouvrir, c'était que rien ne pouvait sortir de dessous. Ici, on fait glisser la scène.</li>
     <li><b>Tracer une flèche est un glissé</b> qui part de la pièce et se termine au relâcher. Le style se choisit avant ou après.</li>
     <li><b>Multi-sélection au doigt</b> : appui long puis appuis, ou lasso depuis Sélection. Grouper, dupliquer, supprimer redeviennent possibles sur téléphone.</li>
     <li><b>Cibles de 44 px minimum partout</b>, poignées comprises. Annuler est toujours visible ; Rétablir vit dans un appui long sur Annuler, comme sur la plupart des applications de dessin.</li>
@@ -444,7 +468,7 @@
   <h3>Et l'autre « Animer » ?</h3>
   <p>Le diaporama de la séance porte aujourd'hui le même mot. Il est proposé de le renommer <b>Présenter</b> : il montre la séance aux joueurs, il ne l'anime pas. Le bouton de la liste et de l'éditeur d'entraînement, le paramètre d'URL et le titre de l'overlay suivent.</p>
   <h3>Un principe, trois formats</h3>
-  <p>La barre haute est identique partout. Ce qui change, c'est où va le contenu de l'onglet : sur téléphone il prend le bas de l'écran, un onglet à la fois ; sur tablette il prend le bas en portrait et un panneau ancré à droite en paysage ; sur ordinateur les trois sont visibles en même temps — rail d'outils à gauche avec les raccourcis, panneau de la pièce à droite, bande de temps sous le terrain — et les onglets de la barre haute servent de repère d'état plus que de navigation. Le panneau ancré à droite remplace le panneau flottant actuel, qui recouvre le terrain. Sur ordinateur, l'éditeur reste en ligne dans la page de l'entraînement, le plein écran restant à un clic.</p>
+  <p>La barre haute est identique partout. Ce qui change, c'est où va le contenu de l'onglet : sur téléphone il prend le bas de l'écran, un onglet à la fois ; sur tablette en portrait il prend une bande pleine largeur sous le terrain ; et dès que la largeur suffit — tablette en paysage comme ordinateur — les trois sont visibles en même temps — rail d'outils à gauche avec les raccourcis, panneau de la pièce à droite, bande de temps sous le terrain — et les onglets de la barre haute servent de repère d'état plus que de navigation. Le panneau ancré remplace le panneau flottant actuel — non parce qu'il recouvrait, mais parce que rien ne pouvait sortir de dessous. Sur ordinateur, l'éditeur reste en ligne dans la page de l'entraînement, le plein écran restant à un clic.</p>
   <h3>Ce qu'elle ne change pas</h3>
   <p>Le modèle mental « je choisis un outil, puis je pose » reste celui d'aujourd'hui, comme sur ordinateur, et le modèle d'animation est intact. Un coach qui alterne téléphone et ordinateur ne réapprend rien.</p>
   <h3>Points de vigilance</h3>
@@ -452,7 +476,7 @@
     <li>Le terrain tourné change la lecture : les buts sont en haut et en bas. L'export PDF et les vignettes restent en paysage.</li>
     <li>Le glissé de tracé entre en concurrence avec le glissé de déplacement : il n'est actif que depuis « Tracer », jamais par défaut.</li>
     <li>Les pièces contre-tournées : un joueur posé « face au but » sur ordinateur doit rester face au but sur téléphone. La rotation propre de la pièce se compose avec celle du cadrage.</li>
-    <li>L'onglet d'une flèche est haut ; le terrain garde au moins 300 px et se recadre sur la flèche. Sur un très petit écran, le panneau défile.</li>
+    <li>L'onglet d'une flèche est haut : il masque d'autant plus de terrain. Le cadre ne bouge pas pour autant — c'est le déplacement à deux doigts qui dégage la vue. Sur un très petit écran, le panneau défile.</li>
     <li>Une pièce posée pendant un temps est visible à tous les temps : c'est le modèle actuel, l'indice le rappelle à chaque pose depuis l'onglet Animer.</li>
   </ul>
 </div>
