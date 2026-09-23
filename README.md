@@ -16,7 +16,7 @@ Vous pouvez aussi **voter** pour une idée existante en ajoutant une réaction �
 
 ## Où en sont les sujets
 
-Le tableau [**Produit PlaceAuxCoachs**](https://github.com/orgs/association-placeauxcoachs/projects/1) montre chaque sujet et son avancement :
+Le tableau [**Produit PlaceAuxCoachs**](https://github.com/orgs/association-placeauxcoachs/projects/2) montre chaque sujet et son avancement :
 
 | Colonne | Signification |
 |---|---|
