@@ -1,6 +1,6 @@
 name: Fonctionnalité
 description: Proposer une idée ou décrire une gêne rencontrée dans l'application
-labels: ["fonctionnalite"]
+type: Fonctionnalité
 body:
   - type: markdown
     attributes:
