@@ -13,8 +13,9 @@ Il peut être utilisé **en autonomie**, notamment avec l'aide d'une IA et de la
 
 ## 1. Règle fondamentale
 
-**Le référent métier décide de la valeur, des usages et des priorités produit.
-Le développeur décide de la solution technique et de l'implémentation.**
+**Le référent métier apporte la valeur, les usages et l'ordre d'importance des besoins.
+Le développeur décide de la solution technique et de l'implémentation.
+Le bureau de l'association arrête les orientations, dans une feuille de route.**
 
 Ce document ne sert **pas** à :
 - parler de technologie ;
@@ -111,9 +112,9 @@ Ces critères servent à valider que le besoin est couvert et à éviter les inc
 
 ---
 
-## 4. Ce que le référent métier décide, ou ne décide pas
+## 4. Ce que le référent métier porte, et ce qui revient au développeur
 
-| Décide | Ne décide pas |
+| Le référent porte | Le développeur porte |
 |---|---|
 | les problèmes prioritaires | les écrans ou boutons précis |
 | les fonctionnalités à construire | la structure des données |

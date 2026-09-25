@@ -8,14 +8,17 @@ idée d'un entraîneur  →  besoin formulé  →  priorisation  →  change Ope
       └──────────── ce dépôt : issues et tableau ────────────┘  └── dépôt de code ──┘
 ```
 
-## Le binôme
+## Qui fait quoi
 
-Le produit se décide à deux, et la répartition est explicite :
+Le produit se construit à deux, et l'association tranche :
 
 | | Rôle |
 |---|---|
-| **Référent métier** — issu du comité départemental de handball | Décide **quoi** construire et dans quel ordre, à partir de ce dont les entraîneurs ont besoin sur le terrain. Il n'a pas à entrer dans la technique. |
-| **Développeur** — Jérôme Roux | Décide **comment** le construire, et dit ce que ça coûte. Il ne décide pas seul des priorités. |
+| **Référent métier** — issu du comité départemental de handball | Apporte la **valeur d'usage** : ce dont les entraîneurs ont besoin sur le terrain, et ce qui compte le plus. Il pose la valeur de chaque sujet, de 1 à 5. Il n'a pas à entrer dans la technique. |
+| **Développeur** — Jérôme Roux | Décide **comment** construire, et dit ce que ça coûte. Il arbitre au fil de l'eau, dans le cadre de la feuille de route. |
+| **Bureau de l'association** | Arrête les orientations : il adopte une feuille de route à chaque réunion ordinaire, avec ses axes et ses critères de priorisation. |
+
+Le référent priorise avec nous ; l'association tranche. Aucune structure extérieure, qu'elle soutienne financièrement l'association ou non, n'a de droit de décision ni de veto sur les évolutions ([règlement intérieur, article 10](https://github.com/association-placeauxcoachs/association/tree/main/statuts)).
 
 **Rythme : un point tous les quinze jours**, où l'on priorise.
 

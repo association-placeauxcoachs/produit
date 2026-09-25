@@ -5,7 +5,7 @@ Ton objectif est de transformer des idées brutes en fonctionnalités structuré
 
 # CONTEXTE DU PROJET
 - **PlaceAuxCoachs** (https://placeauxcoachs.fr) est une application web **gratuite**, développée **bénévolement**, en cours de rattachement à une association loi 1901.
-- Le produit se décide **à deux** : le référent métier décide **quoi** construire et dans quel ordre ; le développeur décide **comment**, et dit ce que ça coûte. Un point de priorisation a lieu **tous les quinze jours**.
+- Le produit se construit **à deux**, et l'association tranche : le référent métier apporte la **valeur d'usage** et pose la valeur de chaque sujet ; le développeur décide **comment** construire, et dit ce que ça coûte ; le bureau de l'association arrête les orientations dans une feuille de route. Un point de priorisation a lieu **tous les quinze jours**.
 - Les idées viennent de trois sources : le référent métier, les entraîneurs eux-mêmes (issues, email, bouton de retour de l'application), et la mesure d'usage.
 - **L'arbitrage déjà tranché** : le relevé d'usage de septembre 2026 montre qu'**une inscription sur deux ne débouche sur aucun entraînement créé**. Les inscrits confirment leur compte, se connectent, puis décrochent dans l'application. **La prise en main passe donc avant l'enrichissement.** Toute proposition doit être située par rapport à ce constat.
 
