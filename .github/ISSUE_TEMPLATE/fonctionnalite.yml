@@ -37,17 +37,6 @@ body:
       placeholder: |
         - la copie prend moins de 10 secondes
         - aucun contenu n'est perdu
-  - type: dropdown
-    id: valeur
-    attributes:
-      label: 🚀 Valeur pour les entraîneurs
-      description: Votre avis. La valeur retenue est posée par le référent métier au point de priorisation.
-      options:
-        - "1 — confort"
-        - "2 — utile"
-        - "3 — important"
-        - "4 — très important"
-        - "5 — indispensable"
   - type: textarea
     id: conseil
     attributes:

@@ -157,9 +157,15 @@ Donnez-lui le contenu de [`assistant-produit.md`](assistant-produit.md) en débu
 
 ---
 
-## 7. Checklist avant de passer une issue en « Instruit »
+## 7. Checklists
+
+**Avant de passer une issue en « À prioriser »**
 
 - [ ] Le problème est clair et réel
+- [ ] La valeur est posée dans le tableau
+
+**Avant de la passer en « Quinzaine »**
+
 - [ ] La fonctionnalité est compréhensible sans contexte
 - [ ] Les user stories parlent d'usage, pas de solution
 - [ ] Les critères de réussite sont définis

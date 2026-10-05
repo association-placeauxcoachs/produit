@@ -20,12 +20,12 @@ Le tableau [**Produit PlaceAuxCoachs**](https://github.com/orgs/association-plac
 
 | Colonne | Signification |
 |---|---|
-| À instruire | L'idée est déposée, pas encore mise en forme |
-| Instruit | Le besoin est formulé : problème, user stories, critères d'acceptation |
-| Priorisé | Retenu au point de priorisation, prêt à être développé |
+| Idées en vrac | Tout ce qui arrive, rien de trié |
+| À prioriser | Le problème est clair et la valeur posée ; les fiches sont triées par valeur |
+| Quinzaine | Retenu pour les quinze jours qui viennent |
 | En cours | En développement |
-| En revue | Développé, en relecture avant mise en ligne |
-| Livré | Disponible dans l'application |
+| Bêta | Livré aux bêta-testeurs |
+| Livré | Ouvert à tous ; le sujet est fermé et quitte le tableau quatorze jours plus tard |
 
 ## Contenu du dépôt
 

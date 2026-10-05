@@ -33,17 +33,23 @@ Un retour spontané d'entraîneur est plus rare mais plus précieux : il vient d
 
 ## Le chemin d'une idée
 
-**1. Une idée, ou une gêne, est exprimée** dans une issue « Fonctionnalité », avec le formulaire. Seul le problème est obligatoire : les autres rubriques peuvent rester vides. Le titre nomme le sujet, sans préfixe. Colonne **À instruire**.
+**1. Une idée, ou une gêne, est déposée** dans une issue « Fonctionnalité », avec le formulaire. Seul le problème est obligatoire : les autres rubriques peuvent rester vides. Le titre nomme le sujet, sans préfixe. L'issue arrive d'elle-même dans la colonne **Idées en vrac**.
 
-**2. Le besoin est instruit en commentaire.** Le référent métier, ou toute autre personne, complète l'issue par un commentaire, avec le [guide de travail](guide-de-travail.md) et l'[assistant produit](assistant-produit.md) : fonctionnalité proposée, user stories, critères d'acceptation. Le développeur reporte ensuite ce qui est validé dans les rubriques de l'issue, qui reste la référence. Colonne **Instruit**.
+**2. Le besoin est clarifié en commentaire.** Le référent métier, ou toute autre personne, complète l'issue par un commentaire, avec le [guide de travail](guide-de-travail.md) et l'[assistant produit](assistant-produit.md) : fonctionnalité proposée, user stories, critères d'acceptation. Le développeur reporte ensuite ce qui est validé dans les rubriques de l'issue, qui reste la référence.
 
-**3. On priorise ensemble** au point des quinze jours. Le référent pose la **Valeur** (1 à 5), le développeur l'**Effort** (S, M, L), tous deux dans les champs du tableau. La valeur indiquée dans le formulaire n'est qu'un avis de la personne qui dépose l'idée. Colonne **Priorisé**.
+**3. Le référent pose la Valeur** (1 à 5) et le développeur l'**Effort** (S, M, L), dans les champs du tableau, depuis la page de l'issue (bloc « Projects »). Quand le problème est clair et la valeur posée, l'issue passe en **À prioriser**, où les fiches sont triées par valeur.
 
-**4. Le développement démarre.** Une fonctionnalité trop grosse est découpée en sous-issues `technique`, chacune correspondant à un change OpenSpec. Colonnes **En cours** puis **En revue**.
+**4. Au point des quinze jours**, on remplit la colonne **Quinzaine** : ce qu'on s'engage à faire d'ici le point suivant, pris en haut de « À prioriser » selon l'effort. Ce qui n'est pas fini reste en place.
 
-**5. La fonctionnalité est livrée**, et l'issue indique quoi tester. Colonne **Livré**.
+**5. Le développement démarre.** Une fonctionnalité trop grosse est découpée en sous-issues `technique`, chacune correspondant à un change OpenSpec. Colonne **En cours**.
 
-**Un bug** suit un chemin plus court : il n'a pas à être instruit. Il est confirmé, puis priorisé au point suivant, ou corrigé tout de suite s'il empêche d'utiliser l'application.
+**6. La fonctionnalité est livrée aux bêta-testeurs**, réservée à quelques comptes ; l'issue reste ouverte et indique quoi tester. Colonne **Bêta**. Une correction simple peut sauter cette étape.
+
+**7. Elle est ouverte à tous.** Colonne **Livré** : l'issue se ferme d'elle-même, et inversement une issue fermée passe en « Livré ». Quatorze jours après, elle quitte le tableau ; elle reste consultable dans les archives du projet.
+
+Au point, on commence par « Livré » et « Bêta » : c'est le bilan de la quinzaine.
+
+**Un bug** suit un chemin plus court : il va directement en « À prioriser », ou en « Quinzaine » s'il empêche d'utiliser l'application.
 
 **Les décisions** qui gouvernent la priorisation, comme l'arbitrage ci-dessous, sont des issues épinglées. Elles ne figurent pas au tableau.
 
