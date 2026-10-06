@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Libellés qui défilent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+    --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF; color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF; color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;letter-spacing:-.01em;padding:0 16px 96px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto}
+  :is(a,button):focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .outils{position:sticky;top:0;z-index:5;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
+  .outils-in{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.84rem}
+  .retour{font-weight:600;color:var(--violet);text-underline-offset:3px}
+  .seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--filet-fort)}
+  .seg button{font:inherit;font-size:.84rem;font-weight:600;background:none;border:0;color:var(--attenue);padding:.45em 1em;cursor:pointer}
+  .seg button+button{border-left:1px solid var(--filet-fort)}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+  .tete{padding-top:56px;max-width:66ch}
+  .kicker{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--orange);display:inline-flex;align-items:center;gap:.6em}
+  .kicker::before{content:"";width:28px;height:1px;background:var(--orange)}
+  h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(2.2rem,6vw,3.3rem);line-height:1.04;letter-spacing:-.02em;margin:.3em 0 .3em}
+  h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.45rem;letter-spacing:-.01em;margin-bottom:.5em}
+  .lede{color:var(--attenue);font-size:1.05rem}
+  .lede b,.bloc p b{color:var(--ink);font-weight:600}
+  .bloc{margin-top:56px}
+  .bloc>p{max-width:66ch;color:var(--attenue)}
+  .bloc>p+p{margin-top:.7em}
+
+  /* la mesure du problème : une règle par libellé */
+  .mesures{display:grid;gap:10px;margin-top:18px;max-width:560px}
+  .mesure{display:grid;grid-template-columns:9.5rem minmax(0,1fr);align-items:center;gap:12px;font-size:.9rem}
+  .barre{position:relative;height:22px;background:var(--paper-2)}
+  .barre .besoin{position:absolute;inset:0 auto 0 0;background:var(--peach)}
+  .barre .case{position:absolute;inset:0 auto 0 0;border-right:2px solid var(--ink)}
+  .barre span{position:absolute;right:6px;top:2px;font-size:.75rem;color:var(--ink);font-variant-numeric:tabular-nums}
+  .legende{font-size:.8rem;color:var(--attenue);margin-top:8px}
+
+  /* ---------- les téléphones ---------- */
+  .banc{display:grid;grid-template-columns:repeat(2,minmax(0,375px));gap:28px;justify-content:start;margin-top:22px}
+  @media(max-width:820px){.banc{grid-template-columns:minmax(0,375px)}}
+  .tel figcaption{font-size:.82rem;color:var(--attenue);margin-bottom:8px}
+  .ecran{width:100%;max-width:375px;background:var(--paper);border:1px solid var(--filet-fort);overflow:hidden}
+  .onglets{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);margin:0 auto;width:343px;max-width:calc(100% - 32px)}
+  .onglet{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;padding:0 8px 8px;background:none;border:0;font:inherit;font-size:12px;line-height:16px;letter-spacing:-.9px;color:color-mix(in srgb,var(--attenue) 80%,transparent);cursor:pointer;gap:2px}
+  .onglet.actif{color:var(--orange)}
+  .reduit .onglet{padding:4px 8px}
+  .etendu{padding-top:16px}
+  .reduit{padding:2px 0 0;border-bottom:1px solid var(--filet);background:color-mix(in srgb,var(--paper) 94%,transparent)}
+  .soul{position:absolute;left:8px;right:8px;bottom:0;height:2px;border-radius:2px;background:transparent}
+  .actif .soul{background:var(--orange)}
+  .media{width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+  .logo{height:50px;width:auto;max-width:100%}
+  .pic{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;color:inherit}
+  .onglet:not(.actif) .pic{--t:var(--peach)}
+  .actif .pic{color:var(--ink);--t:var(--orange)}
+  .pic .t{stroke:var(--t)}
+  .pic .p{stroke:var(--t);stroke-dasharray:1.6 4.4}
+  .faux-contenu{padding:14px 16px 18px;display:grid;gap:10px}
+  .faux-contenu i{display:block;height:64px;background:var(--surface);border:1px solid var(--filet)}
+  .faux-contenu i:first-child{height:28px;width:120px;margin:0 auto;border-radius:99px}
+
+  /* ---------- le libellé qui défile ---------- */
+  .lib{display:block;max-width:min(100%,66px);overflow:hidden;white-space:nowrap}
+  .lib>span{display:inline-block}
+  /* trop long : un bord fondu du côté où le texte continue, à la place des points de suspension */
+  @property --fg{syntax:'<length>';inherits:false;initial-value:0px}
+  @property --fd{syntax:'<length>';inherits:false;initial-value:14px}
+  .lib.deborde{-webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--fg),#000 calc(100% - var(--fd)),transparent);mask-image:linear-gradient(90deg,transparent,#000 var(--fg),#000 calc(100% - var(--fd)),transparent)}
+  .lib.en-route{animation:fondus var(--duree) ease-in-out var(--repet,1) both}
+  .lib.en-route>span{animation:defile var(--duree) ease-in-out var(--repet,1) both}
+  @keyframes fondus{
+    0%,18%{--fg:0px;--fd:14px}
+    50%,68%{--fg:14px;--fd:0px}
+    100%{--fg:0px;--fd:14px}
+  }
+  @keyframes defile{
+    0%,18%{transform:translateX(0)}
+    50%,68%{transform:translateX(calc(-1 * var(--decal)))}
+    100%{transform:translateX(0)}
+  }
+  /* la variante « ellipse », pour comparer avec aujourd'hui */
+  [data-variante="aujourdhui"] .lib.deborde{-webkit-mask-image:none;mask-image:none;text-overflow:ellipsis}
+  [data-variante="aujourdhui"] .lib>span{display:inline}
+  /* la variante « sur deux lignes » : coupure équilibrée, deux lignes au plus, onglets alignés par le bas */
+  [data-variante="deux-lignes"] .onglets{align-items:end}
+  [data-variante="deux-lignes"] .onglet{justify-content:flex-end;padding-left:6px;padding-right:6px}
+  [data-variante="deux-lignes"] .lib{white-space:normal;max-width:100%;text-wrap:balance;text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;-webkit-mask-image:none;mask-image:none}
+  [data-variante="deux-lignes"] .lib>span{display:inline}
+  @media (prefers-reduced-motion: reduce){ .lib.en-route,.lib.en-route>span{animation:none} }
+
+  .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+  .rejouer{font:inherit;font-size:.84rem;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--filet-fort);padding:.45em 1em;cursor:pointer}
+  .note-variante{margin-top:14px;max-width:62ch;color:var(--attenue);font-size:.95rem;min-height:3.2em}
+  .note-variante b{color:var(--ink)}
+
+  .reco{border-left:3px solid var(--orange);padding-left:18px}
+  .liste{margin-top:10px;padding-left:1.1em;color:var(--attenue);max-width:66ch}
+  .liste li+li{margin-top:.4em}
+  .liste b{color:var(--ink)}
+</style>
+</head>
+<body>
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="plaquette" viewBox="0 0 48 48"><path d="M18 9h-4.5A2.5 2.5 0 0 0 11 11.5v28a2.5 2.5 0 0 0 2.5 2.5h21a2.5 2.5 0 0 0 2.5-2.5v-28A2.5 2.5 0 0 0 34.5 9H30"/><path d="M18 12V7.5A1.5 1.5 0 0 1 19.5 6h9A1.5 1.5 0 0 1 30 7.5V12z"/><path d="M16 18h9M16 22.5h6"/><path class="t" d="M16 36.5c6-1 11-5 15-11.5"/><path class="t" d="M25.11 26.13L31 25L31.93 30.93"/></symbol>
+  <symbol id="staff" viewBox="0 0 48 48"><circle cx="10.5" cy="20" r="4"/><path d="M3 37c0-4.6 3.3-8.2 7.5-8.2 1.9 0 3.6.7 4.9 1.9"/><circle cx="37.5" cy="20" r="4"/><path d="M45 37c0-4.6-3.3-8.2-7.5-8.2-1.9 0-3.6.7-4.9 1.9"/><circle cx="24" cy="23" r="5.5"/><path d="M14 43c0-6.8 4.5-11.5 10-11.5s10 4.7 10 11.5"/><path class="t" d="M12.22 12.51A13 13 0 0 1 35.02 11.11"/><path class="t" d="M35.24 5.12L35.02 11.11L29.04 10.68"/></symbol>
+  <symbol id="ronde" viewBox="0 0 48 48"><circle cx="24" cy="12.75" r="9"/><circle cx="24" cy="10.77" r="2.88"/><path d="M18.05 19.5A6.09 6.09 0 0 1 29.95 19.5"/><circle cx="36.99" cy="35.25" r="9"/><circle cx="36.99" cy="33.27" r="2.88"/><path d="M31.04 42A6.09 6.09 0 0 1 42.94 42"/><circle cx="11.01" cy="35.25" r="9"/><circle cx="11.01" cy="33.27" r="2.88"/><path d="M5.06 42A6.09 6.09 0 0 1 16.96 42"/><path class="p" d="M34.7 17.23A15 15 0 0 1 38.46 23.75"/><path class="p" d="M27.76 42.27A15 15 0 0 1 20.24 42.27"/><path class="p" d="M9.54 23.75A15 15 0 0 1 13.3 17.23"/></symbol>
+</svg>
+
+<div class="outils"><div class="wrap outils-in">
+  <a class="retour" href="../">Études</a>
+  <div class="seg" role="group" aria-label="Thème"><button type="button" data-theme-choix="light">Jour</button><button type="button" data-theme-choix="dark">Nuit</button></div>
+</div></div>
+
+<main class="wrap">
+<header class="tete">
+  <span class="kicker">Étude de design</span>
+  <h1>Faire défiler les libellés des onglets</h1>
+  <p class="lede">Sur un téléphone, les onglets de la liste se partagent des cases égales : <b>« Mes entraîn… »</b>, <b>« Comité de Gir… »</b> et <b>« Communa… »</b> perdent leur fin. Plutôt que de couper, le libellé peut glisser pour se montrer en entier.</p>
+</header>
+
+<section class="bloc">
+  <h2>Ce qui manque</h2>
+  <p>À 375 px, chaque case laisse 66 px au texte, en 12 px d'Inter. Le trait noir marque la fin de la case.</p>
+  <div class="mesures" id="mesures"></div>
+  <p class="legende">Mesures relevées dans l'application, en-tête réduit, avant cette étude.</p>
+</section>
+
+<section class="bloc">
+  <h2>Défiler, ou passer à la ligne</h2>
+  <p>Touchez un onglet pour le choisir : la maquette rejoue le défilement comme l'application le ferait. Le bord fondu remplace les points de suspension, pour dire « la suite est là » sans tronquer un mot.</p>
+  <div class="actions">
+    <div class="seg" role="group" aria-label="Façon de défiler">
+      <button type="button" data-variante-choix="choisi" aria-pressed="true">L'onglet choisi, une fois</button><button type="button" data-variante-choix="tous" aria-pressed="false">Tous, une fois</button><button type="button" data-variante-choix="boucle" aria-pressed="false">En boucle</button><button type="button" data-variante-choix="deux-lignes" aria-pressed="false">Sur deux lignes</button><button type="button" data-variante-choix="aujourdhui" aria-pressed="false">Aujourd'hui</button>
+    </div>
+    <button type="button" class="rejouer" id="rejouer">Rejouer</button>
+  </div>
+  <p class="note-variante" id="note"></p>
+  <div class="banc" id="banc" data-variante="choisi">
+    <figure class="tel">
+      <figcaption>En haut de la liste</figcaption>
+      <div class="ecran">
+        <nav class="onglets etendu" aria-label="Onglets, en haut de la liste">
+          <button class="onglet actif" data-id="perso"><span class="media"><svg class="pic" aria-hidden="true"><use href="#plaquette"/></svg></span><span class="lib"><span>Mes entraînements</span></span><span class="soul"></span></button>
+          <button class="onglet" data-id="comite" aria-label="Comité de Gironde"><img class="logo" src="../logo-groupe-mis-en-avant/comite-gironde.svg" alt=""><span class="soul"></span></button>
+          <button class="onglet" data-id="groupes"><span class="media"><svg class="pic" aria-hidden="true"><use href="#staff"/></svg></span><span class="lib"><span>Groupes ⌄</span></span><span class="soul"></span></button>
+          <button class="onglet" data-id="communaute"><span class="media"><svg class="pic" aria-hidden="true"><use href="#ronde"/></svg></span><span class="lib"><span>Communauté</span></span><span class="soul"></span></button>
+        </nav>
+        <div class="faux-contenu" aria-hidden="true"><i></i><i></i></div>
+      </div>
+    </figure>
+    <figure class="tel">
+      <figcaption>En défilant : l'en-tête réduit</figcaption>
+      <div class="ecran">
+        <nav class="onglets reduit" aria-label="Onglets, en-tête réduit">
+          <button class="onglet actif" data-id="perso"><span class="lib"><span>Mes entraînements</span></span><span class="soul"></span></button>
+          <button class="onglet" data-id="comite"><span class="lib"><span>Comité de Gironde</span></span><span class="soul"></span></button>
+          <button class="onglet" data-id="groupes"><span class="lib"><span>Groupes ⌄</span></span><span class="soul"></span></button>
+          <button class="onglet" data-id="communaute"><span class="lib"><span>Communauté</span></span><span class="soul"></span></button>
+        </nav>
+        <div class="faux-contenu" aria-hidden="true"><i></i><i></i></div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="bloc reco">
+  <h2>Retenu : l'onglet choisi, une fois</h2>
+  <p>Le libellé de l'onglet qu'on vient de toucher glisse jusqu'à sa fin, s'y arrête un instant, puis revient. Il rejoue quand l'en-tête se réduit. Les autres restent immobiles, leur fin fondue. Le mouvement répond à un geste et dit une seule chose : voici où vous êtes.</p>
+  <ul class="liste">
+    <li><b>Tous, une fois</b> : trois libellés qui glissent ensemble en arrivant dans l'en-tête réduit, au moment où l'œil est sur les cartes. On ne lit aucun d'eux.</li>
+    <li><b>En boucle</b> : un en-tête qui ne s'arrête jamais de bouger fatigue, et les règles d'accessibilité demandent de pouvoir mettre en pause ce qui bouge plus de cinq secondes. Écarté.</li>
+    <li><b>Quelques pixels de trop</b> : « Communauté » ne dépasse que de 4 px ; on resserre légèrement l'approche des lettres, sans mouvement, plutôt que d'en fondre la fin.</li>
+    <li><b>Mouvement réduit</b> : quand le système le demande, rien ne glisse ; le bord fondu reste, et le nom entier est annoncé par les lecteurs d'écran.</li>
+    <li><b>Ce que ça demande</b> : le libellé mesure s'il déborde ; une animation CSS de translation, sans bibliothèque ; la vitesse est fixe, environ 30 px par seconde, pour que les longs noms de groupes ne filent pas.</li>
+  </ul>
+</section>
+</main>
+
+<script>
+(function () {
+  var racine = document.documentElement;
+  var boutonsTheme = document.querySelectorAll('[data-theme-choix]');
+  function marqueTheme(v) { boutonsTheme.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeChoix === v)); }); }
+  marqueTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  boutonsTheme.forEach(function (b) { b.addEventListener('click', function () { racine.dataset.theme = b.dataset.themeChoix; marqueTheme(b.dataset.themeChoix); }); });
+
+  // Mesures relevées dans l'application (largeur du texte, case de 66 px)
+  var MESURES = [['Mes entraînements', 93], ['Comité de Gironde', 91], ['Communauté', 67], ['Groupes', 42]];
+  document.getElementById('mesures').innerHTML = MESURES.map(function (m) {
+    return '<div class="mesure"><span>' + m[0] + '</span><span class="barre"><span class="besoin" style="width:' + m[1] + '%"></span><span class="case" style="width:66%"></span><span>' + m[1] + ' px</span></span></div>';
+  }).join('');
+
+  var banc = document.getElementById('banc');
+  var NOTES = {
+    choisi: "<b>L'onglet choisi, une fois.</b> Seul le libellé de l'onglet qu'on vient de toucher glisse, puis revient. Il rejoue quand l'en-tête se réduit.",
+    tous: "<b>Tous, une fois.</b> Chaque libellé trop long glisse une fois, ensemble, à l'arrivée dans l'en-tête réduit.",
+    boucle: "<b>En boucle.</b> Les libellés trop longs glissent sans fin, comme un bandeau d'information.",
+    'deux-lignes': "<b>Sur deux lignes.</b> Rien ne bouge : un libellé trop long passe à la ligne, coupé en équilibre, deux lignes au plus. La marge de chaque case passe de 8 à 6 px : le texte y gagne 4 px. L'en-tête réduit gagne 16 px de haut.",
+    aujourdhui: "<b>Aujourd'hui.</b> Les libellés sont coupés par des points de suspension."
+  };
+  var VITESSE = 30; // px par seconde
+
+  function prepare() {
+    banc.querySelectorAll('.lib').forEach(function (lib) {
+      lib.style.letterSpacing = '';
+      var decal = lib.firstElementChild.scrollWidth - lib.clientWidth;
+      // quelques pixels de trop : on resserre l'approche plutôt que de faire glisser
+      if (banc.dataset.variante === 'deux-lignes') { lib.classList.remove('deborde'); return; }
+      if (decal > 0 && decal <= 6 && banc.dataset.variante !== 'aujourdhui') {
+        lib.style.letterSpacing = '-0.055em';
+        decal = lib.firstElementChild.scrollWidth - lib.clientWidth;
+      }
+      lib.classList.toggle('deborde', decal > 1);
+      lib.style.setProperty('--decal', Math.max(decal, 0) + 'px');
+      // le trajet aller-retour occupe 64 % de l'animation, les pauses le reste
+      lib.style.setProperty('--duree', Math.max(2.4, (2 * decal / VITESSE) / 0.64).toFixed(2) + 's');
+    });
+  }
+  function lance(libs, boucle) {
+    libs.forEach(function (lib) {
+      if (!lib.classList.contains('deborde')) return;
+      lib.classList.remove('en-route'); void lib.offsetWidth;
+      lib.style.setProperty('--repet', boucle ? 'infinite' : '1');
+      lib.classList.add('en-route');
+    });
+  }
+  function arrete() { banc.querySelectorAll('.lib').forEach(function (l) { l.classList.remove('en-route'); }); }
+  function joue() {
+    arrete();
+    var v = banc.dataset.variante;
+    if (v === 'aujourdhui' || v === 'deux-lignes') return;
+    if (v === 'choisi') lance(banc.querySelectorAll('.onglet.actif .lib'), false);
+    if (v === 'tous') lance(banc.querySelectorAll('.reduit .lib'), false);
+    if (v === 'boucle') lance(banc.querySelectorAll('.lib'), true);
+  }
+  banc.addEventListener('animationend', function (e) { if (e.animationName === 'defile') e.target.parentElement.classList.remove('en-route'); });
+
+  document.querySelectorAll('[data-variante-choix]').forEach(function (b, _, tous) {
+    b.addEventListener('click', function () {
+      banc.dataset.variante = b.dataset.varianteChoix;
+      tous.forEach(function (c) { c.setAttribute('aria-pressed', String(c === b)); });
+      document.getElementById('note').innerHTML = NOTES[b.dataset.varianteChoix];
+      prepare(); joue();
+    });
+  });
+  banc.querySelectorAll('.onglet').forEach(function (o) {
+    o.addEventListener('click', function () {
+      banc.querySelectorAll('.onglet').forEach(function (x) { x.classList.toggle('actif', x.dataset.id === o.dataset.id); });
+      joue();
+    });
+  });
+  document.getElementById('rejouer').addEventListener('click', joue);
+  document.getElementById('note').innerHTML = NOTES.choisi;
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { prepare(); joue(); });
+})();
+</script>
+</body>
+</html>
