@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joueurs par poste</title>
+<meta name="description" content="Placer et orienter les joueurs par poste : un « + » posé là où l'on touche ouvre la mise en place, qui remplace les modèles ; chaque joueur garde son dessin, porte son poste dans sa tête et, une fois nommé, garde le regard vers le jeu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="commun.css">
+<style>
+  /* aujourd'hui */
+  .constat{display:grid;grid-template-columns:260px minmax(0,1fr);gap:40px;align-items:start;margin-top:24px}
+  @media(max-width:760px){.constat{grid-template-columns:minmax(0,1fr)}}
+  .capture{border-radius:22px;overflow:hidden;box-shadow:var(--ombre-tel);outline:1px solid rgba(28,23,38,.12);max-width:260px}
+  .capture img{display:block;width:100%;height:auto}
+  .constat figcaption{font-size:.82rem;color:var(--attenue);margin-top:10px;max-width:30ch}
+  .constats{list-style:none;display:grid;gap:22px}
+  .constats li{max-width:56ch;color:var(--attenue)}
+  .constats b{display:block;color:var(--ink);font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.15rem;line-height:1.25;margin-bottom:.2em}
+
+  /* la bulle */
+  .parquet{background:#3796C4;color:#fff;margin-top:22px;padding:22px 20px 18px;display:flex;flex-wrap:wrap;gap:22px 34px;align-items:flex-end}
+  .parquet figure{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .parquet figcaption{font-size:.78rem;line-height:1.35;text-align:center;max-width:15ch;color:#fff}
+  .parquet .reel{display:flex;gap:6px;align-items:center;height:96px}
+  .parquet .sep{width:1px;align-self:stretch;background:rgba(255,255,255,.35)}
+
+  /* le placement de référence */
+  .reference{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:36px;align-items:start;margin-top:22px}
+  @media(max-width:860px){.reference{grid-template-columns:minmax(0,1fr)}}
+  .reference svg{display:block;width:100%;height:auto}
+  .reference .tableau{margin-top:0;font-size:.86rem}
+  .reference .tableau td{font-variant-numeric:tabular-nums}
+  .reference .tableau td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+
+  /* les étapes de livraison */
+  .etapes{list-style:none;counter-reset:etape;display:grid;gap:18px;margin-top:14px;max-width:72ch}
+  .etapes li{counter-increment:etape;display:grid;grid-template-columns:2.4rem minmax(0,1fr);gap:2px 12px;color:var(--attenue)}
+  .etapes li::before{content:counter(etape);grid-row:span 2;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.6rem;line-height:1.1;color:var(--orange)}
+  .etapes b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="outils"><div class="wrap outils-in">
+  <div class="seg" role="group" aria-label="Thème">
+    <button type="button" data-theme-choix="light">Jour</button><button type="button" data-theme-choix="dark">Nuit</button>
+  </div>
+</div></div>
+
+<main class="wrap">
+  <header class="tete">
+    <h1>Placer et orienter les joueurs par poste</h1>
+    <p class="lede">Étude pour la fiche du même nom, au <a href="https://github.com/orgs/association-placeauxcoachs/projects/2">tableau Produit</a>. <b>Toucher le terrain y pose un <span class="nw">« + »</span> ; le toucher ouvre la mise en place</b> : une défense ou une attaque devant le but le plus proche, une colonne de joueurs ou un tas de ballons à l'endroit touché. La mise en place remplace les modèles. Chaque joueur porte son poste dans sa bulle, se retourne d'une touche et garde le regard vers le jeu.</p>
+  </header>
+
+  <section class="bloc">
+    <h2>Aujourd'hui</h2>
+    <div class="constat">
+      <figure>
+        <div class="capture"><img src="aujourdhui.png" width="780" height="1688" alt="L'éditeur de schéma au téléphone : douze joueurs rouges et bleus posés devant le but, sans poste, tous tournés vers la touche de gauche."></div>
+        <figcaption>Une attaque contre une <span class="nw">0-6</span>, posée à la main dans l'éditeur actuel.</figcaption>
+      </figure>
+      <ul class="constats">
+        <li><b>Une <span class="nw">0-6</span> coûte une vingtaine de gestes.</b> Six touches pour poser, puis pour chaque joueur une touche et un tour de poignée pour l'orienter, souvent un glissé pour le placer.</li>
+        <li><b>Rien ne dit qui joue où.</b> Celui qui relit la séance d'un collègue devine l'arrière gauche et le pivot.</li>
+        <li><b>Tous regardent la touche.</b> Un joueur posé ne regarde jamais un but ; la défense est à retourner entière.</li>
+        <li><b>La même <span class="nw">0-6</span> change de forme d'un schéma à l'autre.</b> Chacun la place à l'œil.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Mettre en place ici</h2>
+    <p>La maquette se touche, ou se clique, comme l'éditeur. Elle passe d'un appareil à l'autre en gardant le schéma.</p>
+    <div class="commandes">
+      <div class="seg" role="group" aria-label="Appareil">
+        <button type="button" data-choix-format="telephone" aria-pressed="true">Téléphone</button><button type="button" data-choix-format="tablette" aria-pressed="false">Tablette</button><button type="button" data-choix-format="couchee" aria-pressed="false">Tablette couchée</button><button type="button" data-choix-format="ordinateur" aria-pressed="false">Ordinateur</button>
+      </div>
+      <div class="seg" role="group" aria-label="Terrain">
+        <button type="button" data-terrain="demi" aria-pressed="true">Demi-terrain</button><button type="button" data-terrain="entier" aria-pressed="false">Terrain entier</button>
+      </div>
+      <button type="button" class="rejouer" data-rejouer>Recommencer</button>
+    </div>
+    <div class="banc" aria-label="Maquette à essayer">
+      <div class="col-tel">
+        <div id="essai" style="width:390px;max-width:100%"></div>
+      </div>
+      <div class="col-texte">
+        <h3>À essayer</h3>
+        <ol class="scenario">
+          <li><span>Sur le terrain vide, le <b><span class="nw">« + »</span></b> attend devant le but. Touche-le, puis <b>Attaque contre <span class="nw">0-6</span></b>.</span></li>
+          <li><span>Touche un endroit vide, loin du but : le <span class="nw">« + »</span> s'y déplace, sans rien poser. Touche-le, puis <b>Tas de ballons</b>.</span></li>
+          <li><span>Recommence ailleurs avec <b>Colonne de joueurs</b> : trois joueurs en file, ballon en main, tournés vers le but.</span></li>
+          <li><span>Touche un joueur de la colonne, puis <b>Poste</b> : touche sa place sur le petit terrain. Il prend la couleur de son camp, le poste s'écrit dans sa tête, et son orientation auto se coche.</span></li>
+          <li><span>Glisse-le vers l'avant : l'orientation auto le garde face au jeu. <b>Retourner</b> le met dos au but.</span></li>
+          <li><span>Tourne-le à la poignée ronde du cadre : l'orientation auto se décoche, et il glisse désormais sans tourner. Elle se recoche dans <b>Plus</b> au téléphone, dans la liste des actions ailleurs.</span></li>
+          <li><span>Choisis l'outil <b>Joueur</b> et pose-en trois : aucun n'est sélectionné, l'outil reste armé. Touche l'un d'eux : l'outil se désarme, et un appui sur le vide lâche le joueur au lieu d'en poser un autre.</span></li>
+        </ol>
+        <p class="note" style="margin-top:14px;max-width:60ch">Les gestes sont les mêmes sur tablette. À l'ordinateur, le clic droit ouvre la mise en place sans passer par le <span class="nw">« + »</span>.</p>
+
+        <h3 style="margin-top:32px">Ce qui change dans l'éditeur</h3>
+        <ul class="liste note">
+          <li><b>Le point de pose.</b> Avec l'outil Sélection, toucher un endroit vide du terrain y pose un <span class="nw">« + »</span>, qui ne pose rien ; le toucher ouvre le menu de mise en place, ancré à cet endroit.</li>
+          <li><b>La mise en place remplace les modèles.</b> Plus d'étape d'options ni de groupe : une touche pose, et chaque pièce reste libre. Les équipes se posent devant le but le plus proche du <span class="nw">« + »</span>, la colonne et le tas à l'endroit même.</li>
+          <li><b>Le menu explique comment il marche</b> : où chaque entrée arrive, ce qu'elle pose, vers où regardent les joueurs, et que rien n'est groupé ensuite.</li>
+          <li><b>La ligne d'aide garde son texte</b> et y ajoute la mise en place : « Touche une pièce pour la régler · touche le vide pour mettre en place · pince pour zoomer ». Le vide touché, elle dit « touche le + » ; à l'ordinateur, « clic droit pour mettre en place ».</li>
+          <li><b>Plus perd sa section Mise en place.</b> Modèles disparaît ; Tout effacer rejoint la section Disposition du terrain, renommée <b>Terrain</b> : elle accueillera aussi les terrains à venir, le beach ou la 3D du gardien.</li>
+          <li><b>Le dessin du joueur ne change pas</b> : la tête et l'arc des bras de l'éditeur, à la même taille ; le poste s'écrit dans la tête quand il est choisi.</li>
+          <li><b>Poste et Retourner</b> en tête des actions d'un joueur. <b>Choisir un poste règle le joueur d'un coup</b> : la couleur de son camp (rouge en attaque, noir en défense, jaune au gardien) et l'orientation auto.</li>
+          <li><b>L'orientation auto</b> n'est jamais cochée d'office : un joueur posé à la main ou dans une colonne se déplace sans tourner. Cochée par un poste (donc par une mise en place d'équipe), elle garde l'attaquant face au but et le défenseur face à l'attaque quand on le glisse. <b>Une rotation à la poignée la décoche.</b> Au téléphone, elle est dans Plus ; ailleurs, dans la liste des actions.</li>
+          <li><b>L'outil armé jusqu'au geste</b>, comme dans l'éditeur : chaque appui sur le vide pose une pièce, non sélectionnée ; toucher, glisser ou tourner une pièce désarme l'outil, et l'appui suivant sur le vide lâche la sélection, sans poser ni déplacer le <span class="nw">« + »</span>. Le <span class="nw">« + »</span> ne paraît qu'outil désarmé, rien de sélectionné.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Le menu de mise en place</h2>
+    <p>Cinq entrées, sans variante. Le nombre de ballons, la couleur ou la longueur d'une colonne se règlent ensuite sur les pièces elles-mêmes, comme pour n'importe quel joueur ou ballon. Le menu porte ces explications en petit : sous chaque entrée ce qu'elle pose, sous chaque titre où elle arrive et vers où regardent les joueurs.</p>
+    <div class="defile">
+      <table class="tableau">
+        <thead><tr><th scope="col">Entrée</th><th scope="col">Ce qui se pose</th><th scope="col">Où</th><th scope="col">Aujourd'hui</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Défense <span class="nw">0-6</span></th><td>Six défenseurs, 1, 2, 3, 3, 2, 1, face à l'attaque</td><td>Devant le but le plus proche du <span class="nw">« + »</span></td><td>Nouveau</td></tr>
+          <tr><th scope="row">Attaque placée</th><td>Les six postes, face au but</td><td>Devant le but le plus proche du <span class="nw">« + »</span></td><td>Nouveau</td></tr>
+          <tr><th scope="row">Attaque contre <span class="nw">0-6</span></th><td>Les douze</td><td>Devant le but le plus proche du <span class="nw">« + »</span></td><td>Nouveau</td></tr>
+          <tr><th scope="row">Colonne de joueurs</th><td>Trois joueurs en file, un ballon en main droite, face au but</td><td>À l'endroit du <span class="nw">« + »</span></td><td>Le modèle « Colonne de joueurs », ses options en moins</td></tr>
+          <tr><th scope="row">Tas de ballons</th><td>Six ballons serrés</td><td>À l'endroit du <span class="nw">« + »</span></td><td>Le modèle « Réserve de ballons », ses options en moins</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Les moments clés</h2>
+    <div class="moments">
+      <figure><div data-moment="vide"></div><figcaption><b>Un schéma vide.</b> Le <span class="nw">« + »</span> attend devant le but : le premier geste se voit.</figcaption></figure>
+      <figure><div data-moment="menu"></div><figcaption><b>Le <span class="nw">« + »</span> déplacé, puis touché.</b> Le menu explique où chaque entrée arrive, ce qu'elle pose et vers où regardent les joueurs.</figcaption></figure>
+      <figure><div data-moment="scene"></div><figcaption><b>Trois mises en place.</b> L'attaque contre la <span class="nw">0-6</span>, une colonne et un tas de ballons, chaque pièce libre.</figcaption></figure>
+      <figure><div data-moment="poste"></div><figcaption><b>Nommer un joueur de la colonne.</b> Le plus près de sa place est entouré.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Le joueur, le placement, le regard</h2>
+    <h3>Le joueur de l'éditeur, son poste dans la tête</h3>
+    <p class="note" style="max-width:68ch">Le dessin reste celui de l'éditeur : la tête pleine et l'arc des bras, ouvert devant le joueur. Seule la tête grandit légèrement, d'un sixième, pour que le poste s'y lise ; les bras ne bougent pas. Le poste s'écrit en blanc dans la tête et reste droit quand le joueur tourne. <b>Même forme, même taille avec ou sans poste</b> : un schéma mêlant joueurs nommés et anonymes reste homogène, et les schémas enregistrés ne changent presque pas d'allure.</p>
+    <div class="parquet" id="bulles" aria-label="Le joueur, sans et avec son poste"></div>
+    <p class="note" style="max-width:68ch;margin-top:10px">À l'échelle du téléphone, la tête mesure 17 px au lieu de 14 : un chiffre de la défense s'y écrit à 11 px, un poste de trois lettres à 7 px. C'est encore petit ; le zoom et la taille « grand » restent là pour qui en a besoin.</p>
+
+    <h3 style="margin-top:36px">Le placement de référence</h3>
+    <p class="note" style="max-width:68ch">La même mise en place donne toujours le même placement. Celui-ci est une proposition, chiffrée pour être corrigée : gauche et droite se lisent du côté de l'attaque, les distances depuis la ligne de but. Ses deux règles sont dessinées : la ligne de la <span class="nw">0-6</span> à 6,6 m et l'arc des 14 m.</p>
+    <div class="reference">
+      <svg id="placement" role="img" aria-label="Attaque placée contre une défense 0-6, devant le but, avec le regard de chaque joueur"></svg>
+      <table class="tableau">
+        <thead><tr><th scope="col">Poste</th><th scope="col">Place</th></tr></thead>
+        <tbody>
+          <tr><td>ALG, ALD</td><td>1,1 m de la ligne de but, 0,9 m de la touche</td></tr>
+          <tr><td>ARG, ARD</td><td>sur l'arc des 14 m, écartés vers la touche : 11,5 m de la ligne de but, 2 m de la touche</td></tr>
+          <tr><td>DC</td><td>14 m, dans l'axe</td></tr>
+          <tr><td>PVT</td><td>sur la ligne de la <span class="nw">0-6</span>, entre le 2 et le 3 de gauche, dos au but</td></tr>
+          <tr><td><span class="nw">0-6</span></td><td>à 6,6 m des poteaux, presque collée à la zone ; un défenseur tous les 3,5 m environ</td></tr>
+          <tr><td>GB</td><td>1 m devant sa ligne, dans l'axe ; un poste qu'on choisit, jamais posé par la mise en place</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:36px">Le regard</h3>
+    <ul class="liste note">
+      <li><b>L'attaquant regarde le centre du but</b>, l'ailier compris, qui le regarde depuis son coin et non la ligne de fond.</li>
+      <li><b>Le pivot tourne le dos au but</b> : au contact de la défense, il regarde ses arrières.</li>
+      <li><b>Le défenseur et le gardien tournent le dos au but</b>, donc regardent l'attaque.</li>
+      <li><b>Un joueur sans poste</b>, posé à la main ou dans une colonne, regarde le but le plus proche, comme un attaquant.</li>
+      <li><b>Le regard suit le jeu tant que l'orientation auto est cochée</b>, ce que fait le choix d'un poste : un 3 avancé en 1-5 reste face à l'attaque. Retourner le met dos au but, et l'option le garde ainsi.</li>
+      <li><b>Le tourner à la poignée décoche l'option</b> : on a donné un regard à la main, il ne doit plus bouger tout seul. Décoché, le joueur glisse sans tourner ; recocher le remet face au jeu.</li>
+    </ul>
+
+    <h3 style="margin-top:36px">Trois règles</h3>
+    <ul class="liste note">
+      <li><b>Une seule défense, la <span class="nw">0-6</span>.</b> La 1-5 et la 2-4 se font en glissant un ou deux défenseurs.</li>
+      <li><b>Une mise en place ne double jamais un poste</b> déjà présent devant ce but : poser l'attaque deux fois ne crée pas douze attaquants.</li>
+      <li><b>La notation est française</b> : <span class="nw">0-6</span>, 1-5, 2-4, et 1, 2, 3 de l'extérieur vers le centre.</li>
+    </ul>
+  </section>
+
+  <section class="bloc">
+    <h2>Sur tablette et ordinateur</h2>
+    <p>Le <span class="nw">« + »</span> se pose de la même façon partout. Le menu s'ouvre à côté de lui, du côté où il a la place, et son titre nomme le but visé quand le terrain en a deux. L'éditeur garde ses dispositions : la bande de la tablette tenue droite, le tout visible de la tablette couchée et du plein écran, l'éditeur dans la page de l'entraînement.</p>
+    <div class="formats">
+      <figure>
+        <div data-format-vue="tablette"></div>
+        <figcaption>
+          <h3>Tablette tenue droite</h3>
+          <ul>
+            <li><b>Le menu s'ouvre à droite du <span class="nw">« + »</span></b>, ou à sa gauche s'il est trop près du bord.</li>
+            <li>Poste ouvre une feuille. Tous les outils ne parle plus de mise en place : Tout effacer y rejoint la section Terrain.</li>
+          </ul>
+        </figcaption>
+      </figure>
+      <figure>
+        <div data-format-vue="couchee"></div>
+        <figcaption>
+          <h3>Tablette couchée, et plein écran à l'ordinateur</h3>
+          <ul>
+            <li><b>Sur terrain entier, le but visé dépend de la moitié</b> : un <span class="nw">« + »</span> à droite du milieu pose l'équipe devant le but de droite, et le menu le dit.</li>
+            <li>Plus, en bas du rail d'outils, ne garde que la section Terrain, avec Tout effacer ; Poste, en tête du rail de droite, ouvre le petit terrain, à plat lui aussi.</li>
+          </ul>
+        </figcaption>
+      </figure>
+      <figure class="large">
+        <div data-format-vue="ordinateur"></div>
+        <figcaption>
+          <h3>Ordinateur, dans la page de l'entraînement</h3>
+          <ul>
+            <li><b>Le clic droit ouvre le menu tout de suite</b>, à l'endroit cliqué ; le clic gauche pose le <span class="nw">« + »</span>, comme au doigt.</li>
+            <li>Ici, une colonne posée près du milieu : ses joueurs regardent le but de gauche, sans poste ni orientation auto.</li>
+          </ul>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Forces</h2>
+    <ul class="liste">
+      <li><b>Un seul geste pour tout ce qui se pose en bloc</b> : équipes, colonnes, tas de ballons.</li>
+      <li><b>Le geste se montre.</b> Le <span class="nw">« + »</span> attend devant le but sur un schéma vide, puis paraît là où l'on touche.</li>
+      <li><b>Un concept de moins.</b> Les modèles, leur étape d'options et leur groupe s'effacent devant la mise en place, et Plus perd une section.</li>
+      <li><b>Les joueurs se lisent pareil</b>, avec ou sans poste.</li>
+      <li><b>Passer d'une <span class="nw">0-6</span> à une 1-5 ne demande que de glisser</b> : personne n'est à retourner après coup.</li>
+    </ul>
+    <h2 style="margin-top:36px">Limites</h2>
+    <ul class="liste">
+      <li><b>Toucher le vide fait apparaître le <span class="nw">« + »</span>.</b> Un appui distrait ne pose rien, mais le montre.</li>
+      <li><b>La mise en place ne passe que par le terrain.</b> Sans entrée dans Plus, qui ne pense pas à toucher le vide compte sur le <span class="nw">« + »</span> du schéma vide et sur la ligne d'aide.</li>
+      <li><b>Sans options</b>, une colonne de quatre ou un tas de dix se font en dupliquant ou en supprimant après la pose.</li>
+      <li><b>Un poste de trois lettres s'écrit à 7 px</b> au téléphone, même avec la tête un peu agrandie : il se devine plus qu'il ne se lit sans zoom. Et tous les joueurs, nommés ou non, ont désormais une tête un peu plus grosse qu'aujourd'hui.</li>
+      <li><b>Un joueur qui tourne tout seul</b> pendant qu'on le glisse peut surprendre. L'option « Orientation auto » le dit et se décoche à la première rotation manuelle, mais c'est un réglage de plus par joueur, enregistré dans le schéma.</li>
+      <li><b>Nommer un joueur</b> demande trois touches : le joueur, Poste, sa place.</li>
+    </ul>
+  </section>
+
+  <section class="bloc">
+    <h2>Par étapes</h2>
+    <p>Chaque étape se livre seule et sert tout de suite. L'effort total est élevé, mais la suppression de l'assistant des modèles en rend une part.</p>
+    <ol class="etapes">
+      <li><span><b>Le point de pose, à la place des modèles.</b> Un appui sur le vide qui déplace le <span class="nw">« + »</span>, un appui sur lui qui ouvre le menu, ancré à un point de la scène qui suit le zoom, le cadrage et le quart de tour du téléphone ; le clic droit à l'ordinateur. Un état d'interface, rien dans le schéma. Le menu ne propose d'abord que la colonne et le tas : les générateurs des modèles restent, sans options ni groupe, et l'assistant (choix, options, aperçu) disparaît. Plus perd sa section Mise en place, Tout effacer rejoint la disposition du terrain, la ligne d'aide apprend le geste.</span></li>
+      <li><span><b>Le poste dans la tête et les équipes.</b> Le poste écrit dans la tête du joueur, sa couleur de camp, la table des placements ; la défense, l'attaque et les deux rejoignent le menu.</span></li>
+      <li><span><b>Poste et Retourner.</b> Les deux actions en tête du dock d'un joueur, et le petit terrain où l'on touche sa place.</span></li>
+      <li><span><b>L'orientation auto.</b> En dernier : c'est le comportement le plus surprenant, il mérite d'être essayé à part. Une option par joueur, cochée par le choix d'un poste, enregistrée avec lui ; le regard se recalcule à chaque déplacement tant qu'elle l'est, et la rotation à la poignée la décoche.</span></li>
+    </ol>
+  </section>
+
+  <section class="bloc">
+    <h2>Ce qu'on garde de HandBoard</h2>
+    <p>La référence de la fiche, <a href="https://www.handboard.fr/board">handboard.fr/board</a>, outils latéraux affichés, a les bonnes idées : <b>le poste écrit dans la bulle et une équipe entière en un geste.</b> La proposition les reprend.</p>
+    <p>Elle laisse de côté <b>la liste de cinq défenses</b> (6-0, 5-1, 3-2-1, 3-3, 4-2), qui alourdit l'outil ; <b>le placement à l'œil</b>, où le pivot se pose sur les deux défenseurs centraux ; <b>la notation internationale</b> ; et l'orientation qui se réduit à un petit trait, tournée vers le but pour tous, défenseurs compris.</p>
+  </section>
+
+  <section class="bloc">
+    <h2>À trancher</h2>
+    <ul class="liste">
+      <li><b>Le placement des attaquants</b> : demi-centre et arrières sur l'arc des 14 m, arrières écartés à 2 m de la touche, ailiers dans leur coin, pivot dos au but sur la ligne de la <span class="nw">0-6</span>, entre le 2 et le 3 de gauche. Est-ce la place de départ attendue sur un schéma, ou faut-il rapprocher l'attaque des 9 m ? Au référent métier de corriger le tableau, chiffres à l'appui.</li>
+      <li><b>Les places de la défense</b> : la <span class="nw">0-6</span> à 6,6 m des poteaux, un défenseur tous les 3,5 m environ.</li>
+      <li><b>Les sigles des ailiers</b> : ALG et ALD, ou AG et AD ? Aucune notation officielle n'a été trouvée ; ARG, ARD, DC et PVT sont, eux, d'usage courant. ALG et ALD ont trois lettres comme les arrières et ne se confondent pas avec eux ; AG et AD sont plus courts. Au référent métier de dire ce qu'on écrit au comité.</li>
+      <li><b>Les couleurs posées</b> : attaque en rouge, défense en noir, lisible sur le parquet bleu comme à l'impression ?</li>
+      <li><b>Le gardien</b> : un poste qu'on choisit, jamais posé par la mise en place, en attendant un « effectif complet » ?</li>
+    </ul>
+    <h3 style="margin-top:28px">Tranché</h3>
+    <ul class="liste">
+      <li><b>La section du menu Plus s'appelle « Terrain »</b> : elle reçoit Tout effacer et recevra les autres terrains, beach ou 3D du gardien.</li>
+      <li><b>Les nombres de la mise en place restent ceux de la maquette</b> : trois joueurs par colonne, six ballons par tas.</li>
+      <li><b>Les haies, échelles et séparations restent hors de cette fiche</b> : leur sens dépend de l'exercice, pas du but.</li>
+      <li><b>La tête du joueur grandit légèrement, pas les bras</b>, pour que le poste se lise ; pour tous les joueurs, nommés ou non.</li>
+    </ul>
+  </section>
+</main>
+
+<script src="commun.js"></script>
+<script>
+  Etude.themes();
+  const { POSTES, ATTAQUE, DEFENSE, COULEUR, bulle, corpsSVG, etiquetteSVG, terrainSVG, regard } = Etude;
+  Etude.banc();
+
+  // Les moments clés, au téléphone.
+  const moment = (nom, cfg) => Etude.appareil(document.querySelector(`[data-moment="${nom}"]`), { interactif: false, echelle: .66, ...cfg });
+  moment('vide');
+  moment('menu', { etat: { point: { l: 13.5, x: 15.5 }, menuPoint: true } });
+  moment('scene', { prepare: (t) => { t.mettreEnPlace('deux'); t.poserColonne(15.5, 17.5); t.poserTas(4.2, 16.5); } });
+  moment('poste', { prepare: (t) => { t.mettreEnPlace('def'); t.poserColonne(13.5, 14.5); const j = t.etat.joueurs.filter((k) => k.type === 'joueur' && !k.poste)[1]; t.selectionne(j.id); t.etat.feuille = 'poste'; } });
+
+  // Sur tablette et ordinateur.
+  const vue = (format, cfg) => Etude.appareil(document.querySelector(`[data-format-vue="${format}"]`), { format, interactif: false, ...cfg });
+  vue('tablette', { prepare: (t) => { t.mettreEnPlace('def'); Object.assign(t.etat, { point: { l: 4.5, x: 15 }, menuPoint: true }); } });
+  vue('couchee', { etat: { terrain: 'entier' }, prepare: (t) => { t.mettreEnPlace('deux'); Object.assign(t.etat, { point: { l: 12, x: 29 }, menuPoint: true }); } });
+  vue('ordinateur', { prepare: (t) => { t.mettreEnPlace('deux'); t.poserColonne(9, 18.5); t.poserTas(16.5, 17); Object.assign(t.etat, { point: { l: 4, x: 18 }, menuPoint: true }); } });
+
+  // Le joueur, sans et avec son poste, à 6,3 fois l'échelle du téléphone.
+  const fig = (svg, legende) => `<figure>${svg}<figcaption>${legende}</figcaption></figure>`;
+  document.getElementById('bulles').innerHTML =
+      fig(bulle('', COULEUR.att, 96, 270), 'Aujourd’hui : tourné vers la touche')
+    + fig(bulle('', COULEUR.att, 96, 0), 'Le même, sans poste')
+    + fig(bulle('ARG', COULEUR.att, 96, 0), 'Avec son poste, tourné vers le but')
+    + fig(bulle('ARG', COULEUR.att, 96, 52), 'Tourné : le poste reste droit')
+    + fig(bulle('3', COULEUR.def, 96, 205), 'Un défenseur, face à l’attaque')
+    + '<span class="sep" aria-hidden="true"></span>'
+    + fig(`<span class="reel">${bulle('', COULEUR.att, 38, 0)}${bulle('ARG', COULEUR.att, 38, 0)}${bulle('3', COULEUR.def, 38, 180)}</span>`, 'Les mêmes, à l’échelle du téléphone');
+
+  // Le placement de référence : le haut d'un demi-terrain, l'attaque contre la 0-6.
+  const svg = document.getElementById('placement');
+  svg.setAttribute('viewBox', '-0.4 -0.4 20.8 16');
+  let s = `<clipPath id="haut"><rect x="-0.4" y="-0.4" width="20.8" height="16"/></clipPath><g clip-path="url(#haut)">${terrainSVG('demi')}</g>`;
+  s += Etude.reperesSVG();
+  for (const cle of [...DEFENSE, ...ATTAQUE, 'GB']) {
+    const p = POSTES[cle];
+    s += `<g transform="translate(${p.l} ${p.x})"><g transform="rotate(${regard({ poste: cle, l: p.l, x: p.x, but: 'haut' })})">${corpsSVG(COULEUR[p.camp])}</g>${etiquetteSVG(p.label, COULEUR[p.camp])}</g>`;
+  }
+  svg.innerHTML = s;
+</script>
+</body>
+</html>
