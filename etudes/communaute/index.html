@@ -6,247 +6,73 @@
 <title>Communauté par situation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
-    --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
-    --orange:#EB5D21; --orange-fort:#C94A16; --violet:#5D32F5; --peach:#F4AD8E;
-    --sol:#F3E9DA; --ligne:rgba(28,23,38,.38);
-    --st-brouillon:#8A8478; --st-encours:#C8841E; --st-pret:#2F7D4F; --st-termine:#2B4C7E;
-    --scene:#1C1726; --scene-texte:#FAF4EC;
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF; --attenue:#6E6678;
+    --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --orange-texte:#C2410C; --violet:#5D32F5;
+    --st-brouillon:#8A8478; --st-encours:#C8841E; --st-pret:#2F7D4F;
+    --nav:#FFFFFF; --ombre:rgba(0,0,0,.30);
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+    color-scheme:light;
   }
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
-    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF;
-    --sol:#211B2B; --ligne:rgba(242,235,222,.38); --scene:#0D0A12; color-scheme:dark;
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926; --attenue:#A69DB1;
+    --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF; --orange-texte:#FDBA74;
+    --st-pret:#52B37D; --st-encours:#E0A64A; --nav:#26252B; --ombre:rgba(0,0,0,.65); color-scheme:dark;
   }}
   :root[data-theme="dark"]{
-    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
-    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF;
-    --sol:#211B2B; --ligne:rgba(242,235,222,.38); --scene:#0D0A12; color-scheme:dark;
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926; --attenue:#A69DB1;
+    --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF; --orange-texte:#FDBA74;
+    --st-pret:#52B37D; --st-encours:#E0A64A; --nav:#26252B; --ombre:rgba(0,0,0,.65); color-scheme:dark;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--paper);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;letter-spacing:-.01em;padding:0 16px 96px;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1040px;margin:0 auto}
+  body{background:var(--paper);color:var(--ink);font:16px/1.55 var(--corps);letter-spacing:-.01em;padding:0 16px 96px;-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
   :is(a,button,input,textarea):focus-visible{outline:2px solid var(--orange);outline-offset:2px}
-  button{font:inherit;color:inherit;cursor:pointer}
   @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+  .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-  .outils{position:sticky;top:0;z-index:20;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
+  /* ---------- page d'étude ---------- */
+  .wrap{max-width:1080px;margin:0 auto}
+  .outils{position:sticky;top:0;z-index:40;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
   .outils-in{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.84rem}
   .retour{font-weight:600;color:var(--violet);text-underline-offset:3px}
-  .seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--filet-fort)}
-  .seg button{font-size:.84rem;font-weight:600;background:none;border:0;color:var(--attenue);padding:.45em 1em}
-  .seg button+button{border-left:1px solid var(--filet-fort)}
+  .seg{display:inline-flex;border:1px solid var(--filet-fort);border-radius:999px;overflow:hidden}
+  .seg button{font-size:.84rem;font-weight:600;color:var(--attenue);padding:.4em 1em}
   .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-
-  .tete{padding-top:56px;max-width:64ch}
-  h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.04;letter-spacing:-.02em;margin-bottom:.35em}
-  h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.5rem;letter-spacing:-.01em;margin-bottom:.5em}
+  .tete{padding-top:56px;max-width:66ch}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.04;letter-spacing:-.02em;margin-bottom:.35em}
+  h2{font-family:var(--display);font-weight:600;font-size:1.5rem;letter-spacing:-.01em;margin-bottom:.5em}
   .lede{color:var(--attenue);font-size:1.06rem}
-  .lede b{color:var(--ink);font-weight:600}
+  .lede b,.bloc>p b,.bloc li b{color:var(--ink);font-weight:600}
   .bloc{margin-top:64px}
   .bloc>p,.bloc li{max-width:66ch;color:var(--attenue)}
-  .bloc>p+p{margin-top:.7em}
-  .bloc>p b,.bloc li b{color:var(--ink);font-weight:600}
   .bloc ul{margin:.6em 0 0 1.1em;display:grid;gap:.45em}
 
-  /* ---------- le banc d'essai ---------- */
-  .proto{display:grid;grid-template-columns:375px minmax(0,1fr);gap:40px;align-items:start;margin-top:24px}
-  @media(max-width:860px){.proto{grid-template-columns:minmax(0,1fr)}}
-  .panneau{display:grid;gap:22px;position:sticky;top:72px}
-  @media(max-width:860px){.panneau{position:static}}
-  .parcours{display:grid;gap:14px}
-  .parcours h3{font-size:.9rem;font-weight:600;margin-bottom:6px}
-  .etapes{display:flex;flex-wrap:wrap;gap:6px}
-  .etapes button{background:var(--surface);border:1px solid var(--filet-fort);padding:.5em .8em;font-size:.86rem;font-weight:500;min-height:40px}
-  .etapes button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .note{background:var(--surface);border:1px solid var(--filet);padding:18px 20px;max-width:60ch}
-  .note h3{font-family:Fraunces,Georgia,serif;font-size:1.15rem;font-weight:600;margin-bottom:.4em}
+  .proto{display:grid;grid-template-columns:395px minmax(0,1fr);gap:44px;align-items:start;margin-top:24px}
+  @media(max-width:900px){.proto{grid-template-columns:minmax(0,1fr)}}
+  .panneau{display:grid;gap:20px;position:sticky;top:72px}
+  @media(max-width:900px){.panneau{position:static}}
+  .scenario h3{font-size:.95rem;font-weight:600;margin-bottom:8px}
+  .scenario ol{list-style:none;display:grid;gap:6px;counter-reset:etape}
+  .scenario li button{width:100%;display:flex;align-items:center;gap:10px;text-align:left;padding:8px 12px;border:1px solid var(--filet);border-radius:12px;background:var(--surface);font-size:.9rem;min-height:44px}
+  .scenario li button::before{counter-increment:etape;content:counter(etape);font-family:var(--display);font-weight:600;color:var(--orange-texte);min-width:1ch}
+  .scenario li button[aria-pressed="true"]{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange)}
+  .note{background:var(--surface);border:1px solid var(--filet);border-radius:16px;padding:18px 20px}
+  .note h3{font-family:var(--display);font-size:1.15rem;font-weight:600;margin-bottom:.4em}
   .note p{color:var(--attenue);font-size:.95rem}
   .note p+p{margin-top:.55em}
   .note b{color:var(--ink);font-weight:600}
+  .note .essai{margin-top:.8em;padding-top:.8em;border-top:1px solid var(--filet);color:var(--ink);font-size:.9rem}
 
-  /* ---------- le téléphone ---------- */
-  .tel{width:375px;max-width:100%;height:760px;background:var(--paper);border:1px solid var(--filet-fort);position:relative;overflow:hidden;display:flex;flex-direction:column;font-size:15px;line-height:1.45}
-  @media(max-width:420px){.tel{width:100%}}
-  .corps{flex:1;overflow-y:auto;overflow-x:hidden}
-  .pad{padding:20px 16px 24px;display:grid;gap:22px}
-  .titre-ecran{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.75rem;line-height:1.1;letter-spacing:-.015em}
-  .sous{color:var(--attenue);font-size:.88rem}
-  .rubrique{display:grid;gap:10px}
-  .rubrique h3{font-size:.95rem;font-weight:600}
-  .rubrique .entete{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-  .puces{display:flex;flex-wrap:wrap;gap:6px}
-  .puce{min-height:44px;padding:0 13px;border:1px solid var(--filet-fort);background:var(--surface);font-weight:500;font-size:.92rem}
-  .puce[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .bascule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--filet-fort)}
-  .bascule button{min-height:44px;border:0;background:var(--surface);font-weight:500;font-size:.92rem}
-  .bascule button+button{border-left:1px solid var(--filet-fort)}
-  .bascule button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-  .phases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .phase{min-height:108px;padding:12px;border:1px solid var(--filet-fort);background:var(--surface);display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left}
-  .phase svg{width:52px;height:34px;fill:none;stroke:currentColor;stroke-width:1.6}
-  .phase b{font-size:.92rem;font-weight:600}
-  .phase small{font-size:.78rem;color:var(--attenue)}
-  .phase[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .phase[aria-pressed="true"] small{color:inherit;opacity:.8}
-  .liens{border-top:1px solid var(--filet)}
-  .lien{width:100%;min-height:50px;display:flex;justify-content:space-between;align-items:center;gap:8px;background:none;border:0;border-bottom:1px solid var(--filet);text-align:left;font-size:.94rem}
-  .lien span:last-child{color:var(--attenue);font-size:.86rem}
-  .vide{background:var(--surface);border:1px solid var(--filet-fort);padding:16px;display:grid;gap:10px}
-  .vide p:first-child{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.15rem}
-  .vide p{color:var(--attenue);font-size:.92rem}
-  .vide p:first-child{color:var(--ink)}
-  .rangee{display:flex;flex-wrap:wrap;gap:8px}
-
-  .bouton{min-height:48px;padding:0 16px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-  .bouton.second{background:var(--surface);color:var(--ink);border-color:var(--filet-fort)}
-  .bouton.plein{width:100%}
-  .bouton.action{background:var(--orange-fort);border-color:var(--orange-fort);color:#FFFFFF;min-height:52px;font-size:1rem}
-  .bouton[disabled]{background:var(--paper-2);border-color:var(--paper-2);color:var(--attenue);cursor:default}
-  .pied{padding:12px 16px;border-top:1px solid var(--filet);background:var(--paper)}
-
-  .nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--filet);background:var(--surface)}
-  .nav button{min-height:54px;border:0;background:none;font-size:.78rem;color:var(--attenue)}
-  .nav button[aria-current="page"]{color:var(--ink);font-weight:600;box-shadow:inset 0 3px 0 var(--orange)}
-
-  /* barre haute des écrans de second niveau */
-  .barre-haut{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 4px;border-bottom:1px solid var(--filet);background:var(--paper)}
-  .retour-ecran{min-height:44px;min-width:44px;border:0;background:none;display:inline-flex;align-items:center;justify-content:center}
-  .retour-ecran svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
-  .barre-haut .t{font-weight:600;font-size:.98rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .filtres{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;border-bottom:1px solid var(--filet);scrollbar-width:none}
-  .filtres::-webkit-scrollbar{display:none}
-  .filtre{flex:none;min-height:36px;padding:0 11px;border:1px solid var(--filet-fort);background:var(--surface);font-size:.84rem;font-weight:500}
-  .avis{margin:12px 16px 0;padding:10px 12px;background:var(--paper-2);font-size:.84rem;color:var(--attenue)}
-
-  /* rails par type d'exercice */
-  .rail{display:grid;gap:10px;padding:18px 0 4px}
-  .rail-tete{display:flex;align-items:baseline;gap:10px;padding:0 16px}
-  .rail-tete .num{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.3rem;color:var(--orange)}
-  .rail-tete h3{font-size:1rem;font-weight:600}
-  .rail-tete small{color:var(--attenue);font-size:.82rem;margin-left:auto}
-  .defile{display:flex;gap:10px;overflow-x:auto;padding:0 16px 8px;scroll-snap-type:x mandatory;scrollbar-width:thin}
-  .carte{flex:none;width:232px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--filet);display:flex;flex-direction:column}
-  .carte .ouvrir{border:0;background:none;text-align:left;padding:0;display:grid}
-  .carte .infos{padding:10px 12px 4px;display:grid;gap:3px}
-  .carte .infos b{font-size:.92rem;font-weight:600;line-height:1.3}
-  .carte .infos span{font-size:.8rem;color:var(--attenue)}
-  .carte .ajout{margin:8px 12px 12px;min-height:40px;border:1px solid var(--filet-fort);background:none;font-weight:600;font-size:.86rem}
-  .carte .ajout[aria-pressed="true"]{background:var(--orange-fort);border-color:var(--orange-fort);color:#FFFFFF}
-
-  .terrain{display:block;width:100%;height:auto}
-  .t-sol{fill:var(--sol)}
-  .t-ligne{fill:none;stroke:var(--ligne);stroke-width:1.2}
-  .t-neuf{fill:none;stroke:var(--ligne);stroke-width:1.2;stroke-dasharray:4 4}
-  .t-but{stroke:var(--ink);stroke-width:3.2}
-  .t-att{fill:var(--orange)}
-  .t-def{fill:var(--violet)}
-  .t-gb{fill:var(--surface);stroke:var(--violet);stroke-width:2.4}
-  .t-ballon{fill:var(--ink)}
-  .t-course{fill:none;stroke:var(--ink);stroke-width:1.6}
-  .t-passe{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:5 4}
-  .t-pointe{fill:var(--ink)}
-
-  /* la barre de séance : l'élément qui tient tout */
-  .seance-barre{border-top:1px solid var(--filet-fort);background:var(--surface);padding:10px 12px 12px;display:grid;gap:8px}
-  .temps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
-  .temps div{display:grid;gap:4px}
-  .temps i{display:block;height:6px;background:var(--paper-2)}
-  .temps .plein i{background:var(--orange)}
-  .temps span{font-size:.7rem;color:var(--attenue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .temps .plein span{color:var(--ink);font-weight:600}
-  .seance-barre .ligne{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .seance-barre .ligne b{font-size:.9rem}
-  .seance-barre .bouton{min-height:44px}
-
-  /* détail d'une situation */
-  .detail .terrain{border-bottom:1px solid var(--filet)}
-  .meta{display:flex;flex-wrap:wrap;gap:6px}
-  .etiquette{font-size:.78rem;font-weight:600;padding:3px 8px;background:var(--paper-2)}
-  .texte h3{font-size:.95rem;font-weight:600;margin-bottom:2px}
-  .texte p{color:var(--attenue);font-size:.92rem}
-  .texte{display:grid;gap:14px}
-  .source{font-size:.86rem;color:var(--attenue)}
-  .source b{color:var(--ink);font-weight:600}
-
-  /* composer */
-  .herite{background:var(--surface);border:1px solid var(--filet);padding:12px;display:grid;gap:8px}
-  .herite p{font-size:.86rem;color:var(--attenue)}
-  .statut{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600}
-  .statut::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
-  .temps-liste{display:grid;border-top:1px solid var(--filet)}
-  .temps-item{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:12px 0;border-bottom:1px solid var(--filet)}
-  .temps-item .num{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.2rem;color:var(--orange);line-height:1.2}
-  .temps-item h3{font-size:.92rem;font-weight:600;margin-bottom:6px}
-  .choisie{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:6px}
-  .choisie b{font-size:.88rem;font-weight:600;line-height:1.3;display:block}
-  .choisie span{font-size:.78rem;color:var(--attenue)}
-  .retirer{min-height:40px;min-width:40px;border:1px solid var(--filet);background:none;font-size:.8rem}
-  .creneau{width:100%;min-height:44px;border:1px dashed var(--filet-fort);background:none;color:var(--attenue);font-size:.88rem;text-align:left;padding:0 12px}
-  .champ{display:grid;gap:4px}
-  .champ label{font-size:.84rem;font-weight:600}
-  .champ input,.champ textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--surface);border:1px solid var(--filet-fort);padding:10px 12px;width:100%}
-  .champ textarea{min-height:72px;resize:vertical}
-
-  /* listes */
-  .liste{display:grid;border-top:1px solid var(--filet)}
-  .ligne-seance{display:grid;gap:3px;padding:12px 0;border-bottom:1px solid var(--filet);text-align:left;background:none;border-left:0;border-right:0;border-top:0;width:100%}
-  .ligne-seance b{font-size:.94rem;font-weight:600}
-  .ligne-seance .bas{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.8rem;color:var(--attenue);align-items:center}
-  .a-classer{color:var(--orange-fort);font-weight:600}
-  .recherche input{font:inherit;font-size:.95rem;width:100%;min-height:44px;padding:0 12px;border:1px solid var(--filet-fort);background:var(--surface);color:var(--ink)}
-  .impact{background:var(--ink);color:var(--paper);padding:16px;display:grid;gap:10px}
-  .impact p{font-size:.86rem;opacity:.85}
-  .impact .chiffres{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .impact .chiffres b{display:block;font-family:Fraunces,Georgia,serif;font-size:1.9rem;font-weight:600;line-height:1}
-  .impact .chiffres span{font-size:.8rem;opacity:.85}
-  .impact .bouton{background:var(--paper);color:var(--ink);border-color:var(--paper);min-height:44px}
-  .fab{position:absolute;right:16px;bottom:70px;min-height:52px;padding:0 18px;border:0;background:var(--orange-fort);color:#FFFFFF;font-weight:600;box-shadow:0 2px 3px rgba(0,0,0,.16),0 4px 6px -1px rgba(0,0,0,.16)}
-
-  /* éditeur */
-  .bandeau{background:var(--paper-2);padding:12px 14px;display:grid;gap:8px;font-size:.88rem}
-  .bandeau p{color:var(--ink)}
-  .bandeau .bouton{justify-self:start;min-height:40px}
-  .mini{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--filet)}
-  .mini b{font-size:.88rem;font-weight:600}
-  .mini span{display:block;font-size:.78rem;color:var(--attenue)}
-
-  /* présentation */
-  .scene{position:absolute;inset:0;background:var(--scene);color:var(--scene-texte);display:flex;flex-direction:column;z-index:5}
-  .scene .haut{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-size:.84rem;opacity:.85}
-  .scene .milieu{flex:1;display:grid;align-content:center;gap:16px;padding:0 16px}
-  .scene .milieu h3{font-family:Fraunces,Georgia,serif;font-size:1.4rem;font-weight:600}
-  .scene .bas{padding:16px;display:grid}
-  .scene .bouton{background:var(--scene-texte);color:var(--scene);border-color:var(--scene-texte)}
-
-  /* feuilles et fenêtres */
-  .voile{position:absolute;inset:0;background:rgba(13,10,18,.48);z-index:10;display:flex;flex-direction:column;justify-content:flex-end}
-  .voile.centre{justify-content:center;padding:16px}
-  .feuille{background:var(--paper);max-height:88%;overflow-y:auto;padding:20px 16px 18px;display:grid;gap:18px;border-top:1px solid var(--filet-fort)}
-  .voile.centre .feuille{max-height:none;border:1px solid var(--filet-fort)}
-  .feuille h2{font-size:1.35rem;margin:0}
-  .feuille .rangee .bouton{flex:1}
-  .choix{width:100%;text-align:left;background:var(--surface);border:1px solid var(--filet-fort);padding:14px;display:grid;gap:4px}
-  .choix b{font-size:1rem}
-  .choix span{font-size:.86rem;color:var(--attenue)}
-  .choix .conseil{justify-self:start;font-size:.74rem;font-weight:600;color:#FFFFFF;background:var(--orange-fort);padding:2px 8px}
-  .progres{display:flex;gap:4px}
-  .progres i{flex:1;height:4px;background:var(--paper-2)}
-  .progres i.fait{background:var(--orange)}
-  .petit{font-size:.82rem;color:var(--attenue)}
-
-  .toast{position:absolute;left:16px;right:16px;bottom:76px;background:var(--ink);color:var(--paper);padding:12px 14px;font-size:.88rem;z-index:30}
-
-  /* règles en bas de page */
-  .regles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 40px;margin-top:20px}
+  .regles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 40px;margin-top:20px}
   @media(max-width:760px){.regles{grid-template-columns:minmax(0,1fr)}}
   .regle h3{font-size:1rem;font-weight:600;margin-bottom:.3em}
   .regle p{color:var(--attenue);font-size:.95rem;max-width:58ch}
   .regle p+p{margin-top:.5em}
-  .tableau{margin-top:18px;border-collapse:collapse;width:100%;max-width:720px;font-size:.94rem}
+  .tableau{margin-top:18px;border-collapse:collapse;width:100%;max-width:760px;font-size:.94rem}
   .tableau th,.tableau td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--filet);vertical-align:top}
   .tableau th{font-weight:600}
   .tableau td{color:var(--attenue)}
@@ -259,9 +85,260 @@
     .tableau td:nth-child(2)::before{content:"Repères : ";color:var(--ink);font-weight:600}
     .tableau td:nth-child(3)::before{content:"Qui le pose : ";color:var(--ink);font-weight:600}
   }
+
+  /* ---------- le téléphone ---------- */
+  .telephone{width:395px;max-width:100%;border:10px solid #0D0B12;border-radius:46px;background:var(--paper);overflow:hidden;box-shadow:0 0 0 1px var(--filet-fort),0 30px 60px -30px rgba(0,0,0,.45)}
+  .ecran{position:relative;height:790px;display:flex;flex-direction:column;overflow:hidden;font-size:15px;line-height:1.45;background:var(--paper)}
+  @media(max-width:430px){.telephone{border-width:6px;border-radius:30px}.ecran{height:720px}}
+  .defile-v{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:96px;scrollbar-width:none}
+  .defile-v::-webkit-scrollbar{display:none}
+
+  /* onglets de la liste, comme dans l'application */
+  .onglets{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;padding-top:14px;border-bottom:1px solid var(--filet)}
+  .onglet{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 6px 10px;font-size:.75rem;line-height:16px;color:color-mix(in srgb,var(--attenue) 85%,transparent);min-width:0}
+  .onglet .pict{width:32px;height:32px;display:grid;place-items:center}
+  .onglet .pict .ic{width:22px;height:22px}
+  .onglet span:last-child{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .onglet[aria-selected="true"]{color:var(--orange-texte);font-weight:600}
+  .onglet[aria-selected="true"]::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:4px;border-radius:999px;background:var(--orange)}
+
+  /* barre de navigation basse, comme dans l'application */
+  .nav-basse{position:absolute;left:0;right:0;bottom:0;height:72px;z-index:6;display:flex;align-items:center;justify-content:space-around;padding:0 8px;background:var(--nav);border-top:1px solid var(--filet);box-shadow:0 -1px 5px rgba(0,0,0,.08)}
+  .nav-basse button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;font-size:.75rem;color:var(--attenue)}
+  .nav-basse .pilule{width:56px;height:32px;border-radius:999px;display:grid;place-items:center}
+  .nav-basse .ic{width:24px;height:24px;stroke-width:1.5}
+  .nav-basse button[aria-current="page"]{color:var(--ink);font-weight:600}
+  .nav-basse button[aria-current="page"] .pilule{background:color-mix(in srgb,var(--orange) 15%,transparent);color:var(--orange)}
+  .fab{position:absolute;right:16px;bottom:88px;z-index:7;width:56px;height:56px;border-radius:50%;background:var(--orange);color:#FFFFFF;display:grid;place-items:center;box-shadow:0 12px 26px -12px rgba(235,93,33,.7),0 2px 6px rgba(0,0,0,.12)}
+  .fab .ic{width:24px;height:24px;stroke-width:2}
+
+  /* filtres de la Communauté */
+  .filtres{padding:14px 16px 6px;display:grid;gap:12px}
+  .pour{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .pour-lib{font-size:.85rem;color:var(--attenue)}
+  .menu{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px 0 14px;border-radius:999px;border:1px solid var(--filet-fort);background:var(--surface);font-weight:600;font-size:.88rem}
+  .menu .ic{width:16px;height:16px}
+  .phases{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none;scroll-snap-type:x proximity}
+  .phases::-webkit-scrollbar{display:none}
+  .phase{flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 10px;border-radius:999px;border:1px solid var(--filet-fort);background:var(--surface);font-size:.88rem;font-weight:500;white-space:nowrap}
+  .phase svg{width:30px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .phase[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#FFFFFF;font-weight:600}
+  .vues{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border-radius:999px;background:var(--paper-2);margin:4px 16px 0}
+  .vues button{min-height:38px;border-radius:999px;font-size:.84rem;font-weight:600;color:var(--attenue)}
+  .vues button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .vues small{font-weight:500;opacity:.8}
+
+  /* rails de situations */
+  .rail{padding:20px 0 2px}
+  .rail-tete{display:flex;align-items:baseline;gap:8px;padding:0 16px 10px}
+  .rail-tete .num{font-family:var(--display);font-weight:600;font-size:1.25rem;color:var(--orange-texte);line-height:1}
+  .rail-tete h3{font-family:var(--display);font-weight:600;font-size:1.12rem;letter-spacing:-.01em}
+  .rail-tete small{margin-left:auto;font-size:.8rem;color:var(--attenue)}
+  .rangee-cartes{display:flex;gap:12px;overflow-x:auto;padding:0 16px 10px;scroll-snap-type:x mandatory;scroll-padding:16px;scrollbar-width:none}
+  .rangee-cartes::-webkit-scrollbar{display:none}
+  .sit{position:relative;flex:none;width:236px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--filet);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 30px -22px var(--ombre)}
+  .sit .ouvrir{display:block;width:100%;text-align:left}
+  .sit .infos{display:grid;gap:4px;padding:10px 12px 12px}
+  .sit .infos b{font-size:.93rem;font-weight:600;line-height:1.3}
+  .sit .infos span{font-size:.8rem;color:var(--attenue)}
+  .ajout{position:absolute;top:8px;right:8px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--orange);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+  .ajout .ic{width:22px;height:22px;stroke-width:2.25}
+  .ajout[aria-pressed="true"]{background:var(--orange);color:#FFFFFF}
+  .ajout .coche{display:none}
+  .ajout[aria-pressed="true"] .plus{display:none}
+  .ajout[aria-pressed="true"] .coche{display:block}
+
+  .terrain{display:block;width:100%;height:auto}
+
+  /* séances entières et non classées */
+  .liste{display:grid;gap:12px;padding:16px}
+  .carte{--acc:var(--orange);position:relative;display:flex;flex-direction:column;border:1px solid var(--filet);border-top:3px solid var(--acc);border-radius:16px;overflow:hidden;background:linear-gradient(158deg,color-mix(in srgb,var(--orange) 9%,var(--surface)),var(--surface) 44%);box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 30px -22px var(--ombre)}
+  .carte.pret{--acc:var(--st-pret)} .carte.encours{--acc:var(--st-encours)} .carte.brouillon{--acc:var(--st-brouillon);background:var(--surface)}
+  .carte .contenu{padding:14px 16px 12px;display:grid;gap:8px}
+  .surligne{display:flex;align-items:center;gap:8px}
+  .statut{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:999px;padding:3px 9px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:var(--acc)}
+  .statut::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acc)}
+  .trait{flex:1;min-width:10px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 35%,transparent),transparent)}
+  .cat{font-family:var(--mono);font-size:11.5px;font-weight:500;border-radius:6px;padding:2px 6px;background:color-mix(in srgb,var(--orange) 13%,var(--surface));color:var(--orange-texte);white-space:nowrap}
+  .carte h3{font-family:var(--display);font-size:1.3rem;font-weight:600;line-height:1.15;letter-spacing:-.015em}
+  .objectif{font-family:var(--display);font-style:italic;font-size:.86rem;line-height:1.38;color:var(--attenue)}
+  .reperes{display:flex;flex-wrap:wrap;gap:6px}
+  .repere{font-size:11px;border:1px solid var(--filet);border-radius:999px;padding:2px 10px;color:var(--attenue);background:var(--paper)}
+  .pied-carte{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px 12px;border-top:1px solid var(--filet);font-size:.8rem;color:var(--attenue)}
+  .pied-carte b{color:var(--ink);font-weight:600}
+  .bouton-pilule{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 16px;border-radius:999px;background:var(--orange);color:#FFFFFF;font-weight:600;font-size:.88rem}
+  .bouton-pilule.sombre{background:var(--ink);color:var(--paper)}
+  .bouton-pilule.clair{background:var(--surface);color:var(--ink);border:1px solid var(--filet-fort)}
+  .bouton-pilule.large{width:100%;min-height:50px;font-size:.98rem}
+  .bouton-pilule[disabled]{background:var(--paper-2);color:var(--attenue);border-color:transparent;cursor:default}
+  .a-classer{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:10px 16px;background:color-mix(in srgb,var(--orange) 10%,var(--surface));border-top:1px solid var(--filet);font-size:.84rem}
+  .a-classer b{font-weight:600}
+  .a-classer .bouton-pilule{min-height:36px;padding:0 14px}
+  .recherche{position:relative;margin:16px 16px 0}
+  .recherche .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--attenue);width:18px;height:18px}
+  .recherche input{width:100%;min-height:46px;padding:0 16px 0 42px;border-radius:999px;border:1px solid var(--filet-fort);background:var(--surface);font:inherit;font-size:.92rem;color:var(--ink)}
+  .ligne{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--filet)}
+  .ligne b{font-size:.95rem;font-weight:600}
+  .ligne .bas{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:.8rem;color:var(--attenue)}
+  .explique{padding:16px 16px 0;font-size:.86rem;color:var(--attenue)}
+
+  .vide{margin:20px 16px;padding:20px;border-radius:16px;border:1px dashed var(--filet-fort);display:grid;gap:10px;text-align:center;justify-items:center}
+  .vide b{font-family:var(--display);font-size:1.15rem;font-weight:600}
+  .vide p{font-size:.88rem;color:var(--attenue)}
+  .vide .actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+
+  /* la barre de séance */
+  .barre-seance{position:absolute;left:8px;right:8px;bottom:80px;z-index:7;background:var(--surface);border:1px solid var(--filet);border-radius:18px;padding:10px 12px 12px;display:grid;gap:10px;box-shadow:0 18px 30px -16px var(--ombre),0 2px 8px rgba(0,0,0,.08)}
+  .temps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .temps button{display:grid;gap:5px;text-align:left;min-height:34px;align-content:start}
+  .temps i{display:block;height:6px;border-radius:999px;background:var(--paper-2)}
+  .temps .plein i{background:var(--orange)}
+  .temps span{font-size:.7rem;color:var(--attenue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .temps .plein span{color:var(--ink);font-weight:600}
+  .barre-seance .ligne-b{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .barre-seance .ligne-b b{display:block;font-size:.92rem}
+  .barre-seance .ligne-b small{font-size:.8rem;color:var(--attenue)}
+  .barre-seance .bouton-pilule{white-space:nowrap}
+
+  /* feuilles */
+  .voile{position:absolute;inset:0;z-index:20;background:rgba(13,10,18,.45);display:flex;flex-direction:column;justify-content:flex-end}
+  .voile.centre{justify-content:center;padding:16px}
+  .feuille{background:var(--paper);border-radius:22px 22px 0 0;max-height:92%;overflow-y:auto;padding:8px 16px 18px;display:flex;flex-direction:column;gap:16px;scrollbar-width:none}
+  .feuille>*{flex-shrink:0}
+  .feuille::-webkit-scrollbar{display:none}
+  .voile.centre .feuille{border-radius:22px;max-height:96%;padding:20px 16px 16px}
+  .poignee{align-self:center;width:40px;height:4px;border-radius:999px;background:var(--filet-fort);margin-top:2px}
+  .feuille h2{font-size:1.35rem;margin:0;line-height:1.15}
+  .feuille .sous{font-size:.88rem;color:var(--attenue);margin-top:-8px}
+  .champ-titre{font-size:.85rem;font-weight:600;margin-bottom:8px}
+  .bascule{display:grid;gap:4px;padding:4px;border-radius:999px;background:var(--paper-2)}
+  .bascule button{min-height:40px;border-radius:999px;font-size:.8rem;font-weight:600;color:var(--attenue);white-space:nowrap;padding:0 4px}
+  .bascule button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .tuiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .tuile{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 12px;border-radius:14px;border:1px solid var(--filet-fort);background:var(--surface);text-align:left;font-size:.88rem;font-weight:500}
+  .tuile svg{width:32px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .tuile[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#FFFFFF;font-weight:600}
+  .puces{display:flex;flex-wrap:wrap;gap:6px}
+  .puce{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--filet-fort);background:var(--surface);font-size:.88rem;font-weight:500}
+  .puce[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .actions-feuille{display:flex;gap:8px}
+  .actions-feuille .bouton-pilule{flex:1;min-height:48px}
+  .lien-texte{font-size:.88rem;font-weight:600;color:var(--orange-texte);text-decoration:underline;text-underline-offset:3px;align-self:flex-start;min-height:32px}
+
+  .detail-terrain .terrain{border-radius:14px}
+  .detail h2{font-size:1.45rem}
+  .auteur{display:flex;align-items:center;gap:10px;font-size:.86rem;color:var(--attenue)}
+  .auteur b{color:var(--ink);font-weight:600}
+  .initiales{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:color-mix(in srgb,var(--orange) 16%,var(--surface));color:var(--orange-texte);flex:none}
+  .encart{border-radius:4px;padding:12px 14px;border-left:4px solid var(--c);background:color-mix(in srgb,var(--c) 7%,var(--surface))}
+  .encart h3{display:flex;align-items:center;gap:8px;font-size:.92rem;font-weight:700;color:var(--ct);margin-bottom:4px}
+  .encart h3 .ic{width:18px;height:18px}
+  .encart p{font-size:.9rem}
+  .encart.faire{--c:#F4A24C;--ct:#9A3412}
+  .encart.observer{--c:#A78BFA;--ct:#6D28D9}
+  .encart.variante{--c:#E5C14A;--ct:#854D0E}
+  :root[data-theme="dark"] .encart.faire{--ct:#FDBA74} :root[data-theme="dark"] .encart.observer{--ct:#C4B5FD} :root[data-theme="dark"] .encart.variante{--ct:#FDE68A}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .encart.faire{--ct:#FDBA74} :root:not([data-theme="light"]) .encart.observer{--ct:#C4B5FD} :root:not([data-theme="light"]) .encart.variante{--ct:#FDE68A} }
+
+  .collant{position:sticky;bottom:-18px;margin:0 -16px -18px;padding:14px 16px 18px;background:linear-gradient(to top,var(--paper) 78%,transparent)}
+  .plein-ecran{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;background:var(--paper)}
+  .plein-ecran .corps-editeur{align-content:start}
+  .pied-plein{padding:12px 16px 16px;border-top:1px solid var(--filet);background:var(--paper)}
+  .classe-office{display:grid;gap:8px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--filet)}
+  .classe-office .haut{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.88rem;font-weight:600}
+  .classe-office p{font-size:.82rem;color:var(--attenue)}
+  .champ{display:grid;gap:6px}
+  .champ label{font-size:.85rem;font-weight:600}
+  .champ input,.champ textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--surface);border:1px solid var(--filet-fort);border-radius:12px;padding:11px 13px;width:100%}
+  .champ textarea{min-height:70px;resize:vertical}
+  .temps-liste{display:grid;gap:10px}
+  .temps-bloc{display:grid;gap:8px}
+  .temps-bloc h3{display:flex;align-items:baseline;gap:8px;font-size:.92rem;font-weight:600}
+  .temps-bloc h3 .num{font-family:var(--display);color:var(--orange-texte);font-size:1.05rem}
+  .choisie{display:grid;grid-template-columns:76px minmax(0,1fr) 40px;gap:10px;align-items:center;padding:8px;border-radius:14px;background:var(--surface);border:1px solid var(--filet)}
+  .choisie .mini .terrain{border-radius:8px}
+  .choisie b{display:block;font-size:.86rem;font-weight:600;line-height:1.3}
+  .choisie span{font-size:.76rem;color:var(--attenue)}
+  .retirer{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--attenue)}
+  .creneau{display:flex;align-items:center;gap:8px;min-height:46px;padding:0 14px;border-radius:14px;border:1.5px dashed var(--filet-fort);color:var(--attenue);font-size:.88rem;font-weight:500;text-align:left}
+  .creneau .ic{width:18px;height:18px}
+
+  .choix{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start;text-align:left;padding:14px;border-radius:16px;border:1px solid var(--filet-fort);background:var(--surface)}
+  .choix .rond{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--orange) 14%,var(--surface));color:var(--orange-texte)}
+  .choix b{display:block;font-size:1rem}
+  .choix .desc{font-size:.85rem;color:var(--attenue)}
+  .choix b{color:var(--ink)}
+  .choix .conseil{display:inline-block;margin-bottom:4px;font-size:.72rem;font-weight:700;color:#FFFFFF;background:var(--orange);border-radius:999px;padding:2px 9px}
+  .choix.mis-en-avant{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange)}
+
+  /* éditeur, comme dans l'application */
+  .barre-editeur{display:flex;align-items:center;gap:6px;padding:10px 10px;border-bottom:1px solid var(--filet);background:var(--paper)}
+  .rond-bouton{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none}
+  .rond-bouton.plein{background:var(--orange);color:#FFFFFF}
+  .barre-editeur .titre{flex:1;min-width:0;font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .corps-editeur{padding:16px;display:grid;gap:16px}
+  .bandeau{display:grid;gap:10px;padding:14px;border-radius:14px;background:color-mix(in srgb,var(--orange) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--orange) 35%,transparent)}
+  .bandeau p{font-size:.88rem}
+  .bandeau b{font-weight:600}
+  .bandeau .bouton-pilule{justify-self:start;min-height:38px}
+  .situation-ed{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center;padding:10px;border-radius:14px;background:var(--surface);border:1px solid var(--filet)}
+  .situation-ed .mini .terrain{border-radius:8px}
+  .situation-ed b{font-size:.9rem;font-weight:600;line-height:1.3;display:block}
+  .situation-ed span{font-size:.78rem;color:var(--attenue)}
+
+  /* présenter, comme dans l'application */
+  .presenter{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;background:var(--paper)}
+  .presenter .haut{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--filet);background:color-mix(in srgb,var(--paper) 80%,var(--surface))}
+  .presenter .progres{flex:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .presenter .progres i{height:8px;border-radius:999px;background:color-mix(in srgb,var(--attenue) 35%,transparent)}
+  .presenter .progres i.vu{background:#F4AD8E}
+  .presenter .progres i.ici{background:var(--orange)}
+  .presenter .compteur{font-family:var(--mono);font-size:.8rem;color:var(--attenue);white-space:nowrap}
+  .presenter .corps{flex:1;overflow-y:auto;padding:22px 16px;display:grid;gap:16px;align-content:start}
+  .presenter .surtitre{font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--attenue)}
+  .presenter h2{font-family:var(--display);font-size:1.9rem;line-height:1.08;margin:0}
+  .presenter .pied{padding:12px 16px 16px;border-top:1px solid var(--filet)}
+
+  .toast{position:absolute;left:12px;right:12px;bottom:84px;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--ink);color:var(--paper);padding:12px 14px;border-radius:14px;font-size:.88rem;box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
+
+  .impact{margin:14px 16px 0;padding:14px 16px;border-radius:16px;background:var(--surface);border:1px solid var(--filet);display:grid;gap:10px}
+  .impact .chiffres{display:flex;gap:22px}
+  .impact .chiffres b{display:block;font-family:var(--display);font-size:1.7rem;font-weight:600;line-height:1;color:var(--orange-texte)}
+  .impact .chiffres span{font-size:.78rem;color:var(--attenue)}
+  .impact p{font-size:.84rem;color:var(--attenue)}
+  .impact .bouton-pilule{justify-self:start;min-height:38px}
+  .progres-tri{display:flex;gap:6px}
+  .progres-tri i{flex:1;height:6px;border-radius:999px;background:var(--paper-2)}
+  .progres-tri i.fait{background:var(--orange)}
+  .apercu{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--filet)}
+  .apercu b{font-family:var(--display);font-size:1.1rem;font-weight:600}
+  .apercu span{font-size:.82rem;color:var(--attenue)}
+  .petit{font-size:.8rem;color:var(--attenue)}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-livre" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></symbol>
+  <symbol id="i-conversation" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+  <symbol id="i-haltere" viewBox="0 0 24 24"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></symbol>
+  <symbol id="i-membres" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-personne" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-coche" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-chevron-bas" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-chevron-gauche" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chevron-droite" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-fleche-gauche" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="i-croix" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-loupe" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-crayon" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></symbol>
+  <symbol id="i-presenter" viewBox="0 0 24 24"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></symbol>
+  <symbol id="i-disquette" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></symbol>
+  <symbol id="i-presse" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+  <symbol id="i-oeil" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-variantes" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></symbol>
+</svg>
 
 <div class="outils"><div class="wrap outils-in">
   <a class="retour" href="../">Études</a>
@@ -271,16 +348,16 @@
 <main class="wrap">
 <header class="tete">
   <h1>Parcourir la Communauté par situation</h1>
-  <p class="lede">On choisit sa catégorie, son niveau et une phase de jeu, puis on pioche des <b>situations rangées dans l’ordre d’une séance</b>&nbsp;: échauffement, duels, situation évolutive, forme jouée. Ce qu’on pioche compose une séance, déjà classée. Les séances que personne n’a classées restent consultables à part. Pour que la Communauté se remplisse, chaque séance se classe en trois choix, rappelés aux entraîneurs aux bons moments.</p>
+  <p class="lede">Dans l’onglet Communauté, l’entraîneur voit d’emblée les situations de <b>sa catégorie</b>, rangées dans l’ordre d’une séance&nbsp;: échauffement, duels, situation évolutive, forme jouée. Il change de phase de jeu d’un geste, ajoute les situations qui lui plaisent et crée son entraînement, déjà classé. Les entraînements que personne n’a classés restent consultables à part. Pour que la Communauté se remplisse, chaque entraînement se classe en deux choix, proposés aux bons moments.</p>
 </header>
 
 <section class="bloc" aria-labelledby="titre-proto">
   <h2 id="titre-proto">La maquette</h2>
-  <p>Tout se clique. Les parcours, à droite, mènent directement à chaque écran et disent la règle qu’il applique. Les noms, les séances et les chiffres sont des exemples.</p>
+  <p>Elle se manipule comme l’application. Les deux scénarios, à droite, mènent à chaque étape et disent la règle qu’elle applique. Les noms, les entraînements et les chiffres sont des exemples.</p>
   <div class="proto">
-    <div class="tel" id="tel" aria-label="Maquette de l’application"></div>
+    <div class="telephone"><div class="ecran" id="ecran" aria-label="Maquette de l’application"></div></div>
     <div class="panneau">
-      <div class="parcours" id="parcours"></div>
+      <div id="scenarios" style="display:grid;gap:18px"></div>
       <div class="note" id="note" aria-live="polite"></div>
     </div>
   </div>
@@ -288,12 +365,12 @@
 
 <section class="bloc" aria-labelledby="titre-classement">
   <h2 id="titre-classement">Ce qu’on classe, et où</h2>
-  <p>La phase de jeu se déclare <b>sur la séance</b>, et chaque situation <b>en hérite</b>. On la corrige sur une situation seulement quand elle s’en écarte, par exemple un échauffement sans lien avec le thème. Un seul choix suffit donc à classer toutes les situations, tout en permettant de les parcourir une par une.</p>
+  <p>La phase de jeu se déclare <b>sur l’entraînement</b>, et chaque situation <b>en hérite</b>. On ne la change sur une situation que si elle s’en écarte, par exemple un échauffement sans lien avec le thème. Un seul choix classe donc toutes les situations, et chacune se retrouve quand même dans la Communauté.</p>
   <table class="tableau">
     <thead><tr><th scope="col">Porté par</th><th scope="col">Repères</th><th scope="col">Qui le pose</th></tr></thead>
     <tbody>
-      <tr><td>La séance</td><td>Catégorie (liste fermée), féminin, masculin ou mixte, niveau, phase de jeu principale, et une seconde facultative</td><td>L’auteur, en trois choix&nbsp;; ou d’office quand la séance est composée depuis la Communauté</td></tr>
-      <tr><td>La situation</td><td>Type d’exercice&nbsp;; phase héritée de la séance, modifiable</td><td>Le modèle de situation pose le type&nbsp;; l’auteur peut changer la phase</td></tr>
+      <tr><td>L’entraînement</td><td>Catégorie (liste fermée) avec féminin, masculin ou mixte&nbsp;; niveau&nbsp;; phase de jeu principale, et une seconde si besoin</td><td>La catégorie vient du profil. Niveau et phase&nbsp;: l’auteur, en deux choix, ou d’office quand l’entraînement est composé depuis la Communauté</td></tr>
+      <tr><td>La situation</td><td>Type d’exercice&nbsp;; phase héritée de l’entraînement, modifiable</td><td>Le modèle de situation pose le type&nbsp;; l’auteur peut changer la phase</td></tr>
     </tbody>
   </table>
 </section>
@@ -302,29 +379,29 @@
   <h2 id="titre-regles">Les règles de fonctionnement</h2>
   <div class="regles">
     <div class="regle">
-      <h3>Une séance passe en cours quand elle est classée</h3>
-      <p>Elle reste en brouillon tant que manquent le thème, l’objectif, la catégorie, le niveau ou la phase de jeu. Au-delà, « en cours » et « prête » se calculent comme aujourd’hui.</p>
-      <p>« Terminée » reste un choix de l’auteur, qui ne dispense pas du classement.</p>
+      <h3>Un entraînement passe en cours quand il est classé</h3>
+      <p>Il reste en brouillon tant que manquent le thème, l’objectif, la catégorie, le niveau ou la phase de jeu. Au-delà, « en cours » et « prêt » se calculent comme aujourd’hui.</p>
+      <p>« Terminé » reste un choix de l’auteur, qui ne dispense pas du classement.</p>
     </div>
     <div class="regle">
       <h3>La Communauté montre d’abord ce qui est classé</h3>
-      <p>Les thèmes ne contiennent que des séances prêtes ou terminées, et classées. Tout le reste figure dans « Non classées », toujours consultable par tous, comme le prévoient les conditions d’utilisation.</p>
+      <p>Les situations par thème viennent d’entraînements prêts ou terminés, et classés. Tout le reste est dans « Non classés », toujours consultable par tous, comme le prévoient les conditions d’utilisation.</p>
     </div>
     <div class="regle">
       <h3>Composer depuis la Communauté classe d’office</h3>
-      <p>La séance reprend la catégorie, le niveau et la phase choisis pour parcourir. Chaque situation reprise garde le nom de son auteur&nbsp;: « d’après Camille T. ».</p>
+      <p>L’entraînement reprend la catégorie, le niveau et la phase affichés. Chaque situation reprise garde le nom de son auteur&nbsp;: « d’après Camille T. ».</p>
     </div>
     <div class="regle">
       <h3>Des rappels, jamais au mauvais moment</h3>
-      <p>Jamais au lancement de Présenter, où l’entraîneur est devant ses joueurs, mais à la fin. À l’ouverture, un bandeau plutôt qu’une fenêtre. Le tri express revient au plus une fois par semaine, et seulement s’il reste des séances à classer. Jamais sur la séance d’un autre.</p>
+      <p>Jamais au lancement de Présenter, où l’entraîneur est devant ses joueurs, mais à la fin. À l’ouverture, un bandeau plutôt qu’une fenêtre. Sur la carte, un rappel qu’on règle sans ouvrir l’entraînement. Le tri express revient au plus une fois par semaine, seulement s’il reste à classer. Jamais sur l’entraînement d’un autre.</p>
     </div>
     <div class="regle">
-      <h3>L’auteur voit ce que ses séances apportent</h3>
-      <p>Combien de fois ses situations ont été ouvertes, et combien de séances les ont reprises. Ni points ni classement entre entraîneurs.</p>
+      <h3>L’auteur voit ce que ses entraînements apportent</h3>
+      <p>Combien de fois ses situations ont été ouvertes, et combien d’entraînements les ont reprises. Ni points ni classement entre entraîneurs.</p>
     </div>
     <div class="regle">
       <h3>Chaque geste est mesuré</h3>
-      <p>Choisir un thème, ouvrir une situation, l’ajouter, composer une séance, classer depuis le bandeau, la fin de Présenter ou le tri express&nbsp;: c’est ce qui dira quel rappel fonctionne.</p>
+      <p>Changer de phase, ouvrir une situation, l’ajouter, créer un entraînement composé, classer depuis la carte, le bandeau, la fin de Présenter ou le tri express&nbsp;: c’est ce qui dira quel rappel fonctionne.</p>
     </div>
   </div>
 </section>
@@ -332,10 +409,10 @@
 <section class="bloc" aria-labelledby="titre-arreter">
   <h2 id="titre-arreter">À arrêter avec le référent</h2>
   <ul>
-    <li><b>La liste des phases de jeu.</b> Celle de la maquette reprend les mots-clés actuels, en attendant le tri en cours.</li>
-    <li><b>La liste fermée des catégories</b>, avec féminin, masculin et mixte. Les catégories saisies librement aujourd’hui seront rattachées à cette liste.</li>
+    <li><b>La liste des phases de jeu.</b> Celle de la maquette reprend les mots-clés actuels, en attendant le tri en cours. Au-delà de huit, le choix ne tient plus sur un écran.</li>
+    <li><b>La liste fermée des catégories</b>, avec féminin, masculin et mixte. Les catégories saisies librement aujourd’hui y seront rattachées.</li>
     <li><b>Les niveaux</b>&nbsp;: débutant, intermédiaire, confirmé.</li>
-    <li><b>Les types d’exercice et leur ordre</b>, qui fondent les quatre temps de la séance.</li>
+    <li><b>Les types d’exercice et leur ordre</b>, qui donnent les quatre temps de la séance.</li>
   </ul>
   <p style="margin-top:1em">Cette étude prolonge la fiche « Repenser l’organisation et la découverte des contenus » du <a href="https://github.com/orgs/association-placeauxcoachs/projects/2" style="color:var(--violet)">tableau de suivi</a>.</p>
 </section>
@@ -349,6 +426,8 @@
   marqueTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   boutonsTheme.forEach(function (b) { b.addEventListener('click', function () { racine.dataset.theme = b.dataset.themeChoix; marqueTheme(b.dataset.themeChoix); }); });
 
+  function ic(nom, cls) { return '<svg class="ic' + (cls ? ' ' + cls : '') + '" aria-hidden="true" focusable="false"><use href="#i-' + nom + '"/></svg>'; }
+
   /* ---------- données d’exemple ---------- */
   var TEMPS = [
     { id: 'echauffement', nom: 'Échauffement', court: 'Échauffement', choisir: 'un échauffement' },
@@ -360,494 +439,514 @@
   var GENRES = ['Féminin', 'Masculin', 'Mixte'];
   var NIVEAUX = ['Débutant', 'Intermédiaire', 'Confirmé'];
   var PHASES = [
-    { nom: 'Contre-attaque', n: 8, picto: '<rect x="1" y="1" width="50" height="32"/><path d="M6 25 C 18 25, 28 11, 43 11"/><path d="M38 8 L44 11 L38 14"/>' },
-    { nom: 'Repli défensif', n: 5, picto: '<rect x="1" y="1" width="50" height="32"/><path d="M46 11 C 33 11, 24 25, 9 25"/><path d="M14 22 L8 25 L14 28"/>' },
-    { nom: 'Attaque placée', n: 11, picto: '<rect x="1" y="1" width="50" height="32"/><path d="M51 5 Q 36 5 36 17 Q 36 29 51 29"/><circle cx="26" cy="9" r="2.3"/><circle cx="23" cy="17" r="2.3"/><circle cx="26" cy="25" r="2.3"/>' },
-    { nom: 'Défense placée', n: 9, picto: '<rect x="1" y="1" width="50" height="32"/><path d="M51 5 Q 36 5 36 17 Q 36 29 51 29"/><path d="M33 10 L38 10 M32 17 L37 17 M33 24 L38 24"/>' },
-    { nom: 'Jeu de transition', n: 4, picto: '<rect x="1" y="1" width="50" height="32"/><path d="M7 26 L18 13 L29 23 L41 11"/><path d="M36 10 L42 10 L41 16"/>' },
-    { nom: 'Grand espace', n: 6, picto: '<rect x="1" y="1" width="50" height="32"/><circle cx="11" cy="10" r="2.3"/><circle cx="20" cy="25" r="2.3"/><circle cx="32" cy="11" r="2.3"/><circle cx="42" cy="24" r="2.3"/>' }
+    { nom: 'Contre-attaque', picto: '<rect x="1" y="1" width="30" height="20" rx="2"/><path d="M5 16 C 11 16, 16 7, 25 7"/><path d="M22 4.5 L26 7 L22 9.5"/>' },
+    { nom: 'Repli défensif', picto: '<rect x="1" y="1" width="30" height="20" rx="2"/><path d="M27 7 C 21 7, 16 16, 7 16"/><path d="M10 13.5 L6 16 L10 18.5"/>' },
+    { nom: 'Attaque placée', picto: '<rect x="1" y="1" width="30" height="20" rx="2"/><path d="M31 4 Q 22 4 22 11 Q 22 18 31 18"/><circle cx="15" cy="6" r="1.6"/><circle cx="13" cy="11" r="1.6"/><circle cx="15" cy="16" r="1.6"/>' },
+    { nom: 'Défense placée', picto: '<rect x="1" y="1" width="30" height="20" rx="2"/><path d="M31 4 Q 22 4 22 11 Q 22 18 31 18"/><path d="M19 6.5 L22 6.5 M18.5 11 L21.5 11 M19 15.5 L22 15.5"/>' },
+    { nom: 'Jeu de transition', picto: '<rect x="1" y="1" width="30" height="20" rx="2"/><path d="M5 17 L11 9 L17 15 L25 6"/><path d="M21.5 5.5 L25.5 5.5 L25 9.5"/>' },
+    { nom: 'Grand espace', picto: '<rect x="1" y="1" width="30" height="20" rx="2"/><circle cx="7" cy="6" r="1.6"/><circle cx="12" cy="16" r="1.6"/><circle cx="20" cy="7" r="1.6"/><circle cx="26" cy="15" r="1.6"/>' }
   ];
+  function picto(nom) { for (var i = 0; i < PHASES.length; i++) if (PHASES[i].nom === nom) return '<svg viewBox="0 0 32 22" aria-hidden="true">' + PHASES[i].picto + '</svg>'; return ''; }
+
   var SITUATIONS = [
     { id: 1, temps: 'echauffement', titre: 'Relais de passes en mouvement', auteur: 'Camille T.', ouvertes: 64, seance: 'Contre-attaque, la sortie de balle',
-      organisation: 'Quatre colonnes aux angles du demi-terrain, un ballon par colonne.',
-      consignes: 'Passer au partenaire qui court en diagonale, puis suivre sa passe. Au signal, changer de sens.',
-      variantes: 'Deux ballons par colonne. Passe à une main pour les plus à l’aise.',
-      s: { att: [[36, 24], [36, 96], [124, 24], [124, 96]], ballon: [42, 26], f: [[36, 24, 80, 60, 124, 96, 'p'], [124, 24, 80, 60, 36, 96, 'p'], [36, 96, 30, 70, 36, 44, 'c']] } },
+      faire: 'Quatre colonnes aux angles du demi-terrain, un ballon par colonne.',
+      observer: 'La passe arrive devant le partenaire, dans sa course&nbsp;; celui qui passe suit sa passe.',
+      variantes: 'Deux ballons par colonne. Changer de sens au signal.',
+      s: { att: [[34, 22, -45], [34, 98, 45], [126, 22, -135], [126, 98, 135]], ballon: [40, 22], f: [[34, 22, 80, 60, 122, 94, 'p'], [126, 22, 80, 60, 38, 94, 'p'], [34, 98, 24, 70, 32, 40, 'c']] } },
     { id: 2, temps: 'echauffement', titre: 'Montée de balle à trois, aller et retour', auteur: 'Alex D.', ouvertes: 38, seance: 'Jouer vite après la récupération',
-      organisation: 'Trios en ligne sur la largeur du terrain, un ballon par trio.',
-      consignes: 'Traverser le terrain en trois passes au plus, tirer, puis revenir en courant sans ballon.',
-      variantes: 'Imposer une passe en arrière avant le tir. Chronométrer l’aller.',
-      s: { entier: true, att: [[22, 26], [22, 50], [22, 74]], ballon: [26, 50], f: [[22, 26, 100, 16, 176, 28, 'c'], [22, 50, 100, 50, 168, 50, 'c'], [22, 74, 100, 84, 176, 72, 'c'], [24, 50, 40, 40, 56, 32, 'p']] } },
+      faire: 'Trios en ligne sur la largeur, un ballon par trio.',
+      observer: 'Trois passes au plus pour traverser, puis retour en courant sans ballon.',
+      variantes: 'Une passe en arrière obligatoire avant le tir.',
+      s: { entier: true, att: [[22, 26, -90], [22, 50, -90], [22, 74, -90]], ballon: [28, 50], f: [[26, 26, 100, 16, 172, 28, 'c'], [26, 50, 100, 50, 166, 50, 'c'], [26, 74, 100, 84, 172, 72, 'c'], [30, 50, 42, 40, 54, 32, 'p']] } },
     { id: 3, temps: 'duel', titre: 'Duel tireur-gardien après une relance longue', auteur: 'Sam R.', ouvertes: 51, seance: 'Contre-attaque, la sortie de balle',
-      organisation: 'Gardien dans le but avec une réserve de ballons, ailiers en colonne à mi-terrain.',
-      consignes: 'Au sifflet, l’ailier démarre. Le gardien relance long dans sa course&nbsp;; tir sans dribble.',
-      variantes: 'Ajouter un défenseur qui part deux mètres derrière l’ailier.',
-      s: { gb: [[192, 60]], att: [[30, 16]], ballon: [186, 60], f: [[186, 62, 128, 70, 98, 24, 'p'], [30, 16, 62, 12, 94, 18, 'c'], [98, 20, 128, 16, 148, 30, 'c'], [152, 34, 176, 40, 192, 54, 'p']] } },
+      faire: 'Gardien dans le but avec une réserve de ballons, ailiers en colonne à mi-terrain.',
+      observer: 'L’ailier démarre au sifflet&nbsp;; le gardien relance dans sa course, tir sans dribble.',
+      variantes: 'Un défenseur part deux mètres derrière l’ailier.',
+      s: { gb: [[191, 60, 90]], att: [[28, 16, -90]], ballon: [184, 62], f: [[184, 64, 128, 72, 100, 26, 'p'], [32, 16, 64, 12, 94, 18, 'c'], [100, 20, 128, 16, 146, 30, 'c'], [150, 34, 172, 40, 186, 54, 'p']] } },
     { id: 4, temps: 'duel', titre: 'Un contre un en fin de montée de balle', auteur: 'Camille T.', ouvertes: 27, seance: 'Le 2 contre 1 sous toutes ses formes',
-      organisation: 'Un attaquant avec ballon à mi-terrain, un défenseur à neuf mètres, un gardien.',
-      consignes: 'L’attaquant fixe le défenseur, le déborde du côté de son bras fort et tire.',
+      faire: 'Un attaquant avec ballon à mi-terrain, un défenseur à neuf mètres, un gardien.',
+      observer: 'Fixer le défenseur, le déborder du côté du bras fort, tirer.',
       variantes: 'Le défenseur choisit son côté au dernier moment.',
-      s: { gb: [[192, 60]], att: [[70, 60]], def: [[138, 60]], ballon: [76, 60], f: [[70, 60, 110, 30, 150, 38, 'c'], [152, 40, 176, 46, 192, 56, 'p']] } },
+      s: { gb: [[191, 60, 90]], att: [[66, 60, -90]], def: [[134, 60, 90]], ballon: [72, 62], f: [[70, 60, 110, 28, 148, 36, 'c'], [152, 38, 172, 44, 186, 54, 'p']] } },
     { id: 5, temps: 'evolutive', titre: '2 contre 1 sur grand espace', auteur: 'Morgan L.', ouvertes: 72, seance: 'Le 2 contre 1 sous toutes ses formes',
-      organisation: 'Deux attaquants partent de leur zone, un défenseur les attend au milieu, un gardien.',
-      consignes: 'Fixer le défenseur pour libérer le partenaire. Le défenseur gagne s’il récupère ou retarde au-delà de six secondes.',
+      faire: 'Deux attaquants partent de leur zone, un défenseur les attend au milieu, un gardien.',
+      observer: 'Fixer le défenseur pour libérer le partenaire. Le défenseur gagne s’il récupère ou retarde plus de six secondes.',
       variantes: 'Passer à 3 contre 2. Le défenseur part de la ligne de touche.',
-      s: { entier: true, gb: [[196, 50]], att: [[40, 34], [40, 66]], def: [[118, 50]], ballon: [44, 34], f: [[40, 34, 100, 22, 152, 32, 'c'], [40, 66, 100, 78, 152, 68, 'c'], [42, 36, 52, 50, 42, 64, 'p']] } },
+      s: { entier: true, gb: [[194, 50, 90]], att: [[40, 34, -90], [40, 66, -90]], def: [[118, 50, 90]], ballon: [46, 34], f: [[44, 34, 100, 22, 150, 32, 'c'], [44, 66, 100, 78, 150, 68, 'c'], [44, 38, 54, 50, 44, 62, 'p']] } },
     { id: 6, temps: 'evolutive', titre: '3 contre 2 avec un repli tardif', auteur: 'Alex D.', ouvertes: 33, seance: 'Jouer vite après la récupération',
-      organisation: 'Trois attaquants, deux défenseurs replacés, un troisième défenseur qui part de la zone adverse.',
-      consignes: 'Conclure avant que le troisième défenseur ne revienne. Celui qui récupère relance aussitôt.',
-      variantes: 'Le défenseur tardif part au moment de la première passe.',
-      s: { entier: true, gb: [[196, 50]], att: [[52, 26], [52, 50], [52, 74]], def: [[134, 38], [134, 62], [16, 50]], ballon: [56, 50], f: [[52, 26, 110, 18, 160, 28, 'c'], [52, 50, 110, 50, 164, 50, 'c'], [52, 74, 110, 82, 160, 72, 'c'], [16, 50, 80, 60, 140, 56, 'c']] } },
+      faire: 'Trois attaquants, deux défenseurs replacés, un troisième qui part de la zone adverse.',
+      observer: 'Conclure avant le retour du troisième défenseur.',
+      variantes: 'Le défenseur tardif part à la première passe.',
+      s: { entier: true, gb: [[194, 50, 90]], att: [[52, 26, -90], [52, 50, -90], [52, 74, -90]], def: [[134, 38, 90], [134, 62, 90], [16, 50, -90]], ballon: [58, 50], f: [[56, 26, 110, 18, 158, 28, 'c'], [56, 50, 110, 50, 162, 50, 'c'], [56, 74, 110, 82, 158, 72, 'c'], [20, 50, 80, 60, 138, 56, 'c']] } },
     { id: 7, temps: 'jouee', titre: 'Match à thème&nbsp;: le but en contre compte double', auteur: 'Sam R.', ouvertes: 45, seance: 'Contre-attaque, la sortie de balle',
-      organisation: 'Match à 6 contre 6 sur terrain entier.',
-      consignes: 'Un but marqué moins de six secondes après la récupération compte deux points.',
-      variantes: 'Au-delà de 3 buts d’écart, l’équipe menée joue à 7.',
-      s: { entier: true, gb: [[4, 50], [196, 50]], att: [[60, 30], [60, 70], [110, 20], [110, 80]], def: [[142, 36], [142, 64], [92, 50], [164, 50]], f: [[110, 80, 150, 92, 176, 70, 'c']] } },
+      faire: 'Match à 6 contre 6 sur terrain entier.',
+      observer: 'Un but moins de six secondes après la récupération compte deux points.',
+      variantes: 'Au-delà de trois buts d’écart, l’équipe menée joue à sept.',
+      s: { entier: true, gb: [[6, 50, -90], [194, 50, 90]], att: [[60, 30, -90], [60, 70, -90], [110, 20, -90], [110, 80, -90]], def: [[142, 36, 90], [142, 64, 90], [92, 50, 90], [164, 50, 90]], f: [[114, 80, 150, 92, 172, 72, 'c']] } },
     { id: 8, temps: 'jouee', titre: 'Match à 4 contre 4, relance obligatoire du gardien', auteur: 'Morgan L.', ouvertes: 22, seance: 'Jouer vite après la récupération',
-      organisation: 'Deux équipes de quatre et deux gardiens, sur terrain entier.',
-      consignes: 'Toute récupération passe par le gardien, qui relance vers un joueur déjà parti.',
-      variantes: 'Interdire le dribble dans sa propre moitié.',
-      s: { entier: true, gb: [[4, 50], [196, 50]], att: [[124, 24], [100, 62], [146, 76], [80, 84]], def: [[152, 34], [164, 56], [150, 72], [176, 46]], ballon: [8, 50], f: [[8, 50, 60, 14, 120, 24, 'p']] } }
+      faire: 'Deux équipes de quatre et deux gardiens, sur terrain entier.',
+      observer: 'Toute récupération passe par le gardien, qui relance vers un joueur déjà parti.',
+      variantes: 'Pas de dribble dans sa propre moitié.',
+      s: { entier: true, gb: [[6, 50, -90], [194, 50, 90]], att: [[124, 24, -90], [100, 62, -90], [146, 76, -90], [80, 84, -90]], def: [[152, 34, 90], [164, 56, 90], [150, 72, 90], [176, 46, 90]], ballon: [12, 50], f: [[12, 50, 60, 14, 118, 24, 'p']] } }
   ];
-  var SEANCES_ENTIERES = [
-    { titre: 'Contre-attaque, la sortie de balle', auteur: 'Camille T.', ids: [1, 3, 5, 7] },
-    { titre: 'Jouer vite après la récupération', auteur: 'Alex D.', ids: [2, 4, 6, 8] },
-    { titre: 'Le 2 contre 1 sous toutes ses formes', auteur: 'Morgan L.', ids: [1, 4, 5, 8] }
+  var SEANCES = [
+    { titre: 'Contre-attaque, la sortie de balle', auteur: 'Camille T.', ids: [1, 3, 5, 7], objectif: 'Sortir vite de sa zone et finir avant le repli adverse.' },
+    { titre: 'Jouer vite après la récupération', auteur: 'Alex D.', ids: [2, 4, 6, 8], objectif: 'Transformer chaque récupération en attaque rapide.' },
+    { titre: 'Le 2 contre 1 sous toutes ses formes', auteur: 'Morgan L.', ids: [1, 4, 5, 8], objectif: 'Fixer pour libérer un partenaire.' }
   ];
-  var NON_CLASSEES = [
-    { titre: 'Séance du mardi', auteur: 'Lou B.', statut: 'brouillon', n: 2, cat: 'catégorie non précisée' },
+  var NON_CLASSES = [
+    { titre: 'Séance du mardi', auteur: 'Lou B.', statut: 'brouillon', n: 2, cat: '' },
     { titre: 'Défense étagée, semaine 6', auteur: 'Dominique P.', statut: 'pret', n: 4, cat: 'U15' },
-    { titre: 'Échauffement et match', auteur: 'Noa V.', statut: 'en_cours', n: 2, cat: 'U11' },
+    { titre: 'Échauffement et match', auteur: 'Noa V.', statut: 'encours', n: 2, cat: 'U11' },
     { titre: 'Tirs à neuf mètres', auteur: 'Lou B.', statut: 'pret', n: 3, cat: 'Seniors' },
     { titre: 'Gardiens, réflexes', auteur: 'Eden M.', statut: 'termine', n: 5, cat: 'U18' },
-    { titre: 'Essai', auteur: 'Charlie G.', statut: 'brouillon', n: 0, cat: 'catégorie non précisée' },
-    { titre: 'Séance découverte, premiers matchs', auteur: 'Maxime F.', statut: 'en_cours', n: 2, cat: 'U9' }
+    { titre: 'Séance découverte, premiers matchs', auteur: 'Maxime F.', statut: 'encours', n: 2, cat: 'U9' }
   ];
-  var STATUTS = { brouillon: ['Brouillon', 'var(--st-brouillon)'], en_cours: ['En cours', 'var(--st-encours)'], pret: ['Prête', 'var(--st-pret)'], termine: ['Terminée', 'var(--st-termine)'] };
+  var STATUTS = { brouillon: ['Brouillon', 'brouillon'], encours: ['En cours', 'encours'], pret: ['Prêt', 'pret'], termine: ['Terminé', 'pret'] };
+  function sit(id) { for (var i = 0; i < SITUATIONS.length; i++) if (SITUATIONS[i].id === id) return SITUATIONS[i]; return null; }
+  function tempsDe(id) { for (var i = 0; i < TEMPS.length; i++) if (TEMPS[i].id === id) return TEMPS[i]; return null; }
+  function statut(cle) { var s = STATUTS[cle]; return '<span class="statut" style="--acc:var(--st-' + s[1] + ')">' + s[0] + '</span>'; }
+  function initiales(nom) { return nom.split(' ').map(function (m) { return m.charAt(0); }).join('').replace('.', ''); }
+  function texte(html) { var d = document.createElement('div'); d.innerHTML = html; return d.textContent; }
 
-  function situation(id) { for (var i = 0; i < SITUATIONS.length; i++) if (SITUATIONS[i].id === id) return SITUATIONS[i]; return null; }
-  function statut(cle) { var s = STATUTS[cle]; return '<span class="statut" style="--c:' + s[1] + '">' + s[0] + '</span>'; }
-
-  /* ---------- le terrain dessiné ---------- */
+  /* ---------- le terrain, aux couleurs de l’éditeur ---------- */
   var nSvg = 0;
   function zone(gx, cy, d, r6, r9, h) {
-    return '<path class="t-ligne" d="M' + gx + ' ' + (cy - h) + ' C ' + (gx + d * r6 * .75) + ' ' + (cy - h) + ' ' + (gx + d * r6) + ' ' + (cy - h * .55) + ' ' + (gx + d * r6) + ' ' + cy + ' C ' + (gx + d * r6) + ' ' + (cy + h * .55) + ' ' + (gx + d * r6 * .75) + ' ' + (cy + h) + ' ' + gx + ' ' + (cy + h) + '"/>' +
-      '<path class="t-neuf" d="M' + gx + ' ' + (cy - h * 1.6) + ' C ' + (gx + d * r9 * .75) + ' ' + (cy - h * 1.6) + ' ' + (gx + d * r9) + ' ' + (cy - h * .8) + ' ' + (gx + d * r9) + ' ' + cy + ' C ' + (gx + d * r9) + ' ' + (cy + h * .8) + ' ' + (gx + d * r9 * .75) + ' ' + (cy + h * 1.6) + ' ' + gx + ' ' + (cy + h * 1.6) + '"/>' +
-      '<line class="t-but" x1="' + gx + '" y1="' + (cy - 7) + '" x2="' + gx + '" y2="' + (cy + 7) + '"/>';
+    var a = gx + d * r6, b = gx + d * r9;
+    return '<path fill="#D1994B" stroke="#FFFFFF" stroke-width="1.2" d="M' + gx + ' ' + (cy - h) + ' C ' + (gx + d * r6 * .75) + ' ' + (cy - h) + ' ' + a + ' ' + (cy - h * .55) + ' ' + a + ' ' + cy + ' C ' + a + ' ' + (cy + h * .55) + ' ' + (gx + d * r6 * .75) + ' ' + (cy + h) + ' ' + gx + ' ' + (cy + h) + ' Z"/>' +
+      '<path fill="none" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="3 3" d="M' + gx + ' ' + (cy - h * 1.6) + ' C ' + (gx + d * r9 * .75) + ' ' + (cy - h * 1.6) + ' ' + b + ' ' + (cy - h * .8) + ' ' + b + ' ' + cy + ' C ' + b + ' ' + (cy + h * .8) + ' ' + (gx + d * r9 * .75) + ' ' + (cy + h * 1.6) + ' ' + gx + ' ' + (cy + h * 1.6) + '"/>' +
+      '<rect x="' + (d > 0 ? gx - 3 : gx) + '" y="' + (cy - 6) + '" width="3" height="12" fill="none" stroke="#FFFFFF" stroke-width="1"/>';
+  }
+  function joueur(p, couleur) {
+    return '<g transform="translate(' + p[0] + ' ' + p[1] + ') rotate(' + (p[2] || 0) + ')"><path d="M -5 5 C -5 -4.5, 5 -4.5, 5 5" fill="none" stroke="' + couleur + '" stroke-width="1.9" stroke-linecap="round"/><circle r="3" fill="' + couleur + '"/></g>';
   }
   function terrain(s) {
-    var id = 'pointe' + (++nSvg), H = s.entier ? 100 : 120, cy = H / 2, o;
+    var id = 'pt' + (++nSvg), H = s.entier ? 100 : 120, cy = H / 2, o;
     o = '<svg class="terrain" viewBox="0 0 200 ' + H + '" aria-hidden="true" focusable="false">';
-    o += '<defs><marker id="' + id + '" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="t-pointe" d="M0 0 L10 5 L0 10 z"/></marker></defs>';
-    o += '<rect class="t-sol" x="0" y="0" width="200" height="' + H + '"/>';
-    o += '<rect class="t-ligne" x="2" y="2" width="196" height="' + (H - 4) + '"/>';
-    if (s.entier) { o += '<line class="t-ligne" x1="100" y1="2" x2="100" y2="98"/>' + zone(2, cy, 1, 24, 38, 20) + zone(198, cy, -1, 24, 38, 20); }
-    else { o += zone(198, cy, -1, 36, 58, 24); }
+    o += '<defs><marker id="' + id + '" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#111111"/></marker></defs>';
+    o += '<rect x="0" y="0" width="200" height="' + H + '" fill="#3796C4"/>';
+    o += '<rect x="3" y="3" width="194" height="' + (H - 6) + '" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>';
+    if (s.entier) { o += '<line x1="100" y1="3" x2="100" y2="' + (H - 3) + '" stroke="#FFFFFF" stroke-width="1.2"/><circle cx="100" cy="' + cy + '" r="9" fill="none" stroke="#FFFFFF" stroke-width="1"/>' + zone(3, cy, 1, 22, 36, 18) + zone(197, cy, -1, 22, 36, 18); }
+    else { o += '<path d="M3 ' + (cy - 14) + ' A 14 14 0 0 1 3 ' + (cy + 14) + '" fill="none" stroke="#FFFFFF" stroke-width="1"/>' + zone(197, cy, -1, 34, 56, 23); }
     (s.f || []).forEach(function (f) {
-      o += '<path class="' + (f[6] === 'p' ? 't-passe' : 't-course') + '" marker-end="url(#' + id + ')" d="M' + f[0] + ' ' + f[1] + ' Q ' + f[2] + ' ' + f[3] + ' ' + f[4] + ' ' + f[5] + '"/>';
+      o += '<path fill="none" stroke="#111111" stroke-width="1.3"' + (f[6] === 'p' ? ' stroke-dasharray="4 3"' : '') + ' marker-end="url(#' + id + ')" d="M' + f[0] + ' ' + f[1] + ' Q ' + f[2] + ' ' + f[3] + ' ' + f[4] + ' ' + f[5] + '"/>';
     });
-    (s.def || []).forEach(function (p) { o += '<circle class="t-def" cx="' + p[0] + '" cy="' + p[1] + '" r="5"/>'; });
-    (s.gb || []).forEach(function (p) { o += '<circle class="t-gb" cx="' + p[0] + '" cy="' + p[1] + '" r="5"/>'; });
-    (s.att || []).forEach(function (p) { o += '<circle class="t-att" cx="' + p[0] + '" cy="' + p[1] + '" r="5"/>'; });
-    if (s.ballon) o += '<circle class="t-ballon" cx="' + s.ballon[0] + '" cy="' + s.ballon[1] + '" r="2.6"/>';
+    (s.def || []).forEach(function (p) { o += joueur(p, '#1414D9'); });
+    (s.gb || []).forEach(function (p) { o += joueur(p, '#1414D9'); });
+    (s.att || []).forEach(function (p) { o += joueur(p, '#FF1A1A'); });
+    if (s.ballon) o += '<circle cx="' + s.ballon[0] + '" cy="' + s.ballon[1] + '" r="2.4" fill="#C1121F" stroke="#FFFFFF" stroke-width=".7"/>';
     return o + '</svg>';
   }
 
   /* ---------- état ---------- */
-  var MES_SEANCES_DEPART = [
-    { titre: 'Contre-attaque U13, semaine 4', statut: 'pret', classee: true, n: 4 },
-    { titre: 'Séance du 2 octobre', statut: 'brouillon', classee: false, n: 3, manque: 'le niveau et la phase de jeu' },
-    { titre: 'Défense étagée U13', statut: 'en_cours', classee: true, n: 3 },
-    { titre: 'Gardiens et tirs à neuf mètres', statut: 'brouillon', classee: false, n: 4, manque: 'la phase de jeu' }
+  var MES_DEPART = [
+    { titre: 'Contre-attaque U13, semaine 4', statut: 'pret', classe: true, n: 4, cat: 'U13', objectif: 'Sortir vite de sa zone après la récupération.', reperes: ['Intermédiaire', 'Contre-attaque'] },
+    { titre: 'Séance du 2 octobre', statut: 'brouillon', classe: false, n: 3, cat: 'U13', objectif: 'Enchaîner défense et montée de balle.', manque: 'le niveau et la phase de jeu' },
+    { titre: 'Défense étagée U13', statut: 'encours', classe: true, n: 3, cat: 'U13', objectif: 'Monter sur le porteur sans se faire déborder.', reperes: ['Intermédiaire', 'Défense placée'] },
+    { titre: 'Gardiens et tirs à neuf mètres', statut: 'brouillon', classe: false, n: 4, cat: 'U13', objectif: 'Varier les tirs face au gardien.', manque: 'la phase de jeu' }
   ];
-  var e = {};
+  var e;
   function reinitialise() {
     e = {
-      ecran: 'communaute', cat: 'U13', genre: 'Masculin', niveau: 'Intermédiaire', phase: 'Contre-attaque',
-      vue: 'situations', panier: [], detail: 3, feuille: null, toast: '',
-      mes: MES_SEANCES_DEPART.map(function (m) { return Object.assign({}, m); }),
-      edit: 1, presente: false,
-      classer: { cat: 'U13', genre: 'Masculin', niveau: '', phase: '', seconde: 'Aucune' },
-      tri: { i: 0, niveau: '', phase: '', fini: false }
+      ecran: 'communaute', vue: 'situations', cat: 'U13', genre: 'Masculin', niveau: 'Intermédiaire', phase: 'Contre-attaque',
+      panier: [], feuille: null, detail: 3, toast: '', annuler: null,
+      mes: MES_DEPART.map(function (m) { return Object.assign({}, m); }), edit: 1, diapo: 2,
+      cible: { cat: 'U13', genre: 'Masculin', niveau: 'Intermédiaire' },
+      classer: { niveau: '', phase: '', seconde: false },
+      tri: { niveau: '', phase: '', fini: false }
     };
   }
   reinitialise();
 
-  function puces(liste, valeur, action) {
-    return liste.map(function (v) { return '<button type="button" class="puce" data-a="' + action + '" data-v="' + v + '" aria-pressed="' + (v === valeur) + '">' + v + '</button>'; }).join('');
+  /* ---------- morceaux communs ---------- */
+  function onglets(actif) {
+    var t = [['mes', 'livre', 'Mes entraînements'], ['groupe', 'conversation', 'Équipe U13'], ['communaute', 'globe', 'Communauté']];
+    return '<div class="onglets" role="tablist" aria-label="Entraînements">' + t.map(function (o) {
+      return '<button type="button" class="onglet" role="tab" aria-selected="' + (o[0] === actif) + '" data-a="aller" data-v="' + o[0] + '"><span class="pict">' + ic(o[1]) + '</span><span>' + o[2] + '</span></button>';
+    }).join('') + '</div>';
   }
-  function bascule(liste, valeur, action) {
-    return '<div class="bascule" style="grid-template-columns:repeat(' + liste.length + ',minmax(0,1fr))">' + liste.map(function (v) { return '<button type="button" data-a="' + action + '" data-v="' + v + '" aria-pressed="' + (v === valeur) + '">' + v + '</button>'; }).join('') + '</div>';
-  }
-  var FLECHE = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4 L6.5 10 L12.5 16"/></svg>';
-  function barreHaut(titre, retour) {
-    return '<div class="barre-haut"><button type="button" class="retour-ecran" data-a="aller" data-v="' + retour + '" aria-label="Retour">' + FLECHE + '</button><span class="t">' + titre + '</span></div>';
-  }
-  function nav(actif) {
-    var items = [['mes', 'Mes séances'], ['communaute', 'Communauté'], ['groupes', 'Groupes'], ['profil', 'Profil']];
-    return '<nav class="nav" aria-label="Navigation principale">' + items.map(function (it) {
-      return '<button type="button" data-a="aller" data-v="' + it[0] + '"' + (it[0] === actif ? ' aria-current="page"' : '') + '>' + it[1] + '</button>';
+  function navBasse() {
+    var d = [['entrainements', 'haltere', 'Entraînements'], ['groupes', 'membres', 'Groupes'], ['profil', 'personne', 'Profil']];
+    var actif = (e.ecran === 'groupes' || e.ecran === 'profil') ? e.ecran : 'entrainements';
+    return '<nav class="nav-basse" aria-label="Navigation principale">' + d.map(function (x) {
+      return '<button type="button" data-a="nav" data-v="' + x[0] + '"' + (x[0] === actif ? ' aria-current="page"' : '') + '><span class="pilule">' + ic(x[1]) + '</span>' + x[2] + '</button>';
     }).join('') + '</nav>';
   }
-  function vide() { return e.cat === 'U7' || e.cat === 'U9'; }
-  function nbPhase() { if (vide()) return 0; for (var i = 0; i < PHASES.length; i++) if (PHASES[i].nom === e.phase) return PHASES[i].n; return 0; }
-
-  /* ---------- la barre de séance ---------- */
+  function fab() { return '<button type="button" class="fab" data-a="feuille" data-v="nouvel" aria-label="Nouvel entraînement">' + ic('plus') + '</button>'; }
+  function puces(liste, valeur, action, cls) {
+    return liste.map(function (v) { return '<button type="button" class="' + (cls || 'puce') + '" data-a="' + action + '" data-v="' + v + '" aria-pressed="' + (v === valeur) + '">' + v + '</button>'; }).join('');
+  }
+  function bascule(liste, valeur, action) {
+    return '<div class="bascule" style="grid-template-columns:repeat(' + liste.length + ',minmax(0,1fr))">' + puces(liste, valeur, action, '') .replace(/class=""/g, '') + '</div>';
+  }
+  function tuilesPhases(valeur, action) {
+    return '<div class="tuiles">' + PHASES.map(function (p) {
+      return '<button type="button" class="tuile" data-a="' + action + '" data-v="' + p.nom + '" aria-pressed="' + (p.nom === valeur) + '">' + picto(p.nom) + p.nom + '</button>';
+    }).join('') + '</div>';
+  }
   function barreSeance() {
+    if (!e.panier.length) return '';
     var n = e.panier.length;
-    var temps = TEMPS.map(function (t) {
-      var k = e.panier.filter(function (id) { return situation(id).temps === t.id; }).length;
-      return '<div class="' + (k ? 'plein' : '') + '"><i></i><span>' + t.court + (k > 1 ? ' ×' + k : '') + '</span></div>';
+    var t = TEMPS.map(function (x) {
+      var k = e.panier.filter(function (id) { return sit(id).temps === x.id; }).length;
+      return '<button type="button" class="' + (k ? 'plein' : '') + '" data-a="rail" data-v="' + x.id + '" aria-label="' + x.nom + (k ? ', ' + k + ' choisie' + (k > 1 ? 's' : '') : ', rien encore') + '"><i></i><span>' + x.court + (k > 1 ? ' ×' + k : '') + '</span></button>';
     }).join('');
-    return '<div class="seance-barre" id="barre-seance"><div class="temps" aria-hidden="true">' + temps + '</div>' +
-      '<div class="ligne"><b>' + (n ? 'Ma séance, ' + n + ' situation' + (n > 1 ? 's' : '') : 'Ajoutez des situations pour composer une séance') + '</b>' +
-      (n ? '<button type="button" class="bouton action" data-a="aller" data-v="composer">Composer</button>' : '') + '</div></div>';
+    return '<div class="barre-seance" id="barre-seance"><div class="temps">' + t + '</div><div class="ligne-b"><span><b>Mon entraînement</b><small>' + n + ' situation' + (n > 1 ? 's' : '') + ' choisie' + (n > 1 ? 's' : '') + '</small></span><button type="button" class="bouton-pilule" data-a="feuille" data-v="composer">Continuer</button></div></div>';
+  }
+  function vide() { return e.cat === 'U7' || e.cat === 'U9'; }
+
+  /* ---------- écrans ---------- */
+  var ECRANS = {};
+  ECRANS.communaute = function () {
+    var o = '<div class="defile-v" id="defile">' + onglets('communaute');
+    var vues = [['situations', 'Situations', ''], ['seances', 'Entraînements', ''], ['nonclasses', 'Non classés', NON_CLASSES.length]];
+    o += '<div class="vues" role="tablist" aria-label="Affichage" style="margin-top:14px">' + vues.map(function (v) {
+      return '<button type="button" role="tab" data-a="vue" data-v="' + v[0] + '" aria-selected="' + (e.vue === v[0]) + '">' + v[1] + (v[2] ? ' <small>' + v[2] + '</small>' : '') + '</button>';
+    }).join('') + '</div>';
+    if (e.vue !== 'nonclasses') {
+      o += '<div class="filtres"><div class="pour"><span class="pour-lib">Pour</span><button type="button" class="menu" data-a="feuille" data-v="cible">' + e.cat + ' ' + e.genre.toLowerCase() + 's' + ic('chevron-bas') + '</button><button type="button" class="menu" data-a="feuille" data-v="cible">' + e.niveau + ic('chevron-bas') + '</button></div>';
+      o += '<div class="phases" role="group" aria-label="Phase de jeu">' + PHASES.map(function (p) {
+        return '<button type="button" class="phase" data-a="phase" data-v="' + p.nom + '" aria-pressed="' + (p.nom === e.phase) + '">' + picto(p.nom) + p.nom + '</button>';
+      }).join('') + '</div></div>';
+    }
+    if (e.vue === 'nonclasses') { o += vueNonClasses(); }
+    else if (vide()) {
+      o += '<div class="vide"><b>Aucune situation ' + e.cat + ' pour l’instant</b><p>Les situations U11 s’adaptent souvent. Et la vôtre serait la première de la catégorie.</p><div class="actions"><button type="button" class="bouton-pilule sombre" data-a="voirU11">Voir les U11</button><button type="button" class="bouton-pilule clair" data-a="feuille" data-v="nouvel">Créer un entraînement</button></div></div>';
+    } else if (e.vue === 'seances') { o += vueSeances(); }
+    else { o += vueSituations(); }
+    o += '</div>';
+    if (!e.panier.length) o += fab();
+    return o + barreSeance() + navBasse();
+  };
+  function vueSituations() {
+    var o = '';
+    if (e.phase !== 'Contre-attaque') o += '<p class="explique">Dans cette maquette, ce sont les situations de contre-attaque qui s’affichent pour chaque phase.</p>';
+    TEMPS.forEach(function (t, k) {
+      var liste = SITUATIONS.filter(function (s) { return s.temps === t.id; });
+      o += '<section class="rail" id="rail-' + t.id + '" aria-labelledby="r-' + t.id + '"><div class="rail-tete"><span class="num">' + (k + 1) + '</span><h3 id="r-' + t.id + '">' + t.nom + '</h3><small>' + liste.length + ' situations</small></div><div class="rangee-cartes">';
+      liste.forEach(function (s) {
+        var dedans = e.panier.indexOf(s.id) >= 0;
+        o += '<article class="sit"><button type="button" class="ouvrir" data-a="voir" data-v="' + s.id + '">' + terrain(s.s) + '<span class="infos"><b>' + s.titre + '</b><span>' + s.auteur + ', ouverte ' + s.ouvertes + ' fois</span></span></button>' +
+          '<button type="button" class="ajout" data-a="ajout" data-v="' + s.id + '" aria-pressed="' + dedans + '" aria-label="' + (dedans ? 'Retirer de mon entraînement' : 'Ajouter à mon entraînement') + ' : ' + texte(s.titre) + '">' + ic('plus', 'plus') + ic('coche', 'coche') + '</button></article>';
+      });
+      o += '</div></section>';
+    });
+    return o;
+  }
+  function vueSeances() {
+    return '<div class="liste">' + SEANCES.map(function (s, i) {
+      return '<article class="carte pret"><div class="contenu"><div class="surligne">' + statut('pret') + '<span class="trait"></span><span class="cat">' + e.cat + '</span></div><h3>' + s.titre + '</h3><p class="objectif">' + s.objectif + '</p><div class="reperes"><span class="repere">' + e.niveau + '</span><span class="repere">' + e.phase + '</span></div></div>' +
+        '<div class="pied-carte"><span>d’après <b>' + s.auteur + '</b>, ' + s.ids.length + ' situations</span><button type="button" class="bouton-pilule" data-a="utiliser" data-v="' + i + '">Utiliser</button></div></article>';
+    }).join('') + '</div>';
+  }
+  function vueNonClasses() {
+    var o = '<p class="explique">Les entraînements que leurs auteurs n’ont pas encore classés. Tous restent consultables&nbsp;; ils rejoignent les thèmes dès qu’ils sont classés.</p>';
+    o += '<div class="recherche">' + ic('loupe') + '<label for="cherche" class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Chercher dans les non classés</label><input id="cherche" type="search" placeholder="Rechercher un entraînement"></div>';
+    o += '<div class="liste" id="liste-nc">' + NON_CLASSES.map(function (s) {
+      return '<div class="ligne" data-titre="' + s.titre.toLowerCase() + '"><b>' + s.titre + '</b><span class="bas">' + statut(s.statut) + (s.cat ? '<span class="cat">' + s.cat + '</span>' : '') + '<span>' + s.auteur + ', ' + s.n + ' situation' + (s.n > 1 ? 's' : '') + '</span></span></div>';
+    }).join('') + '</div>';
+    return o;
   }
 
-  /* ---------- les écrans ---------- */
-  var ECRANS = {};
-
-  ECRANS.communaute = function () {
-    var tuiles = PHASES.map(function (p) {
-      var n = vide() ? 0 : p.n;
-      return '<button type="button" class="phase" data-a="phase" data-v="' + p.nom + '" aria-pressed="' + (p.nom === e.phase) + '"><svg viewBox="0 0 52 34" aria-hidden="true">' + p.picto + '</svg><b>' + p.nom + '</b><small>' + (n ? n + ' situations' : 'aucune pour l’instant') + '</small></button>';
-    }).join('');
-    var o = '<div class="corps"><div class="pad">';
-    o += '<h2 class="titre-ecran">Trouver une situation</h2>';
-    o += '<div class="rubrique"><div class="entete"><h3>Pour qui</h3><span class="sous">Votre équipe&nbsp;: U13 masculins</span></div><div class="puces">' + puces(CATEGORIES, e.cat, 'cat') + '</div>' + bascule(GENRES, e.genre, 'genre') + '</div>';
-    o += '<div class="rubrique"><h3>Niveau</h3><div class="puces">' + puces(NIVEAUX, e.niveau, 'niveau') + '</div></div>';
-    o += '<div class="rubrique"><h3>Phase de jeu</h3><div class="phases">' + tuiles + '</div></div>';
-    if (vide()) {
-      o += '<div class="vide"><p>Aucune situation ' + e.cat + ' pour l’instant.</p><p>Les situations U11 s’adaptent souvent. Et la vôtre serait la première de la catégorie.</p><div class="rangee"><button type="button" class="bouton" data-a="cat" data-v="U11">Voir les U11</button><button type="button" class="bouton second" data-a="nouvelle">Partager une séance</button></div></div>';
-    }
-    o += '<div class="liens"><button type="button" class="lien" data-a="vue" data-v="seances"><span>Séances entières de ce thème</span><span>' + (vide() ? 0 : 3) + '</span></button><button type="button" class="lien" data-a="aller" data-v="nonclassees"><span>Non classées, le tout-venant</span><span>' + NON_CLASSEES.length + '</span></button></div>';
-    o += '</div></div>';
-    o += '<div class="pied">' + (vide() ? '<button type="button" class="bouton plein" disabled>Aucune situation</button>' : '<button type="button" class="bouton action plein" data-a="vue" data-v="situations">Voir les ' + nbPhase() + ' situations</button>') + '</div>';
-    return o + nav('communaute');
-  };
-
-  ECRANS.situations = function () {
-    var o = barreHaut(e.phase, 'communaute');
-    o += '<div class="filtres"><button type="button" class="filtre" data-a="aller" data-v="communaute">' + e.cat + ' ' + e.genre.toLowerCase() + 's</button><button type="button" class="filtre" data-a="aller" data-v="communaute">' + e.niveau + '</button><button type="button" class="filtre" data-a="aller" data-v="communaute">' + e.phase + '</button></div>';
-    o += '<div class="corps" id="corps">';
-    o += '<div style="padding:12px 16px 0">' + bascule(['Situations', 'Séances entières'], e.vue === 'seances' ? 'Séances entières' : 'Situations', 'vueNom') + '</div>';
-    if (e.phase !== 'Contre-attaque') o += '<p class="avis">Dans cette maquette, seules les situations de contre-attaque sont dessinées.</p>';
-    if (e.vue === 'seances') {
-      o += '<div class="pad">';
-      SEANCES_ENTIERES.forEach(function (s, i) {
-        o += '<div class="herite"><b style="font-size:.98rem">' + s.titre + '</b><p>d’après ' + s.auteur + '</p>' +
-          s.ids.map(function (id, k) { return '<p style="color:var(--ink)"><span style="color:var(--orange);font-weight:600">' + (k + 1) + '</span>&nbsp; ' + situation(id).titre + '</p>'; }).join('') +
-          '<button type="button" class="bouton second" data-a="utiliser" data-v="' + i + '">Utiliser cette séance</button></div>';
-      });
-      o += '</div>';
-    } else {
-      TEMPS.forEach(function (t, k) {
-        var liste = SITUATIONS.filter(function (s) { return s.temps === t.id; });
-        o += '<section class="rail" id="rail-' + t.id + '" aria-labelledby="r-' + t.id + '"><div class="rail-tete"><span class="num">' + (k + 1) + '</span><h3 id="r-' + t.id + '">' + t.nom + '</h3><small>' + liste.length + ' situations</small></div><div class="defile">';
-        liste.forEach(function (s) {
-          var dedans = e.panier.indexOf(s.id) >= 0;
-          o += '<article class="carte"><button type="button" class="ouvrir" data-a="voir" data-v="' + s.id + '">' + terrain(s.s) + '<span class="infos"><b>' + s.titre + '</b><span>' + s.auteur + ', ouverte ' + s.ouvertes + ' fois</span></span></button>' +
-            '<button type="button" class="ajout" data-a="ajout" data-v="' + s.id + '" aria-pressed="' + dedans + '">' + (dedans ? 'Dans ma séance' : 'Ajouter à ma séance') + '</button></article>';
-        });
-        o += '</div></section>';
-      });
-    }
-    o += '<div style="height:12px"></div></div>';
-    return o + barreSeance();
-  };
-
-  ECRANS.detail = function () {
-    var s = situation(e.detail), dedans = e.panier.indexOf(s.id) >= 0;
-    var t = TEMPS.filter(function (x) { return x.id === s.temps; })[0];
-    var o = barreHaut(t.nom, 'situations');
-    o += '<div class="corps detail">' + terrain(s.s) + '<div class="pad">';
-    o += '<div class="meta"><span class="etiquette">' + t.nom + '</span><span class="etiquette">' + e.phase + '</span><span class="etiquette">' + e.cat + '</span></div>';
-    o += '<h2 class="titre-ecran" style="font-size:1.45rem">' + s.titre + '</h2>';
-    o += '<p class="source">Par <b>' + s.auteur + '</b>, dans la séance « ' + s.seance + ' ». Ouverte ' + s.ouvertes + ' fois.</p>';
-    o += '<div class="texte"><div><h3>Organisation</h3><p>' + s.organisation + '</p></div><div><h3>Consignes</h3><p>' + s.consignes + '</p></div><div><h3>Variantes</h3><p>' + s.variantes + '</p></div></div>';
-    o += '<button type="button" class="bouton second" data-a="vue" data-v="seances">Voir la séance entière</button>';
-    o += '</div></div>';
-    o += '<div class="pied"><button type="button" class="bouton plein ' + (dedans ? 'second' : 'action') + '" data-a="ajoutDetail" data-v="' + s.id + '">' + (dedans ? 'Dans ma séance, la retirer' : 'Ajouter à ma séance') + '</button></div>';
-    return o;
-  };
-
-  ECRANS.composer = function () {
-    var o = barreHaut('Ma séance', 'situations');
-    o += '<div class="corps"><div class="pad">';
-    o += '<div class="herite"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font-size:.92rem">Déjà classée</b>' + statut('en_cours') + '</div>' +
-      '<div class="meta"><span class="etiquette">' + e.cat + ' ' + e.genre.toLowerCase() + 's</span><span class="etiquette">' + e.niveau + '</span><span class="etiquette">' + e.phase + '</span></div>' +
-      '<p>Reprise des choix faits pour parcourir la Communauté. Elle passe en cours dès sa création.</p>' +
-      '<button type="button" class="bouton second" style="justify-self:start;min-height:40px" data-a="feuille" data-v="classer-composer">Modifier</button></div>';
-    o += '<div class="champ"><label for="theme">Thème</label><input id="theme" value="' + e.phase + ' ' + e.cat + '"></div>';
-    o += '<div class="champ"><label for="objectif">Objectif</label><textarea id="objectif" placeholder="Ce que les joueurs doivent savoir faire à la fin de la séance"></textarea></div>';
-    o += '<div class="temps-liste">';
-    TEMPS.forEach(function (t, k) {
-      var ids = e.panier.filter(function (id) { return situation(id).temps === t.id; });
-      o += '<div class="temps-item"><span class="num">' + (k + 1) + '</span><div><h3>' + t.nom + '</h3>';
-      ids.forEach(function (id) {
-        var s = situation(id);
-        o += '<div class="choisie">' + terrain(s.s) + '<div><b>' + s.titre + '</b><span>d’après ' + s.auteur + '</span></div><button type="button" class="retirer" data-a="retirer" data-v="' + id + '" aria-label="Retirer ' + s.titre.replace(/&nbsp;/g, ' ') + '">Retirer</button></div>';
-      });
-      o += '<button type="button" class="creneau" data-a="choisir" data-v="' + t.id + '" style="margin-top:' + (ids.length ? '8px' : '0') + '">' + (ids.length ? 'Ajouter ' : 'Choisir ') + t.choisir + '</button></div></div>';
-    });
-    o += '</div></div></div>';
-    o += '<div class="pied"><button type="button" class="bouton action plein" data-a="creer"' + (e.panier.length ? '' : ' disabled') + '>Créer la séance</button></div>';
-    return o;
-  };
-
-  ECRANS.nonclassees = function () {
-    var o = barreHaut('Non classées', 'communaute');
-    o += '<div class="corps"><div class="pad">';
-    o += '<p class="sous" style="font-size:.92rem">Les séances que leurs auteurs n’ont pas encore classées. Toutes restent consultables&nbsp;; elles rejoignent les thèmes dès qu’elles sont classées.</p>';
-    o += '<div class="recherche"><label class="petit" for="cherche" style="display:block;margin-bottom:4px">Chercher dans les non classées</label><input id="cherche" type="search" placeholder="Un mot du thème ou de l’objectif"></div>';
-    o += '<div><p class="petit" style="margin-bottom:6px">Les plus récentes d’abord</p><div class="liste" id="liste-nc">';
-    NON_CLASSEES.forEach(function (s) {
-      o += '<div class="ligne-seance" data-titre="' + s.titre.toLowerCase() + '"><b>' + s.titre + '</b><span class="bas">' + statut(s.statut) + '<span>' + s.auteur + '</span><span>' + s.n + ' situation' + (s.n > 1 ? 's' : '') + '</span><span>' + s.cat + '</span></span></div>';
-    });
-    o += '</div></div></div></div>';
-    return o + nav('communaute');
-  };
-
   ECRANS.mes = function () {
-    var aClasser = e.mes.filter(function (m) { return !m.classee; }).length;
-    var o = '<div class="corps"><div class="pad">';
-    o += '<h2 class="titre-ecran">Mes séances</h2>';
-    o += '<div class="impact"><p>Vos situations dans la Communauté, en octobre</p><div class="chiffres"><div><b>140</b><span>ouvertures, par 61 entraîneurs</span></div><div><b>6</b><span>séances qui les ont reprises</span></div></div><p>« Relais de passes en mouvement » est la plus reprise.</p>' +
-      (aClasser ? '<button type="button" class="bouton" data-a="feuille" data-v="tri">Classer mes ' + aClasser + ' séances en 30 secondes</button>' : '') + '</div>';
+    var aClasser = e.mes.filter(function (m) { return !m.classe; }).length;
+    var o = '<div class="defile-v" id="defile">' + onglets('mes');
+    o += '<div class="impact"><div class="chiffres"><div><b>140</b><span>ouvertures de vos situations en octobre</span></div><div><b>6</b><span>entraînements les ont reprises</span></div></div>' +
+      (aClasser ? '<p>' + aClasser + ' de vos entraînements ne sont pas encore classés&nbsp;: ils n’apparaissent pas dans les thèmes de la Communauté.</p><button type="button" class="bouton-pilule sombre" data-a="feuille" data-v="tri">Les classer, 30 secondes</button>' : '<p>Tous vos entraînements sont classés.</p>') + '</div>';
     o += '<div class="liste">';
     e.mes.forEach(function (m, i) {
-      o += '<button type="button" class="ligne-seance" data-a="editer" data-v="' + i + '"><b>' + m.titre + '</b><span class="bas">' + statut(m.statut) + '<span>' + m.n + ' situations</span>' + (m.classee ? '<span>classée</span>' : '<span class="a-classer">à classer</span>') + '</span></button>';
+      var st = STATUTS[m.statut][1];
+      o += '<article class="carte ' + st + '"><div class="contenu"><div class="surligne">' + statut(m.statut) + '<span class="trait"></span><span class="cat">' + m.cat + '</span></div><h3>' + m.titre + '</h3><p class="objectif">' + m.objectif + '</p>' +
+        (m.classe && m.reperes ? '<div class="reperes">' + m.reperes.map(function (r) { return '<span class="repere">' + r + '</span>'; }).join('') + '</div>' : '') + '</div>' +
+        (m.classe ? '' : '<div class="a-classer"><span>À classer&nbsp;: <b>' + m.manque + '</b></span><button type="button" class="bouton-pilule" data-a="classerCarte" data-v="' + i + '">Classer</button></div>') +
+        '<div class="pied-carte"><span><b>' + m.n + '</b> situations</span><button type="button" class="bouton-pilule sombre" data-a="ouvrir" data-v="' + i + '">Ouvrir</button></div></article>';
     });
-    o += '</div><div style="height:64px"></div></div></div>';
-    o += '<button type="button" class="fab" data-a="nouvelle">Nouvelle séance</button>';
-    return o + nav('mes');
+    o += '</div></div>';
+    return o + fab() + navBasse();
+  };
+
+  ECRANS.groupe = function () {
+    return '<div class="defile-v">' + onglets('groupe') + '<p class="explique">Les entraînements partagés avec l’équipe U13. Hors du périmètre de cette maquette.</p></div>' + fab() + navBasse();
+  };
+  ECRANS.groupes = function () { return '<div class="defile-v"><div class="corps-editeur"><h2 style="margin:0">Groupes</h2><p class="petit">Hors du périmètre de cette maquette.</p></div></div>' + navBasse(); };
+  ECRANS.profil = function () {
+    return '<div class="defile-v"><div class="corps-editeur"><h2 style="margin:0">Profil</h2><div><p class="champ-titre">Les équipes que j’entraîne</p><div class="puces">' + puces(CATEGORIES, 'U13', 'rien') + '</div><p class="petit" style="margin-top:8px">Demandées à l’inscription, elles ouvrent la Communauté sur la bonne catégorie.</p></div></div></div>' + navBasse();
   };
 
   ECRANS.editeur = function () {
     var m = e.mes[e.edit];
-    var o = barreHaut(m.titre, 'mes');
-    o += '<div class="corps"><div class="pad">';
-    o += '<div style="display:flex;justify-content:space-between;align-items:center">' + statut(m.statut) + '<span class="petit">' + m.n + ' situations</span></div>';
-    if (!m.classee) {
-      o += '<div class="bandeau" role="status"><p>Il manque ' + (m.manque || 'le niveau et la phase de jeu') + '. Tant qu’elle n’est pas classée, la séance reste en brouillon et n’apparaît pas dans les thèmes de la Communauté.</p><button type="button" class="bouton" data-a="feuille" data-v="classer">Compléter</button></div>';
-    }
+    var o = '<div class="barre-editeur"><button type="button" class="rond-bouton" data-a="aller" data-v="mes" aria-label="Retour à mes entraînements">' + ic('fleche-gauche') + '</button><span class="titre">' + m.titre + '</span><button type="button" class="rond-bouton" data-a="presenter" aria-label="Présenter">' + ic('presenter') + '</button><button type="button" class="rond-bouton plein" data-a="enregistrer" aria-label="Enregistrer">' + ic('disquette') + '</button></div>';
+    o += '<div class="defile-v" id="defile"><div class="corps-editeur">';
+    o += '<div class="surligne">' + statut(m.statut) + '<span class="trait"></span><span class="cat">' + m.cat + '</span></div>';
+    if (!m.classe) o += '<div class="bandeau" role="status"><p>Il manque <b>' + m.manque + '</b>. Tant qu’il n’est pas classé, l’entraînement reste en brouillon et n’apparaît pas dans les thèmes de la Communauté.</p><button type="button" class="bouton-pilule" data-a="feuille" data-v="classer">Classer en deux choix</button></div>';
     o += '<div class="champ"><label for="theme-e">Thème</label><input id="theme-e" value="' + m.titre + '"></div>';
-    o += '<div class="champ"><label for="obj-e">Objectif</label><textarea id="obj-e">Gagner du temps à la récupération et attaquer avant le repli.</textarea></div>';
-    o += '<div class="rubrique"><h3>Situations</h3><div>';
+    o += '<div class="champ"><label for="obj-e">Objectif</label><textarea id="obj-e">' + m.objectif + '</textarea></div>';
+    o += '<div class="champ"><span class="champ-titre" style="margin:0">Situations</span>';
     if (!m.n) o += '<p class="petit">Aucune situation pour l’instant.</p>';
     [1, 3, 5].slice(0, Math.min(3, m.n)).forEach(function (id) {
-      var s = situation(id);
-      o += '<div class="mini">' + terrain(s.s) + '<div><b>' + s.titre + '</b><span>' + TEMPS.filter(function (t) { return t.id === s.temps; })[0].nom + '</span></div></div>';
+      var s = sit(id);
+      o += '<div class="situation-ed"><span class="mini">' + terrain(s.s) + '</span><div><b>' + s.titre + '</b><span>' + tempsDe(s.temps).nom + '</span></div></div>';
     });
-    o += '</div></div></div></div>';
-    o += '<div class="pied"><button type="button" class="bouton plein" data-a="presenter">Présenter</button></div>';
+    o += '</div></div></div>';
     return o;
   };
 
   ECRANS.presenter = function () {
-    var s = situation(5);
-    return '<div class="scene"><div class="haut"><span>Situation 3 sur 3</span><span>Présenter</span></div><div class="milieu">' + terrain(s.s) + '<h3>' + s.titre + '</h3><p style="opacity:.8;font-size:.92rem">' + s.consignes + '</p></div><div class="bas"><button type="button" class="bouton plein" data-a="terminer">Terminer la séance</button></div></div>';
+    var s = sit(5), barres = '';
+    for (var i = 0; i < 3; i++) barres += '<i class="' + (i < e.diapo ? 'vu' : i === e.diapo ? 'ici' : '') + '"></i>';
+    return '<div class="presenter"><div class="haut"><button type="button" class="rond-bouton" data-a="terminer" aria-label="Fermer Présenter">' + ic('croix') + '</button><span class="progres" aria-hidden="true">' + barres + '</span><span class="compteur">0' + (e.diapo + 1) + ' / 03</span></div>' +
+      '<div class="corps"><span class="surtitre">Situation 03</span><h2>' + s.titre + '</h2><div class="detail-terrain">' + terrain(s.s) + '</div><div class="encart observer"><h3>' + ic('oeil') + 'À observer</h3><p>' + s.observer + '</p></div></div>' +
+      '<div class="pied"><button type="button" class="bouton-pilule large sombre" data-a="terminer">Terminer la séance</button></div></div>';
   };
 
-  ECRANS.groupes = function () { return '<div class="corps"><div class="pad"><h2 class="titre-ecran">Groupes</h2><p class="sous">Hors du périmètre de cette maquette.</p></div></div>' + nav('groupes'); };
-  ECRANS.profil = function () { return '<div class="corps"><div class="pad"><h2 class="titre-ecran">Profil</h2><div class="rubrique"><h3>Les équipes que j’entraîne</h3><p class="sous">Posées à l’inscription, elles ouvrent la Communauté sur votre catégorie.</p><div class="puces">' + puces(CATEGORIES, 'U13', 'rien') + '</div></div></div></div>' + nav('profil'); };
-
-  /* ---------- feuilles et fenêtres ---------- */
-  function feuilleClasser(titre, aide) {
+  /* ---------- feuilles ---------- */
+  var FEUILLES = {};
+  FEUILLES.cible = function () {
+    var c = e.cible;
+    return '<div class="voile" data-a="fermer"><div class="feuille" role="dialog" aria-modal="true" aria-labelledby="f-titre"><span class="poignee"></span><h2 id="f-titre">Pour qui&nbsp;?</h2><p class="sous">Votre profil indique U13 masculins.</p>' +
+      '<div><p class="champ-titre">Catégorie</p><div class="puces">' + puces(CATEGORIES, c.cat, 'cCat') + '</div></div>' +
+      '<div>' + bascule(GENRES, c.genre, 'cGenre') + '</div>' +
+      '<div><p class="champ-titre">Niveau</p>' + bascule(NIVEAUX, c.niveau, 'cNiveau') + '</div>' +
+      '<button type="button" class="bouton-pilule large" data-a="appliquerCible">Afficher</button></div></div>';
+  };
+  FEUILLES.detail = function () {
+    var s = sit(e.detail), dedans = e.panier.indexOf(s.id) >= 0;
+    return '<div class="voile" data-a="fermer"><div class="feuille detail" role="dialog" aria-modal="true" aria-labelledby="f-titre"><span class="poignee"></span>' +
+      '<div class="detail-terrain">' + terrain(s.s) + '</div>' +
+      '<div class="reperes"><span class="repere">' + tempsDe(s.temps).nom + '</span><span class="repere">' + e.phase + '</span><span class="repere">' + e.cat + '</span></div>' +
+      '<h2 id="f-titre">' + s.titre + '</h2>' +
+      '<div class="auteur"><span class="initiales">' + initiales(s.auteur) + '</span><span>Par <b>' + s.auteur + '</b>, dans « ' + s.seance + ' ». Ouverte ' + s.ouvertes + ' fois.</span></div>' +
+      '<div class="encart faire"><h3>' + ic('presse') + 'À faire</h3><p>' + s.faire + '</p></div>' +
+      '<div class="encart observer"><h3>' + ic('oeil') + 'À observer</h3><p>' + s.observer + '</p></div>' +
+      '<div class="encart variante"><h3>' + ic('variantes') + 'Variantes</h3><p>' + s.variantes + '</p></div>' +
+      '<button type="button" class="lien-texte" data-a="vue" data-v="seances">Voir l’entraînement d’origine</button>' +
+      '<div class="collant"><button type="button" class="bouton-pilule large' + (dedans ? ' clair' : '') + '" data-a="ajoutDetail" data-v="' + s.id + '">' + (dedans ? 'Retirer de mon entraînement' : ic('plus') + 'Ajouter à mon entraînement') + '</button></div></div></div>';
+  };
+  FEUILLES.composer = function () {
+    var o = '<div class="plein-ecran" role="dialog" aria-modal="true" aria-labelledby="f-titre"><div class="barre-editeur"><button type="button" class="rond-bouton" data-a="fermer" aria-label="Revenir aux situations">' + ic('fleche-gauche') + '</button><h2 id="f-titre" class="titre" style="font-family:var(--corps);font-size:1rem;margin:0">Nouvel entraînement</h2></div><div class="defile-v corps-editeur" style="padding-bottom:24px">';
+    o += '<div class="classe-office"><div class="haut"><span>Déjà classé</span>' + statut('encours') + '</div><div class="reperes"><span class="cat">' + e.cat + ' ' + e.genre.toLowerCase() + 's</span><span class="repere">' + e.niveau + '</span><span class="repere">' + e.phase + '</span></div><p>Repris de la Communauté&nbsp;: il passe en cours dès sa création.</p></div>';
+    o += '<div class="champ"><label for="theme">Thème</label><input id="theme" value="' + e.phase + ' ' + e.cat + '"></div>';
+    o += '<div class="champ"><label for="objectif">Objectif</label><textarea id="objectif" placeholder="Ce que les joueurs sauront faire à la fin"></textarea></div>';
+    o += '<div class="temps-liste">';
+    TEMPS.forEach(function (t, k) {
+      var ids = e.panier.filter(function (id) { return sit(id).temps === t.id; });
+      o += '<div class="temps-bloc"><h3><span class="num">' + (k + 1) + '</span>' + t.nom + '</h3>';
+      ids.forEach(function (id) {
+        var s = sit(id);
+        o += '<div class="choisie"><span class="mini">' + terrain(s.s) + '</span><div><b>' + s.titre + '</b><span>d’après ' + s.auteur + '</span></div><button type="button" class="retirer" data-a="retirer" data-v="' + id + '" aria-label="Retirer ' + texte(s.titre) + '">' + ic('croix') + '</button></div>';
+      });
+      if (!ids.length) o += '<button type="button" class="creneau" data-a="rail" data-v="' + t.id + '">' + ic('plus') + 'Choisir ' + t.choisir + '</button>';
+      o += '</div>';
+    });
+    o += '</div></div><div class="pied-plein"><button type="button" class="bouton-pilule large" data-a="creer"' + (e.panier.length ? '' : ' disabled') + '>Créer l’entraînement</button></div></div>';
+    return o;
+  };
+  FEUILLES.nouvel = function () {
+    return '<div class="voile" data-a="fermer"><div class="feuille" role="dialog" aria-modal="true" aria-labelledby="f-titre"><span class="poignee"></span><h2 id="f-titre">Nouvel entraînement</h2>' +
+      '<button type="button" class="choix mis-en-avant" data-a="depuisCommunaute"><span class="rond">' + ic('globe') + '</span><span><span class="conseil">Le plus rapide</span><b>Partir de la Communauté</b><span class="desc">Choisissez des situations de votre catégorie. L’entraînement est classé d’office.</span></span></button>' +
+      '<button type="button" class="choix" data-a="vierge"><span class="rond">' + ic('crayon') + '</span><span><b>Partir d’une page blanche</b><span class="desc">Vous le classerez en deux choix quand il sera prêt.</span></span></button>' +
+      '<button type="button" class="bouton-pilule clair large" data-a="fermer">Annuler</button></div></div>';
+  };
+  function feuilleClasser(titre, sous, actionFermer) {
     var c = e.classer;
-    var phases = PHASES.map(function (p) { return p.nom; });
-    return '<div class="voile"><div class="feuille" role="dialog" aria-modal="true" aria-labelledby="f-titre"><h2 id="f-titre">' + titre + '</h2>' +
-      (aide ? '<p class="petit">' + aide + '</p>' : '') +
-      '<div class="rubrique"><h3>Pour qui</h3><div class="puces">' + puces(CATEGORIES, c.cat, 'cCat') + '</div>' + bascule(GENRES, c.genre, 'cGenre') + '</div>' +
-      '<div class="rubrique"><h3>Niveau</h3><div class="puces">' + puces(NIVEAUX, c.niveau, 'cNiveau') + '</div></div>' +
-      '<div class="rubrique"><h3>Phase de jeu</h3><div class="puces">' + puces(phases, c.phase, 'cPhase') + '</div><p class="petit">Ses situations prendront cette phase. Vous pourrez la changer sur l’une d’elles.</p></div>' +
-      '<div class="rubrique"><h3>Seconde phase, si besoin</h3><div class="puces">' + puces(['Aucune'].concat(phases), c.seconde, 'cSeconde') + '</div></div>' +
-      '<div class="rangee"><button type="button" class="bouton second" data-a="fermer">Plus tard</button><button type="button" class="bouton action" data-a="enregistrerClasse"' + (c.niveau && c.phase ? '' : ' disabled') + '>Enregistrer</button></div></div></div>';
+    return '<div class="voile' + (actionFermer === 'fermerFin' ? ' centre' : '') + '"><div class="feuille" role="dialog" aria-modal="true" aria-labelledby="f-titre">' + (actionFermer === 'fermerFin' ? '' : '<span class="poignee"></span>') + '<h2 id="f-titre">' + titre + '</h2><p class="sous">' + sous + '</p>' +
+      '<div><p class="champ-titre">Niveau</p>' + bascule(NIVEAUX, c.niveau, 'kNiveau') + '</div>' +
+      '<div><p class="champ-titre">Phase de jeu</p>' + tuilesPhases(c.phase, 'kPhase') + '</div>' +
+      '<p class="petit">Ses situations prennent cette phase&nbsp;; vous pourrez la changer sur l’une d’elles.</p>' +
+      '<div class="actions-feuille"><button type="button" class="bouton-pilule clair" data-a="' + actionFermer + '">Plus tard</button><button type="button" class="bouton-pilule" data-a="enregistrerClasse"' + (c.niveau && c.phase ? '' : ' disabled') + '>Classer</button></div></div></div>';
   }
-  var FEUILLES = {
-    nouvelle: function () {
-      return '<div class="voile"><div class="feuille" role="dialog" aria-modal="true" aria-labelledby="f-titre"><h2 id="f-titre">Nouvelle séance</h2>' +
-        '<button type="button" class="choix" data-a="depuisCommunaute"><span class="conseil">Le plus rapide pour commencer</span><b>Composer depuis la Communauté</b><span>Choisissez des situations par catégorie, niveau et phase de jeu. La séance est classée d’office.</span></button>' +
-        '<button type="button" class="choix" data-a="vierge"><b>Partir d’une séance vide</b><span>Vous la classerez quand elle sera prête&nbsp;: catégorie, niveau, phase de jeu.</span></button>' +
-        '<button type="button" class="bouton second" data-a="fermer">Annuler</button></div></div>';
-    },
-    classer: function () { return feuilleClasser('Classer la séance', 'Trois choix, et elle passe en cours.'); },
-    'classer-composer': function () { return feuilleClasser('Modifier le classement', ''); },
-    fin: function () {
-      var c = e.classer, phases = PHASES.map(function (p) { return p.nom; });
-      return '<div class="voile centre"><div class="feuille" role="dialog" aria-modal="true" aria-labelledby="f-titre"><h2 id="f-titre">La séance est faite</h2><p class="petit">Deux choix, et elle pourra servir à d’autres entraîneurs de votre catégorie.</p>' +
-        '<div class="rubrique"><h3>Niveau</h3><div class="puces">' + puces(NIVEAUX, c.niveau, 'cNiveau') + '</div></div>' +
-        '<div class="rubrique"><h3>Phase de jeu</h3><div class="puces">' + puces(phases, c.phase, 'cPhase') + '</div></div>' +
-        '<div class="rangee"><button type="button" class="bouton second" data-a="fermerFin">Plus tard</button><button type="button" class="bouton action" data-a="enregistrerClasse"' + (c.niveau && c.phase ? '' : ' disabled') + '>Enregistrer</button></div></div></div>';
-    },
-    tri: function () {
-      var aTrier = e.mes.filter(function (m) { return !m.classee; });
-      var t = e.tri, phases = PHASES.map(function (p) { return p.nom; });
-      var o = '<div class="voile centre"><div class="feuille" role="dialog" aria-modal="true" aria-labelledby="f-titre">';
-      if (t.fini || !aTrier.length) {
-        return o + '<h2 id="f-titre">C’est fait</h2><p class="petit">Vos séances classées apparaissent maintenant dans la Communauté, en U13 masculins.</p><p class="petit">Ce rappel ne revient qu’une fois par semaine au plus, et seulement s’il reste des séances à classer.</p><button type="button" class="bouton action plein" data-a="fermerTri">Fermer</button></div></div>';
-      }
-      var m = aTrier[0], total = e.mes.filter(function (x) { return !x.classee || x.trie; }).length;
-      var faits = e.mes.filter(function (x) { return x.trie; }).length;
-      var barres = ''; for (var i = 0; i < total; i++) barres += '<i class="' + (i < faits ? 'fait' : '') + '"></i>';
-      return o + '<div class="progres" aria-hidden="true">' + barres + '</div><h2 id="f-titre">Classer mes séances</h2><p class="petit">Séance ' + (faits + 1) + ' sur ' + total + ', sans l’ouvrir.</p>' +
-        '<div class="herite"><b>' + m.titre + '</b><p>U13 masculins, ' + m.n + ' situations</p></div>' +
-        '<div class="rubrique"><h3>Niveau</h3><div class="puces">' + puces(NIVEAUX, t.niveau, 'tNiveau') + '</div></div>' +
-        '<div class="rubrique"><h3>Phase de jeu</h3><div class="puces">' + puces(phases, t.phase, 'tPhase') + '</div></div>' +
-        '<div class="rangee"><button type="button" class="bouton second" data-a="fermerTri">Plus tard</button><button type="button" class="bouton action" data-a="trier"' + (t.niveau && t.phase ? '' : ' disabled') + '>Classer</button></div></div></div>';
-    }
+  FEUILLES.classer = function () { return feuilleClasser('Classer l’entraînement', 'U13 masculins, d’après votre profil.', 'fermer'); };
+  FEUILLES.fin = function () { return feuilleClasser('La séance est faite', 'Deux choix, et elle servira à d’autres entraîneurs U13.', 'fermerFin'); };
+  FEUILLES.tri = function () {
+    var reste = e.mes.filter(function (m) { return !m.classe; }), t = e.tri;
+    var o = '<div class="voile centre"><div class="feuille" role="dialog" aria-modal="true" aria-labelledby="f-titre">';
+    if (t.fini || !reste.length) return o + '<h2 id="f-titre">C’est fait</h2><p class="sous" style="margin:0">Vos entraînements classés apparaissent maintenant dans la Communauté, en U13 masculins.</p><p class="petit">Ce rappel revient au plus une fois par semaine, et seulement s’il reste des entraînements à classer.</p><button type="button" class="bouton-pilule large" data-a="fermerTri">Fermer</button></div></div>';
+    var total = e.mes.filter(function (m) { return !m.classe || m.trie; }).length, faits = e.mes.filter(function (m) { return m.trie; }).length, m = reste[0], barres = '';
+    for (var i = 0; i < total; i++) barres += '<i class="' + (i < faits ? 'fait' : '') + '"></i>';
+    return o + '<div class="progres-tri" aria-hidden="true">' + barres + '</div><h2 id="f-titre">Classer mes entraînements</h2><p class="sous">' + (faits + 1) + ' sur ' + total + ', sans les ouvrir.</p>' +
+      '<div class="apercu"><b>' + m.titre + '</b><span>U13 masculins, ' + m.n + ' situations</span></div>' +
+      '<div><p class="champ-titre">Niveau</p>' + bascule(NIVEAUX, t.niveau, 'tNiveau') + '</div>' +
+      '<div><p class="champ-titre">Phase de jeu</p>' + tuilesPhases(t.phase, 'tPhase') + '</div>' +
+      '<div class="actions-feuille"><button type="button" class="bouton-pilule clair" data-a="passerTri">Passer</button><button type="button" class="bouton-pilule" data-a="trier"' + (t.niveau && t.phase ? '' : ' disabled') + '>Classer</button></div></div></div>';
   };
 
-  /* ---------- notes du panneau ---------- */
+  /* ---------- panneau ---------- */
   var NOTES = {
-    communaute: ['Trouver une situation', 'La Communauté s’ouvre sur la catégorie de l’entraîneur, posée à l’inscription et dans son profil. On ajuste le niveau et la phase de jeu, puis on découvre les situations.', 'Une catégorie sans contenu le dit et propose la plus proche&nbsp;: essayez U9. Les séances non classées restent à un geste, en bas.'],
-    situations: ['Situations rangées en séance', 'Les situations du thème sont rangées dans l’ordre d’une séance&nbsp;: échauffement, duels, situation évolutive, forme jouée. Chaque carte montre le terrain dessiné.', 'La <b>barre de séance</b> se remplit au fil des ajouts&nbsp;: on voit tout de suite quel temps manque. « Séances entières » donne les séances complètes, à reprendre d’un geste.'],
-    detail: ['Une situation', 'Le schéma d’abord, puis l’organisation, les consignes et les variantes. On voit de qui elle vient et de quelle séance.', 'Chaque ouverture est comptée pour l’auteur.'],
-    composer: ['Composer sa séance', 'La séance reprend les choix faits pour parcourir&nbsp;: elle est <b>classée d’office</b> et passe en cours dès sa création.', 'Chaque situation reprise garde « d’après » son auteur, et la reprise lui est comptée.'],
-    nonclassees: ['Le tout-venant', 'Toutes les séances que leurs auteurs n’ont pas classées, des plus récentes aux plus anciennes, avec une recherche. Rien n’est caché, mais rien n’est mis en avant.', 'Une séance quitte cette liste dès qu’elle est classée.'],
-    mes: ['Mes séances', 'En tête, ce que les séances de l’entraîneur ont apporté aux autres&nbsp;: les ouvertures et les reprises. Ni points, ni classement entre entraîneurs.', 'Les séances à classer sont signalées dans la liste, et le tri express les règle sans les ouvrir.'],
-    nouvelle: ['Créer une séance', 'Deux départs&nbsp;: composer depuis la Communauté, conseillé pour un premier essai, ou partir d’une séance vide.', 'Composer depuis la Communauté évite la page blanche, là où beaucoup de nouveaux venus abandonnent.'],
-    editeur: ['Le bandeau', 'À l’ouverture d’une séance non classée, un bandeau, pas une fenêtre&nbsp;: il dit ce qui manque et pourquoi, sans bloquer le travail.', 'Seul l’auteur le voit.'],
-    classer: ['Classer en trois choix', 'Pour qui, quel niveau, quelle phase. Une seconde phase est facultative. Les situations héritent de la phase de la séance.', 'Une fois classée, la séance passe en cours, et rejoint les thèmes de la Communauté quand elle est prête.'],
-    fin: ['Fin de Présenter', 'Le rappel arrive à la fin de la séance, quand l’entraîneur sait si elle a marché, jamais au lancement, quand il est devant ses joueurs.', 'Deux choix seulement&nbsp;: la catégorie est déjà connue.'],
-    tri: ['Le tri express', 'Une fenêtre qui fait classer plusieurs séances sans les ouvrir, une par une.', 'Au plus une fois par semaine, et seulement s’il reste des séances à classer.'],
-    presenter: ['Présenter', 'Rien n’interrompt la présentation. Le rappel attend la fin.', ''],
-    groupes: ['Groupes', 'Hors du périmètre de cette maquette.', ''],
-    profil: ['Profil', 'Les équipes entraînées, posées à l’inscription, ouvrent la Communauté sur la bonne catégorie.', '']
+    communaute: ['L’onglet Communauté', 'Il s’ouvre sur la catégorie de l’entraîneur, prise dans son profil, et sur les situations de la phase choisie, <b>sans écran intermédiaire</b>&nbsp;: changer de phase met à jour la page.', 'Les situations sont rangées dans l’ordre d’une séance. Le schéma vient en premier, comme dans l’éditeur.', 'Touchez le + d’une situation, ou essayez la catégorie U9 depuis « Pour ».'],
+    ajouter: ['Ajouter des situations', 'Le + ajoute la situation sans quitter la page. La <b>barre de l’entraînement</b> montre quels temps sont remplis&nbsp;; toucher un temps vide mène à ses situations.', '', 'Ajoutez une forme jouée, puis touchez « Voir et créer ».'],
+    detail: ['Une situation', 'Elle s’ouvre par-dessus la liste, pour ne pas perdre sa place. Le schéma, puis « à faire », « à observer » et « variantes », comme dans Présenter.', 'On voit qui l’a créée et dans quel entraînement. Chaque ouverture est comptée pour l’auteur.', ''],
+    composer: ['Créer l’entraînement', 'Il reprend la catégorie, le niveau et la phase affichés&nbsp;: il est <b>classé d’office</b> et passe en cours dès sa création.', 'Chaque situation garde « d’après » son auteur, et la reprise lui est comptée.', ''],
+    nonclasses: ['Les non classés', 'Le tout-venant, à part, avec une recherche. Rien n’est caché, mais rien n’est mis en avant.', 'Un entraînement quitte cette liste dès qu’il est classé.', ''],
+    mes: ['Mes entraînements', 'En tête, ce que les entraînements de l’entraîneur ont apporté aux autres. Ni points, ni classement entre entraîneurs.', 'Une carte non classée dit ce qui manque, et se <b>classe sans être ouverte</b>.', 'Touchez « Classer » sur une carte.'],
+    nouvel: ['Nouvel entraînement', 'Le bouton + propose deux départs. Partir de la Communauté évite la page blanche, là où beaucoup de nouveaux venus abandonnent.', '', ''],
+    editeur: ['Le bandeau', 'À l’ouverture d’un entraînement non classé, un bandeau dit ce qui manque et pourquoi, sans bloquer le travail.', 'Seul l’auteur le voit.', ''],
+    classer: ['Classer en deux choix', 'La catégorie est déjà connue. Restent le niveau et la phase de jeu, dont les situations héritent.', 'Classé, l’entraînement passe en cours, et rejoint les thèmes de la Communauté quand il est prêt.', ''],
+    fin: ['La fin de Présenter', 'Le rappel arrive quand la séance est faite et que l’entraîneur sait si elle a marché. Jamais au lancement, devant les joueurs.', '', ''],
+    presenter: ['Présenter', 'Rien n’interrompt la présentation. Le rappel attend la fin.', '', 'Touchez « Terminer la séance ».'],
+    tri: ['Le tri express', 'Il fait classer plusieurs entraînements à la suite, sans les ouvrir.', 'Au plus une fois par semaine, et seulement s’il reste à classer.', ''],
+    autre: ['Hors maquette', 'Cet écran n’est pas traité par l’étude.', '', '']
   };
-  var PARCOURS = [
-    ['Parcourir la Communauté', [['communaute', 'Choisir'], ['situations', 'Les situations'], ['detail', 'Une situation'], ['composer', 'Composer'], ['nonclassees', 'Non classées']]],
-    ['Créer et compléter', [['mes', 'Mes séances'], ['nouvelle', 'Nouvelle séance'], ['editeur', 'Le bandeau'], ['classer', 'Classer'], ['fin', 'Fin de Présenter'], ['tri', 'Tri express']]]
+  var SCENARIOS = [
+    ['Trouver et composer', [['communaute', 'Ouvrir la Communauté'], ['ajouter', 'Ajouter des situations'], ['detail', 'Ouvrir une situation'], ['composer', 'Créer l’entraînement'], ['nonclasses', 'Voir les non classés']]],
+    ['Compléter ses entraînements', [['mes', 'Mes entraînements'], ['nouvel', 'Nouvel entraînement'], ['editeur', 'Le bandeau'], ['classer', 'Classer'], ['fin', 'Fin de Présenter'], ['tri', 'Tri express']]]
   ];
   var cleNote = 'communaute';
+  function calculeCle() {
+    if (e.feuille) return e.feuille === 'cible' ? 'communaute' : e.feuille;
+    if (e.ecran === 'communaute') return e.vue === 'nonclasses' ? 'nonclasses' : (e.panier.length ? 'ajouter' : 'communaute');
+    return NOTES[e.ecran] ? e.ecran : 'autre';
+  }
   function rendPanneau() {
-    document.getElementById('parcours').innerHTML = PARCOURS.map(function (p) {
-      return '<div><h3>' + p[0] + '</h3><div class="etapes">' + p[1].map(function (x) {
-        return '<button type="button" data-saut="' + x[0] + '" aria-pressed="' + (x[0] === cleNote) + '">' + x[1] + '</button>';
-      }).join('') + '</div></div>';
+    document.getElementById('scenarios').innerHTML = SCENARIOS.map(function (s) {
+      return '<div class="scenario"><h3>' + s[0] + '</h3><ol>' + s[1].map(function (x) {
+        return '<li><button type="button" data-saut="' + x[0] + '" aria-pressed="' + (x[0] === cleNote) + '">' + x[1] + '</button></li>';
+      }).join('') + '</ol></div>';
     }).join('');
-    var n = NOTES[cleNote] || NOTES.communaute;
-    document.getElementById('note').innerHTML = '<h3>' + n[0] + '</h3><p>' + n[1] + '</p>' + (n[2] ? '<p>' + n[2] + '</p>' : '');
+    var n = NOTES[cleNote];
+    document.getElementById('note').innerHTML = '<h3>' + n[0] + '</h3><p>' + n[1] + '</p>' + (n[2] ? '<p>' + n[2] + '</p>' : '') + (n[3] ? '<p class="essai">' + n[3] + '</p>' : '');
   }
 
   /* ---------- rendu ---------- */
-  var tel = document.getElementById('tel');
-  var dernierEcran = '', derniereFeuille = null;
+  var ecran = document.getElementById('ecran');
+  var dernierEcran = '', derniereFeuille = null, derniereVue = '';
   function rend() {
-    var corps = tel.querySelector('.corps'), haut = corps ? corps.scrollTop : 0;
-    var feuille = tel.querySelector('.feuille'), hautFeuille = feuille ? feuille.scrollTop : 0;
-    var actif = document.activeElement, cleActif = actif && tel.contains(actif) && actif.dataset ? [actif.dataset.a, actif.dataset.v] : null;
+    var d = ecran.querySelector('#defile'), haut = d ? d.scrollTop : 0;
+    var f = ecran.querySelector('.feuille, .plein-ecran .defile-v'), hautF = f ? f.scrollTop : 0;
+    var rails = {}; ecran.querySelectorAll('.rail').forEach(function (r) { rails[r.id] = r.querySelector('.rangee-cartes').scrollLeft; });
+    var phases = ecran.querySelector('.phases'), hautPhases = phases ? phases.scrollLeft : 0;
+    var actif = document.activeElement, cle = actif && ecran.contains(actif) && actif.dataset ? [actif.dataset.a, actif.dataset.v] : null;
     var html = ECRANS[e.ecran]();
     if (e.feuille && FEUILLES[e.feuille]) html += FEUILLES[e.feuille]();
-    if (e.toast) html += '<div class="toast" role="status">' + e.toast + '</div>';
-    tel.innerHTML = html;
-    if (dernierEcran === e.ecran) { var c = tel.querySelector('.corps'); if (c) c.scrollTop = haut; }
-    var nouvelle = tel.querySelector('.feuille');
-    if (nouvelle && derniereFeuille === e.feuille) nouvelle.scrollTop = hautFeuille;
-    cleNote = e.feuille ? (e.feuille.indexOf('classer') === 0 ? 'classer' : e.feuille) : e.ecran;
-    rendPanneau();
-    var titre = tel.querySelector('[role="dialog"] h2');
-    if (titre && derniereFeuille !== e.feuille) { titre.setAttribute('tabindex', '-1'); titre.focus({ preventScroll: true }); }
-    else if (cleActif && dernierEcran === e.ecran) {
-      var meme = tel.querySelector('[data-a="' + cleActif[0] + '"][data-v="' + (cleActif[1] || '') + '"]') || tel.querySelector('[data-a="' + cleActif[0] + '"]:not([data-v])');
-      if (meme) meme.focus({ preventScroll: true });
+    if (e.toast) html += '<div class="toast" role="status"><span>' + e.toast + '</span>' + (e.annuler ? '<button type="button" class="lien-texte" style="color:inherit" data-a="annuler">Annuler</button>' : '') + '</div>';
+    ecran.innerHTML = html;
+    var memeEcran = dernierEcran === e.ecran && derniereVue === e.vue;
+    if (memeEcran) {
+      var d2 = ecran.querySelector('#defile'); if (d2) d2.scrollTop = haut;
+      Object.keys(rails).forEach(function (id) { var r = document.getElementById(id); if (r) r.querySelector('.rangee-cartes').scrollLeft = rails[id]; });
     }
-    dernierEcran = e.ecran; derniereFeuille = e.feuille;
+    var p2 = ecran.querySelector('.phases'); if (p2 && dernierEcran === e.ecran) p2.scrollLeft = hautPhases;
+    var f2 = ecran.querySelector('.feuille, .plein-ecran .defile-v'); if (f2 && derniereFeuille === e.feuille) f2.scrollTop = hautF;
+    cleNote = calculeCle(); rendPanneau();
+    var titre = ecran.querySelector('[role="dialog"] h2');
+    if (titre && derniereFeuille !== e.feuille) { titre.setAttribute('tabindex', '-1'); titre.focus({ preventScroll: true }); }
+    else if (cle && memeEcran) {
+      var m = ecran.querySelector('[data-a="' + cle[0] + '"]' + (cle[1] ? '[data-v="' + cle[1] + '"]' : ''));
+      if (m) m.focus({ preventScroll: true });
+    }
+    dernierEcran = e.ecran; derniereFeuille = e.feuille; derniereVue = e.vue;
   }
   var minuteur;
-  function toast(texte) { e.toast = texte; clearTimeout(minuteur); minuteur = setTimeout(function () { e.toast = ''; rend(); }, 2600); }
+  function toast(t, annuler) { e.toast = t; e.annuler = annuler || null; clearTimeout(minuteur); minuteur = setTimeout(function () { e.toast = ''; e.annuler = null; rend(); }, 3500); }
+  function versRail(id) {
+    var r = document.getElementById('rail-' + id), d = document.getElementById('defile');
+    if (r && d) d.scrollTop = r.offsetTop - 8;
+  }
 
   /* ---------- actions ---------- */
   var A = {
     aller: function (v) { e.ecran = v; e.feuille = null; },
-    cat: function (v) { e.cat = v; }, genre: function (v) { e.genre = v; }, niveau: function (v) { e.niveau = v; }, phase: function (v) { e.phase = v; },
-    vue: function (v) { e.vue = v; e.ecran = 'situations'; },
-    vueNom: function (v) { e.vue = v === 'Séances entières' ? 'seances' : 'situations'; },
-    voir: function (v) { e.detail = +v; e.ecran = 'detail'; },
-    ajout: function (v, bouton) {
-      var id = +v, i = e.panier.indexOf(id);
-      if (i >= 0) e.panier.splice(i, 1); else e.panier.push(id);
-      bouton.setAttribute('aria-pressed', String(i < 0));
-      bouton.textContent = i < 0 ? 'Dans ma séance' : 'Ajouter à ma séance';
-      var b = document.getElementById('barre-seance'); b.outerHTML = barreSeance();
-      return false;
-    },
-    ajoutDetail: function (v) { var id = +v, i = e.panier.indexOf(id); if (i >= 0) e.panier.splice(i, 1); else { e.panier.push(id); toast('Ajoutée à votre séance.'); } },
-    retirer: function (v) { var i = e.panier.indexOf(+v); if (i >= 0) e.panier.splice(i, 1); },
-    choisir: function (v) {
-      e.vue = 'situations'; e.ecran = 'situations'; rend();
-      var r = document.getElementById('rail-' + v); if (r) r.scrollIntoView({ block: 'start' });
-      return false;
-    },
-    utiliser: function (v) { e.panier = SEANCES_ENTIERES[+v].ids.slice(); e.ecran = 'composer'; },
-    creer: function () {
-      e.mes.unshift({ titre: e.phase + ' ' + e.cat, statut: 'en_cours', classee: true, n: e.panier.length });
-      e.panier = []; e.ecran = 'mes'; toast('Séance créée, déjà classée. Elle est dans Mes séances.');
-    },
-    nouvelle: function () { e.ecran = 'mes'; e.feuille = 'nouvelle'; },
-    depuisCommunaute: function () { e.feuille = null; e.ecran = 'communaute'; },
-    vierge: function () {
-      e.mes.unshift({ titre: 'Séance du 8 octobre', statut: 'brouillon', classee: false, n: 0, manque: 'le niveau et la phase de jeu' });
-      e.edit = 0; e.feuille = null; e.ecran = 'editeur'; e.classer = { cat: 'U13', genre: 'Masculin', niveau: '', phase: '', seconde: 'Aucune' };
-    },
-    editer: function (v) { e.edit = +v; e.ecran = 'editeur'; e.classer = { cat: 'U13', genre: 'Masculin', niveau: '', phase: '', seconde: 'Aucune' }; },
+    nav: function (v) { e.feuille = null; e.ecran = v === 'entrainements' ? 'mes' : v; },
+    vue: function (v) { e.vue = v; e.ecran = 'communaute'; e.feuille = null; },
+    phase: function (v) { e.phase = v; },
+    voirU11: function () { e.cat = 'U11'; e.cible.cat = 'U11'; },
+    cCat: function (v) { e.cible.cat = v; }, cGenre: function (v) { e.cible.genre = v; }, cNiveau: function (v) { e.cible.niveau = v; },
+    appliquerCible: function () { e.cat = e.cible.cat; e.genre = e.cible.genre; e.niveau = e.cible.niveau; e.feuille = null; },
     feuille: function (v) {
-      if (v === 'classer-composer') e.classer = { cat: e.cat, genre: e.genre, niveau: e.niveau, phase: e.phase, seconde: 'Aucune' };
+      if (v === 'cible') e.cible = { cat: e.cat, genre: e.genre, niveau: e.niveau };
+      if (v === 'classer' || v === 'fin') e.classer = { niveau: '', phase: '', seconde: false };
       e.feuille = v;
     },
-    fermer: function () { e.feuille = null; },
-    cCat: function (v) { e.classer.cat = v; }, cGenre: function (v) { e.classer.genre = v; },
-    cNiveau: function (v) { e.classer.niveau = v; }, cPhase: function (v) { e.classer.phase = v; }, cSeconde: function (v) { e.classer.seconde = v; },
-    enregistrerClasse: function () {
-      var depuis = e.feuille; e.feuille = null;
-      if (depuis === 'classer-composer') { e.cat = e.classer.cat; e.genre = e.classer.genre; e.niveau = e.classer.niveau; e.phase = e.classer.phase; toast('Classement modifié.'); return; }
-      var m = e.mes[e.edit]; m.classee = true; if (m.statut === 'brouillon') m.statut = 'en_cours';
-      if (depuis === 'fin') e.ecran = 'editeur';
-      toast('Séance classée&nbsp;: elle passe en cours.');
+    fermer: function (v, b, ev) { if (ev && b.classList.contains('voile') && ev.target !== b) return false; e.feuille = null; },
+    voir: function (v) { e.detail = +v; e.feuille = 'detail'; },
+    ajout: function (v, b) {
+      var id = +v, i = e.panier.indexOf(id), avant = e.panier.length;
+      if (i >= 0) e.panier.splice(i, 1); else e.panier.push(id);
+      if ((avant === 0) !== (e.panier.length === 0)) return;
+      b.setAttribute('aria-pressed', String(i < 0));
+      b.setAttribute('aria-label', (i < 0 ? 'Retirer de mon entraînement' : 'Ajouter à mon entraînement') + ' : ' + texte(sit(id).titre));
+      var barre = document.getElementById('barre-seance'); if (barre) barre.outerHTML = barreSeance();
+      cleNote = calculeCle(); rendPanneau();
+      return false;
     },
-    presenter: function () { e.ecran = 'presenter'; },
-    terminer: function () { var m = e.mes[e.edit]; if (!m.classee) { e.feuille = 'fin'; } else { e.ecran = 'editeur'; } },
+    ajoutDetail: function (v) {
+      var id = +v, i = e.panier.indexOf(id);
+      if (i >= 0) e.panier.splice(i, 1); else { e.panier.push(id); toast('Ajoutée à votre entraînement.'); }
+      e.feuille = null;
+    },
+    retirer: function (v) { var i = e.panier.indexOf(+v); if (i >= 0) e.panier.splice(i, 1); if (!e.panier.length) e.feuille = null; },
+    rail: function (v) { e.feuille = null; e.ecran = 'communaute'; e.vue = 'situations'; rend(); versRail(v); return false; },
+    utiliser: function (v) { e.panier = SEANCES[+v].ids.slice(); e.feuille = 'composer'; },
+    creer: function () {
+      e.mes.unshift({ titre: e.phase + ' ' + e.cat, cat: e.cat, statut: 'encours', classe: true, n: e.panier.length, objectif: 'Composé depuis la Communauté.', reperes: [e.niveau, e.phase] });
+      e.panier = []; e.feuille = null; e.ecran = 'mes'; toast('Entraînement créé, déjà classé.');
+    },
+    depuisCommunaute: function () { e.feuille = null; e.ecran = 'communaute'; e.vue = 'situations'; },
+    vierge: function () {
+      e.mes.unshift({ titre: 'Séance du 8 octobre', cat: 'U13', statut: 'brouillon', classe: false, n: 0, objectif: '', manque: 'le niveau et la phase de jeu' });
+      e.edit = 0; e.feuille = null; e.ecran = 'editeur';
+    },
+    ouvrir: function (v) { e.edit = +v; e.ecran = 'editeur'; },
+    classerCarte: function (v) { e.edit = +v; e.classer = { niveau: '', phase: '', seconde: false }; e.feuille = 'classer'; },
+    kNiveau: function (v) { e.classer.niveau = v; }, kPhase: function (v) { e.classer.phase = v; },
+    enregistrerClasse: function () {
+      var depuis = e.feuille, m = e.mes[e.edit];
+      m.classe = true; m.reperes = [e.classer.niveau, e.classer.phase]; if (m.statut === 'brouillon') m.statut = 'encours';
+      e.feuille = null; if (depuis === 'fin') e.ecran = 'editeur';
+      toast('Classé&nbsp;: il passe en cours.');
+    },
+    enregistrer: function () { toast('Entraînement enregistré.'); },
+    presenter: function () { e.ecran = 'presenter'; e.diapo = 2; },
+    terminer: function () { var m = e.mes[e.edit]; if (!m.classe) { e.classer = { niveau: '', phase: '', seconde: false }; e.feuille = 'fin'; } else { e.ecran = 'editeur'; } },
     fermerFin: function () { e.feuille = null; e.ecran = 'editeur'; },
     tNiveau: function (v) { e.tri.niveau = v; }, tPhase: function (v) { e.tri.phase = v; },
     trier: function () {
-      var m = e.mes.filter(function (x) { return !x.classee; })[0];
-      if (m) { m.classee = true; m.trie = true; if (m.statut === 'brouillon') m.statut = 'en_cours'; }
+      var m = e.mes.filter(function (x) { return !x.classe; })[0];
+      if (m) { m.classe = true; m.trie = true; m.reperes = [e.tri.niveau, e.tri.phase]; if (m.statut === 'brouillon') m.statut = 'encours'; }
       e.tri.niveau = ''; e.tri.phase = '';
-      if (!e.mes.some(function (x) { return !x.classee; })) e.tri.fini = true;
+      if (!e.mes.some(function (x) { return !x.classe; })) e.tri.fini = true;
     },
-    fermerTri: function () { e.feuille = null; e.tri = { i: 0, niveau: '', phase: '', fini: false }; },
+    passerTri: function () {
+      var reste = e.mes.filter(function (x) { return !x.classe && !x.passe; });
+      if (reste.length) reste[0].passe = true;
+      if (!e.mes.some(function (x) { return !x.classe && !x.passe; })) { e.feuille = null; e.mes.forEach(function (x) { delete x.passe; }); e.tri = { niveau: '', phase: '', fini: false }; }
+    },
+    fermerTri: function () { e.feuille = null; e.tri = { niveau: '', phase: '', fini: false }; },
+    annuler: function () { e.toast = ''; e.annuler = null; },
     rien: function () {}
   };
-  tel.addEventListener('click', function (ev) {
+  ecran.addEventListener('click', function (ev) {
     var b = ev.target.closest('[data-a]'); if (!b || b.disabled) return;
     var f = A[b.dataset.a]; if (!f) return;
-    if (f(b.dataset.v, b) !== false) rend();
+    if (f(b.dataset.v, b, ev) !== false) rend();
   });
-  tel.addEventListener('input', function (ev) {
+  ecran.addEventListener('input', function (ev) {
     if (ev.target.id !== 'cherche') return;
     var q = ev.target.value.trim().toLowerCase();
-    tel.querySelectorAll('#liste-nc .ligne-seance').forEach(function (l) { l.hidden = q && l.dataset.titre.indexOf(q) < 0; });
+    ecran.querySelectorAll('#liste-nc .ligne').forEach(function (l) { l.hidden = q && l.dataset.titre.indexOf(q) < 0; });
+  });
+  ecran.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && e.feuille) { e.feuille = null; rend(); }
   });
 
-  /* ---------- sauts depuis le panneau ---------- */
+  /* ---------- sauts ---------- */
   var SAUTS = {
     communaute: function () { reinitialise(); },
-    situations: function () { reinitialise(); e.ecran = 'situations'; e.panier = [1]; },
-    detail: function () { reinitialise(); e.ecran = 'detail'; e.detail = 3; e.panier = [1]; },
-    composer: function () { reinitialise(); e.ecran = 'composer'; e.panier = [1, 3]; },
-    nonclassees: function () { reinitialise(); e.ecran = 'nonclassees'; },
+    ajouter: function () { reinitialise(); e.panier = [1, 5]; },
+    detail: function () { reinitialise(); e.panier = [1]; e.feuille = 'detail'; e.detail = 3; },
+    composer: function () { reinitialise(); e.panier = [1, 3, 5]; e.feuille = 'composer'; },
+    nonclasses: function () { reinitialise(); e.vue = 'nonclasses'; },
     mes: function () { reinitialise(); e.ecran = 'mes'; },
-    nouvelle: function () { reinitialise(); e.ecran = 'mes'; e.feuille = 'nouvelle'; },
+    nouvel: function () { reinitialise(); e.ecran = 'mes'; e.feuille = 'nouvel'; },
     editeur: function () { reinitialise(); e.ecran = 'editeur'; e.edit = 1; },
     classer: function () { reinitialise(); e.ecran = 'editeur'; e.edit = 1; e.feuille = 'classer'; },
     fin: function () { reinitialise(); e.ecran = 'presenter'; e.edit = 1; e.feuille = 'fin'; },
     tri: function () { reinitialise(); e.ecran = 'mes'; e.feuille = 'tri'; }
   };
-  document.getElementById('parcours').addEventListener('click', function (ev) {
+  document.getElementById('scenarios').addEventListener('click', function (ev) {
     var b = ev.target.closest('[data-saut]'); if (!b) return;
-    var cle = b.dataset.saut;
-    SAUTS[cle](); dernierEcran = ''; derniereFeuille = null; rend();
-    var meme = document.querySelector('[data-saut="' + cle + '"]'); if (meme) meme.focus({ preventScroll: true });
+    var c = b.dataset.saut; SAUTS[c](); dernierEcran = ''; derniereFeuille = null; rend();
+    var m = document.querySelector('[data-saut="' + c + '"]'); if (m) m.focus({ preventScroll: true });
   });
 
   rend();
