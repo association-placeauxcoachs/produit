@@ -227,7 +227,7 @@ function miniTerrain(terrain) {
     + `<line x1="20" y1="0" x2="20" y2="20" stroke="#fff" stroke-width=".3"/></svg>`;
 }
 
-/* La mise en place : cinq entrées, sans options ni groupe, chacune avec ce qu'elle pose. */
+/* La mise en place : cinq entrées, sans options, chacune avec ce qu'elle pose ; la colonne et le tas groupés. */
 const DECALAGES_TAS = [[0, 0], [.6, .18], [-.5, .38], [.18, -.55], [-.36, -.4], [.42, .66]];
 const MISES_EN_PLACE = [
   ['def', () => diagramme('def'), 'Défense <span class="nw">0-6</span>', 'but', 'Six défenseurs : 1, 2, 3, 3, 2, 1'],
@@ -344,24 +344,27 @@ class Appareil {
   poserSans(l, x) {
     this.finPose([this.nouveauJoueur({ l, x, but: butLePlusProche(x, this.etat.terrain) })], { l, x });
   }
-  /** Trois joueurs en file vers le but le plus proche, ballon en main droite. */
+  /** Trois joueurs en file vers le but le plus proche, la tête au « + », ballon en main droite ; groupés. */
   poserColonne(l, x) {
     const but = butLePlusProche(x, this.etat.terrain);
     const gx = but === 'bas' ? 40 : 0;
     const d = Math.hypot(10 - l, gx - x) || 1;
     const v = { l: (10 - l) / d, x: (gx - x) / d };
     const nouveaux = [];
-    for (let i = -1; i <= 1; i++) {
-      const j = this.nouveauJoueur({ l: l + v.l * i * 2.5, x: x + v.x * i * 2.5, but });
+    const groupe = `g${++this.n}`;
+    // La tête au « + », les suivants derrière elle, à l'opposé du but, tous les 1,7 m.
+    for (let i = 0; i < 3; i++) {
+      const j = this.nouveauJoueur({ l: l - v.l * i * 1.7, x: x - v.x * i * 1.7, but, groupe });
       const a = j.angle * Math.PI / 180;
       // la main droite, au bout de l'arc des bras : (0,98 ; -1,02) dans le repère du joueur
-      nouveaux.push({ id: `b${++this.n}`, type: 'ballon', couleur: COULEUR.att, l: j.l + .98 * Math.cos(a) + 1.02 * Math.sin(a), x: j.x + .98 * Math.sin(a) - 1.02 * Math.cos(a), angle: 0 });
+      nouveaux.push({ id: `b${++this.n}`, type: 'ballon', couleur: COULEUR.att, l: j.l + .98 * Math.cos(a) + 1.02 * Math.sin(a), x: j.x + .98 * Math.sin(a) - 1.02 * Math.cos(a), angle: 0, groupe });
       nouveaux.push(j);
     }
     this.finPose(nouveaux, { l, x });
   }
   poserTas(l, x) {
-    this.finPose(DECALAGES_TAS.map(([dl, dx]) => ({ id: `b${++this.n}`, type: 'ballon', couleur: COULEUR.att, l: l + dl, x: x + dx, angle: 0 })), { l, x });
+    const groupe = `g${++this.n}`;
+    this.finPose(DECALAGES_TAS.map(([dl, dx]) => ({ id: `b${++this.n}`, type: 'ballon', couleur: COULEUR.att, l: l + dl, x: x + dx, angle: 0, groupe })), { l, x });
   }
   finPose(nouveaux, depuis) {
     this.etat.joueurs.push(...nouveaux);
@@ -592,7 +595,7 @@ class Appareil {
 
   /**
    * Le menu de mise en place, ancré au « + », du côté où il a la place. Il dit comment il marche :
-   * où chaque entrée arrive, vers où regardent les joueurs, et que rien n'est groupé ensuite.
+   * où chaque entrée arrive, vers où regardent les joueurs, et que la colonne et le tas sont groupés.
    */
   rendMenuPose() {
     const e = this.etat, pt = this.pointDePose;
@@ -608,7 +611,7 @@ class Appareil {
       <p class="t-menu-titre">À cet endroit</p>
       <p class="t-menu-explique">Au +, tournés vers le but le plus proche.</p>
       ${entrees('ici')}
-      <p class="t-menu-pied">Rien n’est groupé : tout se règle ensuite.</p>
+      <p class="t-menu-pied">Colonne et tas groupés : ils se déplacent d’un bloc. Dissocier libère chaque pièce.</p>
     </div>`;
     // Le menu se mesure avant de se placer : sa hauteur dépend de ses textes. Il peut couvrir
     // les barres de l'éditeur, comme tout menu, mais jamais sortir de l'écran.
@@ -847,11 +850,22 @@ class Appareil {
         return;
       }
       this.etat.outil = null;
+      const avant = { l: j.l, x: j.x };
       j.l = Math.max(-1, Math.min(21, p.l + geste.decalage.l));
       j.x = Math.max(-1, Math.min(LONG[this.etat.terrain] + 1, p.x + geste.decalage.x));
       const g = this.el.joueurs.querySelector(`[data-id="${j.id}"]`);
       g.classList.add('glisse');
       g.style.transform = `translate(${j.l}px, ${j.x}px)`;
+      // Une colonne ou un tas se déplace d'un bloc : ses autres pièces suivent.
+      if (j.groupe) {
+        for (const k of this.etat.joueurs) {
+          if (k === j || k.groupe !== j.groupe) continue;
+          k.l += j.l - avant.l;
+          k.x += j.x - avant.x;
+          const n = this.el.joueurs.querySelector(`[data-id="${k.id}"]`);
+          if (n) n.style.transform = `translate(${k.l}px, ${k.x}px)`;
+        }
+      }
       if (j.type !== 'joueur' || !j.orientationAuto) return;
       // Avec « Orientation auto », le regard suit : le trait pointillé montre ce que le joueur regarde.
       j.angle = versAngle(j.angle, regard(j));
@@ -914,7 +928,7 @@ class Appareil {
       case 'dupliquer': {
         const j = this.selection;
         if (!j) break;
-        const k = { ...j, id: `${j.type === 'ballon' ? 'b' : 'j'}${++this.n}`, poste: null, l: j.l + 1.6, x: j.x + 1.6 };
+        const k = { ...j, id: `${j.type === 'ballon' ? 'b' : 'j'}${++this.n}`, poste: null, groupe: null, l: j.l + 1.6, x: j.x + 1.6 };
         e.joueurs.push(k);
         e.selection = k.id;
         this.rend();

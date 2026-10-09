@@ -92,7 +92,7 @@
         <ol class="scenario">
           <li><span>Sur le terrain vide, le <b><span class="nw">« + »</span></b> attend devant le but. Touche-le, puis <b>Attaque contre <span class="nw">0-6</span></b>.</span></li>
           <li><span>Touche un endroit vide, loin du but : le <span class="nw">« + »</span> s'y déplace, sans rien poser. Touche-le, puis <b>Tas de ballons</b>.</span></li>
-          <li><span>Recommence ailleurs avec <b>Colonne de joueurs</b> : trois joueurs en file, ballon en main, tournés vers le but.</span></li>
+          <li><span>Recommence ailleurs avec <b>Colonne de joueurs</b> : trois joueurs en file, la tête au <span class="nw">« + »</span>, ballon en main, tournés vers le but. Glisse l'un d'eux : la colonne suit, d'un bloc.</span></li>
           <li><span>Touche un joueur de la colonne, puis <b>Poste</b> : touche sa place sur le petit terrain. Il prend la couleur de son camp, le poste s'écrit dans sa tête, et son orientation auto se coche.</span></li>
           <li><span>Glisse-le vers l'avant : l'orientation auto le garde face au jeu. <b>Retourner</b> le met dos au but.</span></li>
           <li><span>Tourne-le à la poignée ronde du cadre : l'orientation auto se décoche, et il glisse désormais sans tourner. Elle se recoche dans <b>Plus</b> au téléphone, dans la liste des actions ailleurs.</span></li>
@@ -103,8 +103,8 @@
         <h3 style="margin-top:32px">Ce qui change dans l'éditeur</h3>
         <ul class="liste note">
           <li><b>Le point de pose.</b> Avec l'outil Sélection, toucher un endroit vide du terrain y pose un <span class="nw">« + »</span>, qui ne pose rien ; le toucher ouvre le menu de mise en place, ancré à cet endroit.</li>
-          <li><b>La mise en place remplace les modèles.</b> Plus d'étape d'options ni de groupe : une touche pose, et chaque pièce reste libre. Les équipes se posent devant le but le plus proche du <span class="nw">« + »</span>, la colonne et le tas à l'endroit même.</li>
-          <li><b>Le menu explique comment il marche</b> : où chaque entrée arrive, ce qu'elle pose, vers où regardent les joueurs, et que rien n'est groupé ensuite.</li>
+          <li><b>La mise en place remplace les modèles.</b> Plus d'étape d'options : une touche pose. La colonne et le tas sont groupés, pour se déplacer d'un bloc au doigt ; Dissocier libère chaque pièce. Les joueurs d'une équipe restent libres, chacun à son poste. Les équipes se posent devant le but le plus proche du <span class="nw">« + »</span>, la colonne et le tas à l'endroit même.</li>
+          <li><b>Le menu explique comment il marche</b> : où chaque entrée arrive, ce qu'elle pose, vers où regardent les joueurs, et que la colonne et le tas sont groupés.</li>
           <li><b>La ligne d'aide garde son texte</b> et y ajoute la mise en place : « Touche une pièce pour la régler · touche le vide pour mettre en place · pince pour zoomer ». Le vide touché, elle dit « touche le + » ; à l'ordinateur, « clic droit pour mettre en place ».</li>
           <li><b>Plus perd sa section Mise en place.</b> Modèles disparaît ; Tout effacer rejoint la section Disposition du terrain, renommée <b>Terrain</b> : elle accueillera aussi les terrains à venir, le beach ou la 3D du gardien.</li>
           <li><b>Le dessin du joueur ne change pas</b> : la tête et l'arc des bras de l'éditeur, à la même taille ; le poste s'écrit dans la tête quand il est choisi.</li>
@@ -126,8 +126,8 @@
           <tr><th scope="row">Défense <span class="nw">0-6</span></th><td>Six défenseurs, 1, 2, 3, 3, 2, 1, face à l'attaque</td><td>Devant le but le plus proche du <span class="nw">« + »</span></td><td>Nouveau</td></tr>
           <tr><th scope="row">Attaque placée</th><td>Les six postes, face au but</td><td>Devant le but le plus proche du <span class="nw">« + »</span></td><td>Nouveau</td></tr>
           <tr><th scope="row">Attaque contre <span class="nw">0-6</span></th><td>Les douze</td><td>Devant le but le plus proche du <span class="nw">« + »</span></td><td>Nouveau</td></tr>
-          <tr><th scope="row">Colonne de joueurs</th><td>Trois joueurs en file, un ballon en main droite, face au but</td><td>À l'endroit du <span class="nw">« + »</span></td><td>Le modèle « Colonne de joueurs », ses options en moins</td></tr>
-          <tr><th scope="row">Tas de ballons</th><td>Six ballons serrés</td><td>À l'endroit du <span class="nw">« + »</span></td><td>Le modèle « Réserve de ballons », ses options en moins</td></tr>
+          <tr><th scope="row">Colonne de joueurs</th><td>Trois joueurs en file, un ballon en main droite, face au but, groupés</td><td>La tête de la file au <span class="nw">« + »</span>, les suivants derrière</td><td>Le modèle « Colonne de joueurs », ses options en moins</td></tr>
+          <tr><th scope="row">Tas de ballons</th><td>Six ballons serrés, groupés</td><td>À l'endroit du <span class="nw">« + »</span></td><td>Le modèle « Réserve de ballons », ses options en moins</td></tr>
         </tbody>
       </table>
     </div>
@@ -138,7 +138,7 @@
     <div class="moments">
       <figure><div data-moment="vide"></div><figcaption><b>Un schéma vide.</b> Le <span class="nw">« + »</span> attend devant le but : le premier geste se voit.</figcaption></figure>
       <figure><div data-moment="menu"></div><figcaption><b>Le <span class="nw">« + »</span> déplacé, puis touché.</b> Le menu explique où chaque entrée arrive, ce qu'elle pose et vers où regardent les joueurs.</figcaption></figure>
-      <figure><div data-moment="scene"></div><figcaption><b>Trois mises en place.</b> L'attaque contre la <span class="nw">0-6</span>, une colonne et un tas de ballons, chaque pièce libre.</figcaption></figure>
+      <figure><div data-moment="scene"></div><figcaption><b>Trois mises en place.</b> L'attaque contre la <span class="nw">0-6</span>, chaque joueur libre, une colonne et un tas de ballons, chacun groupé.</figcaption></figure>
       <figure><div data-moment="poste"></div><figcaption><b>Nommer un joueur de la colonne.</b> Le plus près de sa place est entouré.</figcaption></figure>
     </div>
   </section>
@@ -227,7 +227,7 @@
     <ul class="liste">
       <li><b>Un seul geste pour tout ce qui se pose en bloc</b> : équipes, colonnes, tas de ballons.</li>
       <li><b>Le geste se montre.</b> Le <span class="nw">« + »</span> attend devant le but sur un schéma vide, puis paraît là où l'on touche.</li>
-      <li><b>Un concept de moins.</b> Les modèles, leur étape d'options et leur groupe s'effacent devant la mise en place, et Plus perd une section.</li>
+      <li><b>Un concept de moins.</b> Les modèles et leur étape d'options s'effacent devant la mise en place, et Plus perd une section.</li>
       <li><b>Les joueurs se lisent pareil</b>, avec ou sans poste.</li>
       <li><b>Passer d'une <span class="nw">0-6</span> à une 1-5 ne demande que de glisser</b> : personne n'est à retourner après coup.</li>
     </ul>
@@ -246,7 +246,7 @@
     <h2>Par étapes</h2>
     <p>Chaque étape se livre seule et sert tout de suite. L'effort total est élevé, mais la suppression de l'assistant des modèles en rend une part.</p>
     <ol class="etapes">
-      <li><span><b>Le point de pose, à la place des modèles.</b> Un appui sur le vide qui déplace le <span class="nw">« + »</span>, un appui sur lui qui ouvre le menu, ancré à un point de la scène qui suit le zoom, le cadrage et le quart de tour du téléphone ; le clic droit à l'ordinateur. Un état d'interface, rien dans le schéma. Le menu ne propose d'abord que la colonne et le tas : les générateurs des modèles restent, sans options ni groupe, et l'assistant (choix, options, aperçu) disparaît. Plus perd sa section Mise en place, Tout effacer rejoint la disposition du terrain, la ligne d'aide apprend le geste.</span></li>
+      <li><span><b>Le point de pose, à la place des modèles.</b> Un appui sur le vide qui déplace le <span class="nw">« + »</span>, un appui sur lui qui ouvre le menu, ancré à un point de la scène qui suit le zoom, le cadrage et le quart de tour du téléphone ; le clic droit à l'ordinateur. Un état d'interface, rien dans le schéma. Le menu ne propose d'abord que la colonne et le tas : la colonne et le tas ont leurs propres générateurs, sans options, groupés, et l'assistant (choix, options, aperçu) disparaît. Plus perd sa section Mise en place, Tout effacer rejoint la disposition du terrain, la ligne d'aide apprend le geste.</span></li>
       <li><span><b>Le poste dans la tête et les équipes.</b> Le poste écrit dans la tête du joueur, sa couleur de camp, la table des placements ; la défense, l'attaque et les deux rejoignent le menu.</span></li>
       <li><span><b>Poste et Retourner.</b> Les deux actions en tête du dock d'un joueur, et le petit terrain où l'on touche sa place.</span></li>
       <li><span><b>L'orientation auto.</b> En dernier : c'est le comportement le plus surprenant, il mérite d'être essayé à part. Une option par joueur, cochée par le choix d'un poste, enregistrée avec lui ; le regard se recalcule à chaque déplacement tant qu'elle l'est, et la rotation à la poignée la décoche.</span></li>
@@ -272,6 +272,7 @@
     <ul class="liste">
       <li><b>La section du menu Plus s'appelle « Terrain »</b> : elle reçoit Tout effacer et recevra les autres terrains, beach ou 3D du gardien.</li>
       <li><b>Les nombres de la mise en place restent ceux de la maquette</b> : trois joueurs par colonne, six ballons par tas.</li>
+      <li><b>La colonne et le tas sont groupés</b>, la colonne commence au <span class="nw">« + »</span> et se serre à 1,7 m : au premier essai sur téléphone, des pièces libres ne se déplaçaient pas utilement. Dissocier libère chaque pièce.</li>
       <li><b>Les haies, échelles et séparations restent hors de cette fiche</b> : leur sens dépend de l'exercice, pas du but.</li>
       <li><b>La tête du joueur grandit légèrement, pas les bras</b>, pour que le poste se lise ; pour tous les joueurs, nommés ou non.</li>
     </ul>
