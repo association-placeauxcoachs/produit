@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le film dans le haut de page</title>
+<meta name="description" content="Variante de l'étude du film d'accueil : le film prend la place de la capture du mode Présenter dans le haut de page, avec une image du film pour affiche, au lieu d'une section à part.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+  --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+  --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+  --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+  --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF; color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;letter-spacing:-.01em;padding:0 16px 96px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto}
+a{color:var(--violet);text-underline-offset:3px}
+:is(a,button):focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.nw{white-space:nowrap}
+
+/* ---------- la page d'étude ---------- */
+.outils{position:sticky;top:0;z-index:20;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
+.outils-in{max-width:1180px;margin:0 auto;display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--filet-fort)}
+.seg button{font:inherit;font-size:.84rem;font-weight:600;background:none;border:0;color:var(--attenue);padding:.45em 1em;cursor:pointer}
+.seg button+button{border-left:1px solid var(--filet-fort)}
+.seg [aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.tete{padding-top:56px;max-width:68ch}
+.retour{font-size:.86rem}
+h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.04;letter-spacing:-.02em;margin:.4em 0 .35em}
+h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.5rem;line-height:1.15;letter-spacing:-.01em;margin-bottom:.5em}
+.lede{color:var(--attenue);font-size:1.08rem;max-width:64ch}
+.lede b,.bloc b{color:var(--ink);font-weight:600}
+.bloc{margin-top:72px}
+.bloc>p{max-width:68ch;color:var(--attenue)}
+.liste{padding-left:1.1em;margin-top:.8em;max-width:70ch;color:var(--attenue)}
+.liste li+li{margin-top:.55em}
+.note{font-size:.86rem;color:var(--attenue)}
+.legende-scene{text-align:center;margin-top:10px}
+.tableau{width:100%;max-width:820px;border-collapse:collapse;margin-top:16px;font-size:.9rem}
+.tableau th,.tableau td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-top:1px solid var(--filet)}
+.tableau thead th{border-top:0;color:var(--attenue);font-weight:600;font-size:.82rem}
+.tableau td{color:var(--attenue)}
+.tableau th[scope="row"]{font-weight:600;color:var(--ink);white-space:nowrap}
+.defile{overflow-x:auto}
+
+/* ---------- la scène : le haut de page de l'accueil ---------- */
+.scene{margin:28px auto 0;border:1px solid var(--filet-fort);background:var(--paper);overflow:hidden;transition:max-width .35s ease}
+.scene[data-format="telephone"]{max-width:390px}
+.scene[data-format="ordinateur"]{max-width:1240px}
+.scene[data-format="ordinateur"] .h-titre{font-size:clamp(2.9rem,7vw,5.4rem)}
+.scene[data-format="telephone"] .h-titre{font-size:2.9rem}
+@media (prefers-reduced-motion: reduce){.scene{transition:none}}
+
+.h-grille{display:grid;gap:40px;padding:48px 24px 56px;align-items:center;max-width:1180px;margin:0 auto}
+.scene[data-format="ordinateur"] .h-grille{grid-template-columns:1.05fr .95fr;gap:54px;padding:72px 28px 80px}
+
+.h-sur{display:inline-flex;align-items:center;gap:12px;font:700 .72rem/1 "JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.18em;color:var(--orange)}
+.h-sur::before{content:"";width:32px;height:1px;background:var(--orange)}
+.h-titre{margin-top:22px;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(2.6rem,6.2vw,5rem);line-height:1.04;letter-spacing:-.02em}
+.h-titre em{font-weight:500;color:var(--orange)}
+.h-sous{margin-top:18px;font-size:1.15rem;font-weight:500}
+.h-carte{margin-top:22px;max-width:46ch;border-left:3px solid var(--orange);background:var(--surface);padding:18px 20px;box-shadow:6px 6px 0 -1px var(--peach);color:var(--attenue)}
+.h-carte p+p{margin-top:10px;color:var(--ink);font-weight:600}
+.h-carte strong{color:var(--ink)}
+.h-actions{margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px}
+.h-cta{display:inline-flex;align-items:center;gap:.5em;background:var(--orange);color:#fff;border:1px solid var(--orange);font-weight:600;padding:.85em 1.5em;text-decoration:none}
+.h-actions small{font-size:.875rem;color:var(--attenue)}
+
+/* la figure, commune aux deux versions */
+.h-fig{border:1px solid var(--ink);background:var(--surface);box-shadow:14px 14px 0 -1px var(--violet);width:100%}
+.scene[data-format="telephone"] .h-fig{box-shadow:8px 8px 0 -1px var(--violet)}
+.h-fig figcaption{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;border-top:1px solid var(--filet);padding:11px 16px;font-size:.8125rem}
+.h-fig figcaption b{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:500;color:var(--orange)}
+.h-fig figcaption i{color:var(--attenue)}
+.h-fig figcaption .tiers{flex-basis:100%;color:var(--attenue);font-size:.75rem}
+
+/* aujourd'hui : la capture, dans sa fenêtre */
+.h-fenetre{display:flex;gap:6px;padding:10px 12px;border-bottom:1px solid var(--filet)}
+.h-fenetre i{width:8px;height:8px;background:color-mix(in srgb,var(--ink) 25%,transparent)}
+.h-fig img.capture{display:block;width:100%;height:auto}
+.scene[data-format="ordinateur"] .cap-tel,.scene[data-format="telephone"] .cap-ordi{display:none}
+.scene[data-format="telephone"] [data-version-seule="aujourdhui"] .h-fig{max-width:340px;margin:0 auto}
+
+/* proposé : l'écran du film */
+.ecran{position:relative;aspect-ratio:16/9;background:#1a1426}
+.ecran iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.affiche{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer;display:block;color:inherit}
+.affiche img{display:block;width:100%;height:100%;object-fit:cover}
+.lecture{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:var(--orange);display:grid;place-items:center;box-shadow:0 0 0 8px rgba(235,93,33,.25);transition:transform .2s ease,box-shadow .2s ease}
+.scene[data-format="telephone"] .lecture{width:58px;height:58px;margin:-29px 0 0 -29px;box-shadow:0 0 0 6px rgba(235,93,33,.25)}
+.affiche:hover .lecture,.affiche:focus-visible .lecture{transform:scale(1.06);box-shadow:0 0 0 12px rgba(235,93,33,.28)}
+.lecture svg{margin-left:5px}
+.etiquette{position:absolute;left:12px;bottom:12px;display:inline-flex;align-items:baseline;gap:.6em;background:#FAF4EC;color:#1C1726;font:600 .82rem/1 Inter,sans-serif;padding:.55em .75em}
+.etiquette span{font-weight:500;color:#6E6678;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){.lecture{transition:none}}
+
+[data-version-seule]{display:none}
+.scene[data-version="aujourdhui"] [data-version-seule="aujourdhui"],
+.scene[data-version="propose"] [data-version-seule="propose"]{display:block}
+
+.h-chiffres{display:grid;grid-template-columns:repeat(2,1fr);background:var(--ink);color:var(--paper)}
+.scene[data-format="ordinateur"] .h-chiffres{grid-template-columns:repeat(4,1fr)}
+.h-chiffres div{padding:20px 24px;font-family:Fraunces,Georgia,serif;font-size:1.9rem;font-weight:500;line-height:1}
+.h-chiffres span{display:block;margin-top:6px;font:500 .74rem/1.3 Inter,sans-serif;opacity:.7}
+</style>
+</head>
+<body>
+<div class="outils">
+  <div class="outils-in">
+    <div class="seg" role="group" aria-label="Version">
+      <button type="button" data-version="aujourdhui" aria-pressed="false">Aujourd'hui</button><button type="button" data-version="propose" aria-pressed="true">Le film</button>
+    </div>
+    <div class="seg" role="group" aria-label="Format">
+      <button type="button" data-format="ordinateur" aria-pressed="true">Ordinateur</button><button type="button" data-format="telephone" aria-pressed="false">Téléphone</button>
+    </div>
+    <div class="seg" role="group" aria-label="Thème">
+      <button type="button" data-theme-choix="light" aria-pressed="false">Jour</button><button type="button" data-theme-choix="dark" aria-pressed="false">Nuit</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <header class="tete">
+    <a class="retour" href="index.html">La proposition d'origine : une section à part</a>
+    <h1>Le film dans le haut de page</h1>
+    <p class="lede">Plutôt qu'une section de plus, <b>le film prend la place de la capture du mode Présenter</b>. Son affiche est une image du film où l'on voit justement le mode Présenter, sur ordinateur et sur téléphone : le haut de page montre la même chose qu'aujourd'hui, et se lance en plus.</p>
+  </header>
+
+  <section class="bloc" aria-labelledby="t-scene">
+    <h2 id="t-scene">Avant, après</h2>
+    <p>Le haut de page de l'accueil et le bandeau des chiffres, dans les deux versions. L'affiche se lance pour de vrai.</p>
+
+    <div class="scene" id="scene" data-format="ordinateur" data-version="propose">
+      <div class="h-grille">
+        <div>
+          <span class="h-sur">100 % gratuit · Par des coachs, pour des coachs</span>
+          <p class="h-titre">Ne coachez<br>plus jamais <em>seul</em>.</p>
+          <p class="h-sous">Votre prochain entraînement est prêt.</p>
+          <div class="h-carte">
+            <p>⏰ <strong>18h03.</strong> Vous sortez du boulot, crevé. Dans une heure, 16 jeunes joueurs vous attendent. Pas d'idée. Pas le temps.</p>
+            <p>→ Ouvrez Place aux Coachs. Piochez un exercice. Adaptez-le en 2 clics. C'est parti.</p>
+          </div>
+          <div class="h-actions">
+            <a class="h-cta" href="#scene">Rejoindre le collectif</a>
+            <small>Gratuit · Sans pub · Accès immédiat</small>
+          </div>
+        </div>
+
+        <div data-version-seule="aujourdhui">
+          <figure class="h-fig">
+            <div class="h-fenetre" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img class="capture cap-ordi" src="aujourdhui-desktop.webp" alt="Mode Présenter : une situation d'échauffement avec son schéma et ses consignes">
+            <img class="capture cap-tel" src="aujourdhui-mobile.webp" alt="Mode Présenter au téléphone : une situation d'échauffement avec son schéma et ses consignes">
+            <figcaption><b>Fig. 1</b><i>— le mode Présenter : la séance, situation par situation, au bord du terrain.</i></figcaption>
+          </figure>
+        </div>
+
+        <div data-version-seule="propose">
+          <figure class="h-fig">
+            <div class="ecran" id="ecran">
+              <button type="button" class="affiche" id="affiche" aria-label="Lire le film de présentation sur YouTube, 1 minute 34">
+                <img src="affiche-presenter.webp" width="1280" height="720" alt="">
+                <span class="lecture" aria-hidden="true"><svg width="24" height="28" viewBox="0 0 26 30"><path d="M0 0v30l26-15z" fill="#fff"/></svg></span>
+                <span class="etiquette" aria-hidden="true">Le film <span>1:34</span></span>
+              </button>
+            </div>
+            <figcaption><b>Fig. 1</b><i>— la séance, du thème au bord du terrain, en une minute et demie.</i><span class="tiers">La lecture charge le lecteur de YouTube.</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="h-chiffres" aria-hidden="true">
+        <div>200+<span>Entraînements créés</span></div>
+        <div>100+<span>Coachs inscrits</span></div>
+        <div>20+<span>Coachs actifs ce mois-ci</span></div>
+        <div>500+<span>Situations imaginées</span></div>
+      </div>
+    </div>
+    <p class="note legende-scene">Au téléphone, la capture en hauteur mesure 660 px ; l'écran du film en mesure 190. Le bandeau des chiffres remonte d'autant.</p>
+  </section>
+
+  <section class="bloc" aria-labelledby="t-choix">
+    <h2 id="t-choix">Ce qui change</h2>
+    <ul class="liste">
+      <li><b>L'affiche est une image du film, à 1:07</b>, pas la miniature YouTube : celle-ci porte son propre titre, « Votre séance, du thème au terrain », qui ferait concurrence au titre de la page. L'image retenue montre une séance en mode Présenter sur ordinateur et sur téléphone : c'est le propos de la capture actuelle.</li>
+      <li><b>Les colonnes ne bougent pas.</b> Élargir celle de la figure ferait tomber « seul. » sur une troisième ligne du titre. L'écran 16:9 occupe la colonne d'aujourd'hui, environ 510 px de large et 290 de haut, centré face au texte : le haut de page garde exactement sa hauteur.</li>
+      <li><b>La figure garde son cadre, son ombre violette et sa légende</b>, mais perd les trois points de fenêtre : ce n'est plus une capture d'application, c'est un film. Son fond sombre en fait le seul aplat fort du haut de page.</li>
+      <li><b>« Le film · 1:34 » sur l'affiche</b> dit ce que c'est avant le clic ; le bouton de lecture orange dit quoi faire.</li>
+      <li><b>Plus de bande de chapitres</b> : le lecteur YouTube les affiche dans sa barre de progression, puisqu'ils sont écrits dans la description du film. Le haut de page n'en porte pas le poids.</li>
+      <li><b>Plus de lien « Voir le film »</b> à côté du bouton d'inscription : le film est à côté, ou juste dessous au téléphone.</li>
+      <li><b>Plus de section du film</b> : la page retrouve son enchaînement d'avant, et le haut de page garde sa hauteur.</li>
+    </ul>
+  </section>
+
+  <section class="bloc" aria-labelledby="t-comparaison">
+    <h2 id="t-comparaison">Section à part ou haut de page</h2>
+    <div class="defile">
+      <table class="tableau">
+        <thead><tr><th scope="col"></th><th scope="col">Section à part (livrée)</th><th scope="col">Dans le haut de page</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Vu sans défiler</th><td>Non : il faut descendre, ou suivre le lien</td><td>Oui, sur ordinateur ; juste sous le texte au téléphone</td></tr>
+          <tr><th scope="row">Longueur de la page</th><td>Une section de plus, environ 900 px</td><td>Inchangée sur ordinateur, plus courte de 470 px au téléphone</td></tr>
+          <tr><th scope="row">Mode Présenter visible</th><td>Oui, par la capture</td><td>Oui, par l'affiche, et en mouvement une fois lancé</td></tr>
+          <tr><th scope="row">Chapitres</th><td>Bande de temps cliquable</td><td>Dans la barre du lecteur YouTube, après le lancement</td></tr>
+          <tr><th scope="row">Poids au chargement</th><td>Capture de 95 Ko en tête, affiche plus bas</td><td>Affiche de 32 Ko en tête : plus léger</td></tr>
+          <tr><th scope="row">Vie privée</th><td colspan="2">Identique : rien de YouTube avant le clic, lecteur sans cookie, même phrase sous le film</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="bloc" aria-labelledby="t-limites">
+    <h2 id="t-limites">Ce qu'on perd, ce qui reste à trancher</h2>
+    <ul class="liste">
+      <li><b>La capture nette du mode Présenter</b> disparaît. L'affiche montre le même écran, plus petit et sur fond sombre : on lit moins les consignes de la situation. C'est le vrai prix de la variante.</li>
+      <li><b>Le premier coup d'œil devient un film à lancer.</b> Qui ne clique pas voit une image arrêtée avec un bouton de lecture ; le haut de page doit rester compréhensible sans elle, ce que le titre et la carte « 18h03 » assurent.</li>
+      <li><b>La mesure se simplifie</b> : sans chapitres, le lancement n'a plus de variante. L'événement reste, ses propriétés `chapitre` et `deja_charge` tombent, et le tunnel « Film → inscription » garde son sens.</li>
+      <li><b>Un change OpenSpec</b> défait la section et la bande de temps livrées par <span class="nw">film-accueil</span> et modifie la spec du même nom ; la page de confidentialité ne change pas.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+(() => {
+  const ID = "7taRfflHFNM";
+  const scene = document.getElementById("scene");
+  document.getElementById("affiche").addEventListener("click", () => {
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube-nocookie.com/embed/${ID}?autoplay=1&rel=0&start=0`;
+    iframe.title = "Place aux Coachs — le film de présentation";
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    iframe.allowFullscreen = true;
+    document.getElementById("ecran").replaceChildren(iframe);
+  });
+  function bascule(attribut, valeur, bouton, cle) {
+    scene.dataset[cle] = valeur;
+    document.querySelectorAll(`button[data-${attribut}]`).forEach(x => x.setAttribute("aria-pressed", String(x === bouton)));
+  }
+  document.querySelectorAll("button[data-version]").forEach(b => b.addEventListener("click", () => bascule("version", b.dataset.version, b, "version")));
+  document.querySelectorAll("button[data-format]").forEach(b => b.addEventListener("click", () => bascule("format", b.dataset.format, b, "format")));
+  document.querySelectorAll("[data-theme-choix]").forEach(b => b.addEventListener("click", () => {
+    document.documentElement.dataset.theme = b.dataset.themeChoix;
+    document.querySelectorAll("[data-theme-choix]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  }));
+})();
+</script>
+</body>
+</html>
