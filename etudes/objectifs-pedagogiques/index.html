@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Objectifs pédagogiques guidés</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=Roboto:ital,wght@0,100;0,400;0,700;1,100;1,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+    --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E;
+    --st-brouillon:#8A8478; --st-encours:#C8841E; --st-pret:#2F7D4F;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF; --st-brouillon:#9D978B; --st-encours:#E2A54B; --st-pret:#5DB27F; color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+    --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF; --st-brouillon:#9D978B; --st-encours:#E2A54B; --st-pret:#5DB27F; color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;letter-spacing:-.01em;padding:0 16px 96px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto}
+  :is(a,button,input,[contenteditable],[tabindex]):focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .outils{position:sticky;top:0;z-index:20;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
+  .outils-in{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.84rem}
+  .retour{font-weight:600;color:var(--violet);text-underline-offset:3px}
+  .seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--filet-fort)}
+  .seg button{font:inherit;font-size:.84rem;font-weight:600;background:none;border:0;color:var(--attenue);padding:.45em 1em;cursor:pointer}
+  .seg button+button{border-left:1px solid var(--filet-fort)}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+  .tete{padding-top:56px;max-width:68ch}
+  .kicker{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--orange);display:inline-flex;align-items:center;gap:.6em}
+  .kicker::before{content:"";width:28px;height:1px;background:var(--orange)}
+  h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(2.2rem,6vw,3.3rem);line-height:1.04;letter-spacing:-.02em;margin:.3em 0 .3em}
+  h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.45rem;letter-spacing:-.01em;margin-bottom:.5em}
+  .lede{color:var(--attenue);font-size:1.05rem}
+  .lede b,.bloc p b,.liste b,td b,.note b{color:var(--ink);font-weight:600}
+  .bloc{margin-top:64px}
+  .bloc>p{max-width:68ch;color:var(--attenue)}
+  .bloc>p+p{margin-top:.7em}
+  .legende{font-size:.82rem;color:var(--attenue);margin-top:10px;max-width:68ch}
+  .reco{border-left:3px solid var(--orange);padding-left:18px}
+  .liste{margin-top:10px;padding-left:1.1em;color:var(--attenue);max-width:68ch}
+  .liste li+li{margin-top:.4em}
+
+  /* ---------- réglages du banc ---------- */
+  .reglages{display:grid;gap:28px;margin-top:22px}
+  .choix{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+  .carte-choix{display:grid;grid-template-columns:minmax(0,1fr);align-content:start;gap:3px;text-align:left;font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--filet);border-radius:10px;padding:12px 14px;cursor:pointer}
+  .carte-choix:has(.lettre){grid-template-columns:auto minmax(0,1fr);column-gap:12px}
+  .carte-choix:hover{border-color:var(--filet-fort)}
+  .carte-choix[aria-pressed="true"]{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange);background:color-mix(in srgb,var(--orange) 6%,var(--surface))}
+  .carte-choix .lettre{grid-row:span 2;font:600 1.7rem/1 Fraunces,Georgia,serif;color:var(--orange)}
+  .carte-choix .nom{font-weight:600;font-size:.95rem}
+  .carte-choix .desc{font-size:.84rem;line-height:1.38;color:var(--attenue)}
+  .reglage-lib{display:block;font-size:1rem;font-weight:600;margin-bottom:8px}
+  .note{margin-top:10px;color:var(--attenue);font-size:.92rem;max-width:62ch}
+  .note .pc{display:block;margin-top:.3em}
+  .demo{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:24px;font-size:.84rem;color:var(--attenue)}
+
+  /* ---------- les écrans ---------- */
+  .banc{display:grid;grid-template-columns:minmax(0,1fr) 375px;gap:28px;align-items:start;margin-top:18px}
+  @media(max-width:920px){.banc{grid-template-columns:minmax(0,1fr)}}
+  .tel figcaption{font-size:.82rem;color:var(--attenue);margin-bottom:8px}
+  .ecran{position:relative;width:100%;background:var(--paper);border:1px solid var(--filet-fort);overflow:hidden}
+  .ecran.bureau{min-height:600px}
+  .ecran.telephone{max-width:375px;height:720px}
+  .telephone .defile{height:100%;overflow:auto}
+  .barre-app{display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;border-bottom:1px solid var(--filet);font-size:.8rem;color:var(--attenue)}
+  .barre-app .pt{width:22px;height:22px;border-radius:50%;background:var(--paper-2)}
+  .entete{padding:22px 28px 24px;border-bottom:1px solid var(--filet)}
+  .telephone .entete{padding:18px 16px 20px}
+  .telephone .slot-entete{padding-left:6px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:var(--attenue)}
+  .telephone .chips{justify-content:center}
+  .chips .dot{width:4px;height:4px;border-radius:50%;background:var(--filet-fort)}
+  .theme{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(1.7rem,3.4vw,2.4rem);line-height:1.08;letter-spacing:-.015em;margin-top:14px}
+  .telephone .theme{font-size:1.75rem;text-align:center}
+  .suite{padding:16px 28px 22px;display:grid;gap:10px}
+  .telephone .suite{padding:14px 16px 18px}
+  .suite i{display:block;height:54px;background:var(--surface);border:1px solid var(--filet)}
+  .suite i:first-child{height:18px;width:140px;background:var(--paper-2);border:0}
+  .etat{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin-top:10px;font-size:.8rem;color:var(--attenue)}
+  .pastille{display:inline-flex;align-items:center;gap:.4em;font-size:.72rem;font-weight:600;padding:.15em .7em;border:1px solid var(--filet-fort);color:var(--ink)}
+  .pastille::before{content:"";width:7px;height:7px;border-radius:50%;border:1.5px dashed var(--attenue)}
+  .pastille.en-cours::before{border:0;background:var(--violet)}
+  .enregistre{font:.78rem ui-monospace,monospace;color:var(--ink);white-space:pre-wrap}
+
+  /* ---------- résumé et panneau ---------- */
+  .resume{display:flex;align-items:center;gap:10px;width:calc(100% + 20px);max-width:41rem;margin:12px 0 0 -10px;padding:8px 10px;text-align:left;background:none;border:1px solid transparent;border-radius:8px;cursor:pointer;color:var(--ink)}
+  .resume[hidden]{display:none}
+  .resume:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .r-texte{flex:1;min-width:0;font:italic 400 1.08rem/1.4 Fraunces,Georgia,serif;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+  .r-texte em{color:var(--orange);font-weight:500}
+  .resume .nb{font:600 .78rem Inter,sans-serif;color:var(--violet);white-space:nowrap}
+  .r-chevron{width:8px;height:8px;flex:none;border-right:1.5px solid var(--attenue);border-top:1.5px solid var(--attenue);transform:rotate(45deg);margin-right:4px}
+  .resume.vide{border:1px dashed var(--filet-fort)}
+  .resume.vide .r-texte{color:var(--attenue)}
+  .voile{position:absolute;inset:0;z-index:2;background:rgba(28,23,38,.3);opacity:0;pointer-events:none;transition:opacity .2s}
+  .panneau-ouvert .voile{opacity:1;pointer-events:auto}
+  .panneau{position:absolute;z-index:3;display:flex;flex-direction:column;background:var(--paper);transition:transform .26s cubic-bezier(.2,.8,.2,1)}
+  .bureau .panneau{top:0;right:0;bottom:0;width:min(460px,94%);border-left:1px solid var(--filet-fort);transform:translateX(102%)}
+  .telephone .panneau{left:0;right:0;bottom:0;max-height:90%;border-top:1px solid var(--filet-fort);border-radius:16px 16px 0 0;transform:translateY(102%)}
+  .panneau-ouvert .panneau{transform:none}
+  .poignee-feuille{display:none;width:36px;height:4px;border-radius:2px;background:var(--filet-fort);margin:8px auto 0}
+  .telephone .poignee-feuille{display:block}
+  .panneau-tete{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--filet)}
+  .panneau-tete h3{font:600 1.12rem Fraunces,Georgia,serif}
+  .terminer{font:600 .84rem Inter,sans-serif;background:var(--ink);color:var(--paper);border:0;padding:.5em 1.1em;border-radius:99px;cursor:pointer}
+  .panneau-corps{overflow:auto;padding:14px 18px 24px 26px}
+  .panneau .obj{margin-top:0}
+  @media (prefers-reduced-motion: reduce){.panneau,.voile{transition:none}}
+
+  /* ---------- le champ des objectifs ---------- */
+  .obj{container:obj / inline-size;margin-top:14px;max-width:40rem;font-family:Fraunces,Georgia,serif}
+  .amorce{display:flex;align-items:baseline;font-style:italic;font-weight:500;font-size:1.02rem;color:var(--orange)}
+  .menu-amorce{font:inherit;color:inherit;background:none;border:0;border-bottom:1px dashed color-mix(in srgb,var(--orange) 55%,transparent);padding:0;cursor:pointer;line-height:1.3}
+  .menu-amorce:hover{border-bottom-style:solid}
+  .menu-amorce::after{content:"";display:inline-block;width:.36em;height:.36em;margin-left:.4em;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-.22em) rotate(45deg)}
+  .lignes{list-style:none;margin:4px 0 0 -20px}
+  .ligne{position:relative;display:grid;grid-template-columns:20px 1.1em minmax(0,1fr) 28px;align-items:baseline;border-radius:4px}
+  .ligne::before{content:"–";grid-column:2;grid-row:1;color:var(--orange);font-style:normal;font-size:1.05rem}
+  .poignee{grid-column:1;grid-row:1;align-self:center;width:18px;height:26px;display:flex;align-items:center;justify-content:center;padding:0;background:none;border:0;color:var(--attenue);cursor:grab;opacity:0}
+  .ligne:hover .poignee,.ligne:focus-within .poignee,.poignee:focus-visible{opacity:.8}
+  @media (hover:none){.poignee{opacity:.45}}
+  .seule .poignee{visibility:hidden}
+  .glisse{opacity:.4}
+  .cellule,.fiche-corps{grid-column:3;grid-row:1;min-width:0}
+  .retirer{grid-column:4;grid-row:1;align-self:center;justify-self:end;width:26px;height:26px;border:0;background:none;color:var(--attenue);font:600 1rem Inter,sans-serif;cursor:pointer;opacity:0;border-radius:50%}
+  .ligne:hover .retirer,.ligne:focus-within .retirer,.retirer:focus-visible{opacity:1}
+  .retirer:hover{background:var(--paper-2);color:var(--ink)}
+  @media (hover:none){.retirer{opacity:.55}}
+  .seule .retirer{display:none}
+
+  .cellule{padding:3px 0;cursor:text;font-style:italic;font-size:1.1rem;line-height:1.42}
+  .saisie{display:inline-block;vertical-align:top;max-width:100%;min-width:2px;outline:none;color:color-mix(in srgb,var(--ink) 88%,transparent);overflow-wrap:anywhere}
+  .saisie:empty::before{content:attr(data-exemple);color:color-mix(in srgb,var(--attenue) 70%,transparent);pointer-events:none}
+  .l-libre:has(.saisie:focus),.edition{background:color-mix(in srgb,var(--violet) 7%,transparent);box-shadow:-6px 0 0 color-mix(in srgb,var(--violet) 7%,transparent)}
+  .fantome{color:color-mix(in srgb,var(--attenue) 75%,transparent)}
+  .fantome:empty{display:none}
+  .fantome::after{content:"Tab";display:inline-block;font:600 .62rem/1.5 Inter,sans-serif;font-style:normal;border:1px solid var(--filet-fort);border-radius:3px;padding:0 .35em;margin-left:.5em;vertical-align:.15em;color:var(--attenue)}
+
+  .phrase{padding:3px 0;font-style:italic;font-size:1.1rem;line-height:1.42;color:color-mix(in srgb,var(--ink) 88%,transparent);cursor:text;border-radius:3px}
+  .phrase .vide-phrase{color:color-mix(in srgb,var(--attenue) 70%,transparent)}
+  .phrase .critere{display:block;font:400 .8rem/1.4 Inter,sans-serif;color:var(--attenue);margin-top:1px}
+  .cases{display:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px;padding:6px 6px 10px 0}
+  .edition .cases{display:grid}
+  .edition .phrase{display:none}
+  .case label{display:block;font:500 .72rem Inter,sans-serif;color:var(--attenue);margin-bottom:1px}
+  .case .fac{font-weight:400;opacity:.8}
+  .case input{width:100%;font:italic 400 1.02rem Fraunces,Georgia,serif;color:var(--ink);background:transparent;border:0;border-bottom:1.5px solid var(--filet-fort);border-radius:0;padding:3px 0;outline:none}
+  .case input:focus{border-bottom-color:var(--violet)}
+  .case input::placeholder{color:color-mix(in srgb,var(--attenue) 55%,transparent)}
+  .c-critere{grid-column:1/-1}
+  @container obj (max-width:440px){.cases{grid-template-columns:minmax(0,1fr)}}
+
+  .pied-obj{display:flex;flex-wrap:wrap;gap:2px 16px;align-items:center;margin:6px 0 0 1.1em;font-family:Inter,sans-serif}
+  .lien{font:600 .84rem Inter,sans-serif;background:none;border:0;padding:.3em 0;cursor:pointer;color:var(--violet)}
+  .lien.discret{color:var(--attenue);font-weight:500}
+  .lien:hover{text-decoration:underline;text-underline-offset:3px}
+  .obj:not([data-guidage="B"]) .ajouter-libre{display:none}
+  /* E : l'interrupteur de l'aide */
+  .aide{display:inline-flex;align-items:center;gap:8px;margin-left:auto;font:600 .84rem Inter,sans-serif;color:var(--violet);background:none;border:0;padding:.3em 0;cursor:pointer}
+  .obj:not([data-guidage="E"]) .aide{display:none}
+  .aide .sw{position:relative;flex:none;width:30px;height:18px;border-radius:99px;background:var(--filet-fort);transition:background .2s}
+  .aide .sw::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .2s}
+  .aide[aria-checked="true"] .sw{background:var(--violet)}
+  .aide[aria-checked="true"] .sw::after{transform:translateX(12px)}
+  @media (prefers-reduced-motion: reduce){.aide .sw,.aide .sw::after{transition:none}}
+  .obj[data-simple="oui"] :is(.amorce,.bascule){display:none}
+  .ligne.trame .saisie{color:color-mix(in srgb,var(--attenue) 85%,transparent)}
+
+  .suggestions{margin:14px 0 0 1.1em;font-family:Inter,sans-serif}
+  .suggestions:empty,.obj:not([data-propositions="oui"]) .suggestions{display:none}
+  .sugg-groupe+.sugg-groupe{margin-top:12px}
+  .sugg-titre{font-size:.78rem;color:var(--attenue);margin-bottom:6px}
+  .sugg-liste{display:flex;flex-wrap:wrap;gap:6px}
+  .sugg{display:inline-flex;align-items:baseline;gap:.45em;max-width:100%;text-align:left;font:italic 400 .94rem/1.3 Fraunces,Georgia,serif;color:var(--ink);background:var(--surface);border:1px dashed var(--filet-fort);border-radius:8px;padding:.35em .75em;cursor:pointer}
+  .sugg:hover{border-style:solid;border-color:var(--orange)}
+  .sugg .plus{font:600 .95rem Inter,sans-serif;color:var(--orange)}
+  .sugg .src{font:500 .68rem Inter,sans-serif;color:var(--attenue);white-space:nowrap}
+
+  .libre{display:none}
+  .obj[data-mode="libre"] .libre{display:block}
+  .obj[data-mode="libre"] :is(.amorce,.lignes,.suggestions,.ajouter,.ajouter-libre){display:none}
+  .obj[data-mode="libre"] .pied-obj{margin-left:0}
+  .redaction{min-height:1.5em;outline:none;border-radius:4px;padding:3px 6px;margin:0 -6px;font-style:italic;font-size:1.1rem;line-height:1.45;color:color-mix(in srgb,var(--ink) 88%,transparent)}
+  .redaction:focus{background:color-mix(in srgb,var(--violet) 7%,transparent)}
+  .redaction:empty::before{content:"Objectif pédagogique…";color:color-mix(in srgb,var(--attenue) 70%,transparent)}
+  .redaction p+p{margin-top:.35em}
+  .saisie:focus-visible,.redaction:focus-visible,.case input:focus-visible{outline:none}
+
+  .menu{position:absolute;z-index:30;background:var(--surface);border:1px solid var(--filet-fort);box-shadow:0 10px 30px rgba(28,23,38,.14);min-width:230px;padding:6px;font-family:Inter,sans-serif}
+  .menu[hidden]{display:none}
+  .menu button{display:block;width:100%;text-align:left;font:500 .9rem Inter,sans-serif;color:var(--ink);background:none;border:0;padding:.5em .7em;cursor:pointer}
+  .menu button:hover,.menu button:focus-visible{background:var(--paper-2);outline:none}
+  .menu button[aria-checked="true"]::after{content:"✓";float:right;color:var(--orange)}
+  .menu hr{border:0;border-top:1px solid var(--filet);margin:4px 0}
+  .menu .sous{display:block;font-size:.76rem;color:var(--attenue);font-weight:400}
+
+  /* ---------- lecture : cartes, Présenter, PDF ---------- */
+  .lecture .amorce{font-size:1rem}
+  .lecture ul{list-style:none;margin-top:2px}
+  .lecture li{display:grid;grid-template-columns:1.1em minmax(0,1fr);font-style:italic;font-size:1.1rem;line-height:1.42;color:color-mix(in srgb,var(--ink) 85%,transparent);padding:2px 0}
+  .lecture li::before{content:"–";font-style:normal;color:var(--orange)}
+  .lecture li small{grid-column:2;font:400 .8rem/1.4 Inter,sans-serif;color:var(--attenue)}
+
+  /* mention « Maquette » */
+  .bandeau{display:flex;gap:12px;align-items:flex-start;margin-top:22px;max-width:68ch;padding:12px 16px;border:1.5px dashed var(--orange);border-radius:10px;background:color-mix(in srgb,var(--orange) 6%,transparent);font-size:.95rem;color:var(--ink)}
+  .bandeau b{font-weight:700}
+  .tampon{display:inline-block;font:700 .66rem/1.6 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);border:1.5px solid var(--orange);border-radius:4px;padding:0 .45em;margin-right:.6em;vertical-align:.1em}
+
+  /* cartes : reprise de carte-entrainement.tsx */
+  .grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,470px),1fr));gap:18px;margin-top:10px}
+  .carte-app{container:carte / inline-size;display:flex;flex-direction:column;overflow:hidden;background:var(--surface);border:1px solid var(--filet);border-top:3px solid var(--acc);border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 30px -20px rgba(0,0,0,.3)}
+  .ca-corps{display:flex;flex:1;flex-direction:column}
+  .ca-contenu{display:flex;flex:1;flex-direction:column;gap:12px;padding:20px;text-align:center}
+  .ca-sur{display:flex;align-items:center;gap:10px;text-align:left}
+  .ca-statut{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:99px;padding:4px 10px;font:700 11px Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,var(--surface))}
+  .ca-statut::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acc)}
+  .ca-trait{flex:1;min-width:10px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 35%,transparent),transparent)}
+  .ca-cat{border-radius:6px;padding:2px 6px;font:500 12px "JetBrains Mono",ui-monospace,monospace;color:var(--attenue);background:color-mix(in srgb,var(--ink) 6%,transparent)}
+  .carte-app h3{font:600 1.5rem/1.25 Fraunces,Georgia,serif;letter-spacing:-.015em}
+  .ca-obj{position:relative;font:italic 400 .875rem/1.375 Fraunces,Georgia,serif;color:var(--attenue)}
+  .ca-obj .gm{display:none;position:absolute;top:-4px;left:0;font:400 1.875rem/1 Fraunces,Georgia,serif;color:var(--acc)}
+  .ca-obj p{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .ca-obj .ancien{white-space:normal}
+  .ca-obj .nb{font:600 .72rem Inter,sans-serif;font-style:normal;color:var(--acc);margin-top:2px}
+  .ca-tags{margin-top:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding-top:4px}
+  .ca-tags span{border:1px solid var(--filet);background:var(--paper);border-radius:99px;padding:2px 10px;font-size:11px;color:var(--attenue)}
+  .ca-rail{display:flex;flex-direction:column;gap:14px;padding:16px;border-top:1px solid var(--filet);background:linear-gradient(180deg,color-mix(in srgb,var(--paper-2) 55%,var(--surface)),var(--surface))}
+  .ca-metas{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px}
+  .ca-metas div{display:flex;align-items:baseline;gap:6px}
+  .ca-metas dt{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--attenue)}
+  .ca-metas dd{font:600 .875rem Fraunces,Georgia,serif}
+  .ca-auteur{display:flex;align-items:center;justify-content:center;gap:10px;border-top:1px solid var(--filet);padding-top:12px}
+  .ca-auteur .av{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;font:700 10px Inter,sans-serif;color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,var(--surface))}
+  .ca-auteur span:last-child{font-size:.75rem;font-weight:600}
+  .ca-ouvrir{display:block;height:40px;line-height:40px;border-radius:99px;text-align:center;font-size:.875rem;font-weight:500;background:var(--ink);color:var(--paper)}
+  .ca-icones{display:flex;justify-content:space-between;margin-top:8px;color:var(--attenue)}
+  .ca-icones svg{width:14px;height:14px;margin:9px}
+  @container carte (min-width:32rem){
+    .ca-corps{flex-direction:row}
+    .ca-contenu{text-align:left}
+    .ca-obj{padding-left:20px}
+    .ca-obj .gm{display:block}
+    .ca-tags{justify-content:flex-start}
+    .ca-rail{width:216px;border-top:0;border-left:1px solid var(--filet)}
+    .ca-metas{flex-direction:column;justify-content:flex-start}
+    .ca-metas div{justify-content:space-between}
+  }
+
+  /* couverture du mode Présenter : reprise de carte-cover.tsx */
+  .couv-app{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--paper);border:1px solid var(--filet-fort);padding:44px 24px 36px;margin-top:10px}
+  .couv-k{display:inline-flex;align-items:center;gap:.7em;font:700 .7rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.22em;color:var(--orange)}
+  .couv-k::before,.couv-k::after{content:"";width:28px;height:1px;background:var(--orange)}
+  .couv-app h4{font:600 clamp(2.25rem,5vw,3rem)/1.03 Fraunces,Georgia,serif;margin-top:16px}
+  .couv-obj{max-width:42rem;margin:20px auto 0;font:italic 400 1.125rem/1.625 Fraunces,Georgia,serif;color:var(--attenue)}
+  .couv-obj small{display:block;font:400 .78rem/1.4 Inter,sans-serif;font-style:normal;margin-bottom:4px}
+  .couv-app dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;max-width:48rem;margin-top:40px;border-block:1px solid var(--filet);font-size:.875rem}
+  @media(max-width:600px){.couv-app dl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .couv-app dl div{padding:16px 8px}
+  .couv-app dl div+div{border-left:1px solid var(--filet)}
+  .couv-app dt{font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:var(--attenue)}
+  .couv-app dd{font:600 1.25rem Fraunces,Georgia,serif;margin-top:6px}
+  .couv-cats{margin-top:32px}
+  .couv-cats p{font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:var(--attenue)}
+  .couv-cats span{display:inline-block;margin-top:8px;border-radius:3px;padding:4px 12px;font-size:12px;font-weight:500;background:var(--paper-2)}
+  .couv-go{margin-top:44px;display:inline-flex;align-items:center;gap:8px;border-radius:99px;padding:10px 28px;font-weight:500;background:var(--orange);color:#fff;box-shadow:0 10px 22px -12px rgba(235,93,33,.9)}
+  .couv-glisse{margin-top:14px;font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:var(--attenue)}
+
+  /* PDF : reprise de pdf-entrainement.tsx, à 70 % */
+  .pdf-app{width:420px;max-width:100%;aspect-ratio:210/297;margin-top:10px;background:#fff;color:#000;font-family:Roboto,Arial,sans-serif;padding:14px;border:1px solid var(--filet-fort);box-shadow:0 6px 22px rgba(0,0,0,.1);overflow:hidden}
+  .pdf-titre{font-size:17px;font-weight:700;text-align:center}
+  .pdf-obj{font-size:12.6px;font-style:italic;text-align:center;color:gray;margin-bottom:7px;line-height:1.35}
+  .pdf-ligne{display:flex;margin-bottom:7px}
+  .pdf-ligne span{width:25%;font-size:7px;font-style:italic}
+  .pdf-ligne i{font-weight:100}
+  .pdf-sit{font-size:11.2px;font-weight:700;margin:6px 0 7px}
+  .pdf-mc{font-size:7px;font-style:italic;margin-bottom:7px}
+  .pdf-mc i{font-size:5.6px;font-weight:100}
+  .pdf-schema{height:150px;margin:0 auto 7px;width:62%;border:1.5px solid #6b8f6b;background:#e9f1e6;position:relative}
+  .pdf-schema::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1.5px solid #6b8f6b}
+  .pdf-texte{height:5px;background:#e6e6e6;margin-top:6px}
+  .rendus{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:28px;align-items:start;margin-top:10px}
+  @media(max-width:920px){.rendus{grid-template-columns:minmax(0,1fr)}}
+
+  /* le texte de l'objectif suit la proposition choisie en haut de la page */
+  main[data-forme="lignes"] .v-facteur,main[data-forme="facteur"] .v-lignes,main:not([data-guidage="B"]) .v-critere{display:none}
+
+  /* ---------- piste : objectifs et situations ---------- */
+  .piste{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px;margin-top:22px;align-items:start}
+  @media(max-width:820px){.piste{grid-template-columns:minmax(0,1fr)}}
+  .piste-tete{background:var(--paper);border:1px solid var(--filet-fort);padding:20px 22px}
+  .piste-tete .theme{font-size:1.6rem;margin-top:0}
+  .piste-tete .lecture{margin-top:12px;font-family:Fraunces,Georgia,serif}
+  .piste-tete li{grid-template-columns:1.1em minmax(0,1fr) auto;gap:0 10px;align-items:baseline}
+  .couv{font:500 .74rem Inter,sans-serif;font-style:normal;color:var(--attenue);white-space:nowrap}
+  .couv.alerte{color:var(--orange);font-weight:600}
+  .situations{display:grid;gap:10px}
+  .sit{display:grid;grid-template-columns:84px minmax(0,1fr);gap:4px 14px;background:var(--surface);border:1px solid var(--filet);padding:12px 14px}
+  .sit .terrain{grid-row:span 3;height:56px;background:var(--paper-2);border:1px solid var(--filet);position:relative}
+  .sit .terrain::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1px solid var(--filet-fort)}
+  .sit h4{font:600 1.05rem/1.2 Fraunces,Georgia,serif}
+  .sit .num{color:var(--orange);margin-right:.35em}
+  .sit p{font-size:.76rem;color:var(--attenue)}
+  .liens{display:flex;flex-wrap:wrap;gap:6px}
+  .lie{font:500 .78rem Inter,sans-serif;color:var(--attenue);background:none;border:1px solid var(--filet-fort);border-radius:99px;padding:.15em .75em;cursor:pointer}
+  .lie[aria-pressed="true"]{color:var(--ink);border-color:var(--orange);background:color-mix(in srgb,var(--orange) 12%,transparent)}
+
+  .technique{font-size:.84rem}
+  .technique h2{font-size:1.1rem}
+  .technique>p,.technique td{color:var(--attenue)}
+  .technique table{font-size:.82rem}
+  table{width:100%;border-collapse:collapse;margin-top:18px;font-size:.92rem}
+  th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--filet)}
+  th{font-size:.78rem;color:var(--attenue);font-weight:600}
+  td:first-child{font-weight:600;width:24%}
+  td{color:var(--attenue)}
+  @media(max-width:640px){table,tbody,tr,td{display:block}thead{display:none}td:first-child{width:auto;padding-bottom:0;border:0}tr{border-bottom:1px solid var(--filet)}td{border:0}}
+</style>
+</head>
+<body>
+
+<div class="outils"><div class="wrap outils-in">
+  <a class="retour" href="../">Études</a>
+  <div class="seg" role="group" aria-label="Thème"><button type="button" data-theme-choix="light">Jour</button><button type="button" data-theme-choix="dark">Nuit</button></div>
+</div></div>
+
+<main class="wrap">
+<header class="tete">
+  <span class="kicker">Étude de design</span>
+  <h1>Écrire ses objectifs pédagogiques</h1>
+  <p class="lede">Aujourd'hui, l'objectif d'une séance tient sur <b>une seule ligne</b>, et l'application coupe le texte au-delà de 180 caractères. On veut pouvoir en écrire <b>plusieurs, sous forme de liste</b>, et aider l'entraîneur qui débute en lui proposant de commencer chaque objectif par <b>« Être capable de… »</b>. Cette page compare <b>cinq façons de l'aider</b> (A, B, C, D, E) et <b>trois endroits où écrire</b>. Choisissez en haut, puis essayez d'écrire dans les deux écrans, comme dans l'application.</p>
+  <p class="bandeau"><span class="tampon">Maquette</span><span>Les écrans de cette page <b>imitent l'application</b> pour comparer des propositions. Ce n'est pas l'application : rien n'y est enregistré, et les séances montrées sont inventées.</span></p>
+</header>
+
+<section class="bloc">
+  <h2>Essayez les propositions</h2>
+  <div class="reglages">
+    <div>
+      <span class="reglage-lib" id="lib-guidage">Comment l'application aide à écrire</span>
+      <div class="choix" role="group" aria-labelledby="lib-guidage">
+        <button type="button" class="carte-choix" data-guidage-choix="S" aria-pressed="true"><span class="lettre">A</span><span class="nom">Pré-remplie</span><span class="desc">Chaque ligne commence déjà par « Être capable de ».</span></button>
+        <button type="button" class="carte-choix" data-guidage-choix="A" aria-pressed="false"><span class="lettre">B</span><span class="nom">Verbe complété</span><span class="desc">On tape le début du verbe, l’application le termine.</span></button>
+        <button type="button" class="carte-choix" data-guidage-choix="B" aria-pressed="false"><span class="lettre">C</span><span class="nom">Phrase à compléter</span><span class="desc">Quelques petites cases à remplir pour chaque objectif.</span></button>
+        <button type="button" class="carte-choix" data-guidage-choix="C" aria-pressed="false"><span class="lettre">D</span><span class="nom">Objectifs proposés</span><span class="desc">L’application propose des objectifs tout faits.</span></button>
+        <button type="button" class="carte-choix" data-guidage-choix="E" aria-pressed="false"><span class="lettre">E</span><span class="nom">Simple, aide à la demande</span><span class="desc">On commence comme A ; un bouton ajoute l’aide de B et D.</span></button>
+      </div>
+      <p class="note" id="note-guidage"></p>
+    </div>
+    <div>
+      <span class="reglage-lib" id="lib-emplacement">Où l'on écrit</span>
+      <div class="choix" role="group" aria-labelledby="lib-emplacement">
+        <button type="button" class="carte-choix" data-emplacement-choix="entete" aria-pressed="false"><span class="nom">Sous le thème</span><span class="desc">On écrit directement en haut de la séance.</span></button>
+        <button type="button" class="carte-choix" data-emplacement-choix="panneau" aria-pressed="false"><span class="nom">Dans une fenêtre</span><span class="desc">Une fenêtre s’ouvre pour écrire.</span></button>
+        <button type="button" class="carte-choix" data-emplacement-choix="mixte" aria-pressed="true"><span class="nom">Selon l’appareil</span><span class="desc">Sous le thème sur ordinateur, dans une fenêtre au téléphone.</span></button>
+      </div>
+      <p class="note" id="note-emplacement"></p>
+    </div>
+  </div>
+  <div class="demo">
+    <span id="lib-demo">Pour commencer :</span>
+    <div class="seg" role="group" aria-labelledby="lib-demo">
+      <button type="button" data-demo-choix="neuve" aria-pressed="true">Une séance neuve</button><button type="button" data-demo-choix="remplie" aria-pressed="false">Une séance remplie</button><button type="button" data-demo-choix="ancien" aria-pressed="false">Un objectif déjà écrit</button>
+    </div>
+  </div>
+
+  <div class="banc">
+    <figure class="tel">
+      <figcaption><span class="tampon">Maquette</span>Ordinateur et tablette</figcaption>
+      <div class="ecran bureau" data-cadre data-exemple="jouer vite vers l'avant après une récupération">
+        <div class="defile">
+          <div class="barre-app" aria-hidden="true"><span class="pt"></span>Entraînements › Montée de balle</div>
+          <div class="entete">
+            <div class="chips"><span>Mer. 14 oct.</span><span class="dot"></span><span>1 h 30</span><span class="dot"></span><span>14 joueurs</span><span class="dot"></span><span>U15</span></div>
+            <div class="theme">Montée de balle en surnombre</div>
+            <div class="slot-entete"></div>
+            <button type="button" class="resume" hidden></button>
+          </div>
+          <div class="suite" aria-hidden="true"><i></i><i></i><i></i></div>
+        </div>
+        <div class="voile"></div>
+        <aside class="panneau" aria-label="Objectifs de la séance" inert>
+          <div class="poignee-feuille"></div>
+          <div class="panneau-tete"><h3>Objectifs de la séance</h3><button type="button" class="terminer">Terminer</button></div>
+          <div class="panneau-corps slot-panneau"></div>
+        </aside>
+      </div>
+      <div class="etat"><span class="pastille">Brouillon</span><span>Ce qui sera gardé : <span class="enregistre">rien</span></span></div>
+    </figure>
+    <figure class="tel">
+      <figcaption><span class="tampon">Maquette</span>Téléphone</figcaption>
+      <div class="ecran telephone" data-cadre data-exemple="fixer un défenseur">
+        <div class="defile">
+          <div class="barre-app" aria-hidden="true"><span class="pt"></span>Montée de balle</div>
+          <div class="entete">
+            <div class="chips"><span>Mer. 14 oct.</span><span class="dot"></span><span>1 h 30</span><span class="dot"></span><span>U15</span></div>
+            <div class="theme">Montée de balle en surnombre</div>
+            <div class="slot-entete"></div>
+            <button type="button" class="resume" hidden></button>
+          </div>
+          <div class="suite" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="voile"></div>
+        <aside class="panneau" aria-label="Objectifs de la séance" inert>
+          <div class="poignee-feuille"></div>
+          <div class="panneau-tete"><h3>Objectifs de la séance</h3><button type="button" class="terminer">Terminer</button></div>
+          <div class="panneau-corps slot-panneau"></div>
+        </aside>
+      </div>
+      <div class="etat"><span class="pastille">Brouillon</span><span>Ce qui sera gardé : <span class="enregistre">rien</span></span></div>
+    </figure>
+  </div>
+  <p class="legende">Sous chaque écran : le texte que l'application gardera, et l'état de la séance. Le thème et la catégorie sont déjà remplis, donc dès qu'un objectif est vraiment écrit, la séance passe de « Brouillon » à « En cours ».</p>
+</section>
+
+<section class="bloc">
+  <h2>Sur les cartes de la liste des séances</h2>
+  <p>Les cartes gardent leur présentation actuelle. Seul le texte de l'objectif change : un objectif par ligne, trois au plus, puis le nombre des suivants. Avec A, « Être capable de » se répète à chaque ligne ; avec B, C et D, il n'est écrit qu'une fois ; avec E, cela dépend de l'aide. Changez de proposition en haut de la page pour comparer.</p>
+  <figure>
+    <figcaption class="legende"><span class="tampon">Maquette</span>La carte du milieu a un objectif écrit avant ce changement : elle ne bouge pas.</figcaption>
+    <div class="grille"><article class="carte-app" style="--acc:var(--st-pret)"><div class="ca-corps"><div class="ca-contenu"><div class="ca-sur"><span class="ca-statut">Prêt</span><span class="ca-trait"></span><span class="ca-cat">U15</span></div><h3>Montée de balle en surnombre</h3><div class="ca-obj"><span class="gm" aria-hidden="true">&ldquo;</span><div class="v-lignes"><p>Être capable de jouer vite vers l'avant après la récupération</p><p>Être capable de fixer un défenseur pour libérer un partenaire</p><p>Être capable de choisir entre tir et passe en 3 contre 2</p></div><div class="v-facteur"><p>Être capable de :</p><p>– jouer vite vers l'avant après la récupération</p><p>– fixer un défenseur pour libérer un partenaire</p><p>– choisir entre tir et passe en 3 contre 2</p></div></div><div class="ca-tags"><span>Contre-attaque</span><span>Surnombre</span><span>Passe</span></div></div><div class="ca-rail"><dl class="ca-metas"><div><dt>Situations</dt><dd>4</dd></div><div><dt>Effectif</dt><dd>14 joueurs</dd></div><div><dt>Durée</dt><dd>1 h 30</dd></div><div><dt>Date</dt><dd>14 oct.</dd></div></dl><div class="ca-auteur"><span class="av">CD</span><span>Camille D.</span></div><div><span class="ca-ouvrir">Ouvrir</span><div class="ca-icones" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M12 16v4M8 20h8"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></div></div></div></div></article><article class="carte-app" style="--acc:var(--st-encours)"><div class="ca-corps"><div class="ca-contenu"><div class="ca-sur"><span class="ca-statut">En cours</span><span class="ca-trait"></span><span class="ca-cat">U13</span></div><h3>Défense étagée</h3><div class="ca-obj"><span class="gm" aria-hidden="true">&ldquo;</span><p class="ancien">Fermer l'intervalle du porteur et dissuader la passe dans le dos.</p></div><div class="ca-tags"><span>Alignement défensif</span><span>Harcèlement</span></div></div><div class="ca-rail"><dl class="ca-metas"><div><dt>Situations</dt><dd>2</dd></div><div><dt>Effectif</dt><dd>12 joueurs</dd></div><div><dt>Durée</dt><dd>1 h</dd></div><div><dt>Date</dt><dd>10 oct.</dd></div></dl><div class="ca-auteur"><span class="av">CD</span><span>Camille D.</span></div><div><span class="ca-ouvrir">Ouvrir</span><div class="ca-icones" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M12 16v4M8 20h8"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></div></div></div></div></article><article class="carte-app" style="--acc:var(--st-pret)"><div class="ca-corps"><div class="ca-contenu"><div class="ca-sur"><span class="ca-statut">Terminé</span><span class="ca-trait"></span><span class="ca-cat">Seniors</span></div><h3>Tir en suspension</h3><div class="ca-obj"><span class="gm" aria-hidden="true">&ldquo;</span><div class="v-lignes"><p>Être capable d'enchaîner trois appuis et une impulsion sur le bon pied</p><p>Être capable de choisir sa zone de tir selon le gardien</p><p>Être capable d'armer haut au-dessus du contreur</p><p class="nb">+ 1 objectif</p></div><div class="v-facteur"><p>Être capable de :</p><p>– enchaîner trois appuis et une impulsion sur le bon pied</p><p>– choisir sa zone de tir selon le gardien</p><p>– armer haut au-dessus du contreur</p><p class="nb">+ 1 objectif</p></div></div><div class="ca-tags"><span>Tir</span><span>Feinte</span></div></div><div class="ca-rail"><dl class="ca-metas"><div><dt>Situations</dt><dd>5</dd></div><div><dt>Effectif</dt><dd>—</dd></div><div><dt>Durée</dt><dd>2 h</dd></div><div><dt>Date</dt><dd>6 oct.</dd></div></dl><div class="ca-auteur"><span class="av">CD</span><span>Camille D.</span></div><div><span class="ca-ouvrir">Ouvrir</span><div class="ca-icones" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M12 16v4M8 20h8"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></div></div></div></div></article></div>
+  </figure>
+</section>
+
+<section class="bloc">
+  <h2>Sur la couverture du mode Présenter</h2>
+  <p>La couverture garde sa présentation. L'objectif, aujourd'hui une citation entre guillemets, devient une courte liste centrée, une ligne par objectif. Avec C, le critère de réussite s'affiche en petit sous l'objectif.</p>
+  <figure>
+    <figcaption class="legende"><span class="tampon">Maquette</span>Première page du mode Présenter.</figcaption>
+    <div class="couv-app">
+      <span class="couv-k">Aperçu de séance</span>
+      <h4>Montée de balle en surnombre</h4>
+      <div class="couv-obj v-lignes"><p>Être capable de jouer vite vers l'avant après la récupération</p><p>Être capable de fixer un défenseur pour libérer un partenaire</p><p>Être capable de choisir entre tir et passe en 3 contre 2</p></div>
+      <div class="couv-obj v-facteur"><p>Être capable de</p><p>jouer vite vers l'avant après la récupération</p><p>fixer un défenseur pour libérer un partenaire<small class="v-critere">Réussi si le partenaire reçoit le ballon seul</small></p><p>choisir entre tir et passe en 3 contre 2</p></div>
+      <dl><div><dt>Date</dt><dd>14 octobre 2026</dd></div><div><dt>Durée</dt><dd>1 h 30</dd></div><div><dt>Effectif</dt><dd>14 joueurs</dd></div><div><dt>Situations</dt><dd>4</dd></div></dl>
+      <div class="couv-cats"><p>Catégories</p><span>U15</span></div>
+      <span class="couv-go">Commencer la séance ›</span>
+      <p class="couv-glisse">ou glisse →</p>
+    </div>
+  </figure>
+</section>
+
+<section class="bloc">
+  <h2>Dans le PDF</h2>
+  <p>Le PDF garde sa mise en page : titre, objectif en italique gris, puis date, durée, catégorie et effectif. Les objectifs s'y suivent simplement, une ligne chacun.</p>
+  <figure>
+    <figcaption class="legende"><span class="tampon">Maquette</span>Haut de la première page, réduit.</figcaption>
+    <div class="pdf-app" aria-label="Première page du PDF">
+      <div class="pdf-titre">Montée de balle en surnombre</div>
+      <div class="pdf-obj v-lignes"><div>Être capable de jouer vite vers l'avant après la récupération</div><div>Être capable de fixer un défenseur pour libérer un partenaire</div><div>Être capable de choisir entre tir et passe en 3 contre 2</div></div>
+      <div class="pdf-obj v-facteur"><div>Être capable de :</div><div>jouer vite vers l'avant après la récupération</div><div>fixer un défenseur pour libérer un partenaire</div><div>choisir entre tir et passe en 3 contre 2</div></div>
+      <div class="pdf-ligne"><span><i>Date : </i>14 octobre 2026</span><span><i>Durée : </i>1 h 30</span><span><i>Catégorie : </i>U15</span><span><i>Effectif : </i>14 joueurs</span></div>
+      <div class="pdf-sit">Relance du gardien</div>
+      <div class="pdf-mc"><i>Mots-clés : </i>Contre-attaque, Passe</div>
+      <div class="pdf-schema"></div>
+      <div class="pdf-texte"></div><div class="pdf-texte" style="width:85%"></div><div class="pdf-texte" style="width:60%"></div>
+    </div>
+  </figure>
+</section>
+
+<section class="bloc">
+  <h2>Une piste pour plus tard : relier objectifs et situations</h2>
+  <p>Chaque situation indiquerait les objectifs qu'elle travaille. En haut de la séance, on verrait pour chaque objectif les situations qui s'en occupent, et celui qu'aucune ne travaille serait signalé. Touchez les objectifs sous les situations pour essayer.</p>
+  <p class="legende"><span class="tampon">Maquette</span>Une idée à explorer, pas une proposition de cette étude.</p>
+  <div class="piste">
+    <div class="piste-tete">
+      <div class="theme">Montée de balle en surnombre</div>
+      <div class="lecture">
+        <div class="amorce">Être capable de</div>
+        <ul id="piste-objectifs"></ul>
+      </div>
+    </div>
+    <div class="situations" id="piste-situations"></div>
+  </div>
+  <p class="legende">En mode Présenter, chaque situation rappellerait aussi l'objectif qu'elle travaille. Ce serait une demande à part, à ajouter au tableau de suivi.</p>
+</section>
+
+<section class="bloc reco">
+  <h2>À trancher</h2>
+  <ul class="liste">
+    <li><b>Comment aider à écrire</b> : A, B, C, D, ou E, qui réunit A, B et D. A ne demande presque rien à apprendre ; B et D vont bien ensemble ; C pourrait venir dans un second temps.</li>
+    <li><b>Où écrire</b> : sous le thème, dans une fenêtre, ou selon l'appareil.</li>
+    <li><b>Les formules proposées</b> : « Être capable de » et « Savoir », ou d'autres formules utilisées dans les formations d'entraîneurs ?</li>
+    <li><b>Le lien entre objectifs et situations</b> : en faire une demande à part ?</li>
+  </ul>
+</section>
+
+<section class="bloc technique">
+  <h2>Notes techniques</h2>
+  <p>Cette partie s'adresse aux développeurs. <b>Inutile de la lire pour choisir une proposition.</b></p>
+  <table>
+    <thead><tr><th>Sujet</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Stockage</td><td>Document TipTap : liste d'objectifs dont l'amorce est un attribut et non du texte (avec C, chaque objectif garde ses cases), ou texte libre. Avec A, chaque ligne est un texte complet, amorce comprise. À côté, une copie en texte brut, amorce comprise, alimente la recherche plein texte et le calcul du statut.</td></tr>
+      <tr><td>Recherche et statut</td><td>Lus sur la copie en texte brut, comme aujourd'hui. Les lignes vides ou restées pré-remplies (A) sont ignorées.</td></tr>
+      <tr><td>Objectifs existants</td><td>Texte brut affiché tel quel, ouvert en écriture libre (B, C, D) ou en première ligne (A). Aucune conversion automatique.</td></tr>
+      <tr><td>Verbes (B)</td><td>Liste fixe, à relire avec le référent.</td></tr>
+      <tr><td>Catalogue (D)</td><td>Objectifs rattachés aux mots-clés préconfigurés (<code>GROUPES_MOTS_CLES</code>), à écrire avec le référent, plus l'historique de l'entraîneur. Une séance sans situation n'a que l'historique.</td></tr>
+      <tr><td>Longueur</td><td>Limite de 180 caractères supprimée ; plafond autour de 2 000 caractères.</td></tr>
+      <tr><td>Import et conversion d'un PDF</td><td>Les lignes commençant par « Être capable de » deviennent des objectifs ; le reste passe en écriture libre.</td></tr>
+      <tr><td>Mesure</td><td>Part des séances écrites avec l'amorce ; selon la proposition : lignes complétées (A), verbes acceptés (B), critères remplis (C), propositions ajoutées (D), activations et retraits de l'aide (E).</td></tr>
+      <tr><td>Passage simple ↔ aide (E)</td><td>Vers l'aide, « Être capable de » en tête de ligne est retiré et devient l'amorce commune ; une ligne qui ne le porte pas est marquée et reste telle quelle. Retour au simple : l'amorce est réécrite en tête des lignes non marquées. Préférence gardée par entraîneur (profil ou cookie).</td></tr>
+      <tr><td>Lien avec les situations</td><td>Un identifiant par objectif (B, C, D ; pas l'écriture libre), et dans chaque situation la liste des objectifs liés.</td></tr>
+    </tbody>
+  </table>
+</section>
+</main>
+
+<div class="menu" id="menu-amorce" role="menu" hidden></div>
+<datalist id="verbes-liste"></datalist>
+
+<script>
+(function () {
+  var racine = document.documentElement;
+  var boutonsTheme = document.querySelectorAll('[data-theme-choix]');
+  function marqueTheme(v) { boutonsTheme.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeChoix === v)); }); }
+  marqueTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  boutonsTheme.forEach(function (b) { b.addEventListener('click', function () { racine.dataset.theme = b.dataset.themeChoix; marqueTheme(b.dataset.themeChoix); }); });
+
+  /* ---------- données d'exemple ---------- */
+  var AMORCES = { capable: 'Être capable de', savoir: 'Savoir' };
+  var VERBES = ['accélérer', 'anticiper', 'choisir', 'communiquer', 'déborder', 'défendre', 'dribbler', 'enchaîner', 'feinter', 'fixer', 'harceler', 'intercepter', 'jouer', 'lire', 'occuper', 'passer', 'protéger', 'réagir', 'recevoir', 'se démarquer', 'se replacer', 'tirer'];
+  var CATALOGUE = [
+    { t: "jouer vite vers l'avant après la récupération", src: 'Contre-attaque' },
+    { t: 'courir dans son couloir de jeu direct', src: 'Contre-attaque' },
+    { t: 'fixer un défenseur pour libérer un partenaire', src: 'Surnombre' },
+    { t: 'choisir entre tir et passe en surnombre', src: 'Surnombre' },
+    { t: 'occuper la largeur pendant la montée de balle', src: 'Surnombre' }
+  ];
+  var HISTORIQUE = ["enchaîner passe et course vers l'avant", 'se replacer en défense après une perte de balle'];
+  var EXEMPLE_LIGNES = ["jouer vite vers l'avant après la récupération", 'fixer un défenseur pour libérer un partenaire', 'choisir entre tir et passe en 3 contre 2'];
+  var EXEMPLE_FICHES = [
+    { verbe: 'jouer', quoi: "vite vers l'avant", situation: 'après la récupération', critere: 'le ballon passe le milieu en moins de trois secondes' },
+    { verbe: 'fixer', quoi: 'un défenseur', situation: 'en 2 contre 1', critere: 'le partenaire reçoit le ballon seul' },
+    { verbe: 'choisir', quoi: 'entre tir et passe', situation: 'en 3 contre 2', critere: '' }
+  ];
+  var PREFIXE = 'Être capable de';
+  var ANCIEN = "Fermer l'intervalle du porteur et dissuader la passe dans le dos.";
+  var CHAMPS_FICHE = ['verbe', 'quoi', 'situation', 'critere'];
+  var POIGNEE = '<button type="button" class="poignee" aria-label="Déplacer cet objectif (flèches haut et bas)"><svg viewBox="0 0 10 16" width="10" height="16" aria-hidden="true"><g fill="currentColor"><circle cx="2" cy="3" r="1.3"/><circle cx="8" cy="3" r="1.3"/><circle cx="2" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="2" cy="13" r="1.3"/><circle cx="8" cy="13" r="1.3"/></g></svg></button>';
+  var RETIRER = '<button type="button" class="retirer" aria-label="Retirer cet objectif">×</button>';
+  document.getElementById('verbes-liste').innerHTML = VERBES.map(function (v) { return '<option value="' + v + '">'; }).join('');
+
+  /* ---------- outils ---------- */
+  var uid = 0;
+  function texte(n) { return (n.textContent || '').replace(/ /g, ' ').trim(); }
+  function place(el, debut) {
+    el.focus();
+    var r = document.createRange(); r.selectNodeContents(el); r.collapse(!!debut);
+    var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  function decalageCaret(el) {
+    var s = getSelection(); if (!s.rangeCount || !el.contains(s.anchorNode)) return 0;
+    var r = s.getRangeAt(0).cloneRange(); r.selectNodeContents(el); r.setEnd(s.anchorNode, s.anchorOffset);
+    return r.toString().length;
+  }
+  function decoupe(amorce, suite) {
+    // « Être capable de » + voyelle : « Être capable d'enchaîner »
+    if (amorce.slice(-3) === ' de' && /^[aeiouyéèêàâîïôû]/i.test(suite)) return [amorce.slice(0, -2) + "d'", suite];
+    return [amorce + ' ', suite];
+  }
+  function elision(amorce, suite) { var d = decoupe(amorce, suite); return d[0] + d[1]; }
+  function echappe(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+  /* ---------- l'éditeur des objectifs ---------- */
+  function creeEditeur(opts) {
+    var el = document.createElement('div');
+    el.className = 'obj';
+    el.dataset.mode = 'trame'; el.dataset.amorce = 'capable'; el.dataset.guidage = 'A';
+    el.innerHTML =
+      '<div class="amorce"><button type="button" class="menu-amorce" aria-haspopup="menu" aria-expanded="false">Être capable de</button></div>' +
+      '<ol class="lignes"></ol>' +
+      '<div class="pied-obj"><button type="button" class="lien ajouter">Ajouter un objectif</button><button type="button" class="lien ajouter-libre">Ajouter une ligne libre</button><button type="button" class="lien discret bascule">Écrire librement</button><button type="button" class="aide" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span>M’aider à écrire</button></div>' +
+      '<div class="suggestions"></div>' +
+      '<div class="libre"><div class="redaction" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Objectif pédagogique"></div></div>';
+    var lignes = el.querySelector('.lignes'), redaction = el.querySelector('.redaction'), boutonAmorce = el.querySelector('.menu-amorce');
+    var sugg = el.querySelector('.suggestions'), bascule = el.querySelector('.bascule');
+    var glisse = null, cleSugg = '';
+
+    function amorce() { return AMORCES[el.dataset.amorce]; }
+    function guidage() { return el.dataset.guidage; }
+    // E : écriture simple (A) tant que l'aide est coupée, verbe complété (B) et objectifs proposés (D) quand elle est active
+    function avecAide() { return guidage() === 'E' && el.dataset.aide === 'oui'; }
+    function estSimple() { return guidage() === 'S' || (guidage() === 'E' && !avecAide()); }
+    function aideVerbe() { return guidage() === 'A' || avecAide(); }
+    function aidePropositions() { return guidage() === 'C' || avecAide(); }
+    function insere(li, apres) {
+      if (apres) lignes.insertBefore(li, apres.nextSibling); else lignes.appendChild(li);
+      branchePoignee(li);
+    }
+    function deplace(li, sens) {
+      if (sens < 0 && li.previousElementSibling) lignes.insertBefore(li, li.previousElementSibling);
+      if (sens > 0 && li.nextElementSibling) lignes.insertBefore(li.nextElementSibling, li);
+      maj();
+    }
+    function focusLigne(li, debut) {
+      if (li.classList.contains('l-libre')) place(li.querySelector('.saisie'), debut);
+      else ouvreFiche(li);
+    }
+    function parDefaut(apres) { return guidage() === 'B' ? fiche(apres) : ligneLibre(apres); }
+    function retire(li) {
+      var prec = li.previousElementSibling, suiv = li.nextElementSibling;
+      li.remove();
+      if (!lignes.children.length) parDefaut();
+      var cible = prec || suiv || lignes.firstElementChild;
+      if (cible) focusLigne(cible, false);
+      maj();
+    }
+
+    /* une ligne qu'on écrit d'un trait */
+    function ligneLibre(apres, contenu) {
+      var li = document.createElement('li'); li.className = 'ligne l-libre';
+      li.innerHTML = POIGNEE + '<div class="cellule"><span class="saisie" contenteditable="plaintext-only" role="textbox" spellcheck="false"></span><span class="fantome" aria-hidden="true"></span></div>' + RETIRER;
+      // version simple : chaque ligne neuve commence par « Être capable de », écrit comme du texte
+      if (estSimple() && !contenu) contenu = PREFIXE + '\u00a0';
+      var s = li.querySelector('.saisie'); s.textContent = contenu || '';
+      s.dataset.exemple = estSimple() ? PREFIXE + '…' : lignes.children.length ? 'un autre objectif' : opts.exemple;
+      insere(li, apres); brancheLibre(li);
+      return li;
+    }
+    // une ligne restée telle qu'elle a été pré-remplie ne compte pas
+    function valeurLibre(li) {
+      var t = texte(li.querySelector('.saisie'));
+      return estSimple() && t === PREFIXE ? '' : t;
+    }
+    function majFantome(s, f) {
+      f.textContent = '';
+      if (!aideVerbe()) return;
+      var t = s.textContent.replace(/ /g, ' ');
+      if (t.length < 2 || t.length > 14 || decalageCaret(s) !== s.textContent.length) return;
+      var bas = t.toLowerCase();
+      var v = VERBES.filter(function (x) { return x.indexOf(bas) === 0 && x !== bas; })[0];
+      if (v) f.textContent = v.slice(t.length);
+    }
+    function brancheLibre(li) {
+      var s = li.querySelector('.saisie'), f = li.querySelector('.fantome');
+      li.querySelector('.cellule').addEventListener('mousedown', function (e) { if (e.target !== s) { e.preventDefault(); place(s); } });
+      s.addEventListener('blur', function () { f.textContent = ''; setTimeout(maj, 0); });
+      s.addEventListener('input', function () { majFantome(s, f); maj(); });
+      s.addEventListener('keydown', function (e) {
+        if (f.textContent && (e.key === 'Tab' || e.key === 'ArrowRight') && !e.shiftKey) {
+          e.preventDefault();
+          s.textContent = s.textContent.replace(/\s+$/, '') + f.textContent + ' '; f.textContent = '';
+          place(s); maj(); return;
+        }
+        if (e.key === 'Escape' && f.textContent) { e.stopPropagation(); f.textContent = ''; return; }
+        if (e.altKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) { e.preventDefault(); deplace(li, e.key === 'ArrowUp' ? -1 : 1); place(s); return; }
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (!valeurLibre(li)) {
+            // Entrée sur une ligne vide : on a fini
+            s.blur();
+            if (lignes.children.length > 1) li.remove();
+            maj(); return;
+          }
+          var pos = decalageCaret(s), t = s.textContent;
+          s.textContent = t.slice(0, pos).replace(/\s+$/, '');
+          var n = ligneLibre(li, t.slice(pos).replace(/^\s+/, ''));
+          place(n.querySelector('.saisie'), true); maj();
+        } else if (e.key === 'Backspace' && getSelection().isCollapsed && decalageCaret(s) === 0) {
+          var prec = li.previousElementSibling;
+          if (!texte(s) && lignes.children.length > 1) { e.preventDefault(); retire(li); }
+          else if (prec && prec.classList.contains('l-libre')) {
+            // retour arrière en début de ligne : elle rejoint la précédente
+            e.preventDefault();
+            var p = prec.querySelector('.saisie'), avant = p.textContent.replace(/\s+$/, '');
+            p.textContent = avant + (texte(s) ? ' ' + texte(s) : '');
+            li.remove(); p.focus();
+            var r = document.createRange(); r.setStart(p.firstChild || p, avant.length); r.collapse(true);
+            getSelection().removeAllRanges(); getSelection().addRange(r);
+            maj();
+          }
+        } else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !e.shiftKey) {
+          var voisin = e.key === 'ArrowDown' ? li.nextElementSibling : li.previousElementSibling;
+          if (voisin) { e.preventDefault(); focusLigne(voisin, false); }
+        }
+      });
+      s.addEventListener('paste', function (e) {
+        // un collage sur plusieurs lignes donne plusieurs objectifs ; l'amorce collée est retirée
+        e.preventDefault();
+        var morceaux = (e.clipboardData.getData('text/plain') || '').split(/\n+/).map(function (m) {
+          m = m.replace(/^\s*[-–•*]\s*/, '');
+          return (estSimple() ? m : m.replace(/^(être capable d(e|')|savoir)\s*/i, '')).trim();
+        }).filter(Boolean);
+        if (!morceaux.length) return;
+        document.execCommand('insertText', false, morceaux.shift());
+        var der = li;
+        morceaux.forEach(function (m) { der = ligneLibre(der, m); });
+        place(der.querySelector('.saisie')); maj();
+      });
+      li.querySelector('.retirer').addEventListener('click', function () { retire(li); });
+    }
+
+    /* une phrase à compléter, case par case */
+    function fiche(apres, d) {
+      d = d || {};
+      var li = document.createElement('li'); li.className = 'ligne l-fiche';
+      var id = 'f' + (++uid);
+      function caseHTML(k, lib, ex) {
+        return '<div class="case c-' + k + '"><label for="' + id + k + '">' + lib + '</label><input id="' + id + k + '" data-k="' + k + '" placeholder="' + ex + '" autocomplete="off"' + (k === 'verbe' ? ' list="verbes-liste"' : '') + '></div>';
+      }
+      li.innerHTML = POIGNEE + '<div class="fiche-corps"><div class="phrase" role="button" tabindex="0"></div><div class="cases">' +
+        caseHTML('verbe', 'Verbe', 'fixer') + caseHTML('quoi', 'Quoi', 'un défenseur') + caseHTML('situation', 'Dans quelle situation', 'en 2 contre 1') +
+        caseHTML('critere', 'Réussi si <span class="fac">(facultatif)</span>', 'le partenaire reçoit le ballon seul') + '</div></div>' + RETIRER;
+      CHAMPS_FICHE.forEach(function (k) { li.querySelector('[data-k="' + k + '"]').value = d[k] || ''; });
+      insere(li, apres); brancheFiche(li); majPhrase(li);
+      return li;
+    }
+    function casesDe(li) { var v = {}; CHAMPS_FICHE.forEach(function (k) { v[k] = li.querySelector('[data-k="' + k + '"]').value.trim(); }); return v; }
+    function baseFiche(v) { return [v.verbe, v.quoi, v.situation].filter(Boolean).join(' '); }
+    function valeurFiche(li) { var v = casesDe(li), b = baseFiche(v); return b ? b + (v.critere ? ' (réussi si ' + v.critere + ')' : '') : ''; }
+    function majPhrase(li) {
+      var v = casesDe(li), b = baseFiche(v), ph = li.querySelector('.phrase');
+      ph.innerHTML = b ? echappe(b) + (v.critere ? '<span class="critere">Réussi si ' + echappe(v.critere) + '</span>' : '')
+        : '<span class="vide-phrase">' + (lignes.firstElementChild === li ? 'fixer un défenseur en 2 contre 1…' : 'un autre objectif…') + '</span>';
+    }
+    function ouvreFiche(li, k) {
+      li.classList.add('edition');
+      var v = casesDe(li);
+      var cle = k || ['verbe', 'quoi', 'situation'].filter(function (x) { return !v[x]; })[0] || 'verbe';
+      li.querySelector('[data-k="' + cle + '"]').focus();
+    }
+    function brancheFiche(li) {
+      var ph = li.querySelector('.phrase');
+      ph.addEventListener('click', function () { ouvreFiche(li); });
+      ph.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvreFiche(li); }
+        else if (e.altKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) { e.preventDefault(); deplace(li, e.key === 'ArrowUp' ? -1 : 1); ph.focus(); }
+      });
+      var champs = li.querySelectorAll('input');
+      champs.forEach(function (inp, i) {
+        inp.addEventListener('input', function () { majPhrase(li); maj(); });
+        inp.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            // Entrée passe à la case suivante ; après « Réussi si », un nouvel objectif
+            e.preventDefault();
+            if (i < champs.length - 1) { champs[i + 1].focus(); return; }
+            if (!valeurFiche(li)) return;
+            ouvreFiche(fiche(li)); maj();
+          } else if (e.key === 'Escape') {
+            e.stopPropagation(); li.classList.remove('edition'); ph.focus();
+          } else if (e.altKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+            e.preventDefault(); deplace(li, e.key === 'ArrowUp' ? -1 : 1); inp.focus();
+          }
+        });
+      });
+      li.addEventListener('focusout', function () {
+        setTimeout(function () {
+          if (!li.isConnected || li.contains(document.activeElement)) return;
+          li.classList.remove('edition');
+          if (!valeurFiche(li) && lignes.children.length > 1) li.remove();
+          maj();
+        }, 0);
+      });
+      li.querySelector('.retirer').addEventListener('click', function () { retire(li); });
+    }
+
+    /* déplacer une ligne : poignée à glisser, ou flèches sur la poignée */
+    function branchePoignee(li) {
+      var p = li.querySelector('.poignee');
+      p.addEventListener('pointerdown', function () { li.draggable = true; });
+      p.addEventListener('pointerup', function () { li.draggable = false; });
+      p.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); deplace(li, e.key === 'ArrowUp' ? -1 : 1); p.focus(); }
+      });
+      li.addEventListener('dragstart', function (e) {
+        glisse = li; li.classList.add('glisse'); e.dataTransfer.effectAllowed = 'move';
+        try { e.dataTransfer.setData('text/plain', ''); } catch (_) {}
+      });
+      li.addEventListener('dragend', function () { li.draggable = false; li.classList.remove('glisse'); glisse = null; maj(); });
+    }
+    lignes.addEventListener('dragover', function (e) {
+      if (!glisse) return;
+      e.preventDefault();
+      var cible = Array.prototype.filter.call(lignes.children, function (l) { var r = l.getBoundingClientRect(); return e.clientY < r.top + r.height / 2; })[0];
+      if (cible !== glisse) lignes.insertBefore(glisse, cible || null);
+    });
+
+    /* les objectifs proposés */
+    function majSuggestions() {
+      if (!aidePropositions() || el.dataset.mode !== 'trame') { if (cleSugg) { sugg.innerHTML = ''; cleSugg = ''; } return; }
+      var pris = valeurs().map(function (v) { return v.toLowerCase(); });
+      var restants = function (l) { return l.filter(function (x) { return pris.indexOf((x.t || x).toLowerCase()) < 0; }); };
+      var cat = restants(CATALOGUE), hist = restants(HISTORIQUE);
+      var cle = cat.map(function (x) { return x.t; }).concat(hist).join('|');
+      if (cle === cleSugg) return;
+      cleSugg = cle;
+      function bouton(t, src) { return '<button type="button" class="sugg" data-t="' + echappe(t) + '"><span class="plus" aria-hidden="true">+</span><span>' + echappe(t) + '</span>' + (src ? '<span class="src">' + src + '</span>' : '') + '</button>'; }
+      sugg.innerHTML =
+        (cat.length ? '<div class="sugg-groupe"><p class="sugg-titre">Proposés d’après les situations de la séance</p><div class="sugg-liste">' + cat.map(function (x) { return bouton(x.t, x.src); }).join('') + '</div></div>' : '') +
+        (hist.length ? '<div class="sugg-groupe"><p class="sugg-titre">Déjà écrits dans vos séances</p><div class="sugg-liste">' + hist.map(function (t) { return bouton(t); }).join('') + '</div></div>' : '');
+    }
+    // mousedown : la ligne garde le focus, la liste n'est pas reconstruite avant le clic
+    sugg.addEventListener('mousedown', function (e) { if (e.target.closest('.sugg')) e.preventDefault(); });
+    sugg.addEventListener('click', function (e) {
+      var b = e.target.closest('.sugg'); if (!b) return;
+      var t = b.dataset.t, der = lignes.lastElementChild;
+      if (der && der.classList.contains('l-libre') && !texte(der.querySelector('.saisie'))) der.querySelector('.saisie').textContent = t;
+      else ligneLibre(der, t);
+      maj();
+    });
+
+    /* écriture libre */
+    function versLibre() {
+      var l = valeurs().map(function (v) { return '– ' + elision(amorce(), v); });
+      redaction.innerHTML = l.map(function (t) { return '<p>' + echappe(t) + '</p>'; }).join('');
+      el.dataset.mode = 'libre'; bascule.textContent = 'Revenir à la liste d’objectifs';
+      place(redaction); maj();
+    }
+    function versTrame() {
+      var paras = Array.prototype.map.call(redaction.childNodes, texte).filter(Boolean);
+      lignes.innerHTML = '';
+      paras.forEach(function (t) { ligneLibre(null, t.replace(/^[-–•*]\s*/, '').replace(/^(être capable d(e |')|savoir )/i, '')); });
+      if (!lignes.children.length) parDefaut();
+      el.dataset.mode = 'trame'; bascule.textContent = 'Écrire librement';
+      focusLigne(lignes.lastElementChild, false); maj();
+    }
+    bascule.addEventListener('click', function () { el.dataset.mode === 'trame' ? versLibre() : versTrame(); });
+    redaction.addEventListener('input', function () {
+      Array.prototype.slice.call(redaction.childNodes).forEach(function (n) { if (n.nodeType === 3 && n.textContent) { var p = document.createElement('p'); redaction.insertBefore(p, n); p.appendChild(n); place(p); } });
+      maj();
+    });
+    redaction.addEventListener('paste', function (e) { e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain') || ''); });
+
+    el.querySelector('.ajouter').addEventListener('click', function () {
+      var der = lignes.lastElementChild;
+      var vide = der && (der.classList.contains('l-libre') ? !valeurLibre(der) : !valeurFiche(der));
+      var memeType = der && der.classList.contains(guidage() === 'B' ? 'l-fiche' : 'l-libre');
+      focusLigne(vide && memeType ? der : parDefaut(der), false); maj();
+    });
+    el.querySelector('.ajouter-libre').addEventListener('click', function () { place(ligneLibre(lignes.lastElementChild).querySelector('.saisie')); maj(); });
+    boutonAmorce.addEventListener('click', function () { ouvreMenu(boutonAmorce, api); });
+
+    /* E : passer de l'écriture simple à l'aide, et revenir, sans rien perdre */
+    var boutonAide = el.querySelector('.aide');
+    function basculeAide(oui) {
+      if (avecAide() === oui) return;
+      var lues;
+      if (el.dataset.mode === 'libre') {
+        lues = Array.prototype.map.call(redaction.childNodes, function (n) { return { t: texte(n), sans: true }; });
+        el.dataset.mode = 'trame'; bascule.textContent = 'Écrire librement'; redaction.innerHTML = '';
+      } else {
+        lues = Array.prototype.map.call(lignes.children, function (li) { return { t: li.classList.contains('l-libre') ? valeurLibre(li) : valeurFiche(li), sans: !!li.dataset.sansAmorce }; });
+      }
+      var depuisSimple = estSimple();
+      el.dataset.aide = oui ? 'oui' : 'non';
+      lignes.innerHTML = '';
+      lues.forEach(function (l) {
+        if (!l.t) return;
+        var t = l.t, sans = l.sans;
+        if (depuisSimple && oui) {
+          // « Être capable de » en tête de ligne devient l'amorce commune ; une ligne qui ne le porte pas reste telle quelle
+          var m = t.match(/^être capable d(e\s+|')/i);
+          if (m) { t = t.slice(m[0].length); sans = false; } else sans = true;
+        } else if (!oui && !sans) t = elision(amorce(), t);
+        var li = ligneLibre(lignes.lastElementChild, t);
+        if (sans && oui) li.dataset.sansAmorce = '1';
+      });
+      if (!lignes.children.length) parDefaut();
+      if (!oui) el.dataset.amorce = 'capable';
+      maj();
+    }
+    boutonAide.addEventListener('click', function () {
+      var oui = !avecAide();
+      basculeAide(oui);
+      if (opts.onAide) opts.onAide(oui, api);
+    });
+
+    function valeurs() {
+      if (el.dataset.mode === 'libre') return Array.prototype.map.call(redaction.childNodes, texte).filter(Boolean);
+      return Array.prototype.map.call(lignes.children, function (li) {
+        return li.classList.contains('l-libre') ? valeurLibre(li) : valeurFiche(li);
+      }).filter(Boolean);
+    }
+    function maj() {
+      el.dataset.simple = estSimple() ? 'oui' : 'non';
+      el.dataset.propositions = aidePropositions() ? 'oui' : 'non';
+      boutonAide.setAttribute('aria-checked', String(avecAide()));
+      lignes.classList.toggle('seule', lignes.children.length === 1);
+      lignes.querySelectorAll('.l-libre').forEach(function (li) { li.classList.toggle('trame', estSimple() && !valeurLibre(li)); });
+      lignes.querySelectorAll('.saisie').forEach(function (s) { s.setAttribute('aria-label', 'Objectif, après « ' + amorce() + ' »'); });
+      boutonAmorce.textContent = amorce();
+      majSuggestions();
+      if (opts.onChange) opts.onChange();
+    }
+    function vide() {
+      el.dataset.mode = 'trame'; el.dataset.amorce = 'capable';
+      redaction.innerHTML = ''; lignes.innerHTML = ''; bascule.textContent = 'Écrire librement'; cleSugg = '-';
+    }
+
+    var api = {
+      el: el,
+      valeurs: valeurs,
+      amorce: amorce,
+      mode: function () { return el.dataset.mode; },
+      simple: estSimple,
+      enregistre: function () {
+        if (el.dataset.mode === 'libre') return valeurs();
+        return Array.prototype.map.call(lignes.children, function (li) {
+          var v = li.classList.contains('l-libre') ? valeurLibre(li) : valeurFiche(li);
+          return v ? '– ' + (estSimple() || li.dataset.sansAmorce ? v : elision(amorce(), v)) : '';
+        }).filter(Boolean);
+      },
+      setGuidage: function (g, aide) { el.dataset.guidage = g; el.dataset.aide = aide ? 'oui' : 'non'; },
+      basculeAide: basculeAide,
+      choisit: function (v) {
+        if (v === 'libre') { if (el.dataset.mode !== 'libre') versLibre(); return; }
+        el.dataset.amorce = v; if (el.dataset.mode === 'libre') versTrame(); else maj();
+      },
+      amorceCourante: function () { return el.dataset.mode === 'libre' ? 'libre' : el.dataset.amorce; },
+      focusPremier: function () { if (el.dataset.mode === 'libre') place(redaction); else focusLigne(lignes.lastElementChild, false); },
+      neuve: function () { vide(); parDefaut(); maj(); },
+      remplie: function () {
+        vide();
+        if (el.dataset.guidage === 'B') EXEMPLE_FICHES.forEach(function (d) { fiche(lignes.lastElementChild, d); });
+        else EXEMPLE_LIGNES.forEach(function (t) { ligneLibre(lignes.lastElementChild, estSimple() ? elision(PREFIXE, t) : t); });
+        maj();
+      },
+      ancien: function () {
+        // version simple : l'objectif déjà écrit devient la première ligne, tel quel
+        if (estSimple()) { vide(); ligneLibre(null, ANCIEN); maj(); return; }
+        vide(); parDefaut();
+        el.dataset.mode = 'libre'; redaction.innerHTML = '<p>' + echappe(ANCIEN) + '</p>';
+        bascule.textContent = 'Passer en liste d’objectifs'; maj();
+      }
+    };
+    return api;
+  }
+
+  /* ---------- le menu de l'amorce ---------- */
+  var menu = document.getElementById('menu-amorce'), champOuvert = null, boutonOuvert = null;
+  function ouvreMenu(bouton, champ) {
+    champOuvert = champ; boutonOuvert = bouton;
+    var c = champ.amorceCourante();
+    menu.innerHTML =
+      '<button type="button" role="menuitemradio" data-v="capable" aria-checked="' + (c === 'capable') + '">Être capable de…</button>' +
+      '<button type="button" role="menuitemradio" data-v="savoir" aria-checked="' + (c === 'savoir') + '">Savoir…</button>' +
+      '<hr><button type="button" role="menuitemradio" data-v="libre" aria-checked="' + (c === 'libre') + '">Écrire librement<span class="sous">Un texte sans amorce, avec mise en forme</span></button>';
+    var r = bouton.getBoundingClientRect();
+    menu.style.left = Math.max(8, Math.min(r.left + scrollX, innerWidth - 248)) + 'px';
+    menu.style.top = (r.bottom + scrollY + 6) + 'px';
+    menu.hidden = false; bouton.setAttribute('aria-expanded', 'true');
+    menu.querySelector('button').focus();
+  }
+  function fermeMenu() { if (menu.hidden) return; menu.hidden = true; if (boutonOuvert) boutonOuvert.setAttribute('aria-expanded', 'false'); }
+  menu.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; fermeMenu(); champOuvert.choisit(b.dataset.v); });
+  menu.addEventListener('keydown', function (e) {
+    var items = Array.prototype.slice.call(menu.querySelectorAll('button')), i = items.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    if (e.key === 'Escape') { e.stopPropagation(); fermeMenu(); boutonOuvert.focus(); }
+  });
+  document.addEventListener('mousedown', function (e) { if (!menu.hidden && !menu.contains(e.target) && !e.target.closest('.menu-amorce')) fermeMenu(); });
+  addEventListener('resize', fermeMenu);
+
+  /* ---------- les deux écrans ---------- */
+  var cadres = Array.prototype.map.call(document.querySelectorAll('[data-cadre]'), function (ecran) {
+    var tel = ecran.classList.contains('telephone'), fig = ecran.closest('figure');
+    var slotE = ecran.querySelector('.slot-entete'), slotP = ecran.querySelector('.slot-panneau');
+    var resume = ecran.querySelector('.resume'), panneau = ecran.querySelector('.panneau');
+    var pastille = fig.querySelector('.pastille'), enreg = fig.querySelector('.enregistre');
+    var ed = null;
+    function majEtat() {
+      if (!ed) return;
+      var vals = ed.valeurs(), l = ed.enregistre();
+      pastille.textContent = vals.length ? 'En cours' : 'Brouillon';
+      pastille.classList.toggle('en-cours', !!vals.length);
+      enreg.textContent = l.length ? l.join('\n') : 'rien';
+      resume.classList.toggle('vide', !vals.length);
+      var html;
+      if (!vals.length) html = '<span class="r-texte">Écrire les objectifs de la séance</span>';
+      else if (ed.mode() === 'libre' || ed.simple()) html = '<span class="r-texte">' + (ed.mode() === 'libre' ? '“' + echappe(vals.join(' ')) + '”' : echappe(vals[0])) + '</span>' + (ed.mode() !== 'libre' && vals.length > 1 ? '<span class="nb">+ ' + (vals.length - 1) + ' objectif' + (vals.length > 2 ? 's' : '') + '</span>' : '');
+      else {
+        var d = decoupe(ed.amorce(), vals[0]), reste = vals.length - 1;
+        html = '<span class="r-texte"><em>' + echappe(d[0]) + '</em>' + echappe(d[1]) + '</span>' + (reste ? '<span class="nb">+ ' + reste + ' objectif' + (reste > 1 ? 's' : '') + '</span>' : '');
+      }
+      resume.innerHTML = html + '<span class="r-chevron" aria-hidden="true"></span>';
+    }
+    ed = creeEditeur({ exemple: ecran.dataset.exemple, onChange: majEtat, onAide: synchroniseAide });
+    function ouvre() { ecran.classList.add('panneau-ouvert'); panneau.inert = false; setTimeout(function () { ed.focusPremier(); }, 270); }
+    function ferme(rendFocus) {
+      if (!ecran.classList.contains('panneau-ouvert')) return;
+      ecran.classList.remove('panneau-ouvert'); panneau.inert = true; fermeMenu(); majEtat();
+      if (rendFocus) resume.focus();
+    }
+    resume.addEventListener('click', ouvre);
+    ecran.querySelector('.voile').addEventListener('click', function () { ferme(true); });
+    ecran.querySelector('.terminer').addEventListener('click', function () { ferme(true); });
+    panneau.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.hidden) ferme(true); });
+    return {
+      ed: ed,
+      place: function (p) {
+        var enPanneau = p === 'panneau' || (p === 'mixte' && tel);
+        ferme(false);
+        (enPanneau ? slotP : slotE).appendChild(ed.el);
+        resume.hidden = !enPanneau;
+        majEtat();
+      }
+    };
+  });
+
+  /* ---------- réglages ---------- */
+  var NOTES_GUIDAGE = {
+    S: "<b>A. Pré-remplie.</b> Chaque ligne commence déjà par « Être capable de ». On écrit la suite, ou on efface le début pour écrire autre chose. Entrée ouvre une nouvelle ligne, elle aussi pré-remplie. Une ligne qu'on n'a pas complétée est ignorée."
+      + '<span class="pc"><b>Pour</b> : rien à apprendre, on écrit comme dans un traitement de texte.</span><span class="pc"><b>Contre</b> : « Être capable de » se répète à chaque ligne, sur les cartes comme devant les joueurs.</span>',
+    A: "<b>B. Verbe complété.</b> « Être capable de » est écrit une seule fois, en haut. On commence directement par le verbe : tapez « fi », l'application propose « fixer », qu'on accepte avec la touche Tab. On change l'ordre des objectifs en les faisant glisser. Toucher « Être capable de » permet de choisir « Savoir », ou d'écrire librement."
+      + '<span class="pc"><b>Pour</b> : le plus rapide pour qui sait déjà quoi écrire.</span><span class="pc"><b>Contre</b> : aide à finir un mot, pas à trouver une idée.</span>',
+    B: "<b>C. Phrase à compléter.</b> Chaque objectif se remplit en petites cases : le verbe, ce que fait le joueur, dans quelle situation et, si on veut, à quoi on voit que c'est réussi. Une fois rempli, il se lit comme une phrase."
+      + '<span class="pc"><b>Pour</b> : des objectifs précis, et un critère de réussite à annoncer aux joueurs.</span><span class="pc"><b>Contre</b> : plus long à remplir ; on peut toujours ajouter une ligne écrite librement.</span>',
+    C: "<b>D. Objectifs proposés.</b> Sous la liste, l'application propose des objectifs tout faits, choisis d'après le contenu de la séance (contre-attaque, surnombre…) et d'après ce que l'entraîneur a déjà écrit dans ses autres séances. Un toucher en ajoute un, qu'on peut ensuite modifier."
+      + '<span class="pc"><b>Pour</b> : plus jamais de page blanche.</span><span class="pc"><b>Contre</b> : il faut d’abord écrire ces objectifs, avec le référent du comité.</span>'
+  };
+  NOTES_GUIDAGE.E = "<b>E. Simple, aide à la demande.</b> Le champ s’ouvre comme A : chaque ligne commence par « Être capable de ». L’interrupteur « M’aider à écrire » ajoute l’aide de B et D : la fin du verbe proposée, et des objectifs tout faits sous la liste. Un toucher ramène à l’écriture simple, sans rien perdre de ce qui est écrit. Le choix est gardé pour les séances suivantes."
+    + '<span class="pc"><b>Pour</b> : le débutant n’a rien à apprendre, et l’aide reste à portée de main.</span><span class="pc"><b>Contre</b> : deux façons d’afficher le même champ.</span>';
+  var NOTES_EMPLACEMENT = {
+    entete: "<b>Sous le thème.</b> On écrit directement dans le haut de la séance, comme pour le thème."
+      + '<span class="pc"><b>Pour</b> : on voit et on modifie au même endroit.</span><span class="pc"><b>Contre</b> : au téléphone, une longue liste pousse les situations vers le bas de l’écran.</span>',
+    panneau: "<b>Dans une fenêtre.</b> Le haut de la séance ne montre qu'une ligne de résumé ; en la touchant, une fenêtre s'ouvre pour écrire, sur le côté sur ordinateur, depuis le bas au téléphone."
+      + '<span class="pc"><b>Pour</b> : le haut de la séance reste court, et il y a de la place pour C et D.</span><span class="pc"><b>Contre</b> : un toucher de plus pour modifier.</span>',
+    mixte: "<b>Selon l’appareil.</b> Sur ordinateur, on écrit sur place ; sur le petit écran du téléphone, dans une fenêtre."
+      + '<span class="pc"><b>Pour</b> : chaque écran a la solution qui lui convient.</span><span class="pc"><b>Contre</b> : deux manières de faire selon l’appareil.</span>'
+  };
+  // le choix de l'aide suit l'entraîneur : il vaut pour les deux écrans et pour les aperçus
+  function synchroniseAide(oui, source) {
+    etat.aide = oui;
+    cadres.forEach(function (c) { if (c.ed !== source) c.ed.basculeAide(oui); });
+    marqueForme();
+  }
+  function marqueForme() {
+    var m = document.querySelector('main');
+    m.dataset.guidage = etat.guidage;
+    m.dataset.forme = etat.guidage === 'S' || (etat.guidage === 'E' && !etat.aide) ? 'lignes' : 'facteur';
+  }
+  var etat = { aide: false, guidage: 'S', emplacement: 'mixte', demo: 'neuve' };
+  function applique() {
+    marqueForme();
+    cadres.forEach(function (c) { c.ed.setGuidage(etat.guidage, etat.aide); c.ed[etat.demo](); c.place(etat.emplacement); });
+    document.getElementById('note-guidage').innerHTML = NOTES_GUIDAGE[etat.guidage];
+    document.getElementById('note-emplacement').innerHTML = NOTES_EMPLACEMENT[etat.emplacement];
+    ['guidage', 'emplacement', 'demo'].forEach(function (k) {
+      document.querySelectorAll('[data-' + k + '-choix]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-' + k + '-choix') === etat[k])); });
+    });
+  }
+  ['guidage', 'emplacement', 'demo'].forEach(function (k) {
+    document.querySelectorAll('[data-' + k + '-choix]').forEach(function (b) {
+      b.addEventListener('click', function () { etat[k] = b.getAttribute('data-' + k + '-choix'); if (k === 'guidage') etat.aide = false; applique(); });
+    });
+  });
+  applique();
+
+  /* ---------- piste : objectifs et situations ---------- */
+  var OBJECTIFS = ["jouer vite vers l'avant après la récupération", 'fixer un défenseur pour libérer un partenaire', 'choisir entre tir et passe en 3 contre 2'];
+  var COURTS = ['jouer vite', 'fixer', 'choisir'];
+  var SITUATIONS = [
+    { titre: 'Relance du gardien', duree: '15 min', liens: [0] },
+    { titre: 'Vague de 2 contre 1', duree: '20 min', liens: [1] },
+    { titre: 'Montée de balle à 4 contre 3', duree: '25 min', liens: [0] }
+  ];
+  function enumere(n) { return n.length === 1 ? 'Situation ' + n[0] : 'Situations ' + n.slice(0, -1).join(', ') + ' et ' + n[n.length - 1]; }
+  function rendPiste() {
+    document.getElementById('piste-objectifs').innerHTML = OBJECTIFS.map(function (o, i) {
+      var n = []; SITUATIONS.forEach(function (s, j) { if (s.liens.indexOf(i) >= 0) n.push(j + 1); });
+      return '<li><span>' + echappe(o) + '</span><span class="couv' + (n.length ? '' : ' alerte') + '">' + (n.length ? enumere(n) : 'Aucune situation') + '</span></li>';
+    }).join('');
+    document.getElementById('piste-situations').innerHTML = SITUATIONS.map(function (s, j) {
+      return '<article class="sit"><div class="terrain" aria-hidden="true"></div><h4><span class="num">' + (j + 1) + '.</span>' + s.titre + '</h4><p>' + s.duree + ' – travaille</p><div class="liens">' +
+        COURTS.map(function (c, i) { return '<button type="button" class="lie" data-s="' + j + '" data-o="' + i + '" aria-pressed="' + (s.liens.indexOf(i) >= 0) + '">' + c + '</button>'; }).join('') + '</div></article>';
+    }).join('');
+  }
+  document.getElementById('piste-situations').addEventListener('click', function (e) {
+    var b = e.target.closest('.lie'); if (!b) return;
+    var s = SITUATIONS[+b.dataset.s], o = +b.dataset.o, i = s.liens.indexOf(o);
+    if (i >= 0) s.liens.splice(i, 1); else s.liens.push(o);
+    rendPiste();
+    var meme = document.querySelector('.lie[data-s="' + b.dataset.s + '"][data-o="' + o + '"]'); if (meme) meme.focus();
+  });
+  rendPiste();
+})();
+</script>
+</body>
+</html>
