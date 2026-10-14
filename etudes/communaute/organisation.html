@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   /* La maquette d'abord, avec ses explications à côté ; puis les règles communes aux onglets,
-     le classement, les choix du référent, la V2 et la partie développeur. DA de l'application. */
+     le classement, les choix du référent, l'extension et la partie développeur. DA de l'application. */
   :root{
     --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF; --attenue:#6E6678;
     --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
@@ -349,52 +349,46 @@
   .d-p::before{content:"Proposé\202F: ";color:var(--violet);font-weight:600}
   @media(max-width:700px){.d{grid-template-columns:2.6rem minmax(0,1fr)}.d-p{grid-column:2}}
 
-  /* ---------- V2 ---------- */
-  .ecrans-v2{display:flex;flex-wrap:wrap;justify-content:center;gap:28px 36px;margin-top:26px}
-  .ecrans-v2 figure{display:flex;flex-direction:column;gap:12px;width:395px;max-width:100%}
+  /* ---------- extension : aide à la création ---------- */
+  .ecrans-v2{display:flex;flex-wrap:wrap;justify-content:center;gap:28px;margin-top:26px}
+  .ecrans-v2 figure{display:flex;flex-direction:column;gap:12px;width:340px;max-width:100%}
   .ecrans-v2 figcaption{font-size:.92rem;color:var(--attenue);text-align:center;text-wrap:balance}
   .ecrans-v2 figcaption b{color:var(--ink);font-weight:600}
-  .telephone{container-type:inline-size;border:10px solid var(--chassis);border-radius:46px;background:var(--paper);overflow:hidden}
+  .telephone{container-type:inline-size;border:10px solid var(--chassis);border-radius:44px;background:var(--paper);overflow:hidden}
   @media(max-width:430px){.telephone{border-width:6px;border-radius:30px}}
-  .ecran-fixe{height:740px;overflow-y:auto;scrollbar-width:none;font-size:15px;line-height:1.45}
-  .ecran-fixe::-webkit-scrollbar{display:none}
-  .creer{display:grid;gap:16px;padding:12px 18px 24px}
-  .creer h4{font-family:var(--display);font-weight:600;font-size:23px}
-  .creer .q{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:-6px}
+  .ecran-fixe{height:660px;overflow:hidden;font-size:15px;line-height:1.45}
+  .creer{display:grid;gap:14px;padding:12px 16px 22px}
+  .creer h4{font-family:var(--display);font-weight:600;font-size:22px}
+  .creer .q{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:-4px}
   .creer .pour{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13.5px;color:var(--attenue)}
   .creer .pour .puce{min-height:32px;font-size:13px}
   .creer .phases{padding:0;gap:8px}
   .creer .phase{padding:10px 12px}
   .creer .phase .picto{width:48px;height:48px}
   .creer .phase .nom{font-size:15px}
+  .creer .btn-contour{height:44px;font-size:14px}
   .poignee{width:40px;height:4px;border-radius:2px;background:var(--filet-fort);margin:0 auto}
+  .lien-v2{text-align:center;font-size:14px;font-weight:600;color:var(--violet)}
+  .barre-v2{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--attenue)}
+  .barre-v2 .droite{margin-left:auto}
+  .retour-v2{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--filet);color:var(--ink)}
+  .source-v2{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid color-mix(in srgb,var(--orange) 40%,var(--filet));border-radius:12px;background:color-mix(in srgb,var(--orange) 6%,var(--surface))}
+  .source-v2 i{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--orange);font-style:normal;font-size:10.5px;font-weight:600;color:var(--orange-texte)}
+  .source-v2 small{display:block;font-size:11.5px;font-weight:600;color:var(--orange-texte)}
+  .source-v2 b{font-family:var(--display);font-size:16px;font-weight:600;line-height:1.2}
   .temps{list-style:none;display:grid;gap:8px}
-  .temps li{display:grid;grid-template-columns:1.1rem 86px minmax(0,1fr);align-items:center;gap:10px;padding:8px 10px 8px 8px;border:1px solid var(--filet);border-radius:12px;background:var(--surface)}
+  .temps li{display:grid;grid-template-columns:1rem 76px minmax(0,1fr);align-items:center;gap:10px;padding:7px 10px 7px 8px;border:1px solid var(--filet);border-radius:12px;background:var(--surface)}
   .temps .n{font-family:var(--display);font-weight:600;color:var(--orange-texte);text-align:center}
   .temps img{border-radius:6px;aspect-ratio:16/10;object-fit:cover}
   .temps span{display:grid;gap:1px;font-size:13px;line-height:1.3;min-width:0}
   .temps small{font-size:11px;color:var(--orange-texte);font-weight:600}
   .temps em{font-style:normal;font-size:12px;color:var(--violet);font-weight:600}
-  .creer .btn-contour{height:44px;font-size:14px}
-  .bande-v2{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:14px 16px 0}
-  .bande-v2 span{display:grid;justify-items:center;gap:2px;padding:6px 2px 7px;border:1px solid var(--filet);border-radius:12px;background:var(--surface);font-size:10.5px;line-height:1.15;text-align:center;color:var(--attenue)}
-  .bande-v2 .picto{width:34px;height:34px;color:var(--ink)}
-  .bande-v2 span[aria-pressed="true"]{border-color:var(--orange);box-shadow:inset 0 0 0 1px var(--orange);color:var(--ink);font-weight:600}
-  .bande-v2 span[aria-pressed="true"] .picto{--couleur-trajectoire:var(--orange)}
-  .rail-tete{display:flex;align-items:baseline;gap:10px;padding:22px 16px 10px}
-  .rail-tete .n{font-family:var(--display);font-size:20px;line-height:1;color:var(--orange);min-width:12px}
-  .rail-tete h5{font-size:15px;font-weight:600}
-  .rail-tete small{margin-left:auto;font-size:12px;color:var(--attenue)}
-  .defile{display:flex;gap:10px;overflow-x:auto;padding:0 16px 4px;scroll-snap-type:x mandatory;scrollbar-width:none}
-  .defile::-webkit-scrollbar{display:none}
-  .defile>*{flex:none;scroll-snap-align:start}
-  .seance{width:268px;display:flex;flex-direction:column;gap:9px;padding:13px;text-align:center;border:1px solid var(--filet);border-top:3px solid var(--st-termine);border-radius:14px;background:var(--surface)}
-  .seance.pret{border-top-color:var(--st-pret)}
-  .seance b{font-family:var(--display);font-size:17px;font-weight:600;line-height:1.15}
-  .seance small{font-size:12px;color:var(--attenue)}
-  .mini4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
-  .mini4 img{border-radius:5px;aspect-ratio:16/10;object-fit:cover}
-  .s-rep{font-family:var(--mono);font-size:11px;color:var(--orange-texte)}
+  .temps .dapres{font-size:11.5px;color:var(--attenue)}
+  .cree{--acc:var(--st-pret);display:grid;gap:12px;padding:14px 16px 22px}
+  .cree .ed-theme{font-size:23px}
+  .cree .ed-obj{margin-top:-6px}
+  .cree .c-mots{justify-content:flex-start;margin-top:0}
+  .btn-sombre.petit{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;font-size:13px}
   .ajouts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 32px;margin-top:30px}
   @media(max-width:860px){.ajouts{grid-template-columns:minmax(0,1fr)}}
   .ajouts h3{font-size:.98rem;font-weight:600;margin-bottom:.2em}
@@ -518,7 +512,7 @@
       <div class="d" id="d9"><span class="d-num">D9</span><p class="d-q">« À sortir » : compétences et ressources sont-elles retirées ?<span>Et le commentaire s’arrête après « 1. » : y avait-il une suite ?</span></p><p class="d-p">Retirées des choix, gardées sur les séances qui les portent.</p></div>
     </div>
     <div class="t-groupe">
-      <h3>Pour la V2</h3>
+      <h3>Pour l’extension : aide à la création</h3>
       <div class="d" id="d10"><span class="d-num">D10</span><p class="d-q">Les quatre temps de la séance proposée ?</p><p class="d-p">Échauffement, Gardien·ne de but, Travail, Sous forme jouée.</p></div>
       <div class="d" id="d11"><span class="d-num">D11</span><p class="d-q">Le public féminin, masculin ou mixte ?</p><p class="d-p">Dans les préférences du profil, à côté des catégories, sans tuile.</p></div>
       <div class="d" id="d12"><span class="d-num">D12</span><p class="d-q">L’objectif proposé quand le comité n’a pas de séance ?</p><p class="d-p">Une phrase par phase, écrite par le référent.</p></div>
@@ -528,24 +522,28 @@
   </div>
 </section>
 
-<!-- ==================== V2 ==================== -->
-<section class="bloc" id="v2" aria-labelledby="titre-v2">
-  <h2 id="titre-v2">V2, avec l’étude « trois gestes »</h2>
-  <p class="chapo">Les mêmes phases dessinées et les mêmes préférences servent à créer et à parcourir. L’étude du 8 octobre se manipule dans son <a href="https://github.com/association-placeauxcoachs/produit/tree/main/etudes/communaute">dossier</a>.</p>
+<!-- ==================== EXTENSION ==================== -->
+<section class="bloc" id="extension" aria-labelledby="titre-extension">
+  <h2 id="titre-extension">Extension possible : aide à la création d’entraînement</h2>
+  <p class="chapo">Les mêmes repères servent à créer. Le bouton + part des préférences du profil et propose une séance déjà dessinée, prise dans les séances partagées.</p>
   <div class="ecrans-v2">
     <figure>
-      <div class="telephone"><div class="ecran-fixe" id="v2-creer" role="region" aria-label="Maquette : nouvel entraînement"></div></div>
-      <figcaption><b>Le bouton +</b> part des préférences du profil et propose une séance en quatre temps, déjà dessinée et classée.</figcaption>
+      <div class="telephone"><div class="ecran-fixe" id="ext-1" role="img" aria-label="Écran : que voulez-vous travailler ?"></div></div>
+      <figcaption><b>1. Quoi travailler.</b> L’équipe vient du profil, on choisit une phase.</figcaption>
     </figure>
     <figure>
-      <div class="telephone"><div class="ecran-fixe" id="v2-theme" role="region" aria-label="Maquette : une phase choisie"></div></div>
-      <figcaption><b>Une phase choisie</b> : les séances complètes, puis les situations dans l’ordre d’une séance.</figcaption>
+      <div class="telephone"><div class="ecran-fixe" id="ext-2" role="img" aria-label="Écran : la séance proposée en quatre temps"></div></div>
+      <figcaption><b>2. La séance proposée.</b> Quatre temps déjà dessinés : celle du comité, sinon les situations les plus reprises. Chaque temps se change.</figcaption>
+    </figure>
+    <figure>
+      <div class="telephone"><div class="ecran-fixe" id="ext-3" role="img" aria-label="Écran : l’entraînement créé, prêt à présenter"></div></div>
+      <figcaption><b>3. L’entraînement créé.</b> Classé d’office, prêt à présenter. Chaque situation cite son auteur.</figcaption>
     </figure>
   </div>
   <div class="ajouts">
-    <div><h3>Reprendre, c’est citer</h3><p>« Ajouter » place la situation dans un entraînement, « d’après » son auteur. À la une montre alors les plus reprises.</p></div>
-    <div><h3>Le comité en tête</h3><p>Dans la Communauté, ses séances et ses situations passent devant, signalées par leur liseré orange.</p></div>
-    <div><h3>Classer au bon moment</h3><p>À la fin de Présenter, et par un tri express au plus une fois par semaine.</p></div>
+    <div><h3>Rien à classer après</h3><p>Catégorie, niveau et phase sont posés à la création : la séance rejoint d’elle-même la bonne phase dans la Communauté.</p></div>
+    <div><h3>Reprendre, c’est citer</h3><p>Chaque situation reprise affiche « d’après » son auteur, et la reprise lui est comptée. À la une pourra montrer les plus reprises.</p></div>
+    <div><h3>La page blanche reste</h3><p>Pour partir de zéro, guidé par les quatre temps de la Ligue.</p></div>
   </div>
 </section>
 
@@ -596,7 +594,7 @@
         <tr><td><code>communaute-par-phase</code></td><td>Phases dessinées, À la une, flag <code>communaute-par-theme</code> (ADR-0004)</td><td><code>filtres-reperes</code></td></tr>
         <tr><td><code>piocher-situations</code></td><td>Vue des situations, rail par type, copie</td><td><code>reperes-seance</code></td></tr>
         <tr><td><code>a-la-une</code></td><td>Compte des ouvertures</td><td>D6</td></tr>
-        <tr><td><code>creation-trois-gestes</code>, <code>reprise-citee</code>, <code>classement-fin-presenter</code></td><td>V2</td><td>V1, D10 à D14</td></tr>
+        <tr><td><code>aide-creation-entrainement</code></td><td>Extension : séance proposée au bouton +, reprise citée</td><td>V1, D10 à D14</td></tr>
       </tbody>
     </table>
   </div>
@@ -900,7 +898,7 @@
       ['Plusieurs à la fois', 'Plusieurs catégories, une plage de niveaux, et la case pour les garder dans le profil.']]],
     profil: ['Les préférences du profil', '', [
       ['Mes équipes', 'Plusieurs catégories et une plage de niveaux.'],
-      ['Où elles servent', 'Elles pré-remplissent les filtres de la Communauté et du comité, jamais ceux de Mes entraînements. En V2, le bouton + part d’elles.']]]
+      ['Où elles servent', 'Elles pré-remplissent les filtres de la Communauté et du comité, jamais ceux de Mes entraînements. Avec l’aide à la création, le bouton + part d’elles.']]]
   };
   function rendPourquoi() {
     var cle = e.panneau ? 'filtres' : e.vue === 'profil' ? 'profil' : e.tab, p = POURQUOI[cle];
@@ -969,7 +967,7 @@
       case 'copier': if (e.copiees.indexOf(v) < 0) e.copiees.push(v); bulle('Copiée. Collez-la dans l’un de vos entraînements.'); haut = false; break;
       case 'ouvrir': bulle('Hors maquette : la séance s’ouvrirait.'); return;
       case 'classer': bulle('Hors maquette : l’en-tête de l’éditeur, plus bas dans l’étude.'); return;
-      case 'nouveau': bulle('Hors maquette : un entraînement vide en V1, une séance proposée en V2.'); return;
+      case 'nouveau': bulle('Hors maquette : un entraînement vide, ou une séance proposée avec l’aide à la création.'); return;
     }
     var y = ecran.scrollTop;
     rend();
@@ -1001,34 +999,28 @@
   });
   rendEditeur();
 
-  /* ---------- V2 ---------- */
+  /* ---------- extension : aide à la création ---------- */
   function vignette(img) { return '<img src="schemas/' + img + '.webp" alt="" width="640" height="400">'; }
+  var RETOUR = ic('<path d="m15 6-6 6 6 6"/>');
   var QUATRE = ['ech', 'gb', 'tr', 'fj'];
   var prop = QUATRE.map(function (ty) { return SITS.filter(function (x) { return x.s === 'C1' && x.ty === ty; })[0]; });
-  document.getElementById('v2-creer').innerHTML = '<div class="creer"><span class="poignee"></span><h4>Nouvel entraînement</h4>' +
-    '<div class="pour">Pour <span class="puce" aria-pressed="true">U13</span><span class="puce">U15</span>, intermédiaire</div>' +
+  document.getElementById('ext-1').innerHTML = '<div class="creer"><span class="poignee"></span><h4>Nouvel entraînement</h4>' +
+    '<div class="pour">Pour <span class="puce" aria-pressed="true">U13</span><span class="puce">U15</span><span class="puce" aria-pressed="true">Intermédiaire</span></div>' +
     '<p class="q">Que voulez-vous travailler ?</p><div class="phases">' +
-      PHASES.map(function (p) { return '<span class="phase" aria-pressed="' + (p[0] === 'ge') + '">' + picto(p[0]) + '<span class="nom">' + p[1] + '</span></span>'; }).join('') + '</div>' +
-    '<p class="q">La séance du comité</p><ol class="temps">' +
-      prop.map(function (x, i) { return '<li><span class="n">' + (i + 1) + '</span>' + vignette(x.img) + '<span><small>' + lib(TYPES, x.ty) + '</small>' + esc(x.t) + '<em>Changer</em></span></li>'; }).join('') + '</ol>' +
+      PHASES.map(function (p) {
+        var n = seancesDe('communaute', { cats: ['U13'], nivs: ['Intermédiaire'], fo: [], st: null, texte: '', ph: p[0] }).length;
+        return '<span class="phase" aria-pressed="' + (p[0] === 'ge') + '">' + picto(p[0]) + '<span class="nom">' + p[1] + '</span><span class="nb">' + pluriel(n, 'séance') + '</span></span>';
+      }).join('') + '</div>' +
+    '<span class="btn-orange">Voir la séance proposée</span><span class="lien-v2">Partir d’une page blanche</span></div>';
+  document.getElementById('ext-2').innerHTML = '<div class="creer"><div class="barre-v2"><span class="retour-v2">' + RETOUR + '</span><span>Grand espace, U13 intermédiaire</span></div>' +
+    '<div class="source-v2"><i>CG</i><span><small>La séance du comité</small><b>' + esc(seance('C1').t) + '</b></span></div>' +
+    '<ol class="temps">' + prop.map(function (x, i) { return '<li><span class="n">' + (i + 1) + '</span>' + vignette(x.img) + '<span><small>' + lib(TYPES, x.ty) + '</small>' + esc(x.t) + '<em>Changer</em></span></li>'; }).join('') + '</ol>' +
     '<span class="btn-orange">Créer l’entraînement</span><span class="btn-contour">Partir d’une page blanche</span></div>';
-  function sitV2(x) {
-    var s = seance(x.s);
-    return '<article class="sit" style="width:204px"><img class="vignette" src="schemas/' + x.img + '.webp" alt="" width="640" height="400"><div class="s-corps"><b>' + esc(x.t) + '</b><span class="s-de' + (estComite(s.a) ? ' comite' : '') + '">' + esc(s.a) + '</span><span class="s-rep">reprise ' + x.rep + ' fois</span></div><span class="btn-contour" style="margin:10px 12px 12px">Ajouter</span></article>';
-  }
-  function seanceV2(id, rep) {
-    var s = seance(id), imgs = SITS.filter(function (x) { return x.s === id && x.img !== '00'; }).map(function (x) { return vignette(x.img); }).join('');
-    return '<article class="seance' + (s.st === 'pret' ? ' pret' : '') + '"><b>' + esc(s.t) + '</b><span class="mini4">' + imgs + '</span><small>' + esc(s.a) + ', reprise ' + rep + ' fois</small></article>';
-  }
-  var ongletsV2 = '<nav class="onglets"><span class="onglet"><svg class="picto" viewBox="0 0 48 48" aria-hidden="true">' + ONGLETS.plaquette + '</svg><span class="lib">Mes entraînements</span></span><span class="onglet"><span class="comite">Comité<br>de Gironde</span></span><span class="onglet" aria-current="page"><svg class="picto" viewBox="0 0 48 48" aria-hidden="true">' + ONGLETS.ronde + '</svg><span class="lib">Communauté</span></span></nav>';
-  document.getElementById('v2-theme').innerHTML = ongletsV2 +
-    '<div class="filtres"><span class="pilule-f">' + ic(I.reglages) + '<span><b>U13, U15 · intermédiaire</b></span></span></div>' +
-    '<div class="bande-v2">' + PHASES.map(function (p) { return '<span aria-pressed="' + (p[0] === 'ge') + '">' + picto(p[0]) + (p[0] === 'tt' ? 'Tout terrain' : p[1]) + '</span>'; }).join('') + '</div>' +
-    '<div class="rail-tete"><h5>Séances complètes</h5><small>2</small></div><div class="defile">' + seanceV2('C1', 18) + seanceV2('K1', 6) + '</div>' +
-    QUATRE.map(function (ty, i) {
-      var l = SITS.filter(function (x) { return x.ty === ty && (x.s === 'C1' || x.s === 'K1'); });
-      return '<div class="rail-tete"><span class="n">' + (i + 1) + '</span><h5>' + lib(TYPES, ty) + '</h5><small>' + pluriel(l.length, 'situation') + '</small></div><div class="defile">' + l.map(sitV2).join('') + '</div>';
-    }).join('') + '<div style="height:24px"></div>';
+  document.getElementById('ext-3').innerHTML = '<div class="cree"><div class="barre-v2"><span class="retour-v2">' + RETOUR + '</span><span class="droite btn-sombre petit">' + ic('<path d="M8 5.5v13l10.5-6.5z"/>') + 'Présenter</span></div>' +
+    '<div class="c-haut"><span class="c-statut">Prêt</span><span class="c-trait"></span><span class="c-cat">U13</span></div>' +
+    '<h4 class="ed-theme">' + esc(seance('C1').t) + '</h4><p class="ed-obj">' + esc(seance('C1').obj) + '</p>' +
+    '<div class="c-mots"><span>Intermédiaire</span><span>' + picto('ge') + 'Grand espace</span></div>' +
+    '<ol class="temps">' + prop.map(function (x, i) { return '<li><span class="n">' + (i + 1) + '</span>' + vignette(x.img) + '<span><small>' + lib(TYPES, x.ty) + '</small>' + esc(x.t) + '<span class="dapres">d’après Comité de Gironde</span></span></li>'; }).join('') + '</ol></div>';
 })();
 </script>
 </body>
