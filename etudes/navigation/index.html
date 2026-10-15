@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Naviguer par les séances</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* La maquette d'abord, avec ses explications à côté ; puis ce qu'on gagne à l'écran, où va
+     chaque entrée d'aujourd'hui, le lien avec l'étude Communauté, les choix et la partie développeur.
+     DA de l'application, mêmes jetons que l'étude « Organiser la Communauté ». */
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF; --attenue:#6E6678;
+    --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --orange-texte:#C2410C; --peach:#F4AD8E; --violet:#5D32F5;
+    --st-brouillon:#8A8478; --st-encours:#C8841E; --st-pret:#2F7D4F; --st-termine:#2B4C7E;
+    --chassis:#0D0B12; --voile:rgba(28,23,38,.42); --terrain:#3A97C5;
+    --logo-jour:block; --logo-nuit:none;
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926; --attenue:#A69DB1;
+    --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --orange-texte:#FDBA74; --violet:#9B82FF;
+    --st-brouillon:#A49D90; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#7FA2DB; --voile:rgba(0,0,0,.6);
+    --logo-jour:none; --logo-nuit:block; color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926; --attenue:#A69DB1;
+    --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --orange-texte:#FDBA74; --violet:#9B82FF;
+    --st-brouillon:#A49D90; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#7FA2DB; --voile:rgba(0,0,0,.6);
+    --logo-jour:none; --logo-nuit:block; color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font:16px/1.55 var(--corps);letter-spacing:-.01em;padding-block:0 96px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));-webkit-font-smoothing:antialiased}
+  button,input{font:inherit;color:inherit;letter-spacing:inherit}
+  button{cursor:pointer;background:none;border:0;text-align:inherit}
+  img{display:block;max-width:100%;height:auto}
+  code{font-family:var(--mono);font-size:.82em;background:color-mix(in srgb,var(--ink) 7%,transparent);padding:1px 5px;border-radius:5px;overflow-wrap:anywhere}
+  :is(a,button,input):focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  h1,h2,h3,h4,h5{text-wrap:balance}
+  .ic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .logo-jour{display:var(--logo-jour)} .logo-nuit{display:var(--logo-nuit)}
+
+  /* pictogrammes du tracé (comme app/globals.css, ADR-0026) */
+  .picto{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;--couleur-trajectoire:var(--peach)}
+  .picto :is(.trajectoire,.pointe,.passe){stroke:var(--couleur-trajectoire)}
+  .picto .passe{stroke-dasharray:1.6 4.4}
+  .picto .joueur{stroke-width:2}
+  .picto.joue .trajectoire{stroke-dasharray:1 1;animation:dessine .6s ease-out both}
+  .picto.joue .passe{animation:file .7s linear both}
+  .picto.joue .pointe{animation:pointe .7s ease-out both}
+  @keyframes dessine{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  @keyframes file{from{stroke-dashoffset:18}to{stroke-dashoffset:0}}
+  @keyframes pointe{0%,55%{opacity:0}to{opacity:1}}
+  @media (prefers-reduced-motion: reduce){.picto.joue *{animation:none!important}.feuille{animation:none!important}}
+
+  /* ---------- page ---------- */
+  .wrap{max-width:1200px;margin:0 auto}
+  .outils{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
+  .outils-in{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.84rem}
+  .outils a{font-weight:600;color:var(--violet);text-underline-offset:3px}
+  .seg{display:inline-flex;border:1px solid var(--filet-fort);border-radius:999px;overflow:hidden}
+  .seg button{font-size:.84rem;font-weight:600;color:var(--attenue);padding:.4em 1em;white-space:nowrap}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .entete{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 40px;align-items:end;padding-top:48px}
+  @media(max-width:760px){.entete{grid-template-columns:minmax(0,1fr)}}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(2.2rem,6vw,3.3rem);line-height:1.04;letter-spacing:-.02em}
+  .lede{margin-top:.5em;max-width:62ch;color:var(--attenue);font-size:1.06rem}
+  .appel{display:flex;flex-direction:column;gap:4px;padding:14px 18px;border:1.5px solid var(--orange);border-radius:16px;background:color-mix(in srgb,var(--orange) 7%,var(--paper));text-decoration:none;color:var(--ink);max-width:22rem}
+  .appel b{font-family:var(--display);font-weight:600;font-size:1.15rem}
+  .appel span{font-size:.88rem;color:var(--attenue)}
+  .bloc{margin-top:80px;scroll-margin-top:64px}
+  .bloc>h2{font-family:var(--display);font-weight:600;font-size:clamp(1.45rem,3.2vw,1.8rem);letter-spacing:-.01em;line-height:1.15}
+  .bloc>.chapo{margin-top:.35em;max-width:64ch;color:var(--attenue)}
+  .bloc a{color:var(--violet);text-underline-offset:3px}
+
+  /* ---------- zone de maquette ---------- */
+  .barre-maquette{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}
+  .barre-maquette p{font-size:.88rem;color:var(--attenue);max-width:52ch}
+  .barre-maquette p b{color:var(--ink);font-weight:600}
+  .commandes{display:flex;flex-wrap:wrap;gap:10px}
+  .zone{--h:800px;display:grid;grid-template-columns:minmax(0,1fr);gap:28px 44px;align-items:start;margin-top:18px}
+  .zone[data-format="ordinateur"]{--h:720px}
+  @media(min-width:980px){.zone[data-format="telephone"]:not([data-explications="non"]){grid-template-columns:395px minmax(0,1fr)}.zone[data-format="telephone"] .pourquoi{position:sticky;top:70px}}
+  .zone[data-explications="non"] .pourquoi{display:none}
+  .cadre{position:relative;container-type:inline-size;width:100%;margin:0 auto;border:1px solid var(--filet-fort);border-radius:18px;overflow:hidden;background:var(--paper)}
+  .zone[data-format="telephone"] .cadre{width:395px;max-width:100%;border:10px solid var(--chassis);border-radius:46px}
+  .ecran{position:relative;height:var(--h);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;font-size:15px;line-height:1.45;background:var(--paper);color:var(--ink)}
+  .ecran::-webkit-scrollbar{display:none}
+  @media(max-width:430px){.zone[data-format="telephone"]{--h:720px}.zone[data-format="telephone"] .cadre{border-width:6px;border-radius:30px}}
+
+  /* explications */
+  .pourquoi{display:grid;gap:16px}
+  .pourquoi h3{font-family:var(--display);font-weight:600;font-size:1.3rem;line-height:1.2}
+  .pourquoi h3.ici{font-size:1.12rem;margin-top:8px;padding-top:16px;border-top:1px solid var(--filet)}
+  .pq{list-style:none;display:grid;gap:16px}
+  .zone[data-format="ordinateur"] .pq{grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px 28px}
+  .pq li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:2px 12px}
+  .pq .n{grid-row:span 2;width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+  .pq .n.point{background:none;color:var(--orange-texte);font-size:18px}
+  .pq h4{font-size:.98rem;font-weight:600;line-height:1.35}
+  .pq p{font-size:.9rem;color:var(--attenue);max-width:60ch}
+  .pq p b{color:var(--ink);font-weight:600}
+
+  /* ---------- l'application ---------- */
+  .app{display:flex;min-height:100%}
+  .rail{display:none}
+  .contenu{flex:1;min-width:0;display:flex;flex-direction:column;min-height:var(--h)}
+  .page{flex:1;width:100%;max-width:1080px;margin:0 auto;padding-bottom:88px}
+
+  /* en-tête : le titre s'efface en défilant, les puces restent collées */
+  .entete-app{--hb:56px;position:sticky;top:calc(-1 * var(--hb));z-index:6;background:var(--paper);transition:top .25s ease-out,box-shadow .2s}
+  .entete-app.revele{top:0}
+  .entete-app.colle{box-shadow:0 8px 16px -14px rgba(0,0,0,.55);border-bottom:1px solid var(--filet)}
+  .barre-haut{display:flex;align-items:center;gap:6px;height:var(--hb);padding:0 10px 0 16px}
+  .titre-app{flex:1;min-width:0;display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.015em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .titre-app .logo{height:30px;width:auto}
+  .selecteur{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-width:0;padding:4px 8px 4px 2px;border-radius:12px}
+  .selecteur span{overflow:hidden;text-overflow:ellipsis}
+  .selecteur .ic{width:18px;height:18px;color:var(--attenue)}
+  .selecteur .picto{width:28px;height:28px;stroke-width:2.8}
+  .selecteur:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .btn-rond{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;color:var(--ink)}
+  .btn-rond .ic{width:21px;height:21px}
+  .btn-rond:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+  .avatar-z{position:relative;flex:none}
+  .avatar{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--filet-fort);background:var(--surface);font-size:12.5px;font-weight:700;color:var(--ink)}
+  .avatar-z>.repere{top:-6px;right:-6px}
+  .champ-app{display:none;flex:1;min-width:0;align-items:center;gap:8px;height:42px;padding:0 14px;border:1px solid var(--filet-fort);border-radius:999px;background:var(--surface);color:var(--attenue)}
+  .champ-app input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--ink);font-size:15px}
+  .annuler{display:none;flex:none;padding:0 6px;height:40px;font-size:14px;font-weight:600;color:var(--violet)}
+  .barre-haut.cherche .titre-app,.barre-haut.cherche .loupe{display:none}
+  .barre-haut.cherche .champ-app{display:flex}
+  .barre-haut.cherche .annuler{display:block}
+
+  .puces-f{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 16px 12px}
+  .puces-f::-webkit-scrollbar{display:none}
+  .pf{flex:none;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px 0 12px;border-radius:999px;border:1px solid var(--filet-fort);background:var(--surface);font-size:13.5px;color:var(--ink);white-space:nowrap}
+  .pf .ic{width:15px;height:15px;color:var(--attenue)}
+  .pf .chev{width:14px;height:14px;opacity:.55}
+  .pf .picto{width:20px;height:20px;stroke-width:3;margin-left:-4px;--couleur-trajectoire:var(--orange)}
+  .pf[data-actif="true"]{border-color:var(--orange);background:color-mix(in srgb,var(--orange) 9%,var(--surface));font-weight:600}
+  .pf[data-actif="true"] .ic{color:var(--orange-texte)}
+  .pf .compte{display:grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:var(--orange);color:#fff;font-size:11px;font-weight:700}
+  .entete-app>.repere.r3{left:3px;top:calc(var(--hb) - 4px)}
+
+  /* barre du bas et rail : les destinations */
+  .nav-bas{position:sticky;bottom:0;z-index:7;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));height:64px;padding:6px 4px 6px;background:var(--surface);border-top:1px solid var(--filet);box-shadow:0 -1px 5px rgba(0,0,0,.06);transition:transform .3s ease-out}
+  .nav-bas.cachee{transform:translateY(100%)}
+  .nav-bas>.repere{top:-11px;left:10px}
+  .dest{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;font-size:11.5px;line-height:1.1;color:var(--attenue)}
+  .dest .pil{display:grid;place-items:center;width:56px;height:30px;border-radius:999px;transition:background-color .2s}
+  .dest .picto{width:27px;height:27px;stroke-width:3;color:currentColor}
+  .dest .logo{height:16px;width:auto;opacity:.8}
+  .dest .lib{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dest:hover .pil{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .dest[aria-current="page"]{color:var(--ink);font-weight:600}
+  .dest[aria-current="page"] .pil{background:color-mix(in srgb,var(--orange) 16%,var(--surface))}
+  .dest[aria-current="page"] .picto{--couleur-trajectoire:var(--orange)}
+  .dest[aria-current="page"] .logo{opacity:1}
+
+  .fab-zone{position:sticky;bottom:78px;z-index:6;height:0;display:flex;justify-content:flex-end;padding-right:16px;transition:bottom .3s ease-out}
+  .fab-zone.bas{bottom:16px}
+  .fab{transform:translateY(-100%);display:flex;align-items:center;justify-content:center;gap:8px;width:56px;height:56px;border-radius:50%;background:var(--orange);color:#fff;font-size:14.5px;font-weight:600;box-shadow:0 12px 26px -12px rgba(235,93,33,.75)}
+  .fab .ic{width:22px;height:22px;stroke-width:2.4}
+  .fab span{display:none}
+
+  @container (min-width:720px){
+    .rail{position:sticky;top:0;z-index:8;display:flex;flex-direction:column;align-items:center;gap:6px;width:88px;height:var(--h);flex:none;padding:14px 0 16px;border-right:1px solid var(--filet);background:var(--surface)}
+    .rail>.repere{top:84px;right:6px}
+    .marque{display:flex;flex-direction:column;align-items:center;margin-bottom:18px;font-weight:800;color:var(--orange);letter-spacing:-.04em;line-height:.95;text-align:center}
+    .marque small{font-size:11px}
+    .marque span{font-size:14px}
+    .rail .dest{width:100%;padding:8px 0;gap:5px;font-size:12px}
+    .rail .dest .logo{height:18px}
+    .rail .dest .lib{white-space:normal;text-align:center;padding:0 4px}
+    .nav-bas{display:none}
+    .entete-app{--hb:68px}
+    .barre-haut{gap:14px;padding:0 24px 0 28px}
+    .titre-app{flex:1 1 auto;font-size:30px}
+    .titre-app .logo{height:40px}
+    .champ-app{display:flex;flex:0 1 420px}
+    .loupe,.annuler,.barre-haut.cherche .annuler{display:none}
+    .barre-haut.cherche .titre-app{display:flex}
+    .puces-f{flex-wrap:wrap;padding:0 28px 14px}
+    .fab-zone,.fab-zone.bas{bottom:24px;padding-right:28px}
+    .fab{width:auto;padding:0 22px 0 18px;border-radius:999px}
+    .fab span{display:inline}
+  }
+
+  .repere{position:absolute;z-index:9;width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;font:700 11.5px/22px var(--corps);text-align:center;box-shadow:0 0 0 3px var(--paper);pointer-events:none}
+  .repere.en-ligne{position:static;display:inline-block;flex:none;vertical-align:2px;box-shadow:none}
+
+  /* contenu des pages */
+  .description{padding:2px 16px 4px;font-family:var(--display);font-style:italic;color:var(--attenue);font-size:14.5px}
+  .phases{position:relative;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:16px;scrollbar-width:none;padding:6px 16px 4px}
+  .phases::-webkit-scrollbar{display:none}
+  .phases>.repere{top:0;right:10px}
+  .phase{flex:none;width:156px;scroll-snap-align:start;display:grid;grid-template-rows:auto 1fr auto;gap:4px;padding:10px 12px 11px;border:1px solid var(--filet-fort);border-radius:16px;background:var(--surface);text-align:left;transition:border-color .2s,background-color .2s}
+  .phase .picto{width:46px;height:46px;margin:-4px 0 -2px -5px;color:var(--ink)}
+  .phase .nom{font-family:var(--display);font-weight:600;font-size:15px;line-height:1.12;letter-spacing:-.01em}
+  .phase .nb{font-family:var(--mono);font-size:11px;color:var(--attenue)}
+  .phase:hover{border-color:var(--orange)}
+  .phase:hover .picto{--couleur-trajectoire:var(--orange)}
+  .phase[aria-pressed="true"]{border-color:var(--orange);box-shadow:inset 0 0 0 1px var(--orange);background:color-mix(in srgb,var(--orange) 7%,var(--surface))}
+  .phase[aria-pressed="true"] .picto{--couleur-trajectoire:var(--orange)}
+  .phase[aria-pressed="true"] .nb{color:var(--orange-texte)}
+
+  .r-tete{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:22px 16px 10px}
+  .r-tete h3{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.01em;line-height:1.15}
+  .r-tete small{font-size:13px;color:var(--attenue)}
+  .r-tete .lien{font-size:13px;font-weight:600;color:var(--violet)}
+  .r-tete .droite{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .vue-z{position:relative;display:inline-flex}
+  .vue-z>.repere{top:-13px;left:-13px}
+  .vue-tg{display:inline-flex;border:1px solid var(--filet-fort);border-radius:999px;overflow:hidden}
+  .vue-tg button{display:grid;place-items:center;width:34px;height:30px;color:var(--attenue)}
+  .vue-tg .ic{width:16px;height:16px}
+  .vue-tg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+  /* lignes compactes */
+  .lignes{list-style:none;margin:0 16px;border:1px solid var(--filet);border-radius:16px;background:var(--surface);overflow:hidden}
+  .ligne{--acc:var(--st-pret);display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center;width:100%;padding:10px 12px 10px 10px;border-bottom:1px solid var(--filet);text-align:left}
+  .lignes li:last-child .ligne{border-bottom:0}
+  .ligne:hover{background:color-mix(in srgb,var(--ink) 3%,transparent)}
+  .ligne.termine,.une.termine,.carte.termine{--acc:var(--st-termine)} .ligne.encours,.une.encours,.carte.encours{--acc:var(--st-encours)} .ligne.brouillon,.une.brouillon,.carte.brouillon{--acc:var(--st-brouillon)}
+  .vig{display:block;width:100%;aspect-ratio:16/11;object-fit:cover;border-radius:9px;background:var(--terrain)}
+  .vig.sans{display:grid;place-items:center;background:var(--paper-2);color:var(--attenue)}
+  .vig.sans .picto{width:34px;height:34px;stroke-width:2.6}
+  .l-corps{display:grid;gap:1px;min-width:0}
+  .l-titre{font-family:var(--display);font-size:15.5px;font-weight:600;line-height:1.2;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .l-obj{font-family:var(--display);font-style:italic;font-size:13px;color:var(--attenue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .l-meta{display:flex;flex-wrap:wrap;align-items:center;gap:2px 9px;margin-top:3px;font-size:11.5px;color:var(--attenue)}
+  .l-meta>span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+  .l-meta .picto{width:17px;height:17px;stroke-width:3.4;color:var(--ink)}
+  .l-st{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--acc)}
+  .l-st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .l-cat{font-family:var(--mono);font-size:11px}
+  .l-classer{font-size:10.5px;font-weight:700;color:var(--orange-texte);border:1px dashed currentColor;border-radius:999px;padding:0 7px}
+  @container (min-width:720px){.lignes{margin:0 28px}.ligne{grid-template-columns:132px minmax(0,1fr);gap:18px;padding:12px 18px 12px 12px}.l-titre{font-size:17px}}
+
+  /* cartes, comme l'application */
+  .cartes{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding:0 16px}
+  @container (min-width:720px){.cartes{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:0 28px}}
+  .carte{--acc:var(--st-pret);display:flex;flex-direction:column;border:1px solid var(--filet);border-top:3px solid var(--acc);border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 30px -22px rgba(0,0,0,.3);text-align:center}
+  .c-corps{display:flex;flex-direction:column;gap:10px;padding:18px 18px 16px;flex:1}
+  .c-haut{display:flex;align-items:center;gap:10px}
+  .c-statut{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:999px;padding:3px 10px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:var(--acc)}
+  .c-statut::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .c-trait{flex:1;min-width:10px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 35%,transparent),transparent)}
+  .c-cat{font-family:var(--mono);font-size:12px;border-radius:6px;padding:2px 6px;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--attenue)}
+  .carte h4{font-family:var(--display);font-size:21px;font-weight:600;line-height:1.15;letter-spacing:-.015em}
+  .c-obj{font-family:var(--display);font-style:italic;font-size:13.5px;line-height:1.4;color:var(--attenue)}
+  .c-mots{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:auto}
+  .c-mots span{display:inline-flex;align-items:center;gap:5px;font-size:11px;border:1px solid var(--filet);border-radius:999px;padding:2px 10px;color:var(--attenue);background:var(--paper)}
+  .c-mots span.manque{border-style:dashed}
+  .c-mots .picto{width:15px;height:15px;stroke-width:3;margin-left:-3px;color:var(--ink)}
+  .c-rail{display:flex;flex-direction:column;gap:12px;padding:12px 16px 14px;border-top:1px solid var(--filet);background:linear-gradient(180deg,color-mix(in srgb,var(--paper-2) 55%,var(--surface)),var(--surface))}
+  .c-metas{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px}
+  .c-metas span{display:flex;align-items:baseline;gap:6px}
+  .c-metas small{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--attenue)}
+  .c-metas b{font-family:var(--display);font-size:14px;font-weight:600}
+  .c-pied{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .auteur{display:flex;align-items:center;gap:8px;min-width:0;font-size:12.5px;font-weight:600;text-align:left}
+  .auteur i{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1px solid var(--filet-fort);font-style:normal;font-size:10px;font-weight:600;color:var(--attenue)}
+  .auteur span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .auteur.comite{font-family:var(--display);color:var(--orange-texte)}
+  .auteur.comite i{border-color:var(--orange);color:var(--orange-texte)}
+  .btn-sombre{flex:none;height:36px;padding:0 18px;border-radius:999px;background:var(--ink);color:var(--paper);font-size:13.5px;font-weight:600}
+
+  /* À la une : la séance par son premier schéma */
+  .rail-une{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:16px;scrollbar-width:none;padding:0 16px 4px}
+  .rail-une::-webkit-scrollbar{display:none}
+  .une{--acc:var(--st-pret);flex:none;width:76%;scroll-snap-align:start;display:flex;flex-direction:column;border:1px solid var(--filet);border-radius:16px;overflow:hidden;background:var(--surface);text-align:left;box-shadow:0 14px 30px -24px rgba(0,0,0,.4)}
+  .une .vig{border-radius:0;aspect-ratio:16/9}
+  .u-corps{display:grid;gap:7px;padding:11px 14px 13px}
+  .u-haut{display:flex;align-items:center;gap:8px}
+  .u-titre{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+  .u-pied{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .u-pied small{flex:none;font-family:var(--mono);font-size:11px;color:var(--attenue)}
+  @container (min-width:720px){.rail-une{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:0 28px;overflow:visible}.une{width:auto}}
+
+  /* piocher une situation */
+  .puces{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:0 16px 2px}
+  .puces::-webkit-scrollbar{display:none}
+  .puce{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 13px;border-radius:999px;border:1px solid var(--filet-fort);font-size:13.5px;color:var(--attenue);background:var(--surface);white-space:nowrap}
+  .puce small{font-family:var(--mono);font-size:11px}
+  .puce .picto{width:22px;height:22px;stroke-width:2.8;margin-left:-5px;color:currentColor}
+  .puce[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .puce[aria-pressed="true"] .picto{--couleur-trajectoire:var(--orange)}
+  .sits{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:16px;padding:12px 16px 6px;scrollbar-width:none}
+  .sits::-webkit-scrollbar{display:none}
+  .sit{flex:none;width:200px;scroll-snap-align:start;display:flex;flex-direction:column;border:1px solid var(--filet);border-radius:14px;overflow:hidden;background:var(--surface)}
+  .sit .vig{border-radius:0;aspect-ratio:16/10}
+  .sit .s-corps{display:grid;gap:3px;padding:9px 12px 0}
+  .sit b{font-size:13.5px;font-weight:600;line-height:1.3}
+  .sit .s-de{font-size:12px;color:var(--attenue)}
+  .sit .s-de.comite{color:var(--orange-texte);font-family:var(--display);font-weight:600}
+  .btn-contour{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--filet-fort);font-size:13.5px;font-weight:600;background:var(--surface)}
+  .sit .btn-contour{margin:9px 12px 12px;height:32px;font-size:13px}
+  .btn-contour[aria-pressed="true"]{background:color-mix(in srgb,var(--orange) 15%,var(--surface));border-color:transparent;color:var(--orange-texte)}
+  @container (min-width:720px){.r-tete{padding:28px 28px 12px}.description{padding:0 28px 6px}.phases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:6px 28px 4px;overflow:visible}.phase{width:auto;padding:14px 16px}.phase .picto{width:68px;height:68px}.phase .nom{font-size:18px}.puces{flex-wrap:wrap;padding:0 28px}.sits{padding:14px 28px 6px;scroll-padding:28px}}
+  .vide{margin:10px 16px 4px;padding:20px;border:1px dashed var(--filet-fort);border-radius:14px;text-align:center;color:var(--attenue);font-size:14px}
+  @container (min-width:720px){.vide{margin:12px 28px 4px}}
+
+  /* sans groupe */
+  .sans-groupe{display:grid;justify-items:center;gap:12px;max-width:440px;margin:28px auto 0;padding:0 24px;text-align:center}
+  .sans-groupe .picto{width:84px;height:84px;stroke-width:1.8;--couleur-trajectoire:var(--orange)}
+  .sans-groupe h3{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:-.015em}
+  .sans-groupe p{color:var(--attenue);font-size:14.5px}
+  .sans-groupe .actions{display:grid;gap:10px;width:100%;margin-top:8px}
+
+  /* couches : feuilles, panneau, menu de l'avatar */
+  .voile{position:absolute;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center;background:var(--voile)}
+  .feuille{display:flex;flex-direction:column;width:100%;max-height:86%;background:var(--paper);border-radius:22px 22px 0 0;overflow:hidden;animation:monte .22s ease-out}
+  @keyframes monte{from{transform:translateY(24%);opacity:.5}to{transform:none;opacity:1}}
+  @container (min-width:720px){
+    .voile{align-items:center}
+    .feuille{width:540px;max-height:calc(100% - 64px);border-radius:20px}
+    .voile.menu{align-items:flex-start;justify-content:flex-end;background:color-mix(in srgb,var(--voile) 40%,transparent)}
+    .voile.menu .feuille{width:370px;margin:64px 22px 0 0;border-radius:18px;box-shadow:0 24px 50px -20px rgba(0,0,0,.5)}
+  }
+  .poignee{flex:none;width:40px;height:4px;border-radius:2px;background:var(--filet-fort);margin:10px auto 0}
+  @container (min-width:720px){.poignee{display:none}}
+  .p-tete{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 12px 20px;border-bottom:1px solid var(--filet)}
+  .p-tete h4{font-size:16px;font-weight:600}
+  .p-tete small{display:block;font-size:12px;font-weight:400;color:var(--attenue)}
+  .p-tete button{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:var(--attenue)}
+  .p-corps{flex:1;overflow-y:auto;display:grid;gap:22px;align-content:start;padding:18px 20px}
+  .p-sec{display:grid;gap:9px}
+  .p-sec>span{font-size:12.5px;font-weight:600;color:var(--attenue)}
+  .options{display:flex;flex-wrap:wrap;gap:6px}
+  .champ-texte{display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border:1px solid var(--filet-fort);border-radius:12px;background:var(--surface);color:var(--attenue)}
+  .champ-texte input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--ink);font-size:15px}
+  .grille-cat{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .grille-cat .puce{justify-content:center;padding:4px 6px;min-height:44px;line-height:1.15;white-space:normal;text-align:center;border-radius:12px}
+  .case{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--violet) 8%,var(--surface));font-size:13.5px;text-align:left}
+  .case i{flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:6px;border:1.5px solid var(--filet-fort);background:var(--surface)}
+  .case i .ic{width:13px;height:13px;stroke-width:3;opacity:0;color:#fff}
+  .case[aria-pressed="true"] i{background:var(--violet);border-color:var(--violet)}
+  .case[aria-pressed="true"] i .ic{opacity:1}
+  .note-prefs{font-size:12.5px;color:var(--attenue)}
+  .p-pied{display:flex;gap:10px;padding:12px 16px 16px;border-top:1px solid var(--filet);background:var(--surface)}
+  .p-pied>*{flex:1;height:46px}
+  .btn-orange{display:flex;align-items:center;justify-content:center;gap:6px;height:46px;padding:0 18px;border-radius:999px;background:var(--orange);color:#fff;font-size:15px;font-weight:600}
+
+  /* réglette des niveaux, en plage (étude Communauté) */
+  .reglette{display:flex;align-items:center;gap:14px}
+  .reglette .tous{font-size:12.5px;font-weight:600;border:1px solid var(--filet-fort);border-radius:999px;padding:6px 11px;color:var(--attenue);flex:none}
+  .reglette .tous[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .piste{position:relative;display:flex;flex:1;min-width:0}
+  .piste::before,.piste .rempli{content:"";position:absolute;top:9px;height:3px;border-radius:2px}
+  .piste::before{left:16.6%;right:16.6%;background:color-mix(in srgb,var(--violet) 30%,transparent)}
+  .piste .rempli{background:var(--violet);height:5px;top:8px}
+  .piste button{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--attenue)}
+  .piste i{width:21px;height:21px;border-radius:50%;border:3px solid var(--violet);background:var(--surface)}
+  .piste button[aria-pressed="true"]{color:var(--ink)}
+  .piste button[aria-pressed="true"] i{background:var(--violet)}
+
+  /* sélecteur de groupe */
+  .groupes-l{list-style:none;display:grid}
+  .groupes-l button{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:12px 20px;border-bottom:1px solid var(--filet);text-align:left}
+  .groupes-l .picto{width:36px;height:36px;stroke-width:2.6}
+  .groupes-l b{display:block;font-weight:600}
+  .groupes-l small{font-size:12.5px;color:var(--attenue)}
+  .groupes-l .ic{width:20px;height:20px;color:var(--orange-texte);opacity:0}
+  .groupes-l button[aria-pressed="true"]{background:color-mix(in srgb,var(--orange) 7%,var(--paper))}
+  .groupes-l button[aria-pressed="true"] .picto{--couleur-trajectoire:var(--orange)}
+  .groupes-l button[aria-pressed="true"] .ic{opacity:1}
+
+  /* menu de l'avatar */
+  .moi-ident{display:flex;align-items:center;gap:12px;padding:14px 20px 4px}
+  .moi-ident i{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1.5px solid var(--filet-fort);background:var(--surface);font-style:normal;font-weight:700;color:var(--ink)}
+  .moi-ident b{display:block;font-weight:600}
+  .moi-ident small{font-size:13px;color:var(--attenue)}
+  .fermer-moi{margin-left:auto;align-self:flex-start;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:var(--attenue)}
+  .moi-equipes{display:grid;gap:12px;margin:12px 16px 4px;padding:14px 14px 16px;border:1px solid var(--filet);border-radius:16px;background:var(--surface)}
+  .moi-equipes h5{font-family:var(--display);font-weight:600;font-size:17px}
+  .moi-equipes p{font-size:12.5px;color:var(--attenue);margin-top:-8px}
+  .moi-equipes .grille-cat .puce{min-height:38px;font-size:12.5px}
+  .moi-equipes .btn-orange{height:40px;font-size:14px}
+  .moi-liens{list-style:none;padding:6px 0 14px}
+  .moi-liens li>button,.moi-liens li>div{display:flex;align-items:center;gap:14px;width:100%;padding:11px 22px;font-size:14.5px;text-align:left}
+  .moi-liens li>button:hover{background:color-mix(in srgb,var(--ink) 4%,transparent)}
+  .moi-liens .ic{width:20px;height:20px;color:var(--attenue)}
+  .moi-liens small{margin-left:auto;font-size:11px;font-weight:600;color:var(--attenue);border:1px solid var(--filet-fort);border-radius:999px;padding:1px 8px}
+  .moi-liens .seg{margin-left:auto}
+  .moi-liens .seg button{font-size:12.5px;padding:.3em .9em}
+  .moi-liens .sep-l{height:1px;background:var(--filet);margin:6px 22px}
+  .moi-p{flex:1;overflow-y:auto}
+
+  .bulle{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);z-index:30;width:max-content;max-width:calc(100% - 32px);padding:10px 16px;border-radius:12px;background:var(--ink);color:var(--paper);font-size:13px;text-align:center;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+  @container (min-width:720px){.bulle{bottom:28px}}
+
+  /* ---------- ce qu'on gagne ---------- */
+  .gain{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:26px}
+  @media(max-width:900px){.gain{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .gain figure{display:grid;gap:10px;justify-items:center;align-content:start}
+  .mini{display:flex;flex-direction:column;width:min(100%,172px);height:300px;border:6px solid var(--chassis);border-radius:24px;overflow:hidden;background:var(--paper)}
+  .mini .z{flex:none;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--violet);background:color-mix(in srgb,var(--violet) 12%,var(--surface))}
+  .mini .z+.z{border-top:1px solid color-mix(in srgb,var(--violet) 25%,transparent)}
+  .mini .m-c{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:4px;padding:5px}
+  .mini .c-s{flex:none;height:108px;border-radius:8px;border:1px solid var(--filet-fort);border-top:3px solid var(--st-pret);background:var(--surface)}
+  .mini .l-s{flex:none;display:grid;grid-template-columns:34px 1fr;gap:5px;height:31px;padding:3px;border-radius:6px;border:1px solid var(--filet);background:var(--surface)}
+  .mini .l-s::before{content:"";border-radius:4px;background:var(--terrain)}
+  .mini .l-s::after{content:"";margin:4px 8px 10px 0;border-radius:3px;background:color-mix(in srgb,var(--ink) 18%,transparent)}
+  .gain figcaption{font-size:.88rem;color:var(--attenue);text-align:center;max-width:22ch}
+  .gain figcaption b{display:block;color:var(--ink);font-weight:600}
+  .gain figcaption em{font-style:normal;font-family:var(--mono);font-size:.8rem;color:var(--orange-texte)}
+  .note{margin-top:18px;font-size:.84rem;color:var(--attenue);max-width:70ch}
+
+  /* ---------- tableaux ---------- */
+  .tab-wrap{overflow-x:auto;margin-top:18px}
+  .tableau{border-collapse:collapse;width:100%;min-width:620px;font-size:.92rem}
+  .tableau th,.tableau td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--filet);vertical-align:top}
+  .tableau th{font-weight:600;font-size:.84rem;color:var(--attenue)}
+  .tableau td{color:var(--attenue)}
+  .tableau td:last-child{color:var(--ink)}
+
+  /* ---------- avec l'étude Communauté ---------- */
+  .trois{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 32px;margin-top:24px}
+  @media(max-width:860px){.trois{grid-template-columns:minmax(0,1fr)}}
+  .trois h3{font-size:.98rem;font-weight:600;margin-bottom:.35em}
+  .trois ul{margin-left:1.1em;display:grid;gap:.35em}
+  .trois li{font-size:.9rem;color:var(--attenue)}
+
+  /* ---------- à trancher ---------- */
+  .trancher{margin-top:22px;border:1.5px solid var(--orange);border-radius:20px;background:color-mix(in srgb,var(--orange) 5%,var(--paper));overflow:hidden}
+  .t-groupe{padding:6px 0 4px}
+  .t-groupe+.t-groupe{border-top:1.5px solid color-mix(in srgb,var(--orange) 40%,transparent)}
+  .t-groupe h3{padding:16px 22px 6px;font-family:var(--display);font-weight:600;font-size:1.1rem}
+  .d{display:grid;grid-template-columns:3.2rem minmax(0,1.15fr) minmax(0,1fr);gap:6px 20px;padding:12px 22px;border-top:1px solid var(--filet);scroll-margin-top:64px}
+  .t-groupe h3+.d{border-top:0}
+  .d-num{font-family:var(--mono);font-size:.84rem;color:var(--orange-texte);padding-top:2px}
+  .d-q{font-size:.95rem;font-weight:600;line-height:1.4}
+  .d-q span{display:block;font-weight:400;color:var(--attenue);font-size:.88rem;margin-top:2px}
+  .d-p{font-size:.92rem;color:var(--ink);line-height:1.45}
+  .d-p::before{content:"Proposé\202F: ";color:var(--violet);font-weight:600}
+  @media(max-width:700px){.d{grid-template-columns:2.6rem minmax(0,1fr)}.d-p{grid-column:2}}
+
+  /* ---------- réservé au développeur ---------- */
+  .dev{margin-top:96px;padding:clamp(18px,3vw,34px);border:1.5px dashed var(--filet-fort);border-radius:22px;background:var(--paper-2);scroll-margin-top:64px}
+  .dev-marque{display:inline-block;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--ink);border-radius:8px;padding:5px 12px}
+  .dev>h2{font-family:var(--display);font-weight:600;font-size:clamp(1.4rem,3vw,1.7rem);margin:14px 0 .25em}
+  .dev>p{max-width:70ch;color:var(--attenue);font-size:.94rem}
+  .dev-grille{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 40px;margin-top:10px}
+  @media(max-width:860px){.dev-grille{grid-template-columns:minmax(0,1fr)}}
+  .dev h3{font-family:var(--display);font-weight:600;font-size:1.08rem;margin:22px 0 .35em}
+  .dev ul{margin-left:1.1em;display:grid;gap:.4em}
+  .dev li{color:var(--attenue);font-size:.9rem}
+  .dev li b{color:var(--ink);font-weight:600}
+  .tab-dev{overflow-x:auto;margin-top:8px}
+  .tab-dev table{border-collapse:collapse;width:100%;font-size:.86rem}
+  .tab-dev td,.tab-dev th{text-align:left;padding:7px 10px 7px 0;border-bottom:1px solid var(--filet);vertical-align:top;color:var(--attenue)}
+  .tab-dev th{font-weight:600;color:var(--ink);font-size:.8rem}
+  .tab-dev td:first-child{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="outils"><div class="wrap outils-in">
+  <a href="https://github.com/association-placeauxcoachs/produit/tree/main/etudes">Études</a>
+  <div class="seg" role="group" aria-label="Thème"><button type="button" data-theme-choix="light">Jour</button><button type="button" data-theme-choix="dark">Nuit</button></div>
+</div></div>
+
+<main class="wrap">
+<header class="entete">
+  <div>
+    <h1>Naviguer par les séances</h1>
+    <p class="lede">Les onglets de la liste descendent dans la barre du bas et dans le rail : Mes séances, Groupes, Comité, Communauté. Profil et gestion des groupes passent sous l’avatar, en haut à droite. Sur téléphone, l’écran récupère la hauteur des onglets et les filtres deviennent des puces qu’on touche une à une.</p>
+  </div>
+  <a class="appel" href="#trancher"><b>13 choix à trancher</b><span>Onze pour la première version, deux peuvent attendre.</span></a>
+</header>
+
+<!-- ==================== LA MAQUETTE ==================== -->
+<section class="bloc" id="maquette" aria-labelledby="titre-maquette" style="margin-top:44px">
+  <h2 id="titre-maquette">La maquette</h2>
+  <div class="barre-maquette">
+    <p>Touchez la <b>barre du bas</b>, une <b>puce de filtre</b>, l’<b>avatar</b>, le <b>titre</b> d’un groupe, et faites défiler. Séances et noms d’exemple.</p>
+    <div class="commandes">
+      <div class="seg" role="group" aria-label="Format"><button type="button" data-format="telephone">Téléphone</button><button type="button" data-format="ordinateur">Ordinateur</button></div>
+      <div class="seg" role="group" aria-label="Explications"><button type="button" data-explications="oui">Avec explications</button><button type="button" data-explications="non">Maquette seule</button></div>
+      <div class="seg" role="group" aria-label="Groupes de l’exemple"><button type="button" data-groupes="avec">Trois groupes</button><button type="button" data-groupes="sans">Aucun groupe</button></div>
+      <div class="seg"><button type="button" id="recommencer">Recommencer</button></div>
+    </div>
+  </div>
+  <div class="zone" id="zone" data-format="telephone" data-explications="oui">
+    <div class="cadre" id="cadre"><div class="ecran" id="ecran" role="region" aria-label="Maquette de l’application"></div></div>
+    <aside class="pourquoi" id="pourquoi" aria-live="polite"></aside>
+  </div>
+</section>
+
+<!-- ==================== CE QU'ON GAGNE ==================== -->
+<section class="bloc" id="gain" aria-labelledby="titre-gain">
+  <h2 id="titre-gain">Ce qu’on gagne à l’écran</h2>
+  <p class="chapo">Sur un téléphone courant, il reste environ 750 pixels de haut une fois le navigateur ouvert. Aujourd’hui, onglets, filtres et barre du bas en prennent le tiers.</p>
+  <div class="gain" aria-hidden="true">
+    <figure>
+      <div class="mini"><div class="z" style="height:40px">Onglets</div><div class="z" style="height:25px">Filtres</div><div class="m-c"><div class="c-s"></div><div class="c-s"></div></div><div class="z" style="height:31px">Barre</div></div>
+      <figcaption><b>Aujourd’hui</b><em>≈ 250 px</em> de menus, une carte et demie</figcaption>
+    </figure>
+    <figure>
+      <div class="mini"><div class="z" style="height:17px">Onglets</div><div class="z" style="height:25px">Filtres</div><div class="m-c"><div class="c-s"></div><div class="c-s"></div><div class="c-s"></div></div></div>
+      <figcaption><b>Aujourd’hui, en défilant</b><em>≈ 110 px</em>, deux cartes</figcaption>
+    </figure>
+    <figure>
+      <div class="mini"><div class="z" style="height:22px">Titre</div><div class="z" style="height:20px">Puces</div><div class="m-c"><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div></div><div class="z" style="height:25px">Barre</div></div>
+      <figcaption><b>Proposé</b><em>≈ 170 px</em>, cinq à six séances</figcaption>
+    </figure>
+    <figure>
+      <div class="mini"><div class="z" style="height:20px">Puces</div><div class="m-c"><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div><div class="l-s"></div></div></div>
+      <figcaption><b>Proposé, en défilant</b><em>≈ 50 px</em>, sept séances</figcaption>
+    </figure>
+  </div>
+  <p class="note">Ordres de grandeur relevés sur le code d’aujourd’hui (onglets, pilule de filtres, barre de 80 px) et sur la maquette (titre de 56 px, puces de 52 px, barre de 64 px), pour une carte d’environ 290 px et une ligne de 92 px.</p>
+</section>
+
+<!-- ==================== OÙ VA CHAQUE CHOSE ==================== -->
+<section class="bloc" id="correspondance" aria-labelledby="titre-correspondance">
+  <h2 id="titre-correspondance">Où va chaque entrée d’aujourd’hui</h2>
+  <p class="chapo">Rien ne disparaît : ce qu’on ouvre souvent monte dans la barre, ce qu’on ouvre rarement passe sous l’avatar.</p>
+  <div class="tab-wrap">
+    <table class="tableau">
+      <thead><tr><th scope="col">Aujourd’hui</th><th scope="col">Avec la proposition</th></tr></thead>
+      <tbody>
+        <tr><td>Barre et rail : Entraînements, puis l’onglet Mes entraînements</td><td>Mes séances, dans la barre</td></tr>
+        <tr><td>Onglet du comité (groupe mis en avant)</td><td>Comité, dans la barre, avec son logo</td></tr>
+        <tr><td>Onglet Groupes et son menu déroulant</td><td>Groupes, dans la barre ; on change de groupe par le titre de la page</td></tr>
+        <tr><td>Onglet Communauté</td><td>Communauté, dans la barre</td></tr>
+        <tr><td>Barre et rail : Groupes (la page des groupes, Créer un groupe)</td><td>Avatar › Gérer mes groupes ; titre d’un groupe › Créer un groupe, Gérer le groupe</td></tr>
+        <tr><td>Barre et rail : Profil, et sa pastille « profil incomplet »</td><td>Avatar › Mon profil ; la pastille passe sur l’avatar</td></tr>
+        <tr><td>Rail déplié : liste des groupes, thème, déconnexion</td><td>Titre d’un groupe pour la liste ; avatar pour le thème et la déconnexion</td></tr>
+        <tr><td>Rail : Importer, Admin</td><td>Avatar › Importer un entraînement, Administration</td></tr>
+        <tr><td>Pilule de filtres (téléphone), barre en segments (ordinateur)</td><td>Une puce par critère, et « Filtres » pour le panneau complet</td></tr>
+        <tr><td>Bouton + flottant</td><td>Inchangé ; dans un groupe, la séance naît partagée avec lui (N13)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== AVEC L'ÉTUDE COMMUNAUTÉ ==================== -->
+<section class="bloc" id="communaute" aria-labelledby="titre-communaute">
+  <h2 id="titre-communaute">Avec l’étude « Organiser la Communauté »</h2>
+  <p class="chapo">Les deux études se complètent : celle-ci range l’accès aux séances, l’autre range ce qu’on trouve une fois arrivé.</p>
+  <div class="trois">
+    <div><h3>Repris tel quel</h3><ul><li>Les phases de jeu dessinées, À la une, les situations à piocher, puis la liste.</li><li>Les équipes du profil, qui ouvrent le comité et la Communauté sur vos catégories et niveaux.</li><li>« À classer » sur ses propres séances.</li></ul></div>
+    <div><h3>Adapté</h3><ul><li>Les onglets Mes entraînements, Comité et Communauté deviennent des destinations de la barre.</li><li>La pilule et la barre de filtres deviennent des puces, une par critère.</li><li>Sur téléphone, les phases tiennent sur une rangée qui défile (N11).</li></ul></div>
+    <div><h3>Ce que ça règle</h3><ul><li>Les libellés d’onglets tronqués sur téléphone : il n’y a plus d’onglets.</li><li>Le comité, à un geste depuis n’importe quelle page.</li><li>« Les mêmes repères sur chaque onglet » vaut tel quel pour chaque destination.</li></ul></div>
+  </div>
+</section>
+
+<!-- ==================== À TRANCHER ==================== -->
+<section class="bloc" id="trancher" aria-labelledby="titre-trancher">
+  <h2 id="titre-trancher">À trancher</h2>
+  <p class="chapo">Répondez en citant le numéro, en commentaire de la fiche du <a href="https://github.com/orgs/association-placeauxcoachs/projects/2">tableau de suivi</a> qui portera cette étude.</p>
+  <div class="trancher">
+    <div class="t-groupe">
+      <h3>Pour la première version</h3>
+      <div class="d" id="n1"><span class="d-num">N1</span><p class="d-q">Quatre destinations, Mes séances, Groupes, Comité et Communauté, à la place d’Entraînements, Groupes et Profil ?</p><p class="d-p">Oui, dans cet ordre, du plus personnel au plus ouvert. On arrive toujours sur Mes séances.</p></div>
+      <div class="d" id="n2"><span class="d-num">N2</span><p class="d-q">« Mes séances » plutôt que « Mes entraînements » ?<span>« Mes entraînements » ne tient pas dans un quart d’écran de téléphone.</span></p><p class="d-p">« Mes séances » dans la barre et en titre ; « entraînement » reste partout ailleurs.</p></div>
+      <div class="d" id="n3"><span class="d-num">N3</span><p class="d-q">Groupes, quand on n’en a aucun ?</p><p class="d-p">La destination reste et explique à quoi sert un groupe, avec Créer et Rejoindre. C’est la meilleure place pour les faire connaître.</p></div>
+      <div class="d" id="n4"><span class="d-num">N4</span><p class="d-q">Plusieurs groupes : on change par le titre, et Groupes rouvre le dernier consulté ?</p><p class="d-p">Oui. « Tous mes groupes » réunis dans une seule liste viendra plus tard s’il manque.</p></div>
+      <div class="d" id="n5"><span class="d-num">N5</span><p class="d-q">Comité : une destination tant qu’un groupe est mis en avant ? Et s’il y en a plusieurs ?</p><p class="d-p">Oui, avec son logo. Sans groupe mis en avant, la barre garde trois destinations ; avec plusieurs, on change par le titre, comme pour les groupes.</p></div>
+      <div class="d" id="n6"><span class="d-num">N6</span><p class="d-q">Profil, équipes préférées, gestion des groupes, import, administration, thème et déconnexion sous l’avatar ?</p><p class="d-p">Oui, sur téléphone comme sur ordinateur. La pastille du profil incomplet passe sur l’avatar.</p></div>
+      <div class="d" id="n7"><span class="d-num">N7</span><p class="d-q">Une puce par critère de filtre, sur téléphone et sur ordinateur ?<span>Aujourd’hui : une pilule qui ouvre un panneau sur téléphone, une barre en segments sur ordinateur.</span></p><p class="d-p">Oui. La première puce, « Filtres », ouvre le panneau complet d’aujourd’hui, recherche comprise.</p></div>
+      <div class="d" id="n8"><span class="d-num">N8</span><p class="d-q">Des lignes compactes par défaut sur téléphone ?</p><p class="d-p">Oui, et les cartes d’aujourd’hui par défaut sur ordinateur. Le choix se retient par appareil.</p></div>
+      <div class="d" id="n10"><span class="d-num">N10</span><p class="d-q">En défilant, ne garder que les puces ?</p><p class="d-p">Oui : le titre et la barre du bas s’effacent quand on descend et reviennent dès qu’on remonte. La barre du bas le fait déjà.</p></div>
+      <div class="d" id="n11"><span class="d-num">N11</span><p class="d-q">Les phases sur une rangée qui défile, sur téléphone ?<span>Écart avec l’étude « Organiser la Communauté », qui les pose en deux rangées.</span></p><p class="d-p">Oui, deux fois moins haut. Sur ordinateur, quatre colonnes comme dans l’étude.</p></div>
+      <div class="d" id="n12"><span class="d-num">N12</span><p class="d-q">Le rail ne se déplie plus ?</p><p class="d-p">Oui : la liste des groupes est dans le titre, thème et déconnexion sous l’avatar. Il n’a plus rien à montrer de plus.</p></div>
+    </div>
+    <div class="t-groupe">
+      <h3>Peuvent attendre</h3>
+      <div class="d" id="n9"><span class="d-num">N9</span><p class="d-q">Le premier schéma en vignette, sur les lignes et À la une ?<span>L’application ne garde aujourd’hui aucune image des schémas.</span></p><p class="d-p">Oui, dans un second temps. D’ici là, le pictogramme de la phase tient la place.</p></div>
+      <div class="d" id="n13"><span class="d-num">N13</span><p class="d-q">Dans un groupe, le bouton + crée la séance déjà partagée avec ce groupe ?</p><p class="d-p">Oui, le partage se retire depuis la séance comme aujourd’hui.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== DÉVELOPPEUR ==================== -->
+<section class="dev" id="dev" aria-labelledby="titre-dev">
+  <span class="dev-marque">Réservé au développeur</span>
+  <h2 id="titre-dev">Partie technique</h2>
+  <p>On peut s’arrêter ici. Aucune migration : la proposition range l’accès aux séances, pas les données. Les règles d’accès restent celles d’aujourd’hui et se décident, le cas échéant, dans chaque change, côté code.</p>
+  <div class="dev-grille">
+    <div>
+      <h3>Destinations</h3>
+      <ul>
+        <li>Une seule page, <code>/entrainements</code>, et le paramètre <code>tab</code> d’aujourd’hui (<code>perso</code>, <code>groupe</code>, <code>gma</code>, <code>communaute</code>) : chaque destination est un lien vers sa valeur. Le premier résultat reste rendu par le serveur (ADR-0023), la clé de recherche ne change pas (ADR-0016).</li>
+        <li><code>destinations.tsx</code> : <code>DESTINATIONS</code> devient une liste calculée (groupes, groupes mis en avant, flag <code>groupes-mis-en-avant</code>). <code>estRouteActive</code> compare <code>tab</code>, lu par <code>useSearchParams</code>, que <code>history.replaceState</code> tient à jour. L’état sélectionné au clic reste (ADR-0017).</li>
+        <li>Déjà sur <code>/entrainements</code>, le clic passe par <code>changeContexte</code>, comme un onglet aujourd’hui ; ailleurs, c’est le lien.</li>
+        <li>Dernier groupe consulté : cookie lu par la page serveur, nom hors de tout module <code>"use client"</code>, comme <code>entrainement_sommaire_masque</code>.</li>
+        <li><code>/groupes</code> et <code>/profil</code> restent dans <code>(navigation)</code>, sans destination sélectionnée.</li>
+      </ul>
+      <h3>Barre, rail, en-tête</h3>
+      <ul>
+        <li><code>navigation-bar.tsx</code> : <code>h-16</code>, trois ou quatre colonnes ; <code>pb-16</code> dans <code>navigation-layout-client.tsx</code>.</li>
+        <li><code>navigation-rail.tsx</code> : plus de dépliage ; <code>NavigationRailProvider</code> et le cookie <code>navigation_rail_expanded</code> partent.</li>
+        <li><code>navigation-contexte.tsx</code> quitte la liste, et avec lui le compactage de <code>use-etat-header.ts</code>. L’étude des libellés d’onglets devient sans objet.</li>
+        <li>Nouvel <code>entete-destination.tsx</code> : titre, logo ou sélecteur, recherche, avatar ; collant à <code>top: -56px</code> pour ne garder que les puces en défilant.</li>
+        <li>Nouveau <code>menu-compte.tsx</code> : reprend <code>ModeToggle</code>, <code>deconnecte</code>, Importer (flag <code>import-entrainement</code>), Administration, et « Mes équipes » de l’étude Communauté.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Filtres et liste</h3>
+      <ul>
+        <li><code>resume-filtres-compact.tsx</code> devient <code>puces-filtres.tsx</code> : une puce par groupe de <code>resume-filtres-utils.ts</code>. La feuille d’un critère est la section correspondante de <code>panel-filtres-mobile.tsx</code>, seule. <code>barre-filtres.tsx</code> part si N7 est retenu.</li>
+        <li>Critères, URL et <code>cleDeRecherche()</code> inchangés : seul l’affichage change. Les filtres s’écrivent toujours par <code>history.replaceState</code>, jamais par <code>router.replace()</code>.</li>
+        <li><code>ligne-entrainement.tsx</code> à côté de <code>carte-entrainement.tsx</code>, mêmes actions et même <code>demandeLeRaffraichissement</code>. Choix lignes ou cartes en cookie par appareil, lu par la page serveur pour éviter un saut à l’hydratation.</li>
+        <li>Vignette (N9) : rien n’est stocké. Change à part, image du premier schéma produite à l’enregistrement ; d’ici là, le pictogramme de la phase.</li>
+      </ul>
+      <h3>Mesure et tests</h3>
+      <ul>
+        <li>ADR-0024 : <code>OrigineNavigation</code> + <code>menu_compte</code> et <code>selecteur_titre</code>. <code>bibliotheque_consultee</code> garde sa variante <code>onglet</code>, qui devient la destination.</li>
+        <li>Nouveaux <code>affichage_liste_choisi</code> (lignes ou cartes) et <code>filtre_puce_ouverte</code> (critère en variante), rattachés à <code>bibliotheque</code>.</li>
+        <li>À reprendre : <code>destinations.test.tsx</code>, <code>destinations.attente.test.tsx</code> et les Page Objects e2e qui passent par les onglets ou par Groupes et Profil dans la barre.</li>
+        <li>Un ADR « Navigation par destinations de séances » ; ADR-0017 inchangé.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Livraison</h3>
+  <div class="tab-dev">
+    <table>
+      <thead><tr><th>Change</th><th>Contenu</th><th>Attend</th></tr></thead>
+      <tbody>
+        <tr><td><code>navigation-par-destinations</code></td><td>Barre, rail, en-tête, avatar ; onglets retirés de la liste</td><td>N1 à N6, N10, N12</td></tr>
+        <tr><td><code>filtres-en-puces</code></td><td>Puces et feuilles par critère, panneau complet gardé</td><td>N7 ; avant <code>filtres-reperes</code> de l’étude Communauté</td></tr>
+        <tr><td><code>communaute-par-phase</code></td><td>Change de l’étude Communauté : phases sur une rangée sur téléphone</td><td>N11</td></tr>
+        <tr><td><code>liste-compacte</code></td><td>Lignes, choix retenu par appareil</td><td>N8</td></tr>
+        <tr><td><code>vignettes-seances</code></td><td>Image du premier schéma, lignes et À la une</td><td>N9</td></tr>
+        <tr><td><code>creation-dans-un-groupe</code></td><td>Le + d’un groupe partage d’office</td><td>N13</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</main>
+
+<script>
+(function () {
+  var racine = document.documentElement;
+  var boutonsTheme = document.querySelectorAll('[data-theme-choix]');
+  function themeActuel() { return racine.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+  function marqueTheme() { var v = themeActuel(); boutonsTheme.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeChoix === v)); }); }
+  function changeTheme(v) { racine.dataset.theme = v; marqueTheme(); }
+  marqueTheme();
+  boutonsTheme.forEach(function (b) { b.addEventListener('click', function () { changeTheme(b.dataset.themeChoix); if (e && e.couche && e.couche.type === 'moi') rendCouche(); }); });
+
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function sansAccent(t) { return String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function ic(d) { return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + d + '</svg>'; }
+  var I = {
+    reglages: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+    dossier: '<path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>',
+    niveau: '<path d="M5 19V14M12 19V9M19 19V5"/>',
+    liste: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/>',
+    forme: '<circle cx="5" cy="16" r="1.8"/><circle cx="12" cy="12.5" r="1.8"/><circle cx="19" cy="16" r="1.8"/><circle cx="8.5" cy="6.5" r="1.8"/><circle cx="15.5" cy="6.5" r="1.8"/>',
+    loupe: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+    croix: '<path d="M6 6l12 12M18 6 6 18"/>',
+    coche: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+    chevron: '<path d="m6 9 6 6 6-6"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    lignes: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h1M4 12h1M4 18h1"/>',
+    grille: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+    personne: '<circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.9 3.1-6.6 7-6.6s7 2.7 7 6.6"/>',
+    membres: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3.3 2.5-5.6 5.5-5.6s5.5 2.3 5.5 5.6"/><path d="M16 5.2a3.2 3.2 0 0 1 0 6"/><path d="M18 13.6c1.6.7 2.6 2.6 2.6 5.4"/>',
+    importer: '<path d="M12 15V4M7 9l5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/>',
+    bouclier: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/>',
+    lune: '<path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/>',
+    sortie: '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',
+    reglage: '<circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>'
+  };
+
+  /* ---------- pictogrammes du tracé ---------- */
+  function pointe(x, y, dx, dy) {
+    var l = Math.hypot(dx, dy), bx = -dx / l, by = -dy / l, c = Math.cos(0.7), s = Math.sin(0.7), r = 5;
+    var ax = x + r * (bx * c - by * s), ay = y + r * (bx * s + by * c), cx = x + r * (bx * c + by * s), cy = y + r * (-bx * s + by * c);
+    return '<path class="pointe" d="M' + ax.toFixed(2) + ' ' + ay.toFixed(2) + 'L' + x + ' ' + y + 'L' + cx.toFixed(2) + ' ' + cy.toFixed(2) + '"/>';
+  }
+  function joueur(x, y) { return '<circle class="joueur" cx="' + x + '" cy="' + y + '" r="2.2"/>'; }
+  var CADRE = '<path d="M7.5 9h33A2.5 2.5 0 0 1 43 11.5v25a2.5 2.5 0 0 1-2.5 2.5h-33A2.5 2.5 0 0 1 5 36.5v-25A2.5 2.5 0 0 1 7.5 9z"/>';
+  var DEMI = CADRE + '<path d="M5 21.5H2.5v5H5"/><path d="M5 13.5A8 8 0 0 1 13 21.5V26.5A8 8 0 0 1 5 34.5"/>';
+  var ENTIER = CADRE + '<path d="M24 9v30"/><path d="M5 18a6 6 0 0 1 0 12"/><path d="M43 18a6 6 0 0 0 0 12"/>';
+  var DESSINS = {
+    ap: DEMI + joueur(29, 15) + joueur(29, 33) + '<path class="trajectoire" pathLength="1" d="M38.5 25.5C33 26.5 26 25.5 19.5 24"/>' + pointe(19.5, 24, -6.5, -1.5),
+    dp: DEMI + joueur(15.2, 14.3) + joueur(17.3, 19.3) + joueur(17.3, 28.7) + joueur(15.2, 33.7) + joueur(33, 24) + '<path class="trajectoire" pathLength="1" d="M20.5 24H27.5"/>' + pointe(27.5, 24, 1, 0),
+    tt: ENTIER + '<path class="trajectoire" pathLength="1" d="M9 31C16 33 26 31 32.5 23.5"/>' + pointe(32.5, 23.5, 6.5, -7.5),
+    ge: ENTIER + joueur(8, 24) + joueur(33, 15.5) + '<path class="passe" d="M10.5 22.4Q21 12.5 30.4 14.6"/>',
+    // pictogrammes des destinations, comme components/ui/icons/pictogramme.tsx
+    plaquette: '<path d="M18 9h-4.5A2.5 2.5 0 0 0 11 11.5v28a2.5 2.5 0 0 0 2.5 2.5h21a2.5 2.5 0 0 0 2.5-2.5v-28A2.5 2.5 0 0 0 34.5 9H30"/><path d="M18 12V7.5A1.5 1.5 0 0 1 19.5 6h9A1.5 1.5 0 0 1 30 7.5V12z"/><path d="M16 18h9M16 22.5h6"/><path class="trajectoire" pathLength="1" d="M16 36.5c6-1 11-5 15-11.5"/><path class="pointe" d="M25.11 26.13L31 25L31.93 30.93"/>',
+    staff: '<circle cx="10.5" cy="20" r="4"/><path d="M3 37c0-4.6 3.3-8.2 7.5-8.2 1.9 0 3.6.7 4.9 1.9"/><circle cx="37.5" cy="20" r="4"/><path d="M45 37c0-4.6-3.3-8.2-7.5-8.2-1.9 0-3.6.7-4.9 1.9"/><circle cx="24" cy="23" r="5.5"/><path d="M14 43c0-6.8 4.5-11.5 10-11.5s10 4.7 10 11.5"/><path class="trajectoire" pathLength="1" d="M12.22 12.51A13 13 0 0 1 35.02 11.11"/><path class="pointe" d="M35.24 5.12L35.02 11.11L29.04 10.68"/>',
+    ronde: '<circle cx="24" cy="12.75" r="9"/><circle cx="24" cy="10.77" r="2.88"/><path d="M18.05 19.5A6.09 6.09 0 0 1 29.95 19.5"/><circle cx="36.99" cy="35.25" r="9"/><circle cx="36.99" cy="33.27" r="2.88"/><path d="M31.04 42A6.09 6.09 0 0 1 42.94 42"/><circle cx="11.01" cy="35.25" r="9"/><circle cx="11.01" cy="33.27" r="2.88"/><path d="M5.06 42A6.09 6.09 0 0 1 16.96 42"/><path class="passe" d="M34.7 17.23A15 15 0 0 1 38.46 23.75"/><path class="passe" d="M27.76 42.27A15 15 0 0 1 20.24 42.27"/><path class="passe" d="M9.54 23.75A15 15 0 0 1 13.3 17.23"/>'
+  };
+  function picto(code, joue) { return '<svg class="picto' + (joue ? ' joue' : '') + '" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + DESSINS[code] + '</svg>'; }
+  function logoComite(cls) { return '<img class="logo logo-jour ' + (cls || '') + '" src="comite-gironde.svg" alt="" width="717" height="304"><img class="logo logo-nuit ' + (cls || '') + '" src="comite-gironde-blanc.png" alt="" width="1024" height="464">'; }
+
+  /* ---------- repères et données d'exemple ---------- */
+  var COMITE = 'Comité de Gironde', MOI = 'Camille Durand';
+  var CATS = [['U5', 'Baby (U5)'], ['U7', '1er pas (U7)'], ['U9', 'U9'], ['U11', 'U11'], ['U13', 'U13'], ['U15', 'U15'], ['U18', 'U18'], ['Seniors', 'Seniors']];
+  var NIVEAUX = ['Débutant', 'Intermédiaire', 'Confirmé'];
+  var PHASES = [['ap', 'Attaque placée'], ['dp', 'Défense placée'], ['tt', 'Du jeu tout terrain au jeu placé'], ['ge', 'Grand espace']];
+  var TYPES = [['ech', 'Échauffement'], ['gb', 'Gardien·ne de but'], ['tr', 'Travail'], ['fj', 'Sous forme jouée'], ['po', 'Spécifique au poste'], ['dv', 'Divers']];
+  var FORMES = ['0-6 de zone', '0-6 homme à homme', '1-5 de zone', '1-5 homme à homme', '2-4 de zone', '3-2-1 de zone', '3-3 homme à homme'];
+  var STATUTS = [['brouillon', 'Brouillon'], ['encours', 'En cours'], ['pret', 'Prêt'], ['termine', 'Terminé']];
+  function lib(l, c) { for (var i = 0; i < l.length; i++) if (l[i][0] === c) return l[i][1]; return c; }
+  // Communauté et comité, repris de l'étude « Organiser la Communauté », avec le premier schéma de chaque séance.
+  var S = [
+    { id: 'C1', t: 'Jouer vite après la récupération', a: COMITE, cat: 'U13', niv: 'Intermédiaire', ph: ['ge'], st: 'termine', obj: 'Récupérer le ballon et attaquer avant le repli adverse.', n: 4, du: '1h30', d: '28 sept.', vues: 64, img: '01' },
+    { id: 'C2', t: 'Défense étagée : monter sur le porteur', a: COMITE, cat: 'U13', niv: 'Intermédiaire', ph: ['dp'], st: 'termine', obj: 'Monter sur le porteur sans se faire déborder.', n: 4, du: '1h30', d: '21 sept.', vues: 51, fo: ['3-2-1 de zone'], img: '09' },
+    { id: 'C4', t: 'Fixer le défenseur, libérer l’ailier', a: COMITE, cat: 'U13', niv: 'Intermédiaire', ph: ['ap'], st: 'termine', obj: 'Attaquer l’intervalle pour créer le surnombre à l’aile.', n: 4, du: '1h30', d: '5 oct.', vues: 42, img: '12' },
+    { id: 'K3', t: 'Fixer pour décaler à trois arrières', a: 'Eden M.', cat: 'U13', niv: 'Intermédiaire', ph: ['ap'], st: 'pret', obj: 'Attirer deux défenseurs pour libérer l’ailier.', n: 4, du: '1h30', d: '9 oct.', vues: 38, img: '14' },
+    { id: 'K4', t: 'Revenir vite, défendre en 0-6', a: 'Dominique P.', cat: 'U15', niv: 'Intermédiaire', ph: ['tt', 'dp'], st: 'termine', obj: 'Être en place avant la première passe adverse.', n: 3, du: '1h30', d: '24 sept.', vues: 29, fo: ['0-6 de zone'], img: '16' },
+    { id: 'C5', t: 'Du repli à la défense placée', a: COMITE, cat: 'U15', niv: 'Confirmé', ph: ['tt'], st: 'termine', obj: 'Revenir vite et s’organiser avant la première passe.', n: 4, du: '1h30', d: '30 sept.', vues: 26, img: '06' },
+    { id: 'K1', t: 'Montée de balle et contre-attaque', a: 'Alex D.', cat: 'U13', niv: 'Intermédiaire', ph: ['ge'], st: 'pret', obj: 'Transformer chaque récupération en attaque rapide.', n: 4, du: '1h30', d: '3 oct.', vues: 23, img: '02' },
+    { id: 'K2', t: 'Défendre ensemble', a: 'Lou B.', cat: 'U15', niv: 'Intermédiaire', ph: ['dp'], st: 'pret', obj: 'Aider son partenaire et récupérer le ballon.', n: 4, du: '1h15', d: '1er oct.', vues: 17, img: '10' },
+    { id: 'K6', t: 'Attaquer une défense 1-5', a: 'Eden M.', cat: 'U15', niv: 'Confirmé', ph: ['ap'], st: 'pret', obj: 'Jouer dans le dos du défenseur avancé.', n: 5, du: '1h30', d: '5 oct.', vues: 14, fo: ['1-5 de zone'], img: '13' },
+    { id: 'K5', t: 'Tirs à neuf mètres', a: 'Sacha L.', cat: 'U13', niv: '', ph: ['ap'], st: 'termine', obj: 'Varier les tirs de loin.', n: 3, du: '1h15', d: '17 sept.', vues: 11, img: '04' },
+    { id: 'C3', t: 'Défense 3-3 homme à homme', a: COMITE, cat: 'U11', niv: 'Débutant', ph: ['dp'], st: 'termine', obj: 'Suivre son joueur et gêner la passe.', n: 4, du: '1h15', d: '14 sept.', vues: 33, fo: ['3-3 homme à homme'], img: '11' },
+    { id: 'K7', t: 'Premiers duels, premiers tirs', a: 'Noa V.', cat: 'U9', niv: 'Débutant', ph: ['ap'], st: 'termine', obj: 'Oser tirer face au gardien.', n: 3, du: '1h', d: '2 oct.', vues: 12, img: '03' },
+    { id: 'K8', t: 'Le ballon voyageur', a: 'Noa V.', cat: 'U5', niv: 'Débutant', ph: ['ge'], st: 'termine', obj: 'Faire voyager le ballon d’un camp à l’autre.', n: 3, du: '45 min', d: '27 sept.', vues: 7, img: '08' },
+    { id: 'K9', t: 'Monter la balle en trois passes', a: 'Camille R.', cat: 'Seniors', niv: 'Intermédiaire', ph: ['tt'], st: 'pret', obj: 'Passer de la montée de balle à l’attaque placée.', n: 4, du: '1h30', d: '7 oct.', vues: 21, img: '05' },
+    { id: 'K10', t: 'Séance du mardi', a: 'Sacha L.', cat: 'U13', niv: '', ph: [], st: 'pret', obj: 'Tirs et petits matchs.', n: 3, du: '1h', d: '8 oct.', vues: 5, img: '07' }
+  ];
+  var MES = [
+    { id: 'M1', t: 'Défense étagée, semaine 6', a: MOI, cat: 'U13', niv: 'Intermédiaire', ph: ['dp'], st: 'pret', obj: 'Monter sur le porteur sans se faire déborder.', n: 4, du: '1h30', d: '14 oct.', fo: ['3-2-1 de zone'], img: '13' },
+    { id: 'M2', t: 'Contre-attaque, semaine 5', a: MOI, cat: 'U13', niv: 'Intermédiaire', ph: ['ge'], st: 'encours', obj: 'Sortir vite de sa zone après la récupération.', n: 2, du: '1h30', d: '10 oct.', img: '05' },
+    { id: 'M3', t: 'Gardiens et tirs à neuf mètres', a: MOI, cat: 'U13', niv: '', ph: [], st: 'pret', obj: 'Varier les tirs face au gardien.', n: 3, du: '1h15', d: '7 oct.', img: '04' },
+    { id: 'M4', t: 'Séance du 2 octobre', a: MOI, cat: 'U13', niv: '', ph: [], st: 'brouillon', obj: '', n: 0, du: '—', d: '2 oct.', img: null },
+    { id: 'M5', t: 'Fixer l’intervalle, semaine 4', a: MOI, cat: 'U13', niv: 'Intermédiaire', ph: ['ap'], st: 'pret', obj: 'Attaquer l’intervalle pour faire sortir l’arrière.', n: 4, du: '1h30', d: '30 sept.', img: '12' },
+    { id: 'M6', t: 'Monter la balle à trois', a: MOI, cat: 'U13', niv: 'Intermédiaire', ph: ['tt'], st: 'encours', obj: 'Remonter le terrain en trois passes au plus.', n: 3, du: '1h30', d: '26 sept.', img: '02' },
+    { id: 'M7', t: 'Défense 3-3 en U11', a: MOI, cat: 'U11', niv: 'Débutant', ph: ['dp'], st: 'termine', obj: 'Suivre son joueur et gêner la passe.', n: 4, du: '1h', d: '23 sept.', fo: ['3-3 homme à homme'], img: '09' },
+    { id: 'M8', t: 'Reprise : jeux de passes', a: MOI, cat: 'U13', niv: 'Débutant', ph: ['ge'], st: 'termine', obj: 'Retrouver le ballon après l’été.', n: 4, du: '1h15', d: '16 sept.', img: '01' },
+    { id: 'M9', t: 'Tournoi interne de rentrée', a: MOI, cat: 'U13', niv: '', ph: [], st: 'termine', obj: 'Jouer, et observer les nouveaux.', n: 3, du: '1h30', d: '9 sept.', img: '08' }
+  ];
+  var GROUPES = [
+    { id: 'g1', nom: 'U13 du club', membres: 4, s: [
+      { id: 'G1', t: 'Montée de balle à deux contre un', a: 'Alex D.', cat: 'U13', niv: 'Intermédiaire', ph: ['ge'], st: 'pret', obj: 'Fixer le dernier défenseur et donner au bon moment.', n: 4, du: '1h30', d: '13 oct.', img: '05' },
+      { id: 'G2', t: 'Défense étagée, semaine 6', a: MOI, cat: 'U13', niv: 'Intermédiaire', ph: ['dp'], st: 'pret', obj: 'Monter sur le porteur sans se faire déborder.', n: 4, du: '1h30', d: '14 oct.', fo: ['3-2-1 de zone'], img: '13' },
+      { id: 'G3', t: 'Tirs en appui, ailiers', a: 'Lou B.', cat: 'U13', niv: 'Intermédiaire', ph: ['ap'], st: 'encours', obj: 'Ouvrir l’angle avant de tirer.', n: 2, du: '1h15', d: '11 oct.', img: '12' },
+      { id: 'G4', t: 'Gardiens : relance longue', a: 'Alex D.', cat: 'U13', niv: '', ph: [], st: 'pret', obj: 'Relancer vite sur l’ailier qui sort.', n: 3, du: '1h', d: '6 oct.', img: '03' },
+      { id: 'G5', t: 'Match à thème : interceptions', a: 'Sam R.', cat: 'U13', niv: 'Débutant', ph: ['dp'], st: 'termine', obj: 'Lire la passe et sortir au bon moment.', n: 4, du: '1h15', d: '29 sept.', img: '15' }
+    ] },
+    { id: 'g2', nom: 'Staff féminines', membres: 3, s: [
+      { id: 'H1', t: 'Défense 0-6, glissements', a: 'Lou B.', cat: 'U15', niv: 'Intermédiaire', ph: ['dp'], st: 'pret', obj: 'Glisser ensemble sans ouvrir d’intervalle.', n: 4, du: '1h30', d: '12 oct.', fo: ['0-6 de zone'], img: '16' },
+      { id: 'H2', t: 'Contre-attaque rapide', a: MOI, cat: 'U15', niv: 'Intermédiaire', ph: ['ge'], st: 'encours', obj: 'Courir avant la passe du gardien.', n: 3, du: '1h30', d: '8 oct.', img: '07' }
+    ] },
+    { id: 'g3', nom: 'Formation animateurs', membres: 9, s: [
+      { id: 'F1', t: 'Animer un échauffement ludique', a: 'Dominique P.', cat: 'U9', niv: 'Débutant', ph: ['ge'], st: 'termine', obj: 'Mettre tout le monde en mouvement en deux minutes.', n: 3, du: '1h', d: '3 oct.', img: '10' },
+      { id: 'F2', t: 'Premiers duels, premiers tirs', a: 'Noa V.', cat: 'U9', niv: 'Débutant', ph: ['ap'], st: 'termine', obj: 'Oser tirer face au gardien.', n: 3, du: '1h', d: '2 oct.', img: '04' },
+      { id: 'F3', t: 'Le ballon voyageur', a: 'Noa V.', cat: 'U7', niv: 'Débutant', ph: ['ge'], st: 'pret', obj: 'Faire voyager le ballon d’un camp à l’autre.', n: 3, du: '45 min', d: '27 sept.', img: '06' }
+    ] }
+  ];
+  var SITS = [
+    { img: '01', ty: 'ech', s: 'C1', t: 'Relais de passes en mouvement', rep: 31 },
+    { img: '09', ty: 'ech', s: 'C2', t: 'Déplacements défensifs en miroir', rep: 16 },
+    { img: '02', ty: 'ech', s: 'K1', t: 'Montée de balle à trois, aller et retour', rep: 14 },
+    { img: '10', ty: 'ech', s: 'K2', t: 'La balle au capitaine', rep: 8 },
+    { img: '03', ty: 'gb', s: 'C1', t: 'Duel tireur-gardien après une relance longue', rep: 22 },
+    { img: '11', ty: 'gb', s: 'C2', t: 'Sortie sur le tireur', rep: 21 },
+    { img: '04', ty: 'gb', s: 'K1', t: 'Tir en course face au gardien', rep: 9 },
+    { img: '12', ty: 'gb', s: 'K2', t: 'Un contre un dans un couloir', rep: 6 },
+    { img: '05', ty: 'tr', s: 'C1', t: '2 contre 1 sur grand espace', rep: 27 },
+    { img: '13', ty: 'tr', s: 'C2', t: 'Défense étagée sur trois arrières', rep: 24 },
+    { img: '06', ty: 'tr', s: 'K1', t: '3 contre 2 avec un repli tardif', rep: 7 },
+    { img: '14', ty: 'tr', s: 'K2', t: '2 contre 2 avec un pivot', rep: 4 },
+    { img: '07', ty: 'fj', s: 'C1', t: 'Match à thème : le but en contre compte double', rep: 19 },
+    { img: '15', ty: 'fj', s: 'C2', t: 'Match à thème : une interception vaut un but', rep: 13 },
+    { img: '08', ty: 'fj', s: 'K1', t: 'Match à 4 contre 4, relance obligatoire du gardien', rep: 5 },
+    { img: '16', ty: 'fj', s: 'K2', t: '6 contre 6, défense 0-6 imposée', rep: 3 },
+    { img: '00', ty: 'po', s: 'K3', t: 'Ailiers : tir en extension', rep: 2 },
+    { img: '00', ty: 'dv', s: 'K8', t: 'Parcours de motricité avec ballon', rep: 1 }
+  ];
+  function seance(id) { for (var i = 0; i < S.length; i++) if (S[i].id === id) return S[i]; }
+  function groupe(id) { for (var i = 0; i < GROUPES.length; i++) if (GROUPES[i].id === id) return GROUPES[i]; }
+  function estComite(a) { return a === COMITE; }
+  function decouvrir(d) { return d === 'comite' || d === 'communaute'; }
+  function source(d) {
+    if (d === 'mes') return MES;
+    if (d === 'groupes') return e.sansGroupe ? [] : groupe(e.groupe).s;
+    if (d === 'comite') return S.filter(function (s) { return estComite(s.a); });
+    return S;
+  }
+  function correspond(s, f) {
+    if (f.cats.length && f.cats.indexOf(s.cat) < 0) return false;
+    if (f.nivs.length && s.niv && f.nivs.indexOf(s.niv) < 0) return false;
+    if (f.fo.length && !(s.fo || []).some(function (x) { return f.fo.indexOf(x) >= 0; })) return false;
+    if (f.st && f.st.indexOf(s.st) < 0) return false;
+    if (f.ph && s.ph.indexOf(f.ph) < 0) return false;
+    if (f.texte && sansAccent(s.t + ' ' + s.obj + ' ' + s.a).indexOf(sansAccent(f.texte)) < 0) return false;
+    return true;
+  }
+  function seancesDe(d, f) { return source(d).filter(function (s) { return correspond(s, f); }); }
+  function sitsDe(d, f, ty) {
+    return SITS.filter(function (x) { var s = seance(x.s); return x.ty === ty && (d !== 'comite' || estComite(s.a)) && correspond(s, f); }).sort(function (a, b) { return b.rep - a.rep; });
+  }
+  function pluriel(n, mot) { return n + ' ' + mot + (n > 1 ? 's' : ''); }
+  function initiales(a) { return a.split(' ').map(function (m) { return m.charAt(0); }).join('').replace('.', '').slice(0, 2).toUpperCase(); }
+  function copie(f) { return { cats: f.cats.slice(), nivs: f.nivs.slice(), fo: f.fo.slice(), st: f.st ? f.st.slice() : null, texte: f.texte, ph: f.ph }; }
+  // Niveaux : une plage contiguë sur la réglette ; les trois valent « tous ».
+  function basculeNiveau(l, n) {
+    var i = NIVEAUX.indexOf(n), idx = l.map(function (x) { return NIVEAUX.indexOf(x); }).sort();
+    if (!idx.length) return [n];
+    var min = idx[0], max = idx[idx.length - 1];
+    if (i < min) min = i; else if (i > max) max = i;
+    else if (min === max) return [];
+    else if (i === min) min++; else if (i === max) max--;
+    else { min = i; max = i; }
+    var r = NIVEAUX.slice(min, max + 1);
+    return r.length === 3 ? [] : r;
+  }
+  function niveauxTexte(l) {
+    if (!l.length) return 'Tous niveaux';
+    if (l.length === 1) return l[0];
+    return l[0] + ' à ' + l[l.length - 1].toLowerCase();
+  }
+  function reglette(l, action, avecTous) {
+    var idx = l.map(function (x) { return NIVEAUX.indexOf(x); }), min = Math.min.apply(null, idx), max = Math.max.apply(null, idx);
+    var rempli = l.length > 1 ? '<span class="rempli" style="left:' + (16.6 + 33.4 * min) + '%;width:' + (33.4 * (max - min)) + '%"></span>' : '';
+    return '<div class="reglette">' + (avecTous ? '<button type="button" class="tous" data-a="' + action + '" data-v="" aria-pressed="' + !l.length + '">Tous</button>' : '') +
+      '<div class="piste">' + rempli + NIVEAUX.map(function (n) { return '<button type="button" data-a="' + action + '" data-v="' + n + '" aria-pressed="' + (l.indexOf(n) >= 0) + '"><i></i>' + n + '</button>'; }).join('') + '</div></div>';
+  }
+
+  /* ---------- état ---------- */
+  var DESTS = [['mes', 'plaquette', 'Mes séances'], ['groupes', 'staff', 'Groupes'], ['comite', null, 'Comité'], ['communaute', 'ronde', 'Communauté']];
+  var DEFAUT_ST = { mes: ['brouillon', 'encours', 'pret', 'termine'], groupes: ['brouillon', 'encours', 'pret', 'termine'], comite: null, communaute: ['pret', 'termine'] };
+  var PUCES = { mes: ['st', 'cat', 'ph', 'niv', 'fo'], groupes: ['st', 'cat', 'ph', 'niv', 'fo'], comite: ['cat', 'niv', 'fo'], communaute: ['cat', 'niv', 'fo', 'st'] };
+  var NOMS_F = { st: 'Statut', cat: 'Catégories', ph: 'Phase', niv: 'Niveaux', fo: 'Formes de jeu' };
+  var ICONES_F = { st: 'liste', cat: 'dossier', niv: 'niveau', fo: 'forme' };
+  var e = null, joue = null, joueNav = null;
+  function filtreDepart(d, prefs) {
+    var avec = decouvrir(d);
+    return { cats: avec ? prefs.cats.slice() : [], nivs: avec ? prefs.nivs.slice() : [], fo: [], st: DEFAUT_ST[d] ? DEFAUT_ST[d].slice() : null, texte: '', ph: null };
+  }
+  function format() { return document.getElementById('zone').dataset.format; }
+  function init(garde) {
+    var prefs = { cats: ['U13', 'U15'], nivs: ['Intermédiaire'] };
+    e = { dest: 'mes', groupe: 'g1', prefs: prefs, f: {}, vue: format() === 'telephone' ? 'lignes' : 'cartes', ty: 'ech', couche: null, recherche: false, copiees: [], bulle: null,
+      sansGroupe: garde ? garde.sansGroupe : false, explications: garde ? garde.explications : true };
+    DESTS.forEach(function (x) { e.f[x[0]] = filtreDepart(x[0], prefs); });
+  }
+
+  /* ---------- morceaux ---------- */
+  function repere(n, cls) { return e.explications && !e.couche ? '<span class="repere' + (cls ? ' ' + cls : '') + '" aria-hidden="true">' + n + '</span>' : ''; }
+  function navs() {
+    return DESTS.map(function (x) {
+      var actif = e.dest === x[0];
+      var icone = x[1] ? picto(x[1], actif && joueNav === x[0]) : logoComite();
+      return '<button type="button" class="dest" data-a="dest" data-v="' + x[0] + '"' + (actif ? ' aria-current="page"' : '') + '><span class="pil">' + icone + '</span><span class="lib">' + x[2] + '</span></button>';
+    }).join('');
+  }
+  function titre() {
+    var d = e.dest;
+    if (d === 'mes') return '<h2 class="titre-app">Mes séances</h2>';
+    if (d === 'communaute') return '<h2 class="titre-app">Communauté</h2>';
+    if (d === 'comite') return '<h2 class="titre-app">' + logoComite() + '<span class="sr">' + COMITE + '</span></h2>';
+    if (e.sansGroupe) return '<h2 class="titre-app">Groupes</h2>';
+    return '<h2 class="titre-app"><button type="button" class="selecteur" data-a="selecteur" aria-haspopup="dialog">' + picto('staff') + '<span>' + esc(groupe(e.groupe).nom) + '</span>' + ic(I.chevron) + '</button>' + repere(5, 'en-ligne') + '</h2>';
+  }
+  function puceTexte(k, f) {
+    if (k === 'st') {
+      var def = DEFAUT_ST[e.dest], actif = f.st.join() !== def.join();
+      return [actif, actif ? (f.st.length <= 2 ? f.st.map(function (x) { return lib(STATUTS, x); }).join(', ') : pluriel(f.st.length, 'statut')) : 'Statut'];
+    }
+    if (k === 'cat') {
+      var c = f.cats.map(function (x) { return lib(CATS, x).replace(/ \(.*\)/, ''); });
+      return [c.length > 0, !c.length ? 'Catégories' : c.length > 2 ? c[0] + ' +' + (c.length - 1) : c.join(', ')];
+    }
+    if (k === 'ph') return [!!f.ph, f.ph ? lib(PHASES, f.ph) : 'Phase'];
+    if (k === 'niv') return [f.nivs.length > 0, f.nivs.length ? niveauxTexte(f.nivs) : 'Niveaux'];
+    return [f.fo.length > 0, !f.fo.length ? 'Formes de jeu' : f.fo.length === 1 ? f.fo[0] : pluriel(f.fo.length, 'forme')];
+  }
+  function puces() {
+    var f = e.f[e.dest], liste = PUCES[e.dest], n = 0;
+    var corps = liste.map(function (k) {
+      var t = puceTexte(k, f); if (t[0]) n++;
+      var icone = k === 'ph' && f.ph ? picto(f.ph) : k === 'ph' ? '' : ic(I[ICONES_F[k]]);
+      return '<button type="button" class="pf" data-a="facette" data-v="' + k + '" data-actif="' + t[0] + '">' + icone + esc(t[1]) + ic(I.chevron).replace('class="ic"', 'class="ic chev"') + '</button>';
+    }).join('');
+    if (f.texte) n++;
+    return '<div class="puces-f" role="group" aria-label="Filtres"><button type="button" class="pf" data-a="filtres" data-actif="' + (n > 0) + '">' + ic(I.reglages) + 'Filtres' + (n ? '<span class="compte">' + n + '</span>' : '') + '</button>' + corps + '</div>';
+  }
+  function entete() {
+    var f = e.f[e.dest], sans = e.dest === 'groupes' && e.sansGroupe;
+    var place = { mes: 'Chercher dans mes séances', groupes: 'Chercher dans le groupe', comite: 'Chercher dans le comité', communaute: 'Chercher dans la Communauté' }[e.dest];
+    return '<header class="entete-app">' +
+      '<div class="barre-haut' + (e.recherche ? ' cherche' : '') + '">' + titre() +
+        (sans ? '' : '<label class="champ-app">' + ic(I.loupe) + '<input id="champ-app" type="search" placeholder="' + place + '" value="' + esc(f.texte) + '" autocomplete="off"></label>' +
+        '<button type="button" class="btn-rond loupe" data-a="loupe" aria-label="Rechercher">' + ic(I.loupe) + '</button><button type="button" class="annuler" data-a="annuler">Annuler</button>') +
+        '<span class="avatar-z"><button type="button" class="avatar" data-a="moi" aria-label="Mon compte">CD</button>' + repere(2) + '</span>' +
+      '</div>' + (sans ? '' : puces() + repere(3, 'r3')) + '</header>';
+  }
+  function vignette(img, ph) {
+    if (img) return '<img class="vig" src="schemas/' + img + '.webp" alt="" width="640" height="400" loading="lazy">';
+    return '<span class="vig sans">' + picto(ph || 'plaquette') + '</span>';
+  }
+  function aClasser(s) { return e.dest === 'mes' && s.st !== 'brouillon' && (!s.niv || !s.ph.length); }
+  function auteur(s) {
+    var c = estComite(s.a);
+    return '<span class="auteur' + (c ? ' comite' : '') + '"><i>' + (c ? 'CG' : initiales(s.a)) + '</i><span>' + esc(s.a) + '</span></span>';
+  }
+  function ligne(s) {
+    var meta = '<span class="l-st">' + lib(STATUTS, s.st) + '</span><span class="l-cat">' + lib(CATS, s.cat).replace(/ \(.*\)/, '') + '</span>' +
+      s.ph.map(function (p) { return '<span>' + picto(p) + lib(PHASES, p) + '</span>'; }).join('') +
+      (aClasser(s) ? '<span class="l-classer">À classer</span>' : '') +
+      (e.dest !== 'mes' ? '<span>' + esc(s.a) + '</span>' : '') + '<span>' + s.d + '</span>';
+    return '<li><button type="button" class="ligne ' + s.st + '" data-a="ouvrir">' + vignette(s.img, s.ph[0]) +
+      '<span class="l-corps"><span class="l-titre">' + esc(s.t) + '</span><span class="l-obj">' + esc(s.obj || 'Objectif non spécifié') + '</span><span class="l-meta">' + meta + '</span></span></button></li>';
+  }
+  function carte(s) {
+    var mots = (s.niv ? '<span>' + s.niv + '</span>' : '<span class="manque">Niveau non précisé</span>') +
+      s.ph.map(function (p) { return '<span>' + picto(p) + lib(PHASES, p) + '</span>'; }).join('');
+    return '<article class="carte ' + s.st + '"><div class="c-corps">' +
+      '<div class="c-haut"><span class="c-statut">' + lib(STATUTS, s.st) + '</span><span class="c-trait"></span><span class="c-cat">' + lib(CATS, s.cat) + '</span></div>' +
+      '<h4>' + esc(s.t) + '</h4><p class="c-obj">' + esc(s.obj || 'Objectif non spécifié') + '</p><div class="c-mots">' + mots + '</div></div>' +
+      '<div class="c-rail"><div class="c-metas"><span><small>Situations</small><b>' + s.n + '</b></span><span><small>Durée</small><b>' + s.du + '</b></span><span><small>Date</small><b>' + s.d + '</b></span></div>' +
+      '<div class="c-pied">' + auteur(s) + '<button type="button" class="btn-sombre" data-a="ouvrir">Ouvrir</button></div></div></article>';
+  }
+  function une(s) {
+    return '<button type="button" class="une ' + s.st + '" data-a="ouvrir">' + vignette(s.img, s.ph[0]) + '<span class="u-corps">' +
+      '<span class="u-haut"><span class="c-statut">' + lib(STATUTS, s.st) + '</span><span class="c-cat">' + lib(CATS, s.cat) + '</span></span>' +
+      '<span class="u-titre">' + esc(s.t) + '</span><span class="u-pied">' + auteur(s) + '<small>' + s.vues + ' ouvertures</small></span></span></button>';
+  }
+  function carteSit(x) {
+    var s = seance(x.s), c = e.copiees.indexOf(x.t) >= 0;
+    return '<article class="sit">' + vignette(x.img) +
+      '<div class="s-corps"><b>' + esc(x.t) + '</b><span class="s-de' + (estComite(s.a) ? ' comite' : '') + '">' + esc(s.a) + '</span></div>' +
+      '<button type="button" class="btn-contour" data-a="copier" data-v="' + esc(x.t) + '" aria-pressed="' + c + '">' + (c ? 'Copiée' : 'Copier') + '</button></article>';
+  }
+
+  /* ---------- pages ---------- */
+  function page() {
+    var d = e.dest, f = e.f[d], o = '';
+    if (d === 'groupes' && e.sansGroupe) {
+      return '<div class="sans-groupe">' + picto('staff', true) + '<h3>Préparer à plusieurs</h3><p>Un groupe réunit les entraîneurs d’un club ou d’une catégorie. Chacun y partage ses séances, et tous les retrouvent ici.</p>' +
+        '<div class="actions"><button type="button" class="btn-orange" data-a="creerGroupe">' + ic(I.plus) + 'Créer un groupe</button><button type="button" class="btn-contour" data-a="rejoindre">J’ai reçu une invitation</button></div></div>';
+    }
+    if (d === 'comite') o += '<p class="description">Les séances proposées par le comité, pour tous les clubs du département.</p>';
+    if (decouvrir(d)) {
+      o += '<div class="phases" role="group" aria-label="Phases de jeu">' + PHASES.map(function (p) {
+        var g = copie(f); g.ph = p[0];
+        return '<button type="button" class="phase" data-a="ph" data-v="' + p[0] + '" aria-pressed="' + (f.ph === p[0]) + '">' + picto(p[0], joue === p[0]) + '<span class="nom">' + p[1] + '</span><span class="nb">' + pluriel(seancesDe(d, g).length, 'séance') + '</span></button>';
+      }).join('') + repere(5) + '</div>';
+    }
+    var liste = seancesDe(d, f), cible = (decouvrir(d) && f.ph) || f.texte;
+    var titreListe = decouvrir(d) && f.ph ? lib(PHASES, f.ph) : f.texte ? '« ' + esc(f.texte) + ' »' : { mes: 'Toutes mes séances', groupes: 'Séances du groupe', comite: 'Toutes les séances', communaute: 'Toutes les séances' }[d];
+    var bascule = '<span class="vue-tg" role="group" aria-label="Affichage"><button type="button" data-a="vue" data-v="lignes" aria-pressed="' + (e.vue === 'lignes') + '" aria-label="Lignes">' + ic(I.lignes) + '</button><button type="button" data-a="vue" data-v="cartes" aria-pressed="' + (e.vue === 'cartes') + '" aria-label="Cartes">' + ic(I.grille) + '</button></span>';
+    var blocListe = '<div class="r-tete"><h3>' + titreListe + '</h3><small>' + pluriel(liste.length, 'séance') + '</small>' +
+      (cible ? '<button type="button" class="lien" data-a="retirer">Retirer</button>' : '') + '<span class="droite"><span class="vue-z">' + bascule + repere(4) + '</span></span></div>' +
+      (!liste.length ? '<p class="vide">Rien ne correspond. Retirez un filtre, ou cherchez dans la Communauté.</p>' :
+        e.vue === 'lignes' ? '<ul class="lignes">' + liste.map(ligne).join('') + '</ul>' : '<div class="cartes">' + liste.map(carte).join('') + '</div>');
+    if (!decouvrir(d)) return o + blocListe;
+    var blocUne = '', blocSits = '';
+    if (!cible) {
+      var sansPh = copie(f); sansPh.ph = null;
+      var lesUnes = seancesDe(d, sansPh).filter(function (s) { return s.ph.length; }).sort(function (a, b) { return b.vues - a.vues; }).slice(0, 3);
+      blocUne = '<div class="r-tete"><h3>À la une</h3><small>les plus ouvertes ce mois-ci</small></div>' +
+        (lesUnes.length ? '<div class="rail-une">' + lesUnes.map(une).join('') + '</div>' : '<p class="vide">Rien encore pour ces filtres.</p>');
+    }
+    var counts = TYPES.map(function (t) { return sitsDe(d, f, t[0]).length; });
+    if (!counts[TYPES.map(function (t) { return t[0]; }).indexOf(e.ty)]) { var k = counts.findIndex(function (n) { return n > 0; }); if (k >= 0) e.ty = TYPES[k][0]; }
+    var sits = sitsDe(d, f, e.ty);
+    blocSits = '<div class="r-tete"><h3>Piocher une situation</h3></div><div class="puces" role="group" aria-label="Types de situation">' +
+      TYPES.map(function (t, i) { return '<button type="button" class="puce" data-a="ty" data-v="' + t[0] + '" aria-pressed="' + (e.ty === t[0]) + '">' + t[1] + ' <small>' + counts[i] + '</small></button>'; }).join('') + '</div>' +
+      (sits.length ? '<div class="sits">' + sits.map(carteSit).join('') + '</div>' : '<p class="vide">Aucune situation de ce type pour ces filtres.</p>');
+    return o + (cible ? blocListe + blocSits : blocUne + blocSits + blocListe);
+  }
+
+  /* ---------- couches ---------- */
+  function sectionFacette(k, b) {
+    var d = e.dest;
+    if (k === 'cat') return '<div class="grille-cat">' + CATS.map(function (c) { return '<button type="button" class="puce" data-a="bcat" data-v="' + c[0] + '" aria-pressed="' + (b.cats.indexOf(c[0]) >= 0) + '">' + c[1].replace(' (', '<br>(') + '</button>'; }).join('') + '</div>';
+    if (k === 'niv') return reglette(b.nivs, 'bniv', true);
+    if (k === 'ph') return '<div class="options">' + PHASES.map(function (p) { return '<button type="button" class="puce" data-a="bph" data-v="' + p[0] + '" aria-pressed="' + (b.ph === p[0]) + '">' + picto(p[0]) + p[1] + '</button>'; }).join('') + '</div>';
+    if (k === 'fo') return '<div class="options">' + FORMES.map(function (x) { return '<button type="button" class="puce" data-a="bfo" data-v="' + x + '" aria-pressed="' + (b.fo.indexOf(x) >= 0) + '">' + x + '</button>'; }).join('') + '</div>';
+    return '<div class="options">' + STATUTS.filter(function (s) { return d !== 'communaute' || s[0] === 'pret' || s[0] === 'termine'; }).map(function (s) { return '<button type="button" class="puce" data-a="bst" data-v="' + s[0] + '" aria-pressed="' + (b.st.indexOf(s[0]) >= 0) + '">' + s[1] + '</button>'; }).join('') + '</div>';
+  }
+  function caseProfil(b) { return '<button type="button" class="case" data-a="bmemo" aria-pressed="' + !!b.memo + '"><i>' + ic(I.coche) + '</i>Enregistrer catégories et niveaux dans mes équipes</button>'; }
+  function piedVoir(b) {
+    var n = seancesDe(e.dest, b).length;
+    return '<div class="p-pied"><button type="button" class="btn-contour" data-a="effacer">Effacer</button><button type="button" class="btn-orange" data-a="appliquer" id="voir">Voir ' + pluriel(n, 'séance') + '</button></div>';
+  }
+  function coucheFacette() {
+    var c = e.couche, b = c.b, k = c.k, prefs = decouvrir(e.dest) && (k === 'cat' || k === 'niv');
+    return '<div class="voile" data-a="fond"><div class="feuille" role="dialog" aria-modal="true" aria-label="' + NOMS_F[k] + '"><span class="poignee"></span>' +
+      '<div class="p-tete"><h4>' + NOMS_F[k] + (prefs ? '<small>D’après vos équipes, dans le profil</small>' : '') + '</h4><button type="button" data-a="fermer" aria-label="Fermer">' + ic(I.croix) + '</button></div>' +
+      '<div class="p-corps">' + sectionFacette(k, b) + (prefs ? caseProfil(b) : '') + '</div>' + piedVoir(b) + '</div></div>';
+  }
+  function coucheFiltres() {
+    var b = e.couche.b, d = e.dest;
+    return '<div class="voile" data-a="fond"><div class="feuille" role="dialog" aria-modal="true" aria-label="Filtres"><span class="poignee"></span>' +
+      '<div class="p-tete"><h4>Filtres</h4><button type="button" data-a="fermer" aria-label="Fermer">' + ic(I.croix) + '</button></div><div class="p-corps">' +
+      '<label class="champ-texte">' + ic(I.loupe) + '<input id="f-texte" type="search" placeholder="Rechercher une séance…" value="' + esc(b.texte) + '" autocomplete="off"></label>' +
+      PUCES[d].map(function (k) { return '<div class="p-sec"><span>' + NOMS_F[k] + '</span>' + sectionFacette(k, b) + '</div>'; }).join('') +
+      (decouvrir(d) ? caseProfil(b) : '') + '</div>' + piedVoir(b) + '</div></div>';
+  }
+  function coucheGroupes() {
+    return '<div class="voile" data-a="fond"><div class="feuille" role="dialog" aria-modal="true" aria-label="Mes groupes"><span class="poignee"></span>' +
+      '<div class="p-tete"><h4>Mes groupes</h4><button type="button" data-a="fermer" aria-label="Fermer">' + ic(I.croix) + '</button></div>' +
+      '<ul class="groupes-l">' + GROUPES.map(function (x) {
+        return '<li><button type="button" data-a="choisirGroupe" data-v="' + x.id + '" aria-pressed="' + (x.id === e.groupe) + '">' + picto('staff') + '<span><b>' + esc(x.nom) + '</b><small>' + pluriel(x.membres, 'membre') + ' · ' + pluriel(x.s.length, 'séance') + '</small></span>' + ic(I.coche) + '</button></li>';
+      }).join('') + '</ul>' +
+      '<div class="p-pied"><button type="button" class="btn-contour" data-a="gererGroupe">' + ic(I.reglage) + 'Gérer ce groupe</button><button type="button" class="btn-contour" data-a="creerGroupe">' + ic(I.plus) + 'Créer un groupe</button></div></div></div>';
+  }
+  function coucheMoi() {
+    var p = e.couche.profil, t = themeActuel();
+    var lien = function (v, icone, texte, etiquette) { return '<li><button type="button" data-a="lien" data-v="' + v + '">' + ic(I[icone]) + texte + (etiquette ? '<small>' + etiquette + '</small>' : '') + '</button></li>'; };
+    return '<div class="voile menu" data-a="fond"><div class="feuille" role="dialog" aria-modal="true" aria-label="Mon compte"><span class="poignee"></span><div class="moi-p">' +
+      '<div class="moi-ident"><i>CD</i><div><b>' + MOI + '</b><small>Entraîneur, U13 et U15</small></div><button type="button" class="fermer-moi" data-a="fermer" aria-label="Fermer">' + ic(I.croix) + '</button></div>' +
+      '<div class="moi-equipes"><h5>Mes équipes</h5><p>Le comité et la Communauté s’ouvrent sur ces choix.</p>' +
+        '<div class="grille-cat">' + CATS.map(function (c) { return '<button type="button" class="puce" data-a="pcat" data-v="' + c[0] + '" aria-pressed="' + (p.cats.indexOf(c[0]) >= 0) + '">' + lib(CATS, c[0]).replace(/ \(.*\)/, '') + '</button>'; }).join('') + '</div>' +
+        reglette(p.nivs, 'pniv', true) + '<button type="button" class="btn-orange" data-a="penregistrer">Enregistrer</button></div>' +
+      '<ul class="moi-liens">' + lien('profil', 'personne', 'Mon profil') + lien('groupes', 'membres', 'Gérer mes groupes') + lien('importer', 'importer', 'Importer un entraînement', 'si activé') + lien('admin', 'bouclier', 'Administration', 'admins') +
+        '<li class="sep-l" aria-hidden="true"></li><li><div>' + ic(I.lune) + 'Thème<span class="seg" role="group" aria-label="Thème"><button type="button" data-a="theme" data-v="light" aria-pressed="' + (t === 'light') + '">Jour</button><button type="button" data-a="theme" data-v="dark" aria-pressed="' + (t === 'dark') + '">Nuit</button></span></div></li>' +
+        lien('deconnexion', 'sortie', 'Se déconnecter') + '</ul></div></div></div>';
+  }
+
+  /* ---------- explications ---------- */
+  var COMMUN = [
+    ['La barre, ce sont les onglets', 'Mes séances, Groupes, Comité et Communauté prennent la place d’Entraînements, Groupes et Profil. Un geste de moins pour changer de bibliothèque, et la rangée d’onglets rend sa hauteur aux séances.'],
+    ['Le profil passe sur l’avatar', 'Profil, équipes préférées, groupes à gérer, import, thème, déconnexion : ce qu’on ouvre rarement tient dans un coin.'],
+    ['Une puce par filtre', 'Chaque puce montre sa valeur et s’ouvre seule. « Filtres » garde le panneau complet, recherche comprise.'],
+    ['Lignes ou cartes', 'Sur téléphone, des lignes avec le premier schéma : <b>cinq à six séances à l’écran au lieu d’une et demie.</b> Les cartes d’aujourd’hui restent à un geste.']
+  ];
+  var ICI = {
+    mes: ['Sur Mes séances', null, [['La page d’arrivée', 'On arrive ici après la connexion, comme aujourd’hui. Les puces partent de toutes vos séances, sans les préférences du profil.'], ['À classer', 'Une séance sans niveau ni phase le dit sur sa ligne, comme dans l’étude Communauté.'], ['En défilant', 'Le titre et la barre du bas s’effacent, les puces restent collées en haut. Remontez d’un doigt, tout revient.']]],
+    groupes: ['Sur Groupes', ['Le groupe en titre', 'Groupes rouvre le dernier groupe consulté. Le titre change de groupe, en crée un ou ouvre sa gestion : membres, invitations.'], [['Les auteurs sur chaque ligne', 'Dans un groupe, on cherche aussi par qui : la recherche lit le nom de l’auteur.'], ['Le + partage d’office', 'Créée depuis un groupe, la séance naît partagée avec lui (N13).']]],
+    sansgroupe: ['Sans groupe', ['La destination reste', 'Elle explique à quoi sert un groupe et propose de le créer ou de le rejoindre (N3).'], []],
+    comite: ['Sur Comité', ['Les phases sur une rangée', 'Sur téléphone, elles défilent sur une rangée au lieu de deux : deux fois moins haut (N11).'], [['Le comité, d’un geste', 'Son logo dans la barre. La page reprend celle de l’étude Communauté, limitée aux séances du comité, et s’ouvre sur vos équipes.']]],
+    communaute: ['Sur Communauté', ['Les phases sur une rangée', 'Sur téléphone, elles défilent sur une rangée au lieu de deux : deux fois moins haut (N11).'], [['L’étude Communauté, telle quelle', 'À la une, situations à piocher et liste. Catégories et niveaux partent de vos équipes, enregistrées dans le profil.'], ['À la une, par l’image', 'Le premier schéma fait reconnaître une séance avant d’en lire le titre (N9).']]]
+  };
+  var COUCHES = {
+    filtres: ['Une puce, un critère', [['Voir avant d’appliquer', 'Le bouton compte les séances à mesure qu’on coche.'], ['Les équipes du profil', 'Sur le comité et la Communauté, catégories et niveaux partent du profil ; la case les y enregistre.'], ['Le panneau complet reste', '« Filtres » réunit tous les critères et la recherche, comme le panneau d’aujourd’hui.']]],
+    selecteur: ['Changer de groupe', [['Par le titre', 'La liste des groupes quitte le rail déplié et la page Groupes : elle s’ouvre là où l’on regarde.'], ['Gérer et créer', 'Membres, invitations, nom et logo restent sur la page du groupe, à un geste d’ici.']]],
+    moi: ['Sous l’avatar', [['Mes équipes', 'Les préférences de l’étude Communauté : elles ouvrent le comité et la Communauté sur vos catégories et niveaux.'], ['Ce qui quitte la barre', 'Profil et gestion des groupes. Import et administration quittent le rail ; thème et déconnexion, le rail déplié.'], ['La pastille', 'Le rappel du profil incomplet passe sur l’avatar.']]],
+    recherche: ['La recherche, en haut', [['À un geste', 'La loupe du titre ouvre le champ ; les résultats suivent la frappe.'], ['Là où l’on est', 'On cherche dans ses séances, un groupe, le comité ou la Communauté, selon la destination.']]]
+  };
+  function item(n, x) { return '<li><span class="n' + (n === '·' ? ' point' : '') + '">' + n + '</span><h4>' + x[0] + '</h4><p>' + x[1] + '</p></li>'; }
+  function rendPourquoi() {
+    var el = document.getElementById('pourquoi'), c = e.couche, cle = null;
+    if (c) cle = c.type === 'moi' ? 'moi' : c.type === 'groupes' ? 'selecteur' : 'filtres';
+    else if (e.recherche) cle = 'recherche';
+    if (cle) { var p = COUCHES[cle]; el.innerHTML = '<h3>' + p[0] + '</h3><ol class="pq">' + p[1].map(function (x) { return item('·', x); }).join('') + '</ol>'; return; }
+    var d = ICI[e.dest === 'groupes' && e.sansGroupe ? 'sansgroupe' : e.dest];
+    el.innerHTML = '<h3>Le menu</h3><ol class="pq">' + COMMUN.map(function (x, i) { return item(i + 1, x); }).join('') + (d[1] ? item(5, d[1]) : '') + '</ol>' +
+      (d[2].length ? '<h3 class="ici">' + d[0] + '</h3><ol class="pq">' + d[2].map(function (x) { return item('·', x); }).join('') + '</ol>' : '');
+  }
+
+  /* ---------- rendu ---------- */
+  var cadre = document.getElementById('cadre'), ecran = document.getElementById('ecran'), dernierY = 0;
+  function rend(haut) {
+    var y = ecran.scrollTop;
+    var sans = e.dest === 'groupes' && e.sansGroupe;
+    ecran.innerHTML = '<div class="app"><nav class="rail" aria-label="Navigation principale"><span class="marque" aria-hidden="true"><small>Place</small><span>aux coachs</span></span>' + navs() + repere(1) + '</nav>' +
+      '<div class="contenu">' + entete() + '<div class="page" id="page-app">' + page() + '</div>' +
+      (sans ? '' : '<div class="fab-zone"><button type="button" class="fab" data-a="nouveau">' + ic(I.plus) + '<span>Nouvel entraînement</span></button></div>') +
+      '<nav class="nav-bas" aria-label="Navigation principale">' + navs() + repere(1) + '</nav></div></div>';
+    ecran.scrollTop = haut ? 0 : y;
+    dernierY = ecran.scrollTop;
+    rendCouche();
+    rendPourquoi();
+    joue = null; joueNav = null;
+  }
+  function rendPage() { var p = document.getElementById('page-app'); if (p) p.innerHTML = page(); }
+  function rendCouche() {
+    var c = document.getElementById('couche'); if (c) c.remove();
+    if (!e.couche && !e.bulle) return;
+    var d = document.createElement('div'); d.id = 'couche';
+    if (e.couche) {
+      var t = e.couche.type;
+      d.innerHTML = t === 'facette' ? coucheFacette() : t === 'filtres' ? coucheFiltres() : t === 'groupes' ? coucheGroupes() : coucheMoi();
+    } else { d.className = 'bulle'; d.setAttribute('role', 'status'); d.textContent = e.bulle; }
+    cadre.appendChild(d);
+  }
+  var minuterie;
+  function bulle(t) { e.bulle = t; clearTimeout(minuterie); minuterie = setTimeout(function () { e.bulle = null; if (!e.couche) rendCouche(); }, 3000); if (!e.couche) rendCouche(); }
+  function bascule(l, v) { var i = l.indexOf(v); if (i >= 0) l.splice(i, 1); else l.push(v); }
+  function rafraichitVoir() { var v = document.getElementById('voir'); if (v && e.couche && e.couche.b) v.textContent = 'Voir ' + pluriel(seancesDe(e.dest, e.couche.b).length, 'séance'); }
+  function appliquePrefs(prefs) { e.prefs = prefs; ['comite', 'communaute'].forEach(function (t) { e.f[t].cats = prefs.cats.slice(); e.f[t].nivs = prefs.nivs.slice(); }); }
+
+  // En défilant : le titre s'efface (en-tête collant à -56 px), la barre du bas aussi ; tout revient dès qu'on remonte.
+  ecran.addEventListener('scroll', function () {
+    var y = ecran.scrollTop, dy = y - dernierY; dernierY = y;
+    var tete = ecran.querySelector('.entete-app'), bas = ecran.querySelector('.nav-bas'), fab = ecran.querySelector('.fab-zone');
+    if (!tete) return;
+    tete.classList.toggle('colle', y > 60);
+    var cache;
+    if (y < 10) cache = false; else if (dy > 2) cache = true; else if (dy < -2) cache = false; else return;
+    tete.classList.toggle('revele', !cache && y > 0);
+    if (bas) bas.classList.toggle('cachee', cache);
+    if (fab) fab.classList.toggle('bas', cache);
+  }, { passive: true });
+
+  cadre.addEventListener('input', function (ev) {
+    if (ev.target.id === 'champ-app') { e.f[e.dest].texte = ev.target.value; rendPage(); rendPourquoi(); }
+    if (ev.target.id === 'f-texte' && e.couche) { e.couche.b.texte = ev.target.value; rafraichitVoir(); }
+  });
+  cadre.addEventListener('keydown', function (ev) {
+    if (ev.target.id === 'f-texte' && ev.key === 'Enter') { ev.preventDefault(); cadre.querySelector('[data-a="appliquer"]').click(); }
+    if (ev.target.id === 'champ-app' && ev.key === 'Enter') { ev.preventDefault(); ev.target.blur(); }
+  });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && e.couche) { e.couche = null; rend(false); } });
+  cadre.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-a]'); if (!b) return;
+    var a = b.dataset.a, v = b.dataset.v, f = e.f[e.dest], c = e.couche, haut = true;
+    if (a === 'fond' && ev.target !== b) return;
+    switch (a) {
+      case 'dest':
+        if (e.dest === v) { ecran.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+        e.dest = v; e.recherche = false; joueNav = v; break;
+      case 'loupe': e.recherche = true; rend(false); var champ = document.getElementById('champ-app'); if (champ) champ.focus(); return;
+      case 'annuler': e.recherche = false; f.texte = ''; haut = false; break;
+      case 'selecteur': e.couche = { type: 'groupes' }; rendCouche(); rendPourquoi(); return;
+      case 'choisirGroupe': e.groupe = v; e.couche = null; break;
+      case 'gererGroupe': e.couche = null; rendCouche(); rendPourquoi(); rend(false); bulle('Hors maquette : la page du groupe, avec membres et invitations.'); return;
+      case 'creerGroupe': e.couche = null; rendCouche(); rend(false); bulle('Hors maquette : la création d’un groupe, comme aujourd’hui.'); return;
+      case 'rejoindre': bulle('Hors maquette : on ouvre le lien d’invitation reçu.'); return;
+      case 'moi': e.couche = { type: 'moi', profil: { cats: e.prefs.cats.slice(), nivs: e.prefs.nivs.slice() } }; rend(false); return;
+      case 'facette': e.couche = { type: 'facette', k: v, b: copie(f) }; rend(false); return;
+      case 'filtres': e.couche = { type: 'filtres', b: copie(f) }; rend(false); return;
+      case 'bcat': bascule(c.b.cats, v); rendCouche(); return;
+      case 'bniv': c.b.nivs = v ? basculeNiveau(c.b.nivs, v) : []; rendCouche(); return;
+      case 'bph': c.b.ph = c.b.ph === v ? null : v; rendCouche(); return;
+      case 'bfo': bascule(c.b.fo, v); rendCouche(); return;
+      case 'bst': bascule(c.b.st, v); rendCouche(); return;
+      case 'bmemo': c.b.memo = !c.b.memo; rendCouche(); return;
+      case 'effacer':
+        if (c.type === 'filtres') { var vierge = filtreDepart(e.dest, { cats: [], nivs: [] }); vierge.memo = c.b.memo; c.b = vierge; }
+        else if (c.k === 'cat') c.b.cats = []; else if (c.k === 'niv') c.b.nivs = []; else if (c.k === 'ph') c.b.ph = null; else if (c.k === 'fo') c.b.fo = [];
+        else c.b.st = DEFAUT_ST[e.dest].slice();
+        rendCouche(); return;
+      case 'appliquer':
+        e.f[e.dest] = copie(c.b);
+        if (c.b.memo) appliquePrefs({ cats: c.b.cats.slice(), nivs: c.b.nivs.slice() });
+        e.couche = null; e.recherche = false;
+        if (c.b.memo) { rend(true); bulle('Enregistré dans vos équipes.'); return; }
+        break;
+      case 'fermer': case 'fond': e.couche = null; rend(false); return;
+      case 'pcat': bascule(c.profil.cats, v); rendCouche(); return;
+      case 'pniv': c.profil.nivs = v ? basculeNiveau(c.profil.nivs, v) : []; rendCouche(); return;
+      case 'penregistrer': appliquePrefs({ cats: c.profil.cats.slice(), nivs: c.profil.nivs.slice() }); e.couche = null; rend(false); bulle('Enregistré. Le comité et la Communauté s’ouvrent sur ces choix.'); return;
+      case 'theme': changeTheme(v); rendCouche(); return;
+      case 'lien':
+        e.couche = null; rend(false);
+        bulle({ profil: 'Hors maquette : la page Profil, inchangée.', groupes: 'Hors maquette : la page des groupes, gardée hors de la barre.', importer: 'Hors maquette : l’import d’un fichier, réservé aux comptes qui ont la fonctionnalité.', admin: 'Hors maquette : l’administration, visible des seuls administrateurs.', deconnexion: 'Hors maquette : retour à la page de connexion.' }[v]);
+        return;
+      case 'ph': f.ph = f.ph === v ? null : v; if (f.ph) joue = v; haut = false; break;
+      case 'ty': e.ty = v; haut = false; break;
+      case 'retirer': if (decouvrir(e.dest)) f.ph = null; f.texte = ''; e.recherche = false; haut = false; break;
+      case 'vue': e.vue = v; haut = false; break;
+      case 'ouvrir': bulle('Hors maquette : la séance s’ouvrirait.'); return;
+      case 'copier': if (e.copiees.indexOf(v) < 0) e.copiees.push(v); rend(false); bulle('Copiée. Collez-la dans l’une de vos séances.'); return;
+      case 'nouveau': bulle(e.dest === 'groupes' ? 'Hors maquette : une séance vide, déjà partagée avec « ' + groupe(e.groupe).nom + ' » (N13).' : 'Hors maquette : une séance vide, comme aujourd’hui.'); return;
+    }
+    rend(haut);
+  });
+
+  /* ---------- commandes de la maquette ---------- */
+  var zone = document.getElementById('zone');
+  function marque(attr, v) { document.querySelectorAll('button[data-' + attr + ']').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset[attr] === v)); }); }
+  document.querySelectorAll('button[data-format]').forEach(function (b) { b.addEventListener('click', function () { zone.dataset.format = b.dataset.format; marque('format', b.dataset.format); e.vue = b.dataset.format === 'telephone' ? 'lignes' : 'cartes'; rend(true); }); });
+  document.querySelectorAll('button[data-explications]').forEach(function (b) { b.addEventListener('click', function () { zone.dataset.explications = b.dataset.explications; marque('explications', b.dataset.explications); e.explications = b.dataset.explications === 'oui'; rend(false); }); });
+  document.querySelectorAll('button[data-groupes]').forEach(function (b) { b.addEventListener('click', function () { e.sansGroupe = b.dataset.groupes === 'sans'; marque('groupes', b.dataset.groupes); e.dest = 'groupes'; e.couche = null; e.recherche = false; joueNav = 'groupes'; rend(true); }); });
+  document.getElementById('recommencer').addEventListener('click', function () { init({ sansGroupe: e.sansGroupe, explications: e.explications }); rend(true); });
+  marque('format', 'telephone'); marque('explications', 'oui'); marque('groupes', 'avec');
+  init();
+  rend(true);
+})();
+</script>
+</body>
+</html>
