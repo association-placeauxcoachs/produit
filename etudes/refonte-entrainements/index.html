@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Refonte des entraînements</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Maquette de la refonte, en trois étapes sur un train : Naviguer, Organiser, Créer.
+     DA « La Marque » de l'application, mêmes jetons que les études Naviguer et Organiser. */
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF; --attenue:#6E6678;
+    --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --orange-texte:#C2410C; --peach:#F4AD8E; --violet:#5D32F5; --rouge:#C9302C;
+    --st-brouillon:#8A8478; --st-encours:#C8841E; --st-pret:#2F7D4F; --st-termine:#2F7D4F;
+    --chassis:#0D0B12; --voile:rgba(28,23,38,.42); --terrain:#3A97C5;
+    --faire-b:#fdba74; --faire-bg:rgba(255,247,237,.7); --faire-t:#9a3412;
+    --verif-b:#c4b5fd; --verif-bg:rgba(245,243,255,.7); --verif-t:#5b21b6;
+    --logo-jour:block; --logo-nuit:none; --hero-fond:color-mix(in srgb,#F4AD8E 27%,#FAF4EC);
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926; --attenue:#A69DB1;
+    --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --orange-texte:#FDBA74; --violet:#9B82FF; --rouge:#F07167;
+    --st-brouillon:#A49D90; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#52B37D; --voile:rgba(0,0,0,.6);
+    --faire-bg:rgba(251,146,60,.08); --faire-t:#fdba74; --verif-bg:rgba(167,139,250,.09); --verif-t:#c4b5fd;
+    --logo-jour:none; --logo-nuit:block; --hero-fond:color-mix(in srgb,#EB5D21 13%,#1E1926); color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926; --attenue:#A69DB1;
+    --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --orange-texte:#FDBA74; --violet:#9B82FF; --rouge:#F07167;
+    --st-brouillon:#A49D90; --st-encours:#E0A64A; --st-pret:#52B37D; --st-termine:#52B37D; --voile:rgba(0,0,0,.6);
+    --faire-bg:rgba(251,146,60,.08); --faire-t:#fdba74; --verif-bg:rgba(167,139,250,.09); --verif-t:#c4b5fd;
+    --logo-jour:none; --logo-nuit:block; --hero-fond:color-mix(in srgb,#EB5D21 13%,#1E1926); color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font:16px/1.55 var(--corps);letter-spacing:-.01em;padding-block:0 96px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));-webkit-font-smoothing:antialiased}
+  button,input{font:inherit;color:inherit;letter-spacing:inherit}
+  button{cursor:pointer;background:none;border:0;text-align:inherit}
+  img{display:block;max-width:100%;height:auto}
+  code{font-family:var(--mono);font-size:.82em;background:color-mix(in srgb,var(--ink) 7%,transparent);padding:1px 5px;border-radius:5px;overflow-wrap:anywhere}
+  :is(a,button,input,[tabindex]):focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  h1,h2,h3,h4,h5{text-wrap:balance}
+  .ic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .logo-jour{display:var(--logo-jour)} .logo-nuit{display:var(--logo-nuit)}
+
+  /* pictogrammes du tracé (app/globals.css, ADR-0026) */
+  .picto{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;--couleur-trajectoire:var(--peach)}
+  .picto :is(.trajectoire,.pointe,.passe){stroke:var(--couleur-trajectoire)}
+  .picto .passe{stroke-dasharray:1.6 4.4}
+  .picto .joueur{stroke-width:2}
+
+  /* ---------- page d'étude ---------- */
+  .wrap{max-width:1280px;margin:0 auto}
+  .outils{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
+  .outils-in{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.84rem}
+  .outils a{font-weight:600;color:var(--violet);text-underline-offset:3px}
+  .seg{display:inline-flex;border:1px solid var(--filet-fort);border-radius:999px;overflow:hidden;flex-wrap:nowrap}
+  .seg button{font-size:.84rem;font-weight:600;color:var(--attenue);padding:.4em 1em;white-space:nowrap}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .entete{padding-top:44px;max-width:70ch}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(2.1rem,5.6vw,3.3rem);line-height:1.04;letter-spacing:-.02em}
+  .lede{margin-top:.55em;color:var(--attenue);font-size:1.06rem}
+  .bloc{margin-top:84px;scroll-margin-top:64px}
+  .bloc>h2{font-family:var(--display);font-weight:600;font-size:clamp(1.45rem,3.2vw,1.8rem);letter-spacing:-.01em;line-height:1.15}
+  .bloc>.chapo{margin-top:.35em;max-width:66ch;color:var(--attenue)}
+  .bloc a{color:var(--violet);text-underline-offset:3px}
+
+  /* ---------- le train d'étapes ---------- */
+  .train-zone{margin-top:36px;scroll-margin-top:60px}
+  .train{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+  .voie,.voie-faite{position:absolute;top:15px;left:15px;height:3px;border-radius:2px;pointer-events:none}
+  .voie{width:75%;background:repeating-linear-gradient(90deg,var(--peach) 0 7px,transparent 7px 13px)}
+  .voie-faite{width:calc(75% * var(--avance,0) / 3);background:var(--orange);transition:width .7s cubic-bezier(.3,.7,.2,1)}
+  .voie-faite::after{content:"";position:absolute;right:0;top:50%;width:10px;height:10px;border-top:3px solid var(--orange);border-right:3px solid var(--orange);transform:translate(1px,-50%) rotate(45deg);opacity:var(--pointe,0);transition:opacity .2s .5s}
+  .gare{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:0 10px 0 0;text-align:left;min-width:0}
+  .gare .pt{position:relative;z-index:1;width:32px;height:32px;display:grid;place-items:center}
+  .gare .pt i{width:22px;height:22px;border-radius:50%;border:2.5px solid var(--ink);background:var(--paper);transition:background-color .3s,border-color .3s}
+  .gare.faite .pt i{border-color:var(--orange)}
+  .gare[aria-current="step"] .pt i{background:var(--orange);border-color:var(--orange);box-shadow:0 0 0 5px color-mix(in srgb,var(--orange) 18%,transparent)}
+  .gare .pt svg{width:32px;height:26px;fill:var(--paper);stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+  .gare.finale[aria-current="step"] .pt svg{stroke:var(--orange);fill:color-mix(in srgb,var(--orange) 14%,var(--paper))}
+  .gare .nom{display:flex;align-items:baseline;gap:6px;font-family:var(--display);font-weight:600;font-size:clamp(1rem,2.4vw,1.3rem);line-height:1.1;letter-spacing:-.01em;margin-top:6px}
+  .gare .nom small{font-family:var(--display);font-size:.95em;color:var(--orange-texte)}
+  .gare .sous{font-size:.84rem;color:var(--attenue);line-height:1.35;max-width:24ch}
+  .gare:hover .nom{color:var(--orange-texte)}
+  .gare[aria-current="step"] .nom{color:var(--ink)}
+  @media(max-width:640px){.gare .sous{display:none}.gare{padding-right:4px}.gare .nom{flex-direction:column;gap:0;font-size:.86rem;letter-spacing:-.02em}}
+  .legende{margin-top:18px;padding:12px 16px;border-left:3px solid var(--orange);background:color-mix(in srgb,var(--orange) 6%,var(--paper));max-width:78ch;font-size:.98rem}
+  .legende b{font-weight:600}
+
+  /* ---------- zone de maquette ---------- */
+  .barre-maquette{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;margin-top:22px}
+  .barre-maquette p{font-size:.88rem;color:var(--attenue);max-width:46ch}
+  .barre-maquette p b{color:var(--ink);font-weight:600}
+  .commandes{display:flex;flex-wrap:wrap;gap:8px}
+  .ecrans-rapides{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:12px;padding-bottom:2px}
+  .ecrans-rapides::-webkit-scrollbar{display:none}
+  .ecrans-rapides button{flex:none;font-size:.84rem;font-weight:600;color:var(--attenue);border:1px solid var(--filet);border-radius:999px;padding:.35em .9em;background:var(--surface)}
+  .ecrans-rapides button[aria-pressed="true"]{border-color:var(--orange);color:var(--orange-texte);background:color-mix(in srgb,var(--orange) 8%,var(--surface))}
+  .zone{--h:780px;display:grid;grid-template-columns:minmax(0,1fr);gap:28px 44px;align-items:start;margin-top:16px}
+  .zone[data-format="tab"]{--h:860px} .zone[data-format="ord"]{--h:760px}
+  @media(min-width:1000px){.zone[data-format="tel"]:not([data-explications="non"]){grid-template-columns:400px minmax(0,1fr)}.zone[data-format="tel"] .pourquoi{position:sticky;top:70px}}
+  .zone[data-explications="non"] .pourquoi{display:none}
+  .cadre{position:relative;container:cadre/inline-size;width:100%;margin:0 auto;border:1px solid var(--filet-fort);border-radius:16px;overflow:hidden;background:var(--paper)}
+  .zone[data-format="tel"] .cadre{width:400px;max-width:100%;border:10px solid var(--chassis);border-radius:46px}
+  .zone[data-format="tab"] .cadre{width:840px;max-width:100%;border:12px solid var(--chassis);border-radius:30px}
+  .ecran{position:relative;height:var(--h);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;font-size:15px;line-height:1.45;background:var(--paper);color:var(--ink)}
+  .ecran::-webkit-scrollbar{display:none}
+  .calque{position:absolute;inset:0;z-index:20;pointer-events:none;font-size:15px;line-height:1.45;color:var(--ink)}
+  .calque>*{pointer-events:auto}
+  @media(max-width:430px){.zone[data-format="tel"]{--h:700px}.zone[data-format="tel"] .cadre{border-width:6px;border-radius:30px}.zone[data-format="tab"] .cadre{border-width:6px;border-radius:18px}}
+
+  /* explications */
+  .pourquoi{display:grid;gap:16px}
+  .pourquoi h3{font-family:var(--display);font-weight:600;font-size:1.3rem;line-height:1.2}
+  .pourquoi .resume{font-size:.92rem;color:var(--attenue);max-width:62ch}
+  .pq{list-style:none;display:grid;gap:15px}
+  .zone:not([data-format="tel"]) .pq{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 30px}
+  .pq li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:2px 12px}
+  .pq .n{grid-row:span 2;width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+  .pq .n.point{background:none;border:1.5px solid var(--filet-fort)}
+  .pq h4{font-size:.98rem;font-weight:600;line-height:1.35}
+  .pq p{font-size:.9rem;color:var(--attenue);max-width:60ch}
+  .pq p b{color:var(--ink);font-weight:600}
+  .pourquoi .essai{font-size:.88rem;color:var(--ink);padding-top:12px;border-top:1px solid var(--filet)}
+
+  /* ---------- l'application ---------- */
+  .app{display:flex;min-height:100%}
+  .rail{display:none}
+  .contenu{flex:1;min-width:0;display:flex;flex-direction:column;min-height:var(--h);container:contenu/inline-size}
+  .page{position:relative;flex:1;width:100%;max-width:1180px;margin:0 auto;padding-bottom:96px}
+  .repere{position:absolute;z-index:5;width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;font:700 11.5px/22px var(--corps);text-align:center;box-shadow:0 0 0 3px var(--paper);pointer-events:none;letter-spacing:0}
+  .ancre{position:relative}
+  .onglets0>.repere{left:6px;top:8px} .filtres0>.repere{left:calc(50% - 96px);top:8px} .c0-corps>.repere{left:3px;top:3px}
+  .barre-haut>.repere.r-titre{left:4px;top:4px} .puces>.repere{left:4px;top:0} .r-tete{position:relative} .r-tete>.repere{position:static;box-shadow:none}
+  .creer{position:relative} .creer>.repere{right:0;top:-4px} .classer-fin>.repere{right:-8px;top:-10px}
+
+  /* barre du bas (téléphone) */
+  .dest{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;font-size:11.5px;line-height:1.1;color:var(--attenue)}
+  .dest .pil{display:grid;place-items:center;width:56px;height:30px;border-radius:999px;transition:background-color .2s}
+  .dest .picto{width:27px;height:27px;stroke-width:3}
+  .dest .ic{width:20px;height:20px;stroke-width:1.8}
+  .dest .lib{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dest:hover .pil{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .dest[aria-current="page"]{color:var(--ink);font-weight:600}
+  .dest[aria-current="page"] .pil{background:color-mix(in srgb,var(--orange) 16%,var(--surface))}
+  .dest[aria-current="page"] .picto{--couleur-trajectoire:var(--orange)}
+  .dest[aria-current="page"] .ic{color:var(--orange-texte)}
+  .nav-bas{position:sticky;bottom:0;z-index:7;display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));height:64px;padding:6px 4px;background:var(--surface);border-top:1px solid var(--filet);box-shadow:0 -1px 5px rgba(0,0,0,.06);transition:transform .3s ease-out}
+  .nav-bas>.repere{top:-11px;left:10px}
+  .fab-zone{position:sticky;bottom:78px;z-index:6;height:0;display:flex;justify-content:flex-end;padding-right:16px;transition:bottom .3s ease-out}
+  .fab{transform:translateY(-100%);display:flex;align-items:center;justify-content:center;gap:8px;width:56px;height:56px;border-radius:50%;background:var(--orange);color:#fff;font-size:14.5px;font-weight:600;box-shadow:0 12px 26px -12px rgba(235,93,33,.75)}
+  .fab .ic{width:22px;height:22px;stroke-width:2.4}
+  .fab span{display:none}
+  .fab-zone>.repere{right:10px;top:-80px}
+  /* en descendant, les barres s'effacent ; elles reviennent dès qu'on remonte */
+  .ecran[data-masque="oui"] .nav-bas{transform:translateY(100%)}
+  .ecran[data-masque="oui"] .fab-zone{bottom:16px}
+
+  /* le tiroir (ordinateur, 1024 px et plus, comme aujourd'hui) : replié en rail, ouvert il pousse la page */
+  .rail{display:none}
+  .rail-in{position:absolute;top:0;left:0;bottom:0;width:88px;display:flex;flex-direction:column;padding:12px 0 12px;border-right:1px solid var(--filet);background:var(--surface);overflow:hidden;transition:width .3s ease-out,box-shadow .3s}
+  .rail-tete{display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 16px 14px}
+  .burger{flex:none;display:grid;place-items:center;width:56px;height:40px;border-radius:999px;color:var(--ink)}
+  .burger:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+  .burger .ic{width:22px;height:22px}
+  .marque{display:flex;align-items:center;gap:5px;min-width:0}
+  .marque img{width:42px;height:42px;flex:none}
+  .mot{display:flex;flex-direction:column;color:var(--orange);font-family:var(--corps);letter-spacing:-.055em;line-height:.92;white-space:nowrap}
+  .mot small{font-size:15px;font-weight:600}
+  .mot span{font-size:21px;font-weight:700}
+  .rail .mot{display:none}
+  .rail-dest{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:4px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .rail-dest>.repere{top:4px;right:6px}
+  .rd{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;padding:5px 0;font-size:11.5px;line-height:1.1;letter-spacing:-.02em;color:var(--attenue);white-space:nowrap}
+  .rd .pil{display:grid;place-items:center;width:56px;height:32px;flex:none;border-radius:999px;transition:background-color .2s}
+  .rd .picto{width:27px;height:27px;stroke-width:3}
+  .rd .ic{width:21px;height:21px;stroke-width:1.8}
+  .rd:hover .pil{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .rd[aria-current="page"]{color:var(--ink);font-weight:600}
+  .rd[aria-current="page"] .pil{background:color-mix(in srgb,var(--orange) 16%,var(--surface))}
+  .rd[aria-current="page"] .picto{--couleur-trajectoire:var(--orange)}
+  .rd[aria-current="page"] .ic{color:var(--orange-texte)}
+  .rd-ligne{position:relative}
+  .rd-plus{display:none}
+  .sous{display:none}
+  .si{display:flex;align-items:center;gap:8px;min-height:34px;padding:3px 12px;border-radius:10px;font-size:13.5px;color:var(--attenue);text-align:left;white-space:nowrap;overflow:hidden}
+  .si span{overflow:hidden;text-overflow:ellipsis}
+  .si .logo{height:22px;width:auto;flex:none}
+  .si-vis{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--paper-2);color:var(--ink)}
+  .si-vis .picto{width:19px;height:19px;stroke-width:3.2}
+  .si[aria-current="true"] .si-vis .picto{--couleur-trajectoire:var(--orange)}
+  .si:hover{background:color-mix(in srgb,var(--ink) 5%,transparent);color:var(--ink)}
+  .si[aria-current="true"]{color:var(--ink);font-weight:600;background:color-mix(in srgb,var(--orange) 9%,var(--surface))}
+  .rail-bas{position:relative;display:flex;flex-direction:column;gap:4px;padding-top:8px}
+  .rail-bas>.repere{top:2px;right:8px}
+  .moi{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;padding:5px 0;font-size:11.5px;color:var(--attenue);white-space:nowrap}
+  .moi .nom{display:none}
+  .pied0{display:none}
+  /* ouvert */
+  .rail[data-ouvert="true"] .rail-in{width:280px}
+  .rail[data-ouvert="true"] .rail-tete{flex-direction:row;padding:0 12px 14px}
+  .rail[data-ouvert="true"] .mot{display:flex}
+  .rail[data-ouvert="true"] .rd{flex-direction:row;gap:10px;width:auto;margin:0 12px;padding:3px 12px 3px 4px;border-radius:999px;font-size:14px;letter-spacing:-.01em}
+  .rail[data-ouvert="true"] .rd .pil,.rail[data-ouvert="true"] .rd[aria-current="page"] .pil{width:36px;background:none}
+  .rail[data-ouvert="true"] .rd:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .rail[data-ouvert="true"] .rd[aria-current="page"]{background:color-mix(in srgb,var(--orange) 16%,var(--surface))}
+  .rail[data-ouvert="true"] .rd-plus{position:absolute;right:16px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;color:var(--attenue)}
+  .rail[data-ouvert="true"] .rd-plus:hover{background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink)}
+  .rail[data-ouvert="true"] .rd-plus .ic{width:17px;height:17px}
+  .rail[data-ouvert="true"] .sous{display:flex;flex-direction:column;gap:1px;margin:0 14px 6px 50px}
+  .rail[data-ouvert="true"] .moi{flex-direction:row;gap:12px;width:auto;margin:0 12px;padding:5px 8px;border-radius:999px;text-align:left}
+  .rail[data-ouvert="true"] .moi:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .rail[data-ouvert="true"] .moi .lib{display:none}
+  .rail[data-ouvert="true"] .moi .nom{display:block;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.25}
+  .moi .nom small{display:block;font-size:12px;font-weight:400;color:var(--attenue)}
+  .rail[data-ouvert="true"] .pied0{display:flex;flex-direction:column;gap:2px;margin-top:6px;padding:8px 12px 0;border-top:1px solid var(--filet)}
+  .ligne0{display:flex;align-items:center;gap:12px;padding:7px 12px;border-radius:10px;font-size:13.5px;color:var(--attenue);white-space:nowrap}
+  .ligne0 .ic{width:19px;height:19px}
+  .ligne0 .seg{margin-left:auto}
+  .ligne0 .seg button{font-size:12px;padding:.25em .8em}
+  /* la marque d'aujourd'hui, en haut à gauche dès la tablette */
+  .marque0{display:none}
+  @container cadre (min-width:720px){
+    .marque0{position:absolute;top:12px;left:16px;z-index:2;display:flex}
+    .marque0 img{width:48px;height:48px}
+  }
+  /* sous 1024 px, la barre du bas ; au-delà, le tiroir */
+  @container cadre (min-width:1024px){
+    .app .rail{display:block;position:sticky;top:0;z-index:8;width:88px;height:var(--h);flex:none;transition:width .3s ease-out}
+    .app .nav-bas{display:none}
+    .app .fab-zone,.ecran[data-masque="oui"] .app .fab-zone{bottom:24px;padding-right:28px}
+    .app .fab{width:auto;padding:0 22px 0 18px;border-radius:999px}
+    .app .fab span{display:inline}
+    .app .fab-zone>.repere{right:20px;top:-86px}
+    .app .rail[data-ouvert="true"]{width:280px}
+    .av-haut{display:none}
+  }
+
+  /* en-tête des destinations (étapes 1 à 3) */
+  .entete-app{position:sticky;top:0;z-index:6;background:var(--paper);border-bottom:1px solid transparent;transition:transform .3s ease-out,border-color .2s}
+  .ecran[data-defile="oui"] .entete-app{border-bottom-color:var(--filet)}
+  @container cadre (max-width:1023px){.ecran[data-masque="oui"] .entete-app:not(.fige){transform:translateY(-100%)}}
+  .barre-haut{position:relative;display:flex;align-items:center;gap:6px;height:56px;padding:0 10px 0 16px}
+  .titre-app>span{overflow:hidden;text-overflow:ellipsis}
+  .titre-app>.btn-rond{margin-left:-8px}
+  .titre-logo{display:flex;align-items:center;overflow:visible!important}
+  .titre-logo .logo{height:34px;width:auto}
+  .titre-app>.picto,.selecteur .picto{flex:none;width:28px;height:28px;stroke-width:2.8;--couleur-trajectoire:var(--orange)}
+  .titre-app{flex:1;min-width:0;display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.015em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .selecteur{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-width:0;padding:4px 8px 4px 2px;border-radius:12px}
+  .selecteur span{overflow:hidden;text-overflow:ellipsis}
+  .selecteur .ic{width:18px;height:18px;color:var(--attenue)}
+  .selecteur:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+  .btn-rond{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;color:var(--ink)}
+  .btn-rond .ic{width:21px;height:21px}
+  .btn-rond:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+  .avatar{position:relative;flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--filet-fort);background:var(--surface);font-size:12.5px;font-weight:700;color:var(--ink)}
+  .avatar .pastille{position:absolute;top:0;right:0;width:9px;height:9px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 2px var(--paper)}
+  .av-haut,.loupe{position:relative;flex:none}
+  .av-haut>.repere{right:-6px;top:-6px} .loupe>.repere{left:-8px;top:-4px}
+  .champ-app{position:relative;display:none;flex:0 1 380px;min-width:0;align-items:center;gap:8px;height:42px;padding:0 6px 0 14px;border:1px solid var(--filet-fort);border-radius:999px;background:var(--surface);color:var(--attenue);font-size:14px;cursor:text}
+  .champ-app:focus-within{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+  .champ-app>.repere{right:-8px;top:-9px}
+  .q{flex:1;min-width:0;height:100%;border:0;background:none;outline:none;color:var(--ink)}
+  .q::placeholder{color:var(--attenue);opacity:1}
+  .q:focus-visible{outline:none}
+  .recherche:focus-within{box-shadow:0 0 0 1px var(--ink)}
+  .efface{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;color:var(--attenue)}
+  .efface:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+  .efface .ic{width:16px;height:16px}
+  .recherche{flex:1;min-width:0;display:flex;align-items:center;gap:4px;height:42px;padding:0 4px 0 14px;border-radius:999px;background:var(--surface);border:1px solid var(--ink);font-size:15.5px}
+  .puces-f{position:relative;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 16px 12px}
+  .puces-f::-webkit-scrollbar{display:none}
+  .pf{flex:none;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px 0 12px;border-radius:999px;border:1px solid var(--filet-fort);background:var(--surface);font-size:13.5px;color:var(--ink);white-space:nowrap}
+  .pf .ic{width:15px;height:15px;color:var(--attenue)}
+  .pf .chev{width:14px;height:14px;opacity:.55}
+  .pf[data-actif="true"]{border-color:var(--orange);background:color-mix(in srgb,var(--orange) 9%,var(--surface));font-weight:600}
+  .pf[data-actif="true"] .ic{color:var(--orange-texte)}
+  .pf.a-classer{border-style:dashed;border-color:var(--orange);color:var(--orange-texte);font-weight:600}
+  .pf.a-classer[data-actif="true"]{border-style:solid}
+  .bascule{gap:9px;padding-right:8px}
+  .interrupteur{position:relative;flex:none;width:32px;height:19px;border-radius:999px;background:color-mix(in srgb,var(--ink) 22%,transparent);transition:background-color .2s}
+  .interrupteur::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .2s}
+  .bascule[aria-checked="true"]{border-color:var(--orange);background:color-mix(in srgb,var(--orange) 9%,var(--surface));font-weight:600}
+  .bascule[aria-checked="true"] .interrupteur{background:var(--orange)}
+  .bascule[aria-checked="true"] .interrupteur::after{transform:translateX(13px)}
+  .pf .compte{display:grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:var(--orange);color:#fff;font-size:11px;font-weight:700}
+  .entete-app>.repere{left:4px;bottom:30px}
+  @container cadre (min-width:720px){
+    .barre-haut{height:68px;gap:14px;padding:0 28px}
+    .titre-app{font-size:30px;gap:10px}
+    .titre-app>.picto,.selecteur .picto{width:34px;height:34px}
+    .titre-logo .logo{height:44px}
+    .champ-app{display:flex}
+    .loupe{display:none}
+    .puces-f{flex-wrap:wrap;padding:0 28px 14px}
+  }
+
+  /* aujourd'hui : onglets et filtres */
+  .onglets0{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:620px;margin:0 auto;padding:12px 8px 0}
+  .ong{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;min-height:72px;padding:0 4px 9px;font-size:12px;letter-spacing:-.02em;color:color-mix(in srgb,var(--attenue) 85%,transparent)}
+  .ong .picto{width:32px;height:32px;stroke-width:2.5}
+  .ong .lib{display:flex;align-items:center;gap:2px;max-width:100%;overflow:hidden;white-space:nowrap}
+  .ong .lib span{overflow:hidden;text-overflow:ellipsis;max-width:6.7rem}
+  .ong .lib .ic{width:13px;height:13px;opacity:.5}
+  .ong[aria-current="page"]{color:var(--orange)}
+  .ong[aria-current="page"] .picto{color:var(--ink);--couleur-trajectoire:var(--orange)}
+  .ong[aria-current="page"]::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:2px;border-radius:2px;background:var(--orange)}
+  .filtres0{display:flex;justify-content:center;padding:16px 16px 4px;position:relative}
+  .pilule0{display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:999px;background:var(--surface);box-shadow:0 4px 16px -6px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.06);font-size:14.5px;color:var(--attenue)}
+  .barre0{display:none;align-items:center;height:52px;border-radius:999px;border:1px solid var(--filet);background:var(--surface);box-shadow:0 4px 16px -10px rgba(0,0,0,.35);overflow:hidden;font-size:13.5px;color:var(--attenue)}
+  .barre0>span{display:flex;align-items:center;gap:7px;height:100%;padding:0 16px;white-space:nowrap}
+  .barre0 .sep{width:1px;height:24px;padding:0;background:var(--filet)}
+  .barre0 em{font-style:normal;font-size:11px;font-weight:600;color:var(--orange-texte);background:color-mix(in srgb,var(--orange) 12%,var(--surface));border-radius:6px;padding:2px 6px}
+  @container cadre (min-width:720px){.onglets0{padding-top:16px;max-width:520px}.ong{font-size:14px;min-height:84px}.ong .picto{width:40px;height:40px}.ong .lib span{max-width:12rem}.filtres0{padding:18px 28px 6px}}
+  /* aujourd'hui, la barre en segments n'apparaît qu'à partir de 1024 px */
+  @container cadre (min-width:1024px){.pilule0{display:none}.barre0{display:inline-flex}}
+
+  /* titres de résultats */
+  .r-tete{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:20px 16px 10px}
+  .r-tete h3{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.01em;line-height:1.15}
+  .r-tete small{font-size:13px;color:var(--attenue)}
+  .r-tete .lien{margin-left:auto;font-size:13px;font-weight:600;color:var(--violet)}
+  .desc-groupe{padding:2px 16px 4px;font-family:var(--display);font-style:italic;color:var(--attenue);font-size:14.5px;max-width:70ch}
+  @container cadre (min-width:720px){.r-tete{padding:26px 28px 12px}.desc-groupe{padding:2px 28px 6px}}
+
+  /* liste */
+  .liste{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding:0 12px}
+  @container cadre (min-width:720px){.liste{padding:0 28px;gap:16px}}
+  @container contenu (min-width:1060px){.liste{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .liste.haut{padding-top:4px}
+
+  /* carte d'aujourd'hui (carte-entrainement.tsx) */
+  .carte0{--acc:var(--st-pret);container:carte/inline-size;display:flex;flex-direction:column;border:1px solid var(--filet);border-top:3px solid var(--acc);border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 30px -20px rgba(0,0,0,.3)}
+  .c0-in{display:flex;flex-direction:column;flex:1}
+  .c0-corps{position:relative;display:flex;flex-direction:column;gap:12px;padding:20px;text-align:center;flex:1}
+  .c0-haut{display:flex;align-items:center;gap:10px;text-align:left}
+  .st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:999px;padding:3px 10px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:var(--acc)}
+  .st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .trait{flex:1;min-width:10px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 35%,transparent),transparent)}
+  .cats{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
+  .cats span{font-family:var(--mono);font-size:11.5px;border-radius:6px;padding:2px 6px;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--attenue);white-space:nowrap}
+  .c0-titre{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.15;letter-spacing:-.015em}
+  .c0-obj{list-style:none;font-family:var(--display);font-style:italic;font-size:14px;line-height:1.4;color:var(--attenue)}
+  .c0-obj.sans,.f-obj.sans{opacity:.6}
+  .mots{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:auto}
+  .mots span{font-size:11px;border:1px solid var(--filet);border-radius:999px;padding:2px 10px;color:var(--attenue);background:var(--paper)}
+  .mots span.plus{border-color:transparent;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:var(--acc);font-weight:600}
+  .c0-rail{display:flex;flex-direction:column;gap:12px;padding:14px 16px 16px;border-top:1px solid var(--filet);background:linear-gradient(180deg,color-mix(in srgb,var(--paper-2) 55%,var(--surface)),var(--surface))}
+  .c0-metas{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px}
+  .c0-metas span{display:flex;align-items:baseline;gap:6px}
+  .c0-metas small{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--attenue)}
+  .c0-metas b{font-family:var(--display);font-size:14px;font-weight:600}
+  .c0-metas b.nul{color:color-mix(in srgb,var(--attenue) 45%,transparent);font-weight:400}
+  .c0-auteur{display:flex;align-items:center;justify-content:center;gap:10px;border-top:1px solid var(--filet);padding-top:12px;font-size:12px;font-weight:600;text-align:left}
+  .c0-auteur small{display:block;font-weight:400;font-size:11px;color:var(--attenue)}
+  .ini{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;background:color-mix(in srgb,var(--acc,var(--orange)) 14%,var(--surface));color:var(--acc,var(--orange))}
+  .btn-ouvrir{height:46px;border-radius:999px;background:var(--ink);color:var(--paper);font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center}
+  .c0-act{display:flex;justify-content:space-between;color:var(--attenue)}
+  .c0-act button{width:34px;height:34px;display:grid;place-items:center;border-radius:50%}
+  .c0-act .rouge{color:var(--rouge)}
+  @container carte (min-width:500px){
+    .c0-in{flex-direction:row}
+    .c0-corps{text-align:left;padding:16px 18px}
+    .mots{justify-content:flex-start}
+    .c0-rail{width:216px;flex:none;border-top:0;border-left:1px solid var(--filet);padding:14px}
+    .c0-metas{flex-direction:column}
+    .c0-metas span{justify-content:space-between}
+    .c0-titre{font-size:22px}
+    .btn-ouvrir{height:40px;font-size:14px}
+  }
+
+  /* la fiche proposée (étapes 1 à 3) */
+  .fiche{--acc:var(--st-pret);position:relative;container:fiche/inline-size;display:flex;flex-direction:column;border:1px solid var(--filet);border-top:3px solid var(--acc);border-radius:16px;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 30px -24px rgba(0,0,0,.35);cursor:pointer;text-align:left;transition:border-color .2s}
+  .fiche:hover{border-color:color-mix(in srgb,var(--acc) 50%,var(--filet));border-top-color:var(--acc)}
+  .fiche:hover .f-titre{color:color-mix(in srgb,var(--acc) 70%,var(--ink))}
+  .brouillon{--acc:var(--st-brouillon)} .encours{--acc:var(--st-encours)} .pret{--acc:var(--st-pret)} .termine{--acc:var(--st-termine)}
+  .f-in{display:grid;grid-template-columns:minmax(0,1fr);flex:1}
+  .f-corps{position:relative;display:flex;flex-direction:column;gap:7px;padding:14px 16px 12px;min-width:0}
+  .f-haut{display:flex;align-items:center;gap:8px}
+  .f-haut .cats{margin-left:auto}
+  .f-date{font-size:12px;color:var(--attenue);white-space:nowrap}
+  .f-titre{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.18;letter-spacing:-.015em;transition:color .2s}
+  .f-obj{list-style:none;font-family:var(--display);font-style:italic;font-size:13.5px;line-height:1.42;color:var(--attenue);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .f-etq{display:flex;flex-wrap:wrap;gap:5px;max-height:25px;overflow:hidden;margin-top:2px}
+  .etq{display:inline-flex;align-items:center;gap:5px;height:24px;font-size:11.5px;border:1px solid var(--filet);border-radius:999px;padding:0 9px;color:var(--attenue);background:var(--paper);white-space:nowrap}
+  .etq .picto{width:17px;height:17px;stroke-width:3.2;margin-left:-4px;color:var(--ink)}
+  .etq.ph{color:var(--ink);font-weight:600;border-color:var(--filet-fort)}
+  .etq.niv{color:var(--violet);border-color:color-mix(in srgb,var(--violet) 35%,transparent)}
+  .etq.plus{border-color:transparent;background:color-mix(in srgb,var(--ink) 7%,transparent)}
+  .etq.classer{border:1px dashed var(--orange);color:var(--orange-texte);font-weight:600;background:none;position:relative;z-index:2}
+  .f-meta{display:flex;flex-wrap:wrap;align-items:center;gap:2px 10px;font-size:12.5px;color:var(--attenue)}
+  .f-meta b{color:var(--ink);font-weight:600}
+  .f-meta .qui{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:100%;font-weight:600;color:var(--ink)}
+  .f-meta .qui .ini{width:22px;height:22px;font-size:9px}
+  .f-meta .qui .logo{height:20px;width:auto}
+  .f-pied{display:flex;align-items:center;gap:2px;padding:6px 8px 8px 12px;border-top:1px solid var(--filet)}
+  .f-pied .esp{flex:1}
+  .ico{position:relative;z-index:2;flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--attenue)}
+  .ico .ic{width:18px;height:18px}
+  .ico:hover{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
+  .ico.rouge{color:var(--rouge)}
+  .btn-pres{position:relative;z-index:2;flex:none;display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px 0 11px;border-radius:999px;background:color-mix(in srgb,var(--orange) 14%,var(--surface));color:var(--orange-texte);font-size:13px;font-weight:600}
+  .btn-pres .ic{width:16px;height:16px}
+  .f-rail{display:none}
+  .f-corps>.repere{right:-8px;top:-12px}
+  @container fiche (min-width:500px){
+    .f-in{grid-template-columns:minmax(0,1fr) 196px}
+    .f-corps{padding:16px 18px 14px}
+    .f-titre{font-size:21px}
+    .f-meta,.f-pied{display:none}
+    .f-rail{display:flex;flex-direction:column;gap:10px;padding:14px 14px 12px;border-left:1px solid var(--filet);background:linear-gradient(180deg,color-mix(in srgb,var(--paper-2) 50%,var(--surface)),var(--surface));border-radius:0 13px 13px 0}
+    .f-rail dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12.5px}
+    .f-rail dt{color:var(--attenue)}
+    .f-rail dd{text-align:right;font-family:var(--display);font-weight:600;font-size:14px}
+    .f-rail .qui{display:flex;align-items:center;gap:8px;min-width:0;padding-top:10px;border-top:1px solid var(--filet);font-size:12.5px;font-weight:600}
+    .f-rail .qui small{display:block;font-weight:400;font-size:11px;color:var(--attenue)}
+    .f-rail .qui .logo{height:30px;width:auto;flex:none}
+    .f-rail .acts{margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px}
+    .f-rail .btn-pres{width:100%;justify-content:center}
+    .f-rail .ico{width:32px;height:32px}
+  }
+
+  /* communauté : sources, phases, à la une, situations */
+  /* le bandeau du comité : un fond pêche, sans cadre ni allure de bouton */
+  .vitrine{position:relative;padding:4px 16px 0}
+  .hero-c{position:relative;overflow:hidden;border-radius:20px;background:var(--hero-fond)}
+  .hero-c[data-source]{cursor:pointer}
+  .hero-in{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:4px 14px;padding:16px 18px 14px}
+  .hero-in .logo{height:44px;width:auto}
+  .hero-txt h3{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.15;letter-spacing:-.01em}
+  .hero-txt p{margin-top:2px;font-size:13px;line-height:1.35;color:var(--attenue)}
+  .hero-lien{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:14px;font-weight:600;color:var(--violet)}
+  .hero-lien .ic{width:16px;height:16px}
+  .hero-c[data-source]:hover .hero-lien,.hero-lien:hover{text-decoration:underline;text-underline-offset:3px}
+  .vitrine>.repere{left:6px;top:-4px;z-index:6}
+  .vitrine+.phases{padding-top:16px}
+  /* les quatre phases tiennent sur une rangée, toutes visibles, dans l'ordre du jeu */
+  .phases{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:6px 16px 4px}
+  .phases>.repere{top:-2px;right:8px}
+  .phase{flex:none;width:150px;scroll-snap-align:start;display:grid;grid-template-rows:auto 1fr auto;gap:4px;padding:10px 12px 11px;border:1px solid var(--filet-fort);border-radius:16px;background:var(--surface);text-align:left;transition:border-color .2s,background-color .2s}
+  .phase .picto{width:46px;height:46px;margin:-4px 0 -2px -5px;color:var(--ink)}
+  .phase .nom{font-family:var(--display);font-weight:600;font-size:15px;line-height:1.12;letter-spacing:-.01em}
+  .phase .nb{font-size:12px;color:var(--attenue)}
+  .phases .phase{width:auto;justify-items:center;text-align:center;gap:3px;padding:8px 3px 9px;border-radius:14px}
+  .phases .phase .picto{width:38px;height:38px;margin:0}
+  .phases .phase .nom{font-size:13px;line-height:1.1;letter-spacing:-.015em}
+  .phases .phase .nb{font-size:11px;line-height:1.2}
+  .phase:hover{border-color:var(--orange)}
+  .phase:hover .picto{--couleur-trajectoire:var(--orange)}
+  .phase[aria-pressed="true"]{border-color:var(--orange);box-shadow:inset 0 0 0 1px var(--orange);background:color-mix(in srgb,var(--orange) 7%,var(--surface))}
+  .phase[aria-pressed="true"] .picto{--couleur-trajectoire:var(--orange)}
+  .phase[aria-pressed="true"] .nb{color:var(--orange-texte)}
+  .rail-une{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:16px;scrollbar-width:none;padding:0 16px 6px}
+  .rail-une::-webkit-scrollbar{display:none}
+  .rail-une>.fiche{flex:none;width:86%;scroll-snap-align:start}
+  .puces{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:0 16px 2px}
+  .puces::-webkit-scrollbar{display:none}
+  .puce{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 13px;border-radius:999px;border:1px solid var(--filet-fort);font-size:13.5px;color:var(--attenue);background:var(--surface);white-space:nowrap}
+  .puce small{font-size:11.5px;opacity:.8}
+  .puce .picto{width:22px;height:22px;stroke-width:2.8;margin-left:-5px;color:currentColor}
+  .puce[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .puce[aria-pressed="true"] .picto{--couleur-trajectoire:var(--orange)}
+  .sits{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:16px;padding:12px 16px 6px;scrollbar-width:none}
+  .sits::-webkit-scrollbar{display:none}
+  .sit{flex:none;width:200px;scroll-snap-align:start;display:flex;flex-direction:column;border:1px solid var(--filet);border-radius:14px;overflow:hidden;background:var(--surface)}
+  .vig{display:block;width:100%;aspect-ratio:640/514;object-fit:cover;background:var(--terrain)}
+  .sit .s-corps{display:grid;gap:3px;padding:9px 12px 0}
+  .sit b{font-size:13.5px;font-weight:600;line-height:1.3}
+  .sit .s-de{font-size:12px;color:var(--attenue)}
+  .sit .s-de.comite{color:var(--orange-texte);font-family:var(--display);font-weight:600}
+  .btn-contour{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--filet-fort);font-size:13.5px;font-weight:600;background:var(--surface)}
+  .sit .btn-contour{margin:9px 12px 12px;height:32px;font-size:13px}
+  .btn-contour[aria-pressed="true"]{background:color-mix(in srgb,var(--orange) 15%,var(--surface));border-color:transparent;color:var(--orange-texte)}
+  .ligne-nc{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 16px 0;padding:13px 16px;border-radius:14px;border:1px dashed var(--filet-fort);font-size:14px;color:var(--attenue)}
+  .ligne-nc b{color:var(--ink);font-weight:600}
+  .vide{margin:10px 16px 4px;padding:20px;border:1px dashed var(--filet-fort);border-radius:14px;text-align:center;color:var(--attenue);font-size:14px}
+  @container cadre (min-width:720px){
+    .vitrine{padding:6px 28px 0}
+    .hero-in{grid-template-columns:auto minmax(0,1fr) auto;gap:20px;padding:20px 26px}
+    .hero-in .logo{height:52px}
+    .hero-txt h3{font-size:23px}
+    .hero-txt p{font-size:14px}
+    .hero-lien{grid-column:auto;justify-self:end;margin:0}
+    .vitrine>.repere{left:16px}
+    .phases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:6px 28px 4px;overflow:visible}
+    .phases .phase{justify-items:start;text-align:left;gap:4px;padding:14px 16px;border-radius:16px}
+    .phases .phase .picto{width:64px;height:64px;margin:-4px 0 -2px -5px}
+    .phases .phase .nom{font-size:18px;line-height:1.12;letter-spacing:-.01em}
+    .phases .phase .nb{font-size:12px}
+    .rail-une{padding:0 28px 6px;scroll-padding:28px}
+    .rail-une>.fiche{width:340px}
+    .puces{flex-wrap:wrap;padding:0 28px}
+    .sits{padding:14px 28px 6px;scroll-padding:28px}
+    .ligne-nc,.vide{margin-left:28px;margin-right:28px}
+  }
+  @container cadre (min-width:1040px){.rail-une{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible}.rail-une>.fiche{width:auto}}
+
+  /* éditeur */
+  .ed-barre{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:6px;height:58px;padding:0 10px;border-bottom:1px solid var(--filet);background:var(--paper)}
+  .ed-barre .retour{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--attenue);height:44px;padding:0 8px;border-radius:10px;min-width:0}
+  .ed-barre .retour span{display:none}
+  .ed-barre .esp{flex:1}
+  .ed-st{--acc:var(--st-pret);display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--filet-fort);border-radius:999px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--acc)}
+  .ed-st i{width:8px;height:8px;border-radius:2px;background:var(--acc)}
+  .btn-carre{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;height:40px;min-width:40px;padding:0 10px;border:1px solid var(--filet-fort);border-radius:10px;background:var(--surface);font-size:13.5px;font-weight:500}
+  .btn-carre span{display:none}
+  .ed-corps{display:flex}
+  .sommaire{display:none}
+  .ed-main{flex:1;min-width:0;padding-bottom:60px}
+  .ed-tete{position:relative;padding:22px 16px 20px;border-bottom:1px solid var(--filet);text-align:center}
+  .ed-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 10px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--attenue)}
+  .ed-titre{margin-top:14px;font-family:var(--display);font-weight:600;font-size:26px;line-height:1.15;letter-spacing:-.015em}
+  .ed-etiq{margin-top:14px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--attenue)}
+  .ed-obj{list-style:none;margin-top:6px;font-family:var(--display);font-style:italic;font-size:16px;line-height:1.45;color:var(--attenue)}
+  .reperes-ed{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px 14px;align-items:center;margin:20px auto 0;max-width:560px;padding:14px 14px 16px;border:1px solid var(--filet);border-radius:16px;background:var(--surface);text-align:left}
+  .reperes-ed>span{font-size:12.5px;font-weight:600;color:var(--attenue)}
+  .reperes-ed .val{display:flex;flex-wrap:wrap;gap:6px}
+  .reperes-ed .puce{min-height:32px;font-size:13px;padding:0 11px}
+  .reperes-ed .val.ph{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .reperes-ed .val.ph .puce{white-space:normal;line-height:1.15;padding:4px 10px}
+  @container cadre (min-width:720px){.reperes-ed .val.ph{display:flex}}
+  .reperes-ed .note-r{grid-column:1/-1;font-size:12.5px;color:var(--attenue)}
+  .reperes-ed .note-r b{color:var(--st-pret)}
+  .reperes-ed>.repere{right:-8px;top:-10px}
+  .select{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px 0 12px;border:1px solid var(--filet-fort);border-radius:8px;font-family:var(--mono);font-size:13px;background:var(--surface)}
+  .sit-ed{margin:18px 12px 0;background:var(--surface);border:1px solid var(--filet);border-radius:18px;overflow:hidden}
+  .sit-ed .tete{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:18px 16px 10px}
+  .sit-ed .num{font-family:var(--display);font-size:40px;line-height:.9;color:var(--peach)}
+  .sit-ed h4{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.2}
+  .sit-ed .type{display:inline-flex;margin-top:6px;font-size:12.5px;padding:2px 8px;border-radius:6px;background:color-mix(in srgb,var(--orange) 13%,transparent);color:var(--orange-texte)}
+  .sit-ed .dapres .logo{height:18px;width:auto}
+  .sit-ed .dapres{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12.5px;color:var(--attenue)}
+  .sit-ed .vig{border-top:1px solid var(--filet)}
+  .encart{border-left:4px solid var(--b);background:var(--bg);padding:10px 12px 12px;margin:12px}
+  .encart h5{font-size:14.5px;font-weight:600;color:var(--t);margin-bottom:3px}
+  .encart p{font-size:14px}
+  .encart.faire{--b:var(--faire-b);--bg:var(--faire-bg);--t:var(--faire-t)}
+  .encart.verif{--b:var(--verif-b);--bg:var(--verif-bg);--t:var(--verif-t)}
+  @container cadre (min-width:720px){
+    .ed-barre{padding:0 18px}
+    .ed-barre .retour span{display:inline}
+    .btn-carre span{display:inline}
+    .sommaire{display:block;position:sticky;top:58px;align-self:flex-start;width:250px;flex:none;height:calc(var(--h) - 58px);overflow-y:auto;padding:18px 14px;border-right:1px solid var(--filet)}
+    .sommaire h5{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange-texte);margin-bottom:12px}
+    .sommaire li{list-style:none;padding:7px 10px;border-radius:10px;font-size:13px}
+    .sommaire li small{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--attenue)}
+    .sommaire li.ici{background:var(--paper-2);border-left:3px solid var(--ink)}
+    .sommaire li b{font-family:var(--display);color:var(--orange-texte);font-weight:600;margin-right:4px}
+    .ed-tete{padding:30px 36px 26px;text-align:left}
+    .ed-meta{justify-content:flex-start}
+    .ed-titre{font-size:32px}
+    .reperes-ed{margin-left:0}
+    .sit-ed{margin:22px 36px 0}
+  }
+
+  /* présenter */
+  .pres{position:absolute;inset:0;z-index:15;display:flex;flex-direction:column;background:var(--surface)}
+  .pres-haut{display:flex;align-items:center;gap:6px;height:58px;flex:none;padding:0 10px;border-bottom:1px solid var(--filet);background:color-mix(in srgb,var(--paper) 75%,var(--surface))}
+  .prog{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
+  .prog i{height:7px;border-radius:999px;background:color-mix(in srgb,var(--attenue) 32%,transparent)}
+  .prog i.fait{background:var(--peach)} .prog i.ici{background:var(--orange)}
+  .compteur{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;min-width:56px;text-align:right}
+  .pres-corps{flex:1;overflow-y:auto;padding:26px 18px 28px;display:flex;flex-direction:column;gap:16px;scrollbar-width:none;max-width:860px;width:100%;margin:0 auto}
+  .pres-corps::-webkit-scrollbar{display:none}
+  .pres-corps>*{flex-shrink:0}
+  .kick{font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--attenue)}
+  .pres h2{font-family:var(--display);font-weight:600;font-size:30px;line-height:1.1;letter-spacing:-.015em}
+  .pres .obj{font-family:var(--display);font-style:italic;font-size:17px;line-height:1.45;color:var(--attenue)}
+  .grille-m{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--filet)}
+  .grille-m div{padding:14px 8px;border-bottom:1px solid var(--filet);text-align:center}
+  .grille-m div:nth-child(odd){border-right:1px solid var(--filet)}
+  .grille-m small{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--attenue)}
+  .grille-m b{font-family:var(--display);font-size:21px;font-weight:600}
+  .pres .vig{border-radius:12px}
+  .recap{list-style:none;border-top:1px solid var(--filet)}
+  .recap li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;padding:10px 4px;border-bottom:1px solid var(--filet);font-size:15px}
+  .recap .n{font-family:var(--display);font-size:18px;color:var(--orange)}
+  .classer-fin{display:grid;gap:12px;padding:16px;border-radius:16px;border:1.5px solid color-mix(in srgb,var(--orange) 45%,transparent);background:color-mix(in srgb,var(--orange) 6%,var(--surface))}
+  .classer-fin h3{font-family:var(--display);font-size:19px;font-weight:600}
+  .classer-fin p{font-size:14px;color:var(--attenue)}
+  .pres-nav{display:flex;justify-content:space-between;gap:10px;padding:12px 16px 16px;border-top:1px solid var(--filet);flex:none}
+  .pres-nav button{height:46px;padding:0 20px;border-radius:999px;border:1px solid var(--filet-fort);font-weight:600;font-size:14.5px}
+  .pres-nav .suiv{background:var(--orange);border-color:var(--orange);color:#fff}
+
+  /* couches : feuilles, menus */
+  .voile{position:absolute;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center;background:var(--voile)}
+  .feuille{display:flex;flex-direction:column;width:100%;max-height:88%;background:var(--paper);border-radius:22px 22px 0 0;overflow:hidden;animation:monte .22s ease-out}
+  @keyframes monte{from{transform:translateY(20%);opacity:.5}to{transform:none;opacity:1}}
+  @media (prefers-reduced-motion: reduce){.feuille,.voile.pop .feuille{animation:none}.voie-faite,.nav-bas,.entete-app,.fab-zone,.rail,.rail-in{transition:none}}
+  .poignee{flex:none;width:40px;height:4px;border-radius:2px;background:var(--filet-fort);margin:10px auto 0}
+  .p-tete{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 12px 20px;border-bottom:1px solid var(--filet)}
+  .p-tete h4{font-size:16px;font-weight:600}
+  .p-tete small{display:block;font-size:12.5px;font-weight:400;color:var(--attenue)}
+  .p-tete button{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--attenue)}
+  .p-corps{flex:1;overflow-y:auto;display:grid;gap:20px;align-content:start;padding:18px 20px}
+  .p-sec{display:grid;gap:9px}
+  .p-sec>span{font-size:12.5px;font-weight:600;color:var(--attenue)}
+  .options{display:flex;flex-wrap:wrap;gap:6px}
+  .champ-texte{display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border:1px solid var(--filet-fort);border-radius:12px;background:var(--surface);color:var(--attenue);font-size:15px}
+  .grille-cat{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .grille-cat .puce{justify-content:center;padding:4px 6px;min-height:42px;line-height:1.15;white-space:normal;text-align:center;border-radius:12px}
+  .case{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--violet) 8%,var(--surface));font-size:13.5px;text-align:left}
+  .case i{flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--violet);color:#fff}
+  .case i .ic{width:13px;height:13px;stroke-width:3}
+  .p-pied{display:flex;gap:10px;padding:12px 16px 16px;border-top:1px solid var(--filet);background:var(--surface)}
+  .p-pied>*{flex:1}
+  .btn-orange{display:flex;align-items:center;justify-content:center;gap:6px;height:46px;padding:0 18px;border-radius:999px;background:var(--orange);color:#fff;font-size:15px;font-weight:600}
+  .btn-texte{height:46px;font-size:14.5px;font-weight:600;text-align:center;color:var(--ink)}
+  .reglette{display:flex;align-items:center;gap:14px}
+  .reglette .tous{font-size:12.5px;font-weight:600;border:1px solid var(--filet-fort);border-radius:999px;padding:6px 11px;color:var(--attenue);flex:none}
+  .piste{position:relative;display:flex;flex:1;min-width:0}
+  .piste::before,.piste .rempli{content:"";position:absolute;top:9px;height:3px;border-radius:2px}
+  .piste::before{left:16.6%;right:16.6%;background:color-mix(in srgb,var(--violet) 30%,transparent)}
+  .piste .rempli{background:var(--violet);height:5px;top:8px}
+  .piste button{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--attenue)}
+  .piste i{width:21px;height:21px;border-radius:50%;border:3px solid var(--violet);background:var(--surface)}
+  .piste button[aria-pressed="true"]{color:var(--ink)}
+  .piste button[aria-pressed="true"] i{background:var(--violet)}
+  .phases-f{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .phases-f .phase{width:auto}
+  .phases-f .phase .picto{width:40px;height:40px}
+  .groupes-l{list-style:none;display:grid}
+  .groupes-l button{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:12px 20px;border-bottom:1px solid var(--filet);text-align:left}
+  .groupes-l .picto{width:34px;height:34px;stroke-width:2.6}
+  .groupes-l .logo{height:26px;width:auto}
+  .groupes-l b{display:block;font-weight:600}
+  .groupes-l small{font-size:12.5px;color:var(--attenue)}
+  .groupes-l .ic{width:20px;height:20px;color:var(--orange-texte);opacity:0}
+  .groupes-l button[aria-pressed="true"]{background:color-mix(in srgb,var(--orange) 7%,var(--paper))}
+  .groupes-l button[aria-pressed="true"] .ic{opacity:1}
+  /* sélecteur de groupe : changer de groupe ; l'ajout est une action à part, pas un groupe de plus */
+  .ajout-groupe{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:46px;margin-top:14px;border:1.5px dashed var(--filet-fort);border-radius:14px;font-size:14px;font-weight:600;color:var(--violet)}
+  .ajout-groupe:hover{border-color:var(--violet);background:color-mix(in srgb,var(--violet) 6%,transparent)}
+  .ajout-groupe .ic{width:17px;height:17px}
+  .note-g{margin-top:10px;font-size:12.5px;color:var(--attenue);text-align:center}
+  /* le groupe affiché, en tête de la liste, avec ses actions */
+  .g-actuel{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:2px 12px;padding:14px;border-radius:16px;background:color-mix(in srgb,var(--orange) 7%,var(--surface));border:1px solid color-mix(in srgb,var(--orange) 32%,var(--filet))}
+  .g-actuel>.picto{width:38px;height:38px;stroke-width:2.6;--couleur-trajectoire:var(--orange)}
+  .g-nom b{display:block;font-family:var(--display);font-weight:600;font-size:18px;line-height:1.15;letter-spacing:-.01em}
+  .g-nom small{font-size:12.5px;color:var(--attenue)}
+  .g-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .g-actions .btn-contour{height:38px}
+  .g-actions .inviter{background:var(--orange);border-color:var(--orange);color:#fff}
+  .g-actions .inviter .ic{width:16px;height:16px}
+  .g-actuel>.repere{right:-8px;top:-8px}
+  /* les autres groupes : on les touche pour changer */
+  .autres-g{margin:12px -20px 0;border-top:1px solid var(--filet)}
+  .voile.pop .autres-g{margin:12px -16px 0}
+  .voile.pop .feuille.large{width:400px}
+  .membres .ini{width:30px;height:30px;font-size:10.5px}
+  .ini.n2{background:color-mix(in srgb,var(--violet) 15%,var(--surface));color:var(--violet)}
+  .ini.n3{background:color-mix(in srgb,var(--peach) 45%,var(--surface));color:var(--orange-texte)}
+  .ini.n4{background:var(--paper-2);color:var(--ink)}
+  /* la page du groupe, celle d'aujourd'hui */
+  .retour-g{display:inline-flex;align-items:center;gap:8px;justify-self:start;font-size:14px;color:var(--attenue)}
+  .g-tete{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .g-tete .btn-orange{height:40px;font-size:14px}
+  .g-sous{margin-top:-8px;font-size:14px;color:var(--attenue)}
+  .cs-tete{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .cs-tete .btn-contour{height:34px;font-size:13px}
+  .infos-g{display:grid;gap:2px}
+  .infos-g dt{margin-top:6px;font-size:12.5px;color:var(--attenue)}
+  .membres{list-style:none;display:grid}
+  .membres li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--filet);font-size:14px}
+  .membres li:first-child{border-top:0}
+  .membres small{color:var(--attenue)}
+  .membres em{font-style:normal;font-size:12.5px;color:var(--attenue)}
+  .moi-ident{display:flex;align-items:center;gap:12px;padding:16px 20px 6px}
+  .moi-ident i{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1.5px solid var(--filet-fort);background:var(--surface);font-style:normal;font-weight:700}
+  .moi-ident b{display:block;font-weight:600}
+  .moi-ident small{font-size:13px;color:var(--attenue)}
+  .moi-ident .fermer{margin-left:auto;align-self:flex-start;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--attenue)}
+  .moi-equipes{display:grid;gap:12px;margin:12px 16px 4px;padding:14px;border:1px solid var(--filet);border-radius:16px;background:var(--surface)}
+  .moi-equipes h5{font-family:var(--display);font-weight:600;font-size:17px}
+  .moi-equipes p{font-size:12.5px;color:var(--attenue);margin-top:-8px}
+  .moi-equipes .grille-cat .puce{min-height:36px;font-size:12.5px}
+  .moi-liens{list-style:none;padding:6px 0 14px}
+  .moi-liens li>button,.moi-liens li>div{display:flex;align-items:center;gap:14px;width:100%;padding:11px 22px;font-size:14.5px;text-align:left}
+  .moi-liens li>button:hover{background:color-mix(in srgb,var(--ink) 4%,transparent)}
+  .moi-liens .ic{width:20px;height:20px;color:var(--attenue)}
+  .moi-liens .seg{margin-left:auto}
+  .moi-liens .seg button{font-size:12.5px;padding:.3em .9em}
+  .moi-liens .sep-l{height:1px;background:var(--filet);margin:6px 22px}
+  .moi-p{flex:1;overflow-y:auto}
+  .creer h3{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.15}
+  .pour-qui{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--filet);font-size:14px}
+  .pour-qui b{font-weight:600}
+  .pour-qui button{font-size:13px;font-weight:600;color:var(--violet)}
+  .source-p{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid color-mix(in srgb,var(--orange) 40%,var(--filet));border-radius:12px;background:color-mix(in srgb,var(--orange) 6%,var(--surface));font-size:13px}
+  .source-p .logo{height:30px;width:auto;flex:none}
+  .source-p b{display:block;font-family:var(--display);font-size:15px;font-weight:600;line-height:1.2}
+  .temps{list-style:none;display:grid;gap:8px}
+  .temps li{display:grid;grid-template-columns:1rem 78px minmax(0,1fr) auto;align-items:center;gap:10px;padding:7px 10px 7px 8px;border:1px solid var(--filet);border-radius:12px;background:var(--surface)}
+  .temps .n{font-family:var(--display);font-weight:600;color:var(--orange-texte);text-align:center}
+  .temps img{border-radius:6px;aspect-ratio:16/10;object-fit:cover}
+  .temps span{display:grid;gap:1px;font-size:13px;line-height:1.3;min-width:0}
+  .temps small{font-size:11.5px;color:var(--orange-texte);font-weight:600}
+  .temps em{font-style:normal;font-size:11.5px;color:var(--attenue)}
+  .temps .changer{font-size:12.5px;font-weight:600;color:var(--violet)}
+  .page-simple{display:grid;gap:16px;max-width:640px;margin:0 auto;padding:22px 16px}
+  .page-simple h3{font-family:var(--display);font-weight:600;font-size:26px}
+  .carte-s{display:grid;gap:8px;padding:16px;border:1px solid var(--filet);border-radius:16px;background:var(--surface)}
+  .carte-s b{font-family:var(--display);font-size:18px;font-weight:600}
+  .carte-s small{color:var(--attenue);font-size:13px}
+  .voile.pop{display:block;background:transparent}
+  .voile.pop .feuille{position:absolute;left:16px;top:120px;width:340px;max-width:calc(100% - 24px);border-radius:16px;box-shadow:0 24px 50px -18px rgba(0,0,0,.45),0 0 0 1px var(--filet);animation:pop .16s ease-out}
+  .voile.pop .p-tete{padding:6px 6px 6px 16px}
+  .voile.pop .p-tete h4{font-size:14.5px}
+  .voile.pop .p-corps{padding:14px 16px}
+  .voile.pop .p-pied{padding:10px 12px}
+  .voile.pop :is(.btn-orange,.btn-texte){height:40px;font-size:14px}
+  @keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .pf[aria-expanded="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .vide .lien-v{display:block;margin:6px auto 0;font-weight:600;color:var(--violet);text-align:center}
+  .bulle{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);z-index:30;width:max-content;max-width:calc(100% - 32px);padding:10px 16px;border-radius:12px;background:var(--ink);color:var(--paper);font-size:13.5px;text-align:center;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+  @container cadre (min-width:720px){
+    .voile{align-items:center}
+    .feuille{width:560px;max-height:calc(100% - 64px);border-radius:20px}
+    .poignee{display:none}
+    .voile.menu{align-items:flex-start;justify-content:flex-end;background:color-mix(in srgb,var(--voile) 40%,transparent)}
+    .voile.menu .feuille{width:380px;margin:64px 22px 0 0;border-radius:18px;box-shadow:0 24px 50px -20px rgba(0,0,0,.5)}
+    .voile.menu.bas{align-items:flex-end;justify-content:flex-start}
+    .voile.menu.bas .feuille{margin:0 0 14px var(--g,96px)}
+    .bulle{bottom:28px}
+    .pres-corps{padding:34px 28px}
+    .pres h2{font-size:38px}
+  }
+
+  /* ---------- sections sous la maquette ---------- */
+  .tab-wrap{overflow-x:auto;margin-top:20px}
+  .tableau{border-collapse:collapse;width:100%;min-width:720px;font-size:.92rem}
+  .tableau th,.tableau td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--filet);vertical-align:top}
+  .tableau th{font-weight:600;font-size:.84rem;color:var(--attenue)}
+  .tableau td{color:var(--attenue)}
+  .tableau td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
+  .tableau td b{color:var(--ink);font-weight:600}
+  .tableau .num{font-family:var(--display);color:var(--orange-texte);margin-right:6px}
+  .trancher{margin-top:22px;border:1.5px solid var(--orange);border-radius:20px;background:color-mix(in srgb,var(--orange) 5%,var(--paper));overflow:hidden}
+  .d{display:grid;grid-template-columns:3rem minmax(0,1.15fr) minmax(0,1fr);gap:6px 20px;padding:14px 22px;border-top:1px solid var(--filet)}
+  .d:first-child{border-top:0}
+  .d-num{font-family:var(--mono);font-size:.84rem;color:var(--orange-texte);padding-top:2px}
+  .d-q{font-size:.95rem;font-weight:600;line-height:1.4}
+  .d-q span{display:block;font-weight:400;color:var(--attenue);font-size:.88rem;margin-top:2px}
+  .d-p{font-size:.92rem;line-height:1.45}
+  .d-p::before{content:"Proposé\202F: ";color:var(--violet);font-weight:600}
+  @media(max-width:700px){.d{grid-template-columns:2.4rem minmax(0,1fr)}.d-p{grid-column:2}}
+  .dev{margin-top:96px;padding:clamp(18px,3vw,34px);border:1.5px dashed var(--filet-fort);border-radius:22px;background:var(--paper-2)}
+  .dev-marque{display:inline-block;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--ink);border-radius:8px;padding:5px 12px}
+  .dev>h2{font-family:var(--display);font-weight:600;font-size:clamp(1.4rem,3vw,1.7rem);margin:14px 0 .25em}
+  .dev>p{max-width:72ch;color:var(--attenue);font-size:.94rem}
+  .dev ul{margin:10px 0 0 1.1em;display:grid;gap:.45em}
+  .dev li{color:var(--attenue);font-size:.9rem;max-width:90ch}
+  .dev li b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="outils"><div class="wrap outils-in">
+  <a href="https://github.com/association-placeauxcoachs/produit/tree/main/etudes">Études</a>
+  <div class="seg" role="group" aria-label="Thème"><button type="button" data-theme-choix="light">Jour</button><button type="button" data-theme-choix="dark">Nuit</button></div>
+</div></div>
+
+<main class="wrap">
+<header class="entete">
+  <h1>Des séances plus lisibles, plus faciles à ranger</h1>
+  <p class="lede">La refonte des pages d’entraînements en trois étapes, de l’application d’aujourd’hui à la version finale. Chaque étape se livre seule et reprend une étude : Naviguer, Organiser, puis Créer. Touchez une étape du train : toute la maquette passe à cet état.</p>
+</header>
+
+<section class="train-zone" id="maquette" aria-labelledby="titre-train">
+  <h2 id="titre-train" class="sr">Les étapes</h2>
+  <nav class="train" id="train" aria-label="Étapes de la refonte">
+    <span class="voie" aria-hidden="true"></span><span class="voie-faite" aria-hidden="true"></span>
+    <button type="button" class="gare" data-etape="0"><span class="pt"><i></i></span><span class="nom">Aujourd’hui</span><span class="sous">L’application en production</span></button>
+    <button type="button" class="gare" data-etape="1"><span class="pt"><i></i></span><span class="nom"><small>1</small>Naviguer</span><span class="sous">La barre mène aux séances</span></button>
+    <button type="button" class="gare" data-etape="2"><span class="pt"><i></i></span><span class="nom"><small>2</small>Organiser</span><span class="sous">Chaque séance porte ses repères</span></button>
+    <button type="button" class="gare finale" data-etape="3"><span class="pt"><svg viewBox="0 0 32 26" aria-hidden="true"><path d="M4 23V4h24v19"/><path d="M4 9h24M4 14h24M4 19h24M10 4v19M16 4v19M22 4v19" stroke-width="1.1"/></svg></span><span class="nom"><small>3</small>Créer</span><span class="sous">Le + propose une séance prête</span></button>
+  </nav>
+  <p class="legende" id="legende" aria-live="polite"></p>
+
+  <div class="barre-maquette">
+    <p>Touchez la <b>barre du bas</b> ou le <b>menu ☰</b>, une <b>puce de filtre</b>, une <b>fiche</b>, ses <b>actions</b> ou l’<b>avatar</b>, et faites défiler. Séances, noms et clubs d’exemple, aux longueurs relevées en production.</p>
+    <div class="commandes">
+      <div class="seg" role="group" aria-label="Format"><button type="button" data-format="tel">Téléphone</button><button type="button" data-format="tab">Tablette</button><button type="button" data-format="ord">Ordinateur</button></div>
+      <div class="seg" role="group" aria-label="Explications"><button type="button" data-explications="oui">Avec explications</button><button type="button" data-explications="non">Maquette seule</button></div>
+      <div class="seg"><button type="button" id="recommencer">Recommencer</button></div>
+    </div>
+  </div>
+  <div class="ecrans-rapides" id="rapides" role="group" aria-label="Aller à un écran"></div>
+  <div class="zone" id="zone" data-format="tel" data-explications="oui">
+    <div class="cadre" id="cadre"><div class="ecran" id="ecran" role="region" aria-label="Maquette de l’application"></div><div class="calque" id="calque"></div></div>
+    <aside class="pourquoi" id="pourquoi" aria-live="polite"></aside>
+  </div>
+</section>
+
+<!-- ==================== COMMENT ON Y VA ==================== -->
+<section class="bloc" id="chemin" aria-labelledby="titre-chemin">
+  <h2 id="titre-chemin">Comment on y va</h2>
+  <p class="chapo">Trois livraisons, dans cet ordre. La première ne touche à aucune donnée ; la troisième a besoin des repères posés par la deuxième.</p>
+  <div class="tab-wrap">
+    <table class="tableau">
+      <thead><tr><th scope="col">Étape</th><th scope="col">Ce que l’entraîneur voit</th><th scope="col">Ce qu’il faut construire</th><th scope="col">D’après</th></tr></thead>
+      <tbody>
+        <tr><td><span class="num">1</span>Naviguer</td><td>Trois destinations : Mes séances, Groupes, Communauté. Sur téléphone et tablette, dans la barre du bas ; sur ordinateur, dans le tiroir de gauche, qui liste aussi vos groupes. Le compte passe sous l’avatar. Chaque puce de filtre ouvre son seul contenu ; la recherche se fait dans la barre du haut. Sur téléphone et tablette, les barres s’effacent quand on descend. Le comité a sa vitrine dans la Communauté : sa carte n’affiche que ses séances. Dans la Communauté, un interrupteur « En préparation » remplace le filtre de statut. La fiche se resserre et garde toutes ses actions.</td><td><b>Aucune donnée ne change.</b> Barre, tiroir, en-tête, puces de filtres, nouvelle fiche.</td><td>Étude « Naviguer par les séances », avec trois écarts : le comité dans la Communauté plutôt qu’en destination (N5), une fiche unique plutôt que lignes et cartes (N8), pas de vignette (N9).</td></tr>
+        <tr><td><span class="num">2</span>Organiser</td><td>La séance porte catégorie, niveau, phase de jeu (attaque placée, repli défensif, défense placée, grand espace) et forme de jeu (le dispositif défensif). La situation ne garde que son type, posé par le modèle. La Communauté s’ouvre sur les phases dessinées, À la une et les situations à piocher. « À classer » dans Mes séances. Mes équipes dans le profil.</td><td>Colonnes niveau, phases et formes ; reprise des anciens mots-clés ; compte des ouvertures pour À la une.</td><td>Étude « Organiser la Communauté » (D1 à D9), avec la classification de Thomas (issue 31, 12 octobre) : <b>Repli défensif</b> plutôt que « Du jeu tout terrain au jeu placé » (D2), compétences et ressources retirées. Les phases sur une rangée sur téléphone (N11).</td></tr>
+        <tr><td><span class="num">3</span>Créer</td><td>Le + demande quoi travailler et propose une séance en quatre temps, déjà dessinée. Chaque situation reprise cite son auteur. Présenter gagne une page de fin, qui propose de classer.</td><td>Proposition calculée à partir des repères ; compte des reprises.</td><td>Étude « Créer un entraînement en trois gestes », alignée sur les quatre phases de Thomas et les quatre temps d’« Organiser » (D10).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== COHÉRENCE ==================== -->
+<section class="bloc" id="coherence" aria-labelledby="titre-coherence">
+  <h2 id="titre-coherence">Le reste de l’application, étape par étape</h2>
+  <p class="chapo">Ce qui n’est pas au cœur de la refonte, mais qu’elle touche en passant. Un tiret : rien ne change.</p>
+  <div class="tab-wrap">
+    <table class="tableau">
+      <thead><tr><th scope="col"></th><th scope="col">1 · Naviguer</th><th scope="col">2 · Organiser</th><th scope="col">3 · Créer</th></tr></thead>
+      <tbody>
+        <tr><td>Éditeur</td><td>—</td><td>Les repères se posent dans l’en-tête ; les situations gardent leur type, renommé (D5).</td><td>Les situations reprises affichent « d’après » leur auteur.</td></tr>
+        <tr><td>Présenter</td><td>Lancé par le bouton de la fiche.</td><td>—</td><td>Une page de fin, qui propose de classer une séance qui ne l’est pas.</td></tr>
+        <tr><td>PDF, dupliquer, partager, supprimer</td><td>Sur la fiche, comme aujourd’hui.</td><td>Le PDF imprime les repères dans l’en-tête.</td><td>—</td></tr>
+        <tr><td>Groupes : création, invitations, membres</td><td>Le titre d’un groupe ne sert qu’à en changer ; « Créer ou rejoindre un groupe » est en bas de sa liste, et sur le + du tiroir. Le groupe affiché y est en tête, avec « Inviter » et « Informations et membres », qui ouvre la page du groupe d’aujourd’hui. La page « Mes groupes » disparaît.</td><td>—</td><td>—</td></tr>
+        <tr><td>Profil</td><td>Sous l’avatar ; la pastille « profil incomplet » passe sur l’avatar.</td><td>Mes équipes : catégories et niveaux, qui ouvrent la Communauté sur vos équipes.</td><td>Mes équipes servent au +.</td></tr>
+        <tr><td>Import d’un entraînement</td><td>Sous l’avatar.</td><td>La séance importée arrive « à classer ».</td><td>—</td></tr>
+        <tr><td>Administration, groupes mis en avant</td><td>Sous l’avatar. Mettre un groupe en avant lui donne sa carte dans la vitrine de la Communauté.</td><td>—</td><td>—</td></tr>
+        <tr><td>Planification de saison</td><td>La quatrième place de la barre lui est gardée.</td><td>Les thèmes de saison pourront reprendre catégorie, niveau et phase.</td><td>—</td></tr>
+        <tr><td>Page d’accueil, film, tutoriels</td><td>Captures à refaire.</td><td>—</td><td>Le tutoriel « Préparer sa première séance » à refaire.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== À TRANCHER ==================== -->
+<section class="bloc" id="trancher" aria-labelledby="titre-trancher">
+  <h2 id="titre-trancher">À trancher</h2>
+  <p class="chapo">Ce que la maquette ajoute aux études. Répondez en citant le numéro, en commentaire de la fiche du <a href="https://github.com/orgs/association-placeauxcoachs/projects/2">tableau de suivi</a>.</p>
+  <div class="trancher">
+    <div class="d"><span class="d-num">R1</span><p class="d-q">Le comité dans la Communauté, en vitrine, plutôt qu’en onglet ou en destination ?<span>Avec plusieurs groupes mis en avant, une destination par groupe ne tient plus dans la barre.</span></p><p class="d-p">Oui. Par défaut, toute la communauté ; chaque groupe mis en avant a son bandeau, son logo en grand et un lien qui n’affiche que ses séances. Plusieurs groupes : les bandeaux défilent.</p></div>
+    <div class="d"><span class="d-num">R2</span><p class="d-q">Trois destinations : Mes séances, Groupes, Communauté ?</p><p class="d-p">Oui. La quatrième place est gardée pour la Planification de saison.</p></div>
+    <div class="d"><span class="d-num">R3</span><p class="d-q">Toucher la fiche ouvre la séance, partout ?<span>Aujourd’hui, sur téléphone, toucher la carte lance Présenter.</span></p><p class="d-p">Oui. Présenter a son propre bouton, en tête des actions de la fiche.</p></div>
+    <div class="d"><span class="d-num">R4</span><p class="d-q">Sur la fiche, n’afficher que ce qui est rempli ?</p><p class="d-p">Oui : plus de « — » pour un effectif, une durée ou une date absents. Le statut, le thème et l’objectif restent toujours.</p></div>
+    <div class="d"><span class="d-num">R5</span><p class="d-q">Une seule rangée d’étiquettes sur la fiche ?</p><p class="d-p">Oui. À l’étape 1, les premiers mots-clés et « +N » ; à partir de l’étape 2, la phase, le niveau et la forme de jeu, qui disent davantage.</p></div>
+    <div class="d"><span class="d-num">R6</span><p class="d-q">Le schéma seulement sur les situations à piocher ?<span>Pas de vignette sur les séances : l’en-tête dit plus que le dessin.</span></p><p class="d-p">Oui : une situation se juge à son dessin, une séance à son thème et à son objectif.</p></div>
+    <div class="d"><span class="d-num">R7</span><p class="d-q">« À classer » en puce de filtre dans Mes séances, plutôt qu’en bandeau ?</p><p class="d-p">Oui : elle compte les séances à classer et ne s’affiche que s’il en reste.</p></div>
+    <div class="d"><span class="d-num">R8</span><p class="d-q">La prochaine séance en tête de Mes séances ?</p><p class="d-p">Pas dans cette refonte : elle revient à la Planification de saison.</p></div>
+    <div class="d"><span class="d-num">R9</span><p class="d-q">Sur ordinateur, le compte en bas du tiroir plutôt qu’en haut à droite ?</p><p class="d-p">Oui : le tiroir porte déjà la navigation, et la barre du haut garde le titre et la recherche. Sur téléphone et tablette, l’avatar reste en haut à droite.</p></div>
+  </div>
+</section>
+
+<section class="dev" aria-labelledby="titre-dev">
+  <span class="dev-marque">Réservé au développeur</span>
+  <h2 id="titre-dev">Livraison</h2>
+  <p>On peut s’arrêter ici. Les détails restent dans les trois études ; voici ce que la maquette change à leur découpage.</p>
+  <ul>
+    <li><b>Étape 1</b> : <code>navigation-par-destinations</code> et <code>filtres-en-puces</code> de l’étude Naviguer. <code>DESTINATIONS</code> à trois entrées ; les groupes mis en avant quittent <code>navigation-contexte.tsx</code> pour une vitrine dans la Communauté (paramètre <code>source</code> à côté de <code>tab=communaute</code>). <code>navigation-rail.tsx</code> reste le tiroir, à partir de <code>lg</code> comme aujourd’hui, ouvert par défaut, avec vos groupes en sous-liens sous Groupes, comme aujourd’hui ; le comité n’y est pas, son bandeau suffit ; en dessous, la barre du bas. <code>useScrollDirection</code> masque aussi la barre du haut sous <code>lg</code>. <code>panel-filtres-mobile.tsx</code> laisse place à un panneau par puce, qui reprend <code>SelectionCategories</code>, <code>SelecteurMotsCles</code> et <code>SelecteurStatuts</code> ; sur ordinateur, ces mêmes listes s’ouvrent sous la puce. La recherche passe dans la barre du haut. La page <code>/groupes</code> disparaît : la liste sous le titre du groupe la remplace, et « Informations et membres » mène à <code>/groupes-de-travail/[id]</code>. Dans la Communauté, <code>SelecteurStatuts</code> devient un interrupteur « En préparation » (brouillon et en cours), masqué pour un groupe mis en avant comme aujourd’hui. <code>carte-entrainement.tsx</code> devient la fiche : mêmes actions, mêmes droits, <code>@container</code> à 500 px au lieu de <code>@lg</code>, métadonnées vides retirées. <code>ligne-entrainement.tsx</code> et le cookie lignes ou cartes ne sont plus nécessaires.</li>
+    <li><b>Étape 2</b> : <code>reperes-seance</code>, <code>filtres-reperes</code>, <code>communaute-par-phase</code>, <code>piocher-situations</code>, <code>a-la-une</code> de l’étude Organiser, sans changement. Puce « À classer » : un critère <code>aClasser</code> dans <code>ParametresRecherche</code>, réservé à Mes séances.</li>
+    <li><b>Étape 3</b> : <code>aide-creation-entrainement</code> de l’étude Créer, avec les phases et les temps de l’étude Organiser.</li>
+    <li><b>Mesure</b> (ADR-0024) : <code>source_communaute_choisie</code> et <code>fiche_action</code> (présenter, pdf, dupliquer, partager, supprimer) s’ajoutent aux événements des études.</li>
+  </ul>
+</section>
+</main>
+
+<script>
+(function () {
+  var racine = document.documentElement;
+  var boutonsTheme = document.querySelectorAll('[data-theme-choix]');
+  function themeActuel() { return racine.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+  function marqueTheme() { var v = themeActuel(); boutonsTheme.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeChoix === v)); }); }
+  function changeTheme(v) { racine.dataset.theme = v; marqueTheme(); rend(); }
+  boutonsTheme.forEach(function (b) { b.addEventListener('click', function () { changeTheme(b.dataset.themeChoix); }); });
+
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function ic(n) { return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + I[n] + '</svg>'; }
+  var I = {
+    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    lune: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+    reglages: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+    dossier: '<path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>',
+    niveau: '<path d="M5 19V14M12 19V9M19 19V5"/>',
+    liste: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/>',
+    diese: '<path d="M5 9h15M4 15h15M10 3 8 21M16 3l-2 18"/>',
+    forme: '<circle cx="5" cy="16" r="1.8"/><circle cx="12" cy="12.5" r="1.8"/><circle cx="19" cy="16" r="1.8"/><circle cx="8.5" cy="6.5" r="1.8"/><circle cx="15.5" cy="6.5" r="1.8"/>',
+    loupe: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+    croix: '<path d="M6 6l12 12M18 6 6 18"/>',
+    coche: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+    chevron: '<path d="m6 9 6 6 6-6"/>',
+    droite: '<path d="m9 6 6 6-6 6"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    retour: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+    presenter: '<path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/>',
+    pdf: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
+    copier: '<rect width="13" height="13" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+    partager: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+    corbeille: '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+    disquette: '<path d="M5 3h11l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7H7v7M7 3v4h8"/>',
+    personne: '<circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.9 3.1-6.6 7-6.6s7 2.7 7 6.6"/>',
+    membres: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3.3 2.5-5.6 5.5-5.6s5.5 2.3 5.5 5.6"/><path d="M16 5.2a3.2 3.2 0 0 1 0 6"/><path d="M18 13.6c1.6.7 2.6 2.6 2.6 5.4"/>',
+    importer: '<path d="M12 15V4M7 9l5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/>',
+    bouclier: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/>',
+    sortie: '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',
+    sifflet: '<path d="M9 7a5 5 0 1 0 4.9 6H21V9h-9.3"/><circle cx="9" cy="12" r="1.2"/>',
+    crayon: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+    cible: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/>'
+  };
+
+  /* ---------- pictogrammes du tracé ---------- */
+  function pointe(x, y, dx, dy) {
+    var l = Math.hypot(dx, dy), bx = -dx / l, by = -dy / l, c = Math.cos(0.7), s = Math.sin(0.7), r = 5;
+    var ax = x + r * (bx * c - by * s), ay = y + r * (bx * s + by * c), cx = x + r * (bx * c + by * s), cy = y + r * (-bx * s + by * c);
+    return '<path class="pointe" d="M' + ax.toFixed(2) + ' ' + ay.toFixed(2) + 'L' + x + ' ' + y + 'L' + cx.toFixed(2) + ' ' + cy.toFixed(2) + '"/>';
+  }
+  function joueur(x, y) { return '<circle class="joueur" cx="' + x + '" cy="' + y + '" r="2.2"/>'; }
+  var CADRE = '<path d="M7.5 9h33A2.5 2.5 0 0 1 43 11.5v25a2.5 2.5 0 0 1-2.5 2.5h-33A2.5 2.5 0 0 1 5 36.5v-25A2.5 2.5 0 0 1 7.5 9z"/>';
+  var DEMI = CADRE + '<path d="M5 21.5H2.5v5H5"/><path d="M5 13.5A8 8 0 0 1 13 21.5V26.5A8 8 0 0 1 5 34.5"/>';
+  var ENTIER = CADRE + '<path d="M24 9v30"/><path d="M5 18a6 6 0 0 1 0 12"/><path d="M43 18a6 6 0 0 0 0 12"/>';
+  var DESSINS = {
+    ap: DEMI + joueur(29, 15) + joueur(29, 33) + '<path class="trajectoire" d="M38.5 25.5C33 26.5 26 25.5 19.5 24"/>' + pointe(19.5, 24, -6.5, -1.5),
+    dp: DEMI + joueur(15.2, 14.3) + joueur(17.3, 19.3) + joueur(17.3, 28.7) + joueur(15.2, 33.7) + joueur(33, 24) + '<path class="trajectoire" d="M20.5 24H27.5"/>' + pointe(27.5, 24, 1, 0),
+    rd: ENTIER + joueur(36.5, 30) + '<path class="trajectoire" d="M33.8 29.4C26 28.5 18.5 27 12.5 23"/>' + pointe(12.5, 23, -6, -4),
+    ge: ENTIER + joueur(8, 24) + joueur(33, 15.5) + '<path class="passe" d="M10.5 22.4Q21 12.5 30.4 14.6"/>',
+    plaquette: '<path d="M18 9h-4.5A2.5 2.5 0 0 0 11 11.5v28a2.5 2.5 0 0 0 2.5 2.5h21a2.5 2.5 0 0 0 2.5-2.5v-28A2.5 2.5 0 0 0 34.5 9H30"/><path d="M18 12V7.5A1.5 1.5 0 0 1 19.5 6h9A1.5 1.5 0 0 1 30 7.5V12z"/><path d="M16 18h9M16 22.5h6"/><path class="trajectoire" d="M16 36.5c6-1 11-5 15-11.5"/><path class="pointe" d="M25.11 26.13L31 25L31.93 30.93"/>',
+    staff: '<circle cx="10.5" cy="20" r="4"/><path d="M3 37c0-4.6 3.3-8.2 7.5-8.2 1.9 0 3.6.7 4.9 1.9"/><circle cx="37.5" cy="20" r="4"/><path d="M45 37c0-4.6-3.3-8.2-7.5-8.2-1.9 0-3.6.7-4.9 1.9"/><circle cx="24" cy="23" r="5.5"/><path d="M14 43c0-6.8 4.5-11.5 10-11.5s10 4.7 10 11.5"/><path class="trajectoire" d="M12.22 12.51A13 13 0 0 1 35.02 11.11"/><path class="pointe" d="M35.24 5.12L35.02 11.11L29.04 10.68"/>',
+    ronde: '<circle cx="24" cy="12.75" r="9"/><circle cx="24" cy="10.77" r="2.88"/><path d="M18.05 19.5A6.09 6.09 0 0 1 29.95 19.5"/><circle cx="36.99" cy="35.25" r="9"/><circle cx="36.99" cy="33.27" r="2.88"/><path d="M31.04 42A6.09 6.09 0 0 1 42.94 42"/><circle cx="11.01" cy="35.25" r="9"/><circle cx="11.01" cy="33.27" r="2.88"/><path d="M5.06 42A6.09 6.09 0 0 1 16.96 42"/><path class="passe" d="M34.7 17.23A15 15 0 0 1 38.46 23.75"/><path class="passe" d="M27.76 42.27A15 15 0 0 1 20.24 42.27"/><path class="passe" d="M9.54 23.75A15 15 0 0 1 13.3 17.23"/>'
+  };
+  function picto(code) { return '<svg class="picto" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + DESSINS[code] + '</svg>'; }
+  function logo(cls) { return '<img class="logo logo-jour ' + (cls || '') + '" src="comite-gironde.svg" alt="" width="717" height="304"><img class="logo logo-nuit ' + (cls || '') + '" src="comite-gironde-blanc.png" alt="" width="1024" height="464">'; }
+  function vig(img) { return '<img class="vig" src="schemas/' + img + '.webp" alt="" loading="lazy" width="640" height="514">'; }
+
+  /* ---------- repères et données d'exemple ---------- */
+  var COMITE = 'Comité de Gironde', MOI = 'Camille Durand', CLUB = 'HB Les Pins';
+  // les quatre phases, l'ordre et les formes de jeu de la liste de Thomas (issue produit 31, 12 octobre)
+  var PH = { ap: 'Attaque placée', rd: 'Repli défensif', dp: 'Défense placée', ge: 'Grand espace' };
+  var PH_C = PH;
+  var ORDRE_PH = ['ap', 'rd', 'dp', 'ge'];
+  var TYPES = [['ech', 'Échauffement'], ['gb', 'Gardien·ne de but'], ['tr', 'Travail'], ['fj', 'Sous forme jouée'], ['po', 'Spécifique au poste'], ['dv', 'Divers']];
+  var CATS = [['U5', 'Baby (U5)'], ['U7', '1er pas (U7)'], ['U9', 'U9'], ['U11', 'U11'], ['U13', 'U13'], ['U15', 'U15'], ['U18', 'U18'], ['Seniors', 'Seniors']];
+  var NIV = ['Débutant', 'Intermédiaire', 'Confirmé'];
+  var FORMES = ['0-6 de zone', '0-6 homme à homme', '1-5 de zone', '1-5 homme à homme', '2-4 de zone', '3-2-1 de zone', '3-3 homme à homme'];
+  var LIB_ST = { brouillon: 'Brouillon', encours: 'En cours', pret: 'Prêt', termine: 'Terminé' };
+  function lib(l, c) { for (var i = 0; i < l.length; i++) if (l[i][0] === c) return l[i][1]; return c; }
+
+  // Longueurs et formes relevées sur la Communauté et le groupe du comité, en production, le 15 octobre 2026.
+  // Thèmes, objectifs, noms et clubs sont des exemples.
+  var S = [
+    // mes séances
+    { id: 'M1', src: 'moi', t: 'Attaque – développer la continuité : duel, enchaînement, relation à 2 puis à 3', o: ['Enchaîner les duels et construire la relation à 2 puis à 3 en s’appuyant sur la base arrière.'], cats: ['U13'], st: 'pret', n: 7, eff: '14', du: '1h45', d: '9 oct.', mots: ['Proprioception', 'Endurance', 'Atelier', 'Échauffement', 'Passe', 'Circulation de balle'], plus: 15, niv: 'Intermédiaire', ph: ['ap'], fo: [], sits: ['14', '04', '12', '07'] },
+    { id: 'M2', src: 'moi', t: 'Défense étagée, semaine 6', o: ['Monter sur le porteur sans se faire déborder.'], cats: ['U13'], st: 'pret', n: 4, eff: '12+2GB', du: '1h30', d: '7 oct.', mots: ['Échauffement', 'Défense de zone', 'Duel GB/T', 'Situation évolutive'], plus: 0, niv: 'Intermédiaire', ph: ['dp'], fo: ['3-2-1 de zone'], sits: ['09', '11', '13', '15'] },
+    { id: 'M3', src: 'moi', t: '', o: [], cats: [], st: 'brouillon', n: 1, eff: '', du: '', d: '12 oct.', mots: ['Échauffement'], plus: 0, niv: '', ph: [], fo: [], sits: ['00'] },
+    { id: 'M4', src: 'moi', t: 'Contre-attaque U13, semaine 4', o: ['Sortir vite de sa zone après la récupération.'], cats: ['U13'], st: 'encours', n: 2, eff: '14', du: '1h30', d: '30 sept.', mots: ['Montée de balle', 'Duel GB/T'], plus: 0, niv: '', ph: [], fo: [], sits: ['02', '05'] },
+    { id: 'M5', src: 'moi', t: 'Spécial tir', o: ['Améliorer la confiance au tir.'], cats: ['U11'], st: 'termine', n: 4, eff: '20', du: '1h30', d: '12 mai', mots: ['Échauffement', 'Tir', 'Motricité spécifique', 'Duel GB/T', 'Duel T/GB', 'Précision'], plus: 3, niv: '', ph: [], fo: [], sits: ['03', '04', '06', '07'] },
+    { id: 'M6', src: 'moi', t: 'Dynamiser le jeu sans ballon et coordonner les actions entre partenaires', o: ['Se démarquer en utilisant l’écartement et la profondeur.'], cats: ['U11'], st: 'termine', n: 4, eff: '20', du: '1h30', d: '5 mai', mots: ['Échauffement', 'Débordement', 'Feinte', 'Démarquage', 'Duel GB/T', 'Duel T/GB'], plus: 8, niv: 'Débutant', ph: ['ap'], fo: [], sits: ['01', '03', '12', '07'] },
+    { id: 'M7', src: 'moi', t: 'Découverte du handball', o: ['Proposer des ateliers pour comprendre les principes du jeu.'], cats: ['U9', 'U11'], st: 'termine', n: 5, eff: '80', du: '1h', d: '30 mai', mots: ['Dribble', 'Passe', 'Placement défensif', 'Tir', 'Duel GB/T'], plus: 1, niv: 'Débutant', ph: ['ge'], fo: [], sits: ['08', '01', '03', '05'] },
+    // groupe du club
+    { id: 'G1', src: 'grp', a: 'Alex D.', t: 'SEN - 12/ Montée de balle + 0-6 de zone', o: ['Bloc à 4 et organisation de la montée de balle.'], cats: ['Seniors'], st: 'termine', n: 5, eff: '16+2GB', du: '1h30', d: '10 oct.', mots: ['Échauffement', 'Défense de zone', 'Défense 0-6', 'Montée de balle'], plus: 2, niv: 'Confirmé', ph: ['dp', 'ge'], fo: ['0-6 de zone'], sits: ['10', '05', '13', '16'] },
+    { id: 'G2', src: 'grp', a: 'Lou B.', t: '15F - 08/ Spécifique ailières et pivots', o: ['Tirer en extension pour les ailières.', 'Se démarquer sur la ligne pour les pivots.'], cats: ['U15'], st: 'pret', n: 4, eff: '14+2GB', du: '1h15', d: '8 oct.', mots: ['Aile', 'Pivot', 'Duel GB/T'], plus: 0, niv: 'Intermédiaire', ph: ['ap'], fo: [], sits: ['06', '04', '14', '07'] },
+    { id: 'G3', src: 'grp', a: 'Sacha L.', t: 'Séance du mardi', o: [], cats: ['U13'], st: 'encours', n: 3, eff: '', du: '1h', d: '', mots: ['Échauffement', 'Tir'], plus: 0, niv: '', ph: [], fo: [], sits: ['01', '04', '07'] },
+    // comité
+    { id: 'C1', src: 'com', a: 'Hugo P.', t: 'Relation passeur-réceptionneur, du grand au petit espace', o: ['Décider entre tirer, passer ou traverser. Se replacer pour voir le but, le ballon, les adversaires et les partenaires.'], cats: ['U13', 'U15', 'U18', 'Seniors'], st: 'termine', n: 4, eff: '25', du: '1h30', d: '6 oct.', mots: ['Échauffement', 'Situation évolutive'], plus: 0, niv: 'Intermédiaire', ph: ['ap'], fo: [], vues: 64, sits: ['01', '03', '12', '07'] },
+    { id: 'C2', src: 'com', a: 'Rémi C.', t: 'Défendre sur la porteuse de balle dans une défense 3-3 fille à fille', o: ['Se répartir les joueuses, percevoir ballon et vis-à-vis, impacter son adversaire au moment de la réception.'], cats: ['U15'], st: 'pret', n: 4, eff: '16+2', du: '1h30', d: '5 oct.', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive', 'Situation évolutive jouée'], plus: 0, niv: 'Intermédiaire', ph: ['dp'], fo: ['3-3 homme à homme'], vues: 51, sits: ['09', '11', '13', '15'] },
+    { id: 'C3', src: 'com', a: 'Rémi C.', t: 'Améliorer les relations défensives autour du pivot dans une défense 1-5 homme à homme', o: ['S’aligner côté ballon avec son partenaire et le pivot pour se répartir les tâches : neutraliser, dissuader la passe au pivot.'], cats: ['U15'], st: 'termine', n: 3, eff: '24+5GB', du: '1h40', d: '8 sept.', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive'], plus: 0, niv: 'Confirmé', ph: ['dp'], fo: ['1-5 homme à homme'], vues: 33, sits: ['10', '11', '14', '16'] },
+    { id: 'C4', src: 'com', a: 'Hugo P.', t: 'Repli défensif et défense 3-3 homme à homme', o: ['Revenir vite dans sa moitié et prendre son joueur avant la première passe.'], cats: ['U15', 'U18', 'Seniors'], st: 'pret', n: 4, eff: '27', du: '2h', d: '24 sept.', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive', 'Situation évolutive jouée'], plus: 0, niv: 'Intermédiaire', ph: ['rd'], fo: ['3-3 homme à homme'], vues: 42, sits: ['02', '05', '06', '16'] },
+    { id: 'C5', src: 'com', a: 'Rémi C.', t: 'Jouer face à une défense alignée entre 6 et 9 mètres', o: ['Identifier son couloir de jeu direct. Se placer pour recevoir la balle en position de marquer.'], cats: ['U13', 'U15'], st: 'termine', n: 3, eff: '23+3GB', du: '1h40', d: '21 sept.', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive'], plus: 0, niv: 'Intermédiaire', ph: ['ap'], fo: [], vues: 38, sits: ['12', '04', '14'] },
+    { id: 'C6', src: 'com', a: 'Rémi C.', t: 'Améliorer les comportements des défenseures éloignées de la porteuse de balle', o: ['Flotter sur le temps de passe.', 'Selon le danger, dissuader ou monter.', 'Intercepter les passes longues.'], cats: ['Seniors'], st: 'termine', n: 4, eff: '12+2GB', du: '1h30', d: '2 oct.', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive', 'Situation évolutive jouée'], plus: 0, niv: 'Confirmé', ph: ['dp'], fo: [], vues: 21, sits: ['09', '11', '13', '15'] },
+    { id: 'C7', src: 'com', a: 'Hugo P.', t: 'Défense 3-3 homme à homme', o: ['Suivre son joueur et gêner la passe.'], cats: ['U11'], st: 'termine', n: 4, eff: '18', du: '1h15', d: '14 sept.', mots: ['Échauffement', 'Duel GB/T', 'Situation évolutive'], plus: 0, niv: 'Débutant', ph: ['dp'], fo: ['3-3 homme à homme'], vues: 29, sits: ['09', '10', '13', '15'] },
+    // communauté
+    { id: 'K1', src: 'k', a: 'Sacha L.', club: 'AS Médoc HB', t: 'SEN - 37/ Mise en place 1, 8 et 9 + second temps 3 et 6', o: ['Reconnaître le temps fort.', 'Mettre de la continuité après le temps fort.', 'Rentrer s’il n’y a pas de solution sur le premier temps.'], cats: ['Seniors'], st: 'termine', n: 4, eff: '16+4', du: '1h30', d: '15 oct.', mots: ['Relation passeur-réceptionneur', 'Duel GB/T', 'Motricité spécifique', 'Écartement-profondeur', 'Enclenchement'], plus: 0, niv: 'Confirmé', ph: ['ap'], fo: [], vues: 18, sits: ['12', '14', '04', '07'] },
+    { id: 'K2', src: 'k', a: 'Eden M.', club: 'Entre-deux-Mers HB', t: '18G - Défense 0-6 de zone + révision des enclenchements', o: [], cats: ['U18'], st: 'termine', n: 5, eff: '13+1', du: '1h30', d: '15 oct.', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Collaboration défensive', 'Attaque proche de la zone'], plus: 0, niv: '', ph: [], fo: [], vues: 9, sits: ['10', '13', '11'] },
+    { id: 'K3', src: 'k', a: 'Eden M.', club: 'Entre-deux-Mers HB', t: '13G - 13/ Spécifique ailiers et arrières', o: ['Sauter longtemps pour les ailiers.', 'Tirer de loin pour les arrières.'], cats: ['U13'], st: 'termine', n: 4, eff: '24+2', du: '1h30', d: '14 oct.', mots: ['Motricité générale', 'Duel GB/T', 'Relation passeur-réceptionneur', 'Aile', 'Arrière', 'Attaque 1/2 terrain'], plus: 0, niv: 'Intermédiaire', ph: ['ap'], fo: [], vues: 27, sits: ['06', '04', '12'] },
+    { id: 'K4', src: 'k', a: 'Dominique P.', club: 'US Saint-Médard', t: 'Améliorer le duel et l’enchaînement d’actions du porteur de balle', o: ['Déborder son vis-à-vis pour créer l’avantage, le transmettre à son partenaire ; maintenir l’incertitude par la triple menace.'], cats: ['U15', 'U18'], st: 'pret', n: 4, eff: '24+6GB', du: '1h40', d: '13 oct.', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive', 'Situation évolutive jouée'], plus: 0, niv: 'Intermédiaire', ph: ['ap'], fo: [], vues: 31, sits: ['14', '04', '12', '07'] },
+    { id: 'K5', src: 'k', a: 'Alex D.', club: CLUB, t: 'Montée de balle et contre-attaque', o: ['Transformer chaque récupération en attaque rapide.'], cats: ['U13'], st: 'pret', n: 4, eff: '14', du: '1h30', d: '3 oct.', mots: ['Montée de balle', 'Contre-attaque', 'Duel GB/T'], plus: 0, niv: 'Intermédiaire', ph: ['ge'], fo: [], vues: 23, sits: ['02', '03', '05', '07'] },
+    { id: 'K6', src: 'k', a: 'Lou B.', club: CLUB, t: 'Revenir vite, défendre en 0-6', o: ['Être en place avant la première passe adverse.'], cats: ['U15'], st: 'termine', n: 3, eff: '16', du: '1h30', d: '24 sept.', mots: ['Repli défensif', 'Défense 0-6'], plus: 0, niv: 'Intermédiaire', ph: ['rd', 'dp'], fo: ['0-6 de zone'], vues: 17, sits: ['16', '13', '15'] },
+    { id: 'K7', src: 'k', a: 'Noa V.', club: 'Bordeaux Rive Droite', t: 'Premiers duels, premiers tirs', o: ['Oser tirer face au gardien.'], cats: ['U9'], st: 'termine', n: 3, eff: '18', du: '1h', d: '2 oct.', mots: ['Tir', 'Duel GB/T'], plus: 0, niv: 'Débutant', ph: ['ap'], fo: [], vues: 12, sits: ['03', '04', '07'] },
+    { id: 'K8', src: 'k', a: 'Noa V.', club: 'Bordeaux Rive Droite', t: 'Le ballon voyageur', o: ['Faire voyager le ballon d’un camp à l’autre.'], cats: ['U5', 'U7'], st: 'termine', n: 3, eff: '10', du: '45 min', d: '27 sept.', mots: ['Motricité', 'Passe'], plus: 0, niv: 'Débutant', ph: ['ge'], fo: [], vues: 7, sits: ['08', '01', '02'] },
+    { id: 'K9', src: 'k', a: 'Camille R.', club: 'AS Médoc HB', t: 'Améliorer les comportements défensifs dans un dispositif 1-5', o: ['Identifier les courses dangereuses de la base arrière, faire des choix et agir sur les trajectoires de passe.'], cats: ['Seniors'], st: 'pret', n: 3, eff: '16+2', du: '1h30', d: '8 oct.', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive'], plus: 0, niv: 'Confirmé', ph: ['dp'], fo: ['1-5 de zone'], vues: 14, sits: ['10', '11', '13'] },
+    { id: 'K10', src: 'k', a: 'Lou B.', club: CLUB, t: 'Défendre ensemble', o: ['Aider son partenaire et récupérer le ballon.'], cats: ['U15'], st: 'pret', n: 4, eff: '12', du: '1h15', d: '1er oct.', mots: ['Défense', 'Aide'], plus: 0, niv: 'Intermédiaire', ph: ['dp'], fo: [], vues: 16, sits: ['10', '11', '14', '15'] },
+    { id: 'K12', src: 'k', a: 'Eden M.', club: 'Entre-deux-Mers HB', t: '15F - 06/ Montée de balle et engagement rapide', o: ['Relancer vite après un but encaissé.'], cats: ['U15'], st: 'encours', n: 2, eff: '', du: '1h30', d: '14 oct.', mots: ['Montée de balle', 'Engagement rapide'], plus: 0, niv: 'Intermédiaire', ph: ['ge'], fo: [], vues: 3, sits: ['02', '05'] },
+    { id: 'K13', src: 'k', a: 'Maxime F.', club: 'US Saint-Médard', t: 'SEN - 38/ Défense 1-5 et sortie sur l’arrière', o: [], cats: ['Seniors'], st: 'brouillon', n: 1, eff: '', du: '', d: '15 oct.', mots: ['Échauffement'], plus: 0, niv: '', ph: [], fo: [], vues: 0, sits: ['01'] },
+    { id: 'K11', src: 'k', a: 'Maxime F.', club: 'US Saint-Médard', t: '18F + SF2 - Jeu en triangle pour battre une 0-6 de zone', o: ['Créer et exploiter un surnombre offensif en s’appuyant sur le jeu en triangle.'], cats: ['U18', 'Seniors'], st: 'pret', n: 4, eff: '16+2', du: '1h30', d: '25 mai', mots: ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive', 'Situation évolutive jouée'], plus: 0, niv: '', ph: [], fo: [], vues: 6, sits: ['12', '14', '07'] }
+  ];
+  var SEANCE = {}; S.forEach(function (s) { SEANCE[s.id] = s; });
+  var SITS = [
+    { img: '01', ty: 'ech', ph: 'ap', t: 'Relais de passes en mouvement', de: COMITE, s: 'C1', rep: 31 },
+    { img: '09', ty: 'ech', ph: 'dp', t: 'Déplacements défensifs en miroir', de: COMITE, s: 'C2', rep: 16 },
+    { img: '02', ty: 'ech', ph: 'ge', t: 'Montée de balle à trois, aller et retour', de: 'Alex D.', s: 'K5', rep: 14 },
+    { img: '10', ty: 'ech', ph: 'dp', t: 'La balle au capitaine', de: 'Lou B.', s: 'K10', rep: 8 },
+    { img: '03', ty: 'gb', ph: 'ap', t: 'Duel tireur-gardien après une relance longue', de: COMITE, s: 'C1', rep: 22 },
+    { img: '11', ty: 'gb', ph: 'dp', t: 'Sortie sur le tireur', de: COMITE, s: 'C2', rep: 21 },
+    { img: '04', ty: 'gb', ph: 'ap', t: 'Tir en course face au gardien', de: 'Eden M.', s: 'K3', rep: 9 },
+    { img: '12', ty: 'tr', ph: 'ap', t: 'Fixer l’intervalle pour libérer l’ailier', de: COMITE, s: 'C5', rep: 19 },
+    { img: '13', ty: 'tr', ph: 'dp', t: 'Défense étagée sur trois arrières', de: COMITE, s: 'C2', rep: 24 },
+    { img: '05', ty: 'tr', ph: 'ge', t: '2 contre 1 sur grand espace', de: 'Alex D.', s: 'K5', rep: 27 },
+    { img: '14', ty: 'tr', ph: 'ap', t: '2 contre 2 avec un pivot', de: 'Dominique P.', s: 'K4', rep: 6 },
+    { img: '07', ty: 'fj', ph: 'ap', t: 'Match à thème : le but après fixation compte double', de: COMITE, s: 'C1', rep: 19 },
+    { img: '15', ty: 'fj', ph: 'dp', t: 'Match à thème : une interception vaut un but', de: COMITE, s: 'C2', rep: 13 },
+    { img: '16', ty: 'fj', ph: 'rd', t: '6 contre 6, repli et défense 0-6 imposée', de: 'Lou B.', s: 'K6', rep: 5 },
+    { img: '06', ty: 'po', ph: 'ap', t: 'Ailiers : tir en extension', de: 'Eden M.', s: 'K3', rep: 4 },
+    { img: '08', ty: 'dv', ph: 'ge', t: 'Parcours de motricité avec ballon', de: 'Noa V.', s: 'K8', rep: 3 }
+  ];
+  var TITRES_SIT = {}; SITS.forEach(function (x) { TITRES_SIT[x.img] = x; });
+  var GROUPES = [{ id: 'club', nom: CLUB, membres: 6, gens: [MOI, 'Alex D.', 'Lou B.', 'Sacha L.', 'Jo T.', 'Morgan R.'], desc: 'Les séances du club, partagées entre les entraîneurs.' }, { id: 'nord', nom: 'Entraîneurs U13 du secteur Nord', membres: 11, gens: [MOI, 'Noa V.', 'Eden M.', 'Maxime F.', 'Dominique P.'], desc: 'Échanges de séances entre clubs voisins.' }];
+  function groupeCourant() { return GROUPES.filter(function (x) { return x.id === E.groupe; })[0] || GROUPES[0]; }
+
+  /* ---------- état ---------- */
+  function etatDepart(etape) {
+    return { etape: etape === undefined ? 1 : etape, ecran: 'mes', couche: null, seance: 'M2', pres: 0, source: 'tout', phase: null, typeSit: 'ech', groupe: 'club', aClasser: false, copiees: {}, classees: {}, creer: null, creee: null, bulle: '', tiroir: null, cherche: false, q: '', sel: {}, quoi: null, prepa: false };
+  }
+  var E = etatDepart(0);
+  var format = 'tel', expl = true;
+  var zone = document.getElementById('zone'), cadre = document.getElementById('cadre'), ecran = document.getElementById('ecran'), calque = document.getElementById('calque'), pourquoi = document.getElementById('pourquoi');
+
+  function rep(n, cls) { return expl ? '<span class="repere ' + (cls || '') + '" aria-hidden="true">' + n + '</span>' : ''; }
+  function niv(s) { return E.classees[s.id] ? E.classees[s.id].niv : s.niv; }
+  function phs(s) { return E.classees[s.id] ? E.classees[s.id].ph : s.ph; }
+  function classee(s) { return !!(niv(s) && phs(s).length); }
+  function ini(nom) { return nom.split(' ').map(function (m) { return m.charAt(0); }).join('').replace('.', '').slice(0, 2).toUpperCase(); }
+  function auteur(s) { return s.src === 'moi' ? MOI : s.a; }
+  function sousAuteur(s) { return s.src === 'com' ? COMITE : s.src === 'moi' ? CLUB : (s.club || CLUB); }
+  function estMienne(s) { return s.src === 'moi'; }
+  function titreSeance(s) { return s.t || 'Non spécifié'; }
+
+  function seancesDe(ecr) {
+    var l;
+    if (ecr === 'mes') { l = S.filter(function (s) { return s.src === 'moi'; }); if (E.creee) l = [E.creee].concat(l); }
+    else if (ecr === 'groupes') l = E.etape === 0 && E.groupe === 'comite' ? S.filter(function (s) { return s.src === 'com'; }) : S.filter(function (s) { return s.src === 'grp'; });
+    else if (E.etape >= 1 && E.source === 'comite') l = S.filter(function (s) { return s.src === 'com' && prete(s); });
+    else l = S.filter(function (s) { return (s.src === 'com' || s.src === 'k') && (prete(s) || (E.etape >= 1 && E.prepa)); });
+    return l;
+  }
+  function prete(s) { return s.st !== 'brouillon' && s.st !== 'encours'; }
+  function pourEquipes(s) { var f = sel('communaute'); return (!f.cat.length || croise(s.cats, f.cat)) && (!f.niv.length || !niv(s) || f.niv.indexOf(niv(s)) >= 0); }
+  function communauteClassees() { return seancesDe('communaute').filter(function (s) { return classee(s) && pourEquipes(s); }); }
+
+  /* ---------- l'application ---------- */
+  function app() {
+    if (E.ecran === 'editeur') return '<div class="app"><div class="contenu">' + editeur() + '</div></div>';
+    return '<div class="app ' + (E.etape === 0 ? 'e0' : 'e1') + '">' + rail() + '<div class="contenu"><div class="page">' + page() + '</div>' + fab() + barreBas() + '</div></div>';
+  }
+  function calqueHtml() { return (E.ecran === 'presenter' ? presenter() : '') + couche() + bulle(); }
+  function bulle() { return E.bulle ? '<div class="bulle" role="status">' + E.bulle + '</div>' : ''; }
+
+  function dest(cle, libelle, icone, actif, type) {
+    var media = type === 'picto' ? picto(icone) : ic(icone);
+    return '<button type="button" class="dest" data-nav="' + cle + '"' + (actif ? ' aria-current="page"' : '') + '><span class="pil">' + media + '</span><span class="lib">' + libelle + '</span></button>';
+  }
+  function navItems() {
+    var e = E.ecran, liste = e === 'mes' || e === 'groupes' || e === 'communaute';
+    if (E.etape === 0) return [
+      ['mes', 'Entraînements', 'sifflet', liste, 'ic'], ['gestion', 'Groupes', 'membres', e === 'gestion', 'ic'], ['profil', 'Profil', 'personne', e === 'profil', 'ic'], ['admin', 'Admin', 'bouclier', false, 'ic']
+    ];
+    return [['mes', 'Mes séances', 'plaquette', e === 'mes', 'picto'], ['groupes', 'Groupes', 'staff', e === 'groupes' || e === 'gerer', 'picto'], ['communaute', 'Communauté', 'ronde', e === 'communaute', 'picto']];
+  }
+  /* le tiroir, à partir de 1024 px comme aujourd'hui : replié en rail de 88 px, ouvert sur 280 px,
+     il pousse la page. Ouvert par défaut dans la proposition, replié par défaut aujourd'hui. */
+  function large() { return cadre.clientWidth >= 720; }
+  function pousse() { return cadre.clientWidth >= 1024; }
+  function tiroirOuvert() { return E.tiroir !== null ? E.tiroir : E.etape > 0; }
+  function rd(cle, libelle, icone, actif, type) {
+    return '<button type="button" class="rd" data-nav="' + cle + '"' + (actif ? ' aria-current="page"' : '') + '><span class="pil">' + (type === 'picto' ? picto(icone) : ic(icone)) + '</span><span class="lib">' + libelle + '</span></button>';
+  }
+  function si(attr, contenu, actif) { return '<button type="button" class="si" ' + attr + (actif ? ' aria-current="true"' : '') + '>' + contenu + '</button>'; }
+  function marque(cls) { return '<span class="marque ' + (cls || '') + '"><img src="logo.png" alt="Place aux coachs" width="443" height="442"><span class="mot" aria-hidden="true"><small>Place</small><span>aux coachs</span></span></span>'; }
+  function rail() {
+    var e = E.ecran, ouvert = tiroirOuvert(), seg = themeActuel();
+    var h = '<nav class="rail" data-ouvert="' + ouvert + '" aria-label="Navigation principale"><div class="rail-in"><div class="rail-tete"><button type="button" class="burger" data-tiroir aria-expanded="' + ouvert + '" aria-label="Menu">' + ic('menu') + '</button>' + (E.etape ? marque() : '') + '</div><div class="rail-dest">';
+    if (E.etape === 0) {
+      h += rd('mes', 'Entraînements', 'sifflet', e === 'mes' || e === 'groupes' || e === 'communaute', 'ic') +
+        '<div class="rd-ligne">' + rd('gestion', 'Groupes', 'membres', e === 'gestion', 'ic') + '<button type="button" class="rd-plus" data-nav="gestion" aria-label="Créer un groupe">' + ic('plus') + '</button></div>' +
+        '<div class="sous">' + GROUPES.map(function (g) { return si('data-groupe0="' + g.id + '"', '<span>' + esc(g.nom) + '</span>', e === 'groupes' && E.groupe === g.id); }).join('') + '</div>' +
+        rd('profil', 'Profil', 'personne', e === 'profil', 'ic') + (e === 'mes' ? rep(4) : '') + '</div>' +
+        '<div class="rail-bas">' + rd('importer', 'Importer', 'importer', false, 'ic') + rd('admin', 'Admin', 'bouclier', false, 'ic') +
+        '<div class="pied0"><div class="ligne0">' + ic('lune') + 'Thème<span class="seg"><button type="button" data-theme-app="light" aria-pressed="' + (seg === 'light') + '">Jour</button><button type="button" data-theme-app="dark" aria-pressed="' + (seg === 'dark') + '">Nuit</button></span></div><button type="button" class="ligne0">' + ic('sortie') + 'Déconnexion</button></div></div>';
+    } else {
+      h += rd('mes', 'Mes séances', 'plaquette', e === 'mes', 'picto') +
+        '<div class="rd-ligne">' + rd('groupes', 'Groupes', 'staff', e === 'groupes' || e === 'gerer', 'picto') + '<button type="button" class="rd-plus" data-nav="creer-groupe" aria-label="Créer ou rejoindre un groupe">' + ic('plus') + '</button></div>' +
+        '<div class="sous">' + GROUPES.map(function (g) { return si('data-groupe-nav="' + g.id + '"', '<span>' + esc(g.nom) + '</span>', (e === 'groupes' || e === 'gerer') && E.groupe === g.id); }).join('') + '</div>' +
+        rd('communaute', 'Communauté', 'ronde', e === 'communaute', 'picto') +
+        (E.etape === 1 && e === 'mes' ? rep(1) : '') + '</div>' +
+        '<div class="rail-bas"><button type="button" class="moi" data-couche="menu" aria-label="Mon compte"><span class="avatar">CD' + (E.etape === 1 ? '<span class="pastille"></span>' : '') + '</span><span class="lib">Mon compte</span><span class="nom">' + MOI + '<small>Mon compte</small></span></button>' + (E.etape === 1 && e === 'mes' ? rep(2) : '') + '</div>';
+    }
+    return h + '</div></nav>';
+  }
+  function barreBas() {
+    var it = navItems();
+    return '<nav class="nav-bas" style="--n:' + it.length + '" aria-label="Navigation principale">' + (E.etape === 1 && E.ecran === 'mes' ? rep(1) : E.etape === 0 && E.ecran === 'mes' ? rep(4) : '') + it.map(function (x) { return dest(x[0], x[1], x[2], x[3], x[4]); }).join('') + '</nav>';
+  }
+  function fab() {
+    if (E.ecran === 'gestion' || E.ecran === 'profil' || E.ecran === 'gerer') return '';
+    return '<div class="fab-zone">' + (E.etape === 3 && E.ecran === 'mes' ? rep(1) : '') + '<button type="button" class="fab" data-creer="ouvrir" aria-label="Nouvel entraînement">' + ic('plus') + '<span>Nouvel entraînement</span></button></div>';
+  }
+
+  function page() {
+    if (E.ecran === 'gestion') return pageGestion();
+    if (E.ecran === 'gerer') return pageGroupe();
+    if (E.ecran === 'profil') return pageProfil();
+    if (E.etape === 0) return pageAujourdhui();
+    return entete() + (E.ecran === 'communaute' ? corpsCommunaute() : corpsListe());
+  }
+
+  /* ---------- aujourd'hui ---------- */
+  function pageAujourdhui() {
+    var e = E.ecran;
+    var nomGroupe = e === 'groupes' ? (E.groupe === 'comite' ? COMITE : E.groupe === 'nord' ? GROUPES[1].nom : CLUB) : 'Groupes';
+    var h = marque('marque0') + '<div class="onglets0 ancre">' + (e === 'mes' ? rep(1) : '') +
+      '<button type="button" class="ong" data-nav="mes"' + (e === 'mes' ? ' aria-current="page"' : '') + '>' + picto('plaquette') + '<span class="lib"><span>Mes entraînements</span></span></button>' +
+      '<button type="button" class="ong" data-couche="groupes0"' + (e === 'groupes' ? ' aria-current="page"' : '') + '>' + picto('staff') + '<span class="lib"><span>' + esc(nomGroupe) + '</span>' + ic('chevron') + '</span></button>' +
+      '<button type="button" class="ong" data-nav="communaute"' + (e === 'communaute' ? ' aria-current="page"' : '') + '>' + picto('ronde') + '<span class="lib"><span>Communauté</span></span></button></div>';
+    var st = e === 'mes' ? '<em>Brouillon</em><em>En cours</em><em>Prêt</em><em>+1</em>' : '<em>Prêt</em><em>Terminé</em>';
+    h += '<div class="filtres0">' + (e === 'mes' ? rep(2) : '') + '<button type="button" class="pilule0" data-couche="filtres">' + ic('reglages') + 'Filtrer' + ic('chevron') + '</button>' +
+      '<div class="barre0"><span>' + ic('dossier') + 'Catégories</span><span class="sep"></span><span>' + ic('diese') + 'Mots-clés</span><span class="sep"></span><span>' + ic('liste') + st + '</span><span class="sep"></span><span>' + ic('loupe') + '</span></div></div>';
+    if (e === 'groupes' && E.groupe === 'comite') h += '<p class="desc-groupe" style="margin-top:14px">La bibliothèque de référence du Comité de Gironde : des entraînements modèles pour accompagner les entraîneurs qui débutent.</p>';
+    var l = seancesDe(e);
+    h += '<div class="liste ancre" style="margin-top:18px">' + l.map(function (s, i) { return carte0(s, i === 0 && e === 'mes'); }).join('') + '</div>';
+    return h;
+  }
+  function carte0(s, avecRep) {
+    var o = s.o.length ? '<ul class="c0-obj">' + s.o.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '<p class="c0-obj sans">Objectif non spécifié</p>';
+    var mots = s.mots.length ? '<div class="mots">' + s.mots.slice(0, 6).map(function (m) { return '<span>' + esc(m) + '</span>'; }).join('') + (s.plus || s.mots.length > 6 ? '<span class="plus">+' + (s.plus + Math.max(0, s.mots.length - 6)) + '</span>' : '') + '</div>' : '';
+    function m(l, v) { return '<span><small>' + l + '</small><b' + (v ? '' : ' class="nul"') + '>' + (v || '—') + '</b></span>'; }
+    var mien = estMienne(s);
+    return '<article class="carte0 ' + s.st + '"><div class="c0-in"><div class="c0-corps">' + (avecRep ? rep(3) : '') +
+      '<div class="c0-haut"><span class="st">' + LIB_ST[s.st] + '</span><span class="trait"></span><span class="cats">' + s.cats.map(function (c) { return '<span>' + c + '</span>'; }).join('') + '</span></div>' +
+      '<h4 class="c0-titre">' + esc(titreSeance(s)) + '</h4>' + o + mots + '</div>' +
+      '<div class="c0-rail"><div class="c0-metas">' + m('Situations', String(s.n)) + m('Effectif', s.eff) + m('Durée', s.du) + m('Date', s.d) + '</div>' +
+      '<div class="c0-auteur"><span class="ini">' + ini(auteur(s)) + '</span><span>' + esc(auteur(s)) + '<small>' + esc(sousAuteur(s)) + '</small></span></div>' +
+      '<button type="button" class="btn-ouvrir" data-ouvrir="' + s.id + '">Ouvrir</button>' +
+      '<div class="c0-act"><button type="button" data-act="presenter" data-id="' + s.id + '" aria-label="Présenter">' + ic('presenter') + '</button><button type="button" data-act="pdf" data-id="' + s.id + '" aria-label="Télécharger le PDF">' + ic('pdf') + '</button><button type="button" data-act="dupliquer" data-id="' + s.id + '" aria-label="Dupliquer">' + ic('copier') + '</button>' +
+      (mien ? '<button type="button" data-act="partager" data-id="' + s.id + '" aria-label="Partager">' + ic('partager') + '</button><button type="button" class="rouge" data-act="supprimer" data-id="' + s.id + '" aria-label="Supprimer">' + ic('corbeille') + '</button>' : '') +
+      '</div></div></div></article>';
+  }
+
+  /* ---------- étapes 1 à 3 : en-tête et puces ---------- */
+  function entete() {
+    var e = E.ecran, titre, repEtape1 = E.etape === 1 && e === 'mes';
+    if (e === 'groupes') {
+      var g = GROUPES.filter(function (x) { return x.id === E.groupe; })[0] || GROUPES[0];
+      titre = '<button type="button" class="selecteur" data-couche="groupes">' + picto('staff') + '<span>' + esc(g.nom) + '</span>' + ic('chevron') + '</button>';
+    } else if (e === 'communaute' && E.source === 'comite') titre = '<button type="button" class="btn-rond" data-source="tout" aria-label="Retour à la Communauté">' + ic('retour') + '</button><span class="titre-logo" role="img" aria-label="' + COMITE + '">' + logo() + '</span>';
+    else titre = e === 'mes' ? picto('plaquette') + '<span>Mes séances</span>' : picto('ronde') + '<span>Communauté</span>';
+    var champ = '<input class="q" type="text" enterkeyhint="search" autocomplete="off" value="' + esc(E.q) + '" placeholder="Thème, objectif, auteur…" aria-label="Rechercher une séance">' +
+      (E.q ? '<button type="button" class="efface" data-cherche="effacer" aria-label="Effacer la recherche">' + ic('croix') + '</button>' : '');
+    var barre;
+    // téléphone : la loupe change la barre du haut en champ, sur place
+    if (E.cherche) barre = '<div class="barre-haut"><button type="button" class="btn-rond" data-cherche="fermer" aria-label="Fermer la recherche">' + ic('retour') + '</button><label class="recherche">' + champ + '</label></div>';
+    else barre = '<div class="barre-haut"><h2 class="titre-app">' + titre + '</h2>' + (e === 'groupes' ? rep(1, 'r-titre') : '') +
+      '<label class="champ-app">' + ic('loupe') + champ + (repEtape1 ? rep(5) : '') + '</label>' +
+      '<span class="loupe"><button type="button" class="btn-rond" data-cherche="ouvrir" aria-label="Rechercher">' + ic('loupe') + '</button>' + (repEtape1 ? rep(5) : '') + '</span>' +
+      '<span class="av-haut"><button type="button" class="avatar" data-couche="menu" aria-label="Mon compte">CD' + (E.etape === 1 ? '<span class="pastille"></span>' : '') + '</button>' + (repEtape1 ? rep(2) : '') + '</span></div>';
+    return '<div class="entete-app' + (E.cherche ? ' fige' : '') + '">' + barre + '<div class="puces-f">' + puces() + '</div>' + (repEtape1 ? rep(3) : E.etape >= 2 && e === 'communaute' ? rep(1) : '') + '</div>';
+  }
+
+  /* filtres : une puce par filtre, chacune ouvre son seul contenu */
+  var TITRES_F = { cat: 'Catégories', mots: 'Mots-clés', st: 'Statut', niv: 'Niveau', ph: 'Phase de jeu', fo: 'Forme de jeu' };
+  function sel(ecr) {
+    ecr = ecr || E.ecran;
+    var equipes = ecr === 'communaute' && E.etape >= 2;
+    if (!E.sel[ecr]) E.sel[ecr] = { cat: equipes ? ['U13', 'U15'] : [], mots: [], st: [], niv: equipes ? ['Intermédiaire'] : [], ph: [], fo: [] };
+    return E.sel[ecr];
+  }
+  function libV(quoi, v) { return quoi === 'st' ? LIB_ST[v] : quoi === 'ph' ? PH[v] : v; }
+  function pf(attr, icone, texte, actif, compte) { return '<button type="button" class="pf" ' + attr + (actif ? ' data-actif="true"' : '') + '>' + ic(icone) + texte + (compte ? '<span class="compte">' + compte + '</span>' : '') + '<svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true">' + I.chevron + '</svg></button>'; }
+  function pfq(quoi, icone) {
+    var v = sel()[quoi], texte = TITRES_F[quoi];
+    if (v.length) texte = esc(v.slice(0, 2).map(function (x) { return libV(quoi, x); }).join(', ')) + (v.length > 2 ? ' +' + (v.length - 2) : '');
+    return pf('data-quoi="' + quoi + '"' + (E.couche === 'filtre' && E.quoi === quoi ? ' aria-expanded="true"' : ''), icone, texte, v.length > 0);
+  }
+  function puces() {
+    var e = E.ecran, h = '';
+    if (E.etape >= 2 && e === 'mes') {
+      var n = seancesDe('mes').filter(function (s) { return !classee(s); }).length;
+      if (n) h += '<button type="button" class="pf a-classer" data-filtre="aclasser"' + (E.aClasser ? ' data-actif="true"' : '') + '>À classer<span class="compte">' + n + '</span></button>';
+    }
+    h += pfq('cat', 'dossier');
+    if (E.etape >= 2) h += (e !== 'communaute' ? pfq('ph', 'cible') : '') + pfq('niv', 'niveau') + pfq('fo', 'forme');
+    else h += pfq('mots', 'diese');
+    if (e !== 'communaute') return h + pfq('st', 'liste');
+    // les brouillons et les séances en cours des autres : masqués par défaut ; jamais pour un groupe mis en avant
+    return h + (E.source === 'comite' ? '' : '<button type="button" class="pf bascule" role="switch" aria-checked="' + E.prepa + '" data-prepa>En préparation<span class="interrupteur" aria-hidden="true"></span></button>');
+  }
+  function sansAccent(t) { return String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
+  function croise(a, b) { return a.some(function (x) { return b.indexOf(x) >= 0; }); }
+  function passe(s) {
+    var f = sel(), q = sansAccent(E.q.trim());
+    if (f.cat.length && !croise(s.cats, f.cat)) return false;
+    if (f.mots.length && !croise(s.mots, f.mots)) return false;
+    if (f.st.length && f.st.indexOf(s.st) < 0) return false;
+    if (f.niv.length && f.niv.indexOf(niv(s)) < 0) return false;
+    if (f.ph.length && !croise(phs(s), f.ph)) return false;
+    if (f.fo.length && !croise(s.fo || [], f.fo)) return false;
+    return !q || sansAccent([s.t, s.o.join(' '), auteur(s), sousAuteur(s), s.mots.join(' ')].join(' ')).indexOf(q) >= 0;
+  }
+  // une recherche ou un filtre réduit la Communauté aux résultats ; catégorie et niveau, eux, disent pour qui on cherche
+  function filtreActif() { var f = sel(), c = E.ecran === 'communaute'; return !!(E.q.trim() || f.mots.length || f.ph.length || f.fo.length || (!c && (f.cat.length || f.niv.length || f.st.length))); }
+  function estProfil() { var f = sel('communaute'); return f.cat.join() === 'U13,U15' && f.niv.join() === 'Intermédiaire'; }
+  // la liste principale de l'écran, telle que les puces et la recherche la filtrent
+  function listeCourante() {
+    var e = E.ecran, l = e === 'communaute' && E.etape >= 2 ? communauteClassees().filter(function (s) { return !E.phase || phs(s).indexOf(E.phase) >= 0; }) : seancesDe(e);
+    if (E.etape >= 2 && e === 'mes' && E.aClasser) l = l.filter(function (s) { return !classee(s); });
+    return l.filter(passe);
+  }
+  function motsFrequents() {
+    var n = {}; seancesDe(E.ecran).forEach(function (s) { s.mots.forEach(function (m) { n[m] = (n[m] || 0) + 1; }); });
+    return Object.keys(n).sort(function (a, b) { return n[b] - n[a] || a.localeCompare(b); }).slice(0, 14);
+  }
+  function aucune() {
+    return '<div class="vide">Aucune séance ne correspond' + (E.q.trim() ? ' à « ' + esc(E.q.trim()) + ' »' : '') + '.<button type="button" class="lien-v" data-effacer-tout>Tout effacer</button></div>';
+  }
+
+  /* ---------- la fiche ---------- */
+  function fiche(s, opts) {
+    opts = opts || {};
+    var cl = classee(s), mien = estMienne(s), aut = auteur(s);
+    var cats = s.cats.length ? '<span class="cats">' + s.cats.map(function (c) { return '<span>' + c + '</span>'; }).join('') + '</span>' : '';
+    var o = s.o.length ? '<ul class="f-obj">' + s.o.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '<p class="f-obj sans">Objectif non spécifié</p>';
+    var etq = '';
+    if (E.etape >= 2) {
+      if (cl) {
+        etq = phs(s).map(function (p) { return '<span class="etq ph">' + picto(p) + PH_C[p] + '</span>'; }).join('') + '<span class="etq niv">' + niv(s) + '</span>' + (s.fo || []).map(function (f) { return '<span class="etq">' + f + '</span>'; }).join('');
+      } else if (mien) etq = '<button type="button" class="etq classer" data-act="classer" data-id="' + s.id + '">À classer</button>';
+      else etq = '<span class="etq">Pas encore classée</span>';
+    } else if (s.mots.length) {
+      var extra = s.plus + Math.max(0, s.mots.length - 3);
+      etq = s.mots.slice(0, 3).map(function (m) { return '<span class="etq">' + esc(m) + '</span>'; }).join('') + (extra ? '<span class="etq plus">+' + extra + '</span>' : '');
+    }
+    var metas = [];
+    if (s.n) metas.push('<b>' + s.n + '</b> situation' + (s.n > 1 ? 's' : ''));
+    if (s.du) metas.push('<b>' + s.du + '</b>');
+    if (s.eff) metas.push('effectif <b>' + s.eff + '</b>');
+    var qui = s.src === 'com' ? '<span class="qui">' + logo() + COMITE + '</span>' : '<span class="qui"><span class="ini">' + ini(aut) + '</span>' + (mien ? 'Moi' : esc(aut)) + '</span>';
+    var acts = '<button type="button" class="ico" data-act="pdf" data-id="' + s.id + '" aria-label="Télécharger le PDF">' + ic('pdf') + '</button>' +
+      '<button type="button" class="ico" data-act="dupliquer" data-id="' + s.id + '" aria-label="Dupliquer">' + ic('copier') + '</button>' +
+      (mien ? '<button type="button" class="ico" data-act="partager" data-id="' + s.id + '" aria-label="Partager avec un groupe">' + ic('partager') + '</button><button type="button" class="ico rouge" data-act="supprimer" data-id="' + s.id + '" aria-label="Supprimer">' + ic('corbeille') + '</button>' : '');
+    var pres = '<button type="button" class="btn-pres" data-act="presenter" data-id="' + s.id + '">' + ic('presenter') + 'Présenter</button>';
+    var dl = (s.n ? '<dt>Situations</dt><dd>' + s.n + '</dd>' : '') + (s.eff ? '<dt>Effectif</dt><dd>' + s.eff + '</dd>' : '') + (s.du ? '<dt>Durée</dt><dd>' + s.du + '</dd>' : '') + (s.d ? '<dt>Date</dt><dd>' + s.d + '</dd>' : '');
+    var quiRail = s.src === 'com' ? '<div class="qui">' + logo() + '<span>par ' + esc(aut) + '</span></div>' : '<div class="qui"><span class="ini">' + ini(aut) + '</span><span>' + esc(aut) + '<small>' + esc(sousAuteur(s)) + '</small></span></div>';
+    return '<article class="fiche ' + s.st + '" data-ouvrir="' + s.id + '" tabindex="0" aria-label="' + esc(titreSeance(s)) + '"><div class="f-in"><div class="f-corps">' + (opts.rep ? rep(opts.rep) : '') +
+      '<div class="f-haut"><span class="st">' + LIB_ST[s.st] + '</span>' + (s.d ? '<span class="f-date">' + s.d + '</span>' : '') + cats + '</div>' +
+      '<h4 class="f-titre">' + esc(titreSeance(s)) + '</h4>' + o +
+      (etq ? '<div class="f-etq">' + etq + '</div>' : '') +
+      '<div class="f-meta">' + qui + (metas.length ? '<span>' + metas.join(' · ') + '</span>' : '') + '</div></div>' +
+      '<div class="f-rail"><dl>' + dl + '</dl>' + quiRail + '<div class="acts">' + pres + acts + '</div></div></div>' +
+      '<div class="f-pied">' + pres + '<span class="esp"></span>' + acts + '</div></article>';
+  }
+
+  /* ---------- listes des étapes 1 à 3 ---------- */
+  function corpsListe() {
+    var e = E.ecran, l, h = '';
+    l = listeCourante();
+    if (!l.length) return h + aucune();
+    h += '<div class="liste haut">' + l.map(function (s, i) { return fiche(s, { rep: E.etape === 1 && e === 'mes' && i === 0 ? 4 : E.etape === 2 && e === 'mes' && !classee(s) && i < 3 && !E.aClasser && s.id === 'M3' ? 1 : E.etape === 2 && e === 'mes' && i === 0 ? 2 : 0 }); }).join('') + '</div>';
+    return h;
+  }
+
+  function nbSource(src) { return S.filter(function (s) { return (src === 'comite' ? s.src === 'com' && prete(s) : (s.src === 'com' || s.src === 'k') && (prete(s) || E.prepa)); }).length; }
+  // la Communauté montre tout par défaut ; chaque groupe mis en avant a sa carte, qui n'affiche que ses séances
+  // le bandeau ouvre les séances du comité sur leur propre écran ; la flèche du haut ramène à la Communauté
+  function vitrine() {
+    var n = nbSource('comite');
+    // sur l'écran du comité, le logo est déjà le titre : une phrase suffit
+    if (E.source === 'comite') return '<p class="desc-groupe" style="margin-bottom:10px">Des séances modèles pour accompagner les entraîneurs qui débutent : ouvrez-en une, présentez-la ou dupliquez-la pour votre équipe.</p>';
+    return '<div class="vitrine">' + (E.etape === 1 ? rep(1) : '') +
+      '<div class="hero-c" data-source="comite"><div class="hero-in">' + logo() +
+      '<div class="hero-txt"><h3>Séances modèles</h3><p>Pour accompagner les entraîneurs qui débutent.</p></div>' +
+      '<button type="button" class="hero-lien" data-source="comite" aria-label="Voir les ' + n + ' séances modèles du ' + COMITE + '">Voir les ' + n + ' séances<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + I.droite + '</svg></button>' +
+      '</div></div></div>';
+  }
+  function corpsCommunaute() {
+    var h = vitrine();
+    if (E.etape === 1) {
+      var l = listeCourante();
+      return h + (l.length ? '<div class="liste haut" style="margin-top:14px">' + l.map(function (s) { return fiche(s); }).join('') + '</div>' : aucune());
+    }
+    var cl = communauteClassees(), cherche = filtreActif();
+    // une recherche ou un filtre : la page se réduit aux résultats
+    if (cherche) { var lr = listeCourante(); return h + (lr.length ? '<div class="liste haut" style="margin-top:14px">' + lr.map(function (s) { return fiche(s); }).join('') + '</div>' : aucune()); }
+    h += '<div class="phases" role="group" aria-label="Phases de jeu">' + rep(2) + ORDRE_PH.map(function (p) {
+      var n = cl.filter(function (s) { return phs(s).indexOf(p) >= 0; }).length;
+      return '<button type="button" class="phase" data-phase="' + p + '" aria-pressed="' + (E.phase === p) + '">' + picto(p) + '<span class="nom">' + PH[p] + '</span><span class="nb">' + n + ' séance' + (n > 1 ? 's' : '') + '</span></button>';
+    }).join('') + '</div>';
+    if (!E.phase) {
+      var une = cl.slice().sort(function (a, b) { return (b.vues || 0) - (a.vues || 0); }).slice(0, 3);
+      h += '<div class="r-tete ancre"><h3>À la une</h3><small>les plus ouvertes ce mois-ci</small></div><div class="rail-une ancre">' + une.map(function (s, i) { return fiche(s, { rep: i === 0 ? 3 : 0 }); }).join('') + '</div>';
+    }
+    // situations à piocher
+    var sits = SITS.filter(function (x) { return x.ty === E.typeSit && (!E.phase || x.ph === E.phase) && (E.source !== 'comite' || x.de === COMITE); });
+    h += '<div class="r-tete"><h3>Piocher une situation</h3>' + (E.phase ? '<small>' + PH[E.phase] + '</small>' : '') + '</div>';
+    h += '<div class="puces ancre">' + rep(4) + TYPES.map(function (t) {
+      var n = SITS.filter(function (x) { return x.ty === t[0] && (!E.phase || x.ph === E.phase) && (E.source !== 'comite' || x.de === COMITE); }).length;
+      return '<button type="button" class="puce" data-type="' + t[0] + '" aria-pressed="' + (E.typeSit === t[0]) + '">' + t[1] + ' <small>' + n + '</small></button>';
+    }).join('') + '</div>';
+    h += sits.length ? '<div class="sits">' + sits.map(function (x) {
+      var pris = E.copiees[x.img];
+      return '<article class="sit">' + vig(x.img) + '<div class="s-corps"><b>' + esc(x.t) + '</b><span class="s-de' + (x.de === COMITE ? ' comite' : '') + '">' + esc(x.de) + '</span></div><button type="button" class="btn-contour" data-copier="' + x.img + '" aria-pressed="' + !!pris + '">' + (pris ? ic('coche') + 'Copiée' : ic('copier') + 'Copier') + '</button></article>';
+    }).join('') + '</div>' : '<p class="vide">Pas encore de situation de ce type pour cette phase.</p>';
+    // toutes les séances
+    var l2 = listeCourante();
+    h += '<div class="r-tete"><h3>' + (E.phase ? PH[E.phase] : 'Toutes les séances') + '</h3><small>' + l2.length + ' séance' + (l2.length > 1 ? 's' : '') + (estProfil() ? ' pour vos équipes' : '') + '</small>' + rep(5) + '</div>';
+    h += l2.length ? '<div class="liste">' + l2.map(function (s) { return fiche(s); }).join('') + '</div>' : '<p class="vide">Aucune séance classée ici pour ces catégories et ce niveau. Élargissez l’une des deux puces.</p>';
+    var nc = seancesDe('communaute').filter(function (s) { return !classee(s); }).length;
+    if (nc && !E.phase) h += '<div class="ligne-nc"><span><b>' + nc + ' séances</b> pas encore classées</span><span>Voir</span></div>';
+    return h;
+  }
+
+  /* ---------- gestion des groupes, profil ---------- */
+  function pageGroupe() {
+    var g = groupeCourant(), autres = g.membres - g.gens.length;
+    return '<div class="page-simple page-groupe"><button type="button" class="retour-g" data-nav="groupes">' + ic('retour') + 'Séances du groupe</button>' +
+      '<div class="g-tete"><h3>' + esc(g.nom) + '</h3><button type="button" class="btn-orange" data-inviter>' + ic('plus') + 'Inviter</button></div>' +
+      '<p class="g-sous">Modifiez les informations du groupe. Invitez de nouveaux entraîneurs.</p>' +
+      '<section class="carte-s"><div class="cs-tete"><b>Informations</b><button type="button" class="btn-contour">' + ic('crayon') + 'Modifier</button></div><dl class="infos-g"><dt>Nom</dt><dd>' + esc(g.nom) + '</dd><dt>Description</dt><dd>' + esc(g.desc) + '</dd></dl></section>' +
+      '<section class="carte-s"><div class="cs-tete"><b>Entraîneurs</b><small>' + g.membres + '</small></div><ul class="membres">' + g.gens.map(function (n, i) {
+        return '<li><span class="ini n' + (i % 4 + 1) + '">' + ini(n) + '</span><span>' + esc(n) + (n === MOI ? ' <small>(vous)</small>' : '') + '</span><em>' + (i === 0 ? 'Responsable' : 'Membre') + '</em></li>';
+      }).join('') + '</ul>' + (autres > 0 ? '<p class="note-g" style="text-align:left">Et ' + autres + ' autres.</p>' : '') + '</section></div>';
+  }
+  function pageGestion() {
+    return '<div class="page-simple"><h3>Mes groupes</h3>' + GROUPES.concat([{ nom: COMITE, membres: 3, desc: 'Groupe mis en avant' }]).map(function (g) {
+      return '<div class="carte-s"><b>' + esc(g.nom) + '</b><small>' + g.membres + ' membres · ' + esc(g.desc) + '</small></div>';
+    }).join('') + '<button type="button" class="btn-orange">' + ic('plus') + 'Créer un groupe</button></div>';
+  }
+  function pageProfil() {
+    return '<div class="page-simple"><h3>Mon profil</h3><div class="carte-s"><b>' + MOI + '</b><small>' + CLUB + ' · entraîneur U13</small></div>' +
+      (E.etape >= 2 ? equipes() : '<div class="carte-s"><small>Nom, club, photo, mot de passe.</small></div>') + '</div>';
+  }
+  function equipes() {
+    return '<div class="moi-equipes"><h5>Mes équipes</h5><p>La Communauté s’ouvre sur elles, et le + en part.</p><div class="grille-cat">' +
+      CATS.map(function (c) { var on = c[0] === 'U13' || c[0] === 'U15'; return '<span class="puce" aria-pressed="' + on + '">' + c[1] + '</span>'; }).join('') + '</div>' + reglette('Intermédiaire') + '</div>';
+  }
+  function reglette(v) {
+    var i = NIV.indexOf(v);
+    return '<div class="reglette"><span class="tous">Tous</span><div class="piste"><span class="rempli" style="left:' + (16.6 + 33.4 * i) + '%;width:0"></span>' + NIV.map(function (n) { return '<button type="button" aria-pressed="' + (n === v) + '"><i></i>' + n + '</button>'; }).join('') + '</div></div>';
+  }
+
+  /* ---------- éditeur ---------- */
+  function seanceOuverte() { return E.seance === 'NEW' ? { id: 'NEW', src: 'moi', t: '', o: [], cats: [], st: 'brouillon', n: 0, eff: '', du: '', d: '', mots: [], plus: 0, niv: '', ph: [], fo: [], sits: [] } : E.seance === 'CREE' ? E.creee : SEANCE[E.seance]; }
+  function editeur() {
+    var s = seanceOuverte(), mien = estMienne(s);
+    var meta = [s.d, s.du, s.eff, s.cats.join(' - '), auteur(s)].filter(Boolean).map(esc).join(' · ');
+    var h = '<div class="ed-barre"><button type="button" class="retour" data-retour>' + ic('retour') + '<span>Retour ' + (E.etape === 0 ? 'aux entraînements' : 'aux séances') + '</span></button><span class="esp"></span>' +
+      '<span class="ed-st ' + s.st + '" style="--acc:var(--st-' + s.st + ')"><i></i>' + LIB_ST[s.st] + '</span>' +
+      '<button type="button" class="btn-carre" data-act="presenter" data-id="' + s.id + '" aria-label="Présenter">' + ic('presenter') + '<span>Présenter</span></button>' +
+      '<button type="button" class="btn-carre" data-act="pdf" data-id="' + s.id + '" aria-label="Télécharger le PDF">' + ic('pdf') + '<span>PDF</span></button>' +
+      (mien ? '<button type="button" class="btn-carre" aria-label="Enregistré">' + ic('coche') + '<span>Enregistré</span></button>' : '<button type="button" class="btn-carre" data-act="dupliquer" data-id="' + s.id + '" aria-label="Dupliquer">' + ic('copier') + '<span>Dupliquer</span></button>') + '</div>';
+    var sits = s.sits.length ? s.sits : [];
+    h += '<div class="ed-corps"><nav class="sommaire" aria-label="Sommaire"><h5>Sommaire</h5><ol><li class="ici">Présentation</li>' + sits.map(function (img, i) {
+      var x = TITRES_SIT[img] || { t: 'Situation ' + (i + 1), ty: 'tr' };
+      return '<li><b>0' + (i + 1) + '</b>' + esc(x.t) + '<small>' + lib(TYPES, x.ty) + '</small></li>';
+    }).join('') + '</ol></nav><div class="ed-main"><div class="ed-tete">' +
+      '<p class="ed-meta">' + (meta || 'Date · durée · effectif') + '</p><h3 class="ed-titre">' + esc(s.t || 'Thème de la séance') + '</h3>' +
+      '<p class="ed-etiq">Objectifs de la séance</p><ul class="ed-obj">' + (s.o.length ? s.o.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') : '<li style="opacity:.6">Ajouter un objectif</li>') + '</ul>';
+    if (E.etape >= 2) h += reperesEditeur(s);
+    h += '</div>';
+    h += sits.slice(0, 3).map(function (img, i) {
+      var x = TITRES_SIT[img] || { t: 'Situation ' + (i + 1), ty: 'tr', de: '' };
+      var dapres = E.etape === 3 && s.id === 'CREE' ? '<p class="dapres">d’après ' + (x.de === COMITE ? logo() + '<span>' + COMITE + '</span>' : esc(x.de)) + '</p>' : '';
+      return '<section class="sit-ed"><div class="tete"><span class="num">0' + (i + 1) + '</span><div><h4>' + esc(x.t) + '</h4><span class="type">' + lib(TYPES, x.ty) + '</span>' + dapres + '</div></div>' + vig(img) +
+        (i === 0 ? '<div class="encart faire"><h5>À faire</h5><p>Mise en place rapide : deux colonnes, un ballon pour deux.</p></div><div class="encart verif"><h5>À vérifier</h5><p>La passe arrive devant le partenaire, dans sa course.</p></div>' : '') + '</section>';
+    }).join('');
+    if (!sits.length) h += '<p class="vide" style="margin-top:20px">Ajoutez une première situation.</p>';
+    return h + '</div></div>';
+  }
+  function reperesEditeur(s) {
+    var n = niv(s) || '', p = phs(s);
+    var cat = s.cats[0] || 'U13';
+    return '<div class="reperes-ed">' + rep(1) +
+      '<span>Catégorie</span><div class="val"><span class="select">' + cat + ic('chevron') + '</span></div>' +
+      '<span>Niveau</span><div class="val">' + NIV.map(function (x) { return '<span class="puce" aria-pressed="' + (x === n) + '">' + x + '</span>'; }).join('') + '</div>' +
+      '<span>Phase</span><div class="val ph">' + ORDRE_PH.map(function (x) { return '<span class="puce" aria-pressed="' + (p.indexOf(x) >= 0) + '">' + picto(x) + PH_C[x] + '</span>'; }).join('') + '</div>' +
+      '<span>Forme de jeu</span><div class="val">' + ((s.fo && s.fo.length) ? s.fo.map(function (f) { return '<span class="puce" aria-pressed="true">' + f + '</span>'; }).join('') : '<span class="puce">Aucune</span>') + '</div>' +
+      '<p class="note-r">' + (classee(s) ? '<b>Classée</b> : la séance rejoint « ' + PH[p[0]] + ' » dans la Communauté.' : 'Il manque le niveau ou la phase : la séance n’apparaît pas encore dans la Communauté.') + '</p></div>';
+  }
+
+  /* ---------- présenter ---------- */
+  function presenter() {
+    var s = seanceOuverte(), sits = s.sits.slice(0, 3), fin = E.etape === 3;
+    var pages = 1 + sits.length + (fin ? 1 : 0), p = Math.min(E.pres, pages - 1);
+    var prog = ''; for (var i = 0; i < pages; i++) prog += '<i class="' + (i < p ? 'fait' : i === p ? 'ici' : '') + '"></i>';
+    var c = '';
+    if (p === 0) {
+      c = '<p class="kick">Séance' + (s.cats.length ? ' · ' + s.cats.join(', ') : '') + '</p><h2>' + esc(titreSeance(s)) + '</h2>' + (s.o.length ? '<p class="obj">' + s.o.map(esc).join(' ') + '</p>' : '') +
+        '<div class="grille-m"><div><small>Situations</small><b>' + s.n + '</b></div><div><small>Durée</small><b>' + (s.du || '—') + '</b></div><div><small>Effectif</small><b>' + (s.eff || '—') + '</b></div><div><small>Date</small><b>' + (s.d || '—') + '</b></div></div>';
+    } else if (p <= sits.length) {
+      var x = TITRES_SIT[sits[p - 1]] || { t: 'Situation', ty: 'tr' };
+      c = '<p class="kick">Situation 0' + p + ' · ' + lib(TYPES, x.ty) + '</p><h2>' + esc(x.t) + '</h2>' + vig(sits[p - 1]) + '<div class="encart verif" style="margin:0"><h5>À vérifier</h5><p>La passe arrive devant le partenaire, dans sa course.</p></div>';
+    } else {
+      c = '<p class="kick">Fin de séance</p><h2>Séance terminée</h2><ol class="recap">' + sits.map(function (img, i) { var x = TITRES_SIT[img] || { t: '' }; return '<li><span class="n">' + (i + 1) + '</span>' + esc(x.t) + '</li>'; }).join('') + '</ol>' +
+        (classee(s) ? '<p class="obj">La séance est classée. Elle rejoint « ' + PH[phs(s)[0]] + ' » dans la Communauté.</p>' :
+          '<div class="classer-fin ancre">' + rep(1) + '<h3>Classer cette séance&#8239;?</h3><p>Le niveau, puis la phase : elle rejoint la Communauté pour les entraîneurs de la même catégorie.</p><div class="options">' + NIV.map(function (x) { return '<button type="button" class="puce" data-fin-niv="' + x + '" aria-pressed="' + (E.finNiv === x) + '">' + x + '</button>'; }).join('') + '</div><div class="phases-f">' + ORDRE_PH.map(function (q) { return '<button type="button" class="phase" data-classer-ph="' + q + '" aria-pressed="false">' + picto(q) + '<span class="nom">' + PH_C[q] + '</span></button>'; }).join('') + '</div><button type="button" class="btn-texte" data-pres="fermer">Plus tard</button></div>');
+    }
+    return '<div class="pres"><div class="pres-haut"><button type="button" class="btn-rond" data-pres="fermer" aria-label="Fermer">' + ic('croix') + '</button><div class="prog">' + prog + '</div><span class="compteur">' + String(p + 1).padStart(2, '0') + ' / ' + String(pages).padStart(2, '0') + '</span></div>' +
+      '<div class="pres-corps">' + c + '</div><div class="pres-nav"><button type="button" data-pres="prec"' + (p === 0 ? ' disabled style="opacity:.4"' : '') + '>Précédent</button>' + (p < pages - 1 ? '<button type="button" class="suiv" data-pres="suiv">Suivant</button>' : '<button type="button" class="suiv" data-pres="fermer">Terminer</button>') + '</div></div>';
+  }
+
+  /* ---------- couches ---------- */
+  function feuille(titre, sous, corps, pied, cls) {
+    return '<div class="voile' + (cls ? ' ' + cls : '') + '" data-fermer><div class="feuille" role="dialog" aria-modal="true" aria-label="' + esc(titre) + '"><span class="poignee"></span><div class="p-tete"><h4>' + titre + (sous ? '<small>' + sous + '</small>' : '') + '</h4><button type="button" data-fermer aria-label="Fermer">' + ic('croix') + '</button></div><div class="p-corps">' + corps + '</div>' + (pied ? '<div class="p-pied">' + pied + '</div>' : '') + '</div></div>';
+  }
+  // sur tablette et ordinateur, une liste qui s'ouvre sous ce qu'on a touché (placée par placePop)
+  function pop(titre, corps, pied, cls) {
+    return '<div class="voile pop" data-fermer><div class="feuille' + (cls ? ' ' + cls : '') + '" role="dialog" aria-label="' + esc(titre) + '"><div class="p-tete"><h4>' + titre + '</h4><button type="button" data-fermer aria-label="Fermer">' + ic('croix') + '</button></div><div class="p-corps">' + corps + '</div>' + (pied ? '<div class="p-pied">' + pied + '</div>' : '') + '</div></div>';
+  }
+  function opt(quoi, v, libelle) { return '<button type="button" class="puce" data-opt="' + quoi + '" data-v="' + esc(v) + '" aria-pressed="' + (sel()[quoi].indexOf(v) >= 0) + '">' + esc(libelle) + '</button>'; }
+  function couche() {
+    var c = E.couche;
+    if (!c) return '';
+    if (c === 'filtre') {
+      var q = E.quoi, corpsF;
+      if (q === 'cat') corpsF = '<div class="grille-cat">' + CATS.map(function (x) { return opt('cat', x[0], x[1]); }).join('') + '</div>';
+      else if (q === 'mots') corpsF = '<div class="options">' + motsFrequents().map(function (m) { return opt('mots', m, m); }).join('') + '</div>';
+      else if (q === 'st') corpsF = '<div class="options">' + (E.ecran === 'communaute' ? ['pret', 'termine'] : ['brouillon', 'encours', 'pret', 'termine']).map(function (v) { return opt('st', v, LIB_ST[v]); }).join('') + '</div>';
+      else if (q === 'ph') corpsF = '<div class="phases-f">' + ORDRE_PH.map(function (v) { return '<button type="button" class="phase" data-opt="ph" data-v="' + v + '" aria-pressed="' + (sel().ph.indexOf(v) >= 0) + '">' + picto(v) + '<span class="nom">' + PH[v] + '</span></button>'; }).join('') + '</div>';
+      else if (q === 'niv') corpsF = '<div class="options">' + NIV.map(function (v) { return opt('niv', v, v); }).join('') + '</div>';
+      else corpsF = '<div class="options">' + FORMES.map(function (v) { return opt('fo', v, v); }).join('') + '</div>';
+      var nb = listeCourante().length;
+      var piedF = '<button type="button" class="btn-texte" data-effacer="' + q + '">Effacer</button><button type="button" class="btn-orange" data-fermer>' + (nb ? 'Voir ' + nb + ' séance' + (nb > 1 ? 's' : '') : 'Aucune séance') + '</button>';
+      return large() ? pop(TITRES_F[q], corpsF, piedF) : feuille(TITRES_F[q], '', corpsF, piedF);
+    }
+    if (c === 'filtres') {
+      var corps = '<div class="champ-texte">' + ic('loupe') + 'Thème, objectif, auteur…</div>' +
+        '<div class="p-sec"><span>Catégories</span><div class="grille-cat">' + CATS.map(function (x) { return '<span class="puce" aria-pressed="false">' + x[1] + '</span>'; }).join('') + '</div></div>';
+      if (E.etape >= 2) corps += '<div class="p-sec"><span>Niveau</span>' + reglette('Intermédiaire') + '</div><div class="p-sec"><span>Forme de jeu</span><div class="options">' + FORMES.map(function (f) { return '<span class="puce">' + f + '</span>'; }).join('') + '</div></div>' + (E.ecran === 'communaute' ? '<div class="case"><i>' + ic('coche') + '</i>Enregistrer dans mon profil</div>' : '');
+      else corps += '<div class="p-sec"><span>Mots-clés</span><div class="options">' + ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive', 'Contre-attaque', 'Défense de zone', '+ 120'].map(function (m) { return '<span class="puce">' + m + '</span>'; }).join('') + '</div></div>';
+      corps += '<div class="p-sec"><span>Statut</span><div class="options">' + ['Brouillon', 'En cours', 'Prêt', 'Terminé'].map(function (m) { return '<span class="puce" aria-pressed="' + (E.ecran !== 'mes' ? (m === 'Prêt' || m === 'Terminé') : true) + '">' + m + '</span>'; }).join('') + '</div></div>';
+      return feuille('Filtres', '', corps, '<button type="button" class="btn-texte" data-fermer>Réinitialiser</button><button type="button" class="btn-orange" data-fermer>Voir les séances</button>');
+    }
+    if (c === 'groupes0') {
+      return feuille('Groupes', '', '<ul class="groupes-l" style="margin:-18px -20px">' + [['club', CLUB], ['nord', GROUPES[1].nom], ['comite', COMITE]].map(function (g) {
+        return '<li><button type="button" data-groupe0="' + g[0] + '" aria-pressed="' + (E.ecran === 'groupes' && E.groupe === g[0]) + '">' + (g[0] === 'comite' ? logo() : picto('staff')) + '<span><b>' + esc(g[1]) + '</b></span>' + ic('coche') + '</button></li>';
+      }).join('') + '</ul>', '', 'menu');
+    }
+    if (c === 'groupes') {
+      // comme un sélecteur de compte : le groupe affiché en tête, avec ses actions ; les autres dessous, pour changer
+      var g0 = groupeCourant(), autres = GROUPES.filter(function (g) { return g.id !== g0.id; });
+      var corpsG = '<div class="g-actuel">' + picto('staff') + '<span class="g-nom"><b>' + esc(g0.nom) + '</b><small>' + g0.membres + ' entraîneurs</small></span>' +
+        '<div class="g-actions"><button type="button" class="btn-contour inviter" data-inviter>' + ic('plus') + 'Inviter</button><button type="button" class="btn-contour" data-gerer="' + g0.id + '">Informations et membres</button></div>' + (E.etape === 1 ? rep(2) : '') + '</div>' +
+        (autres.length ? '<ul class="groupes-l autres-g">' + autres.map(function (g) {
+          return '<li><button type="button" data-groupe="' + g.id + '" aria-pressed="false">' + picto('staff') + '<span><b>' + esc(g.nom) + '</b><small>' + g.membres + ' entraîneurs</small></span></button></li>';
+        }).join('') + '</ul>' : '') +
+        '<button type="button" class="ajout-groupe" data-nav="creer-groupe">' + ic('plus') + 'Créer ou rejoindre un groupe</button>';
+      return large() ? pop('Mes groupes', corpsG, '', 'large') : feuille('Mes groupes', '', corpsG, '', 'menu');
+    }
+    if (c === 'menu') {
+      var th = themeActuel();
+      // ordinateur : le compte est en bas du tiroir, le menu s'ouvre à côté
+      var bas = pousse() && E.etape > 0, g = tiroirOuvert() ? 292 : 96;
+      return '<div class="voile menu' + (bas ? ' bas" style="--g:' + g + 'px"' : '"') + ' data-fermer><div class="feuille" role="dialog" aria-modal="true" aria-label="Mon compte"><span class="poignee"></span><div class="moi-p"><div class="moi-ident"><i>CD</i><span><b>' + MOI + '</b><small>' + CLUB + '</small></span><button type="button" class="fermer" data-fermer aria-label="Fermer">' + ic('croix') + '</button></div>' +
+        (E.etape >= 2 ? equipes() : '') +
+        '<ul class="moi-liens"><li><button type="button" data-nav="profil">' + ic('personne') + 'Mon profil' + (E.etape === 1 ? '<span class="compte" style="margin-left:auto;font-size:11px;font-weight:600;color:var(--orange-texte)">à compléter</span>' : '') + '</button></li>' +
+        '<li><button type="button">' + ic('importer') + 'Importer un entraînement</button></li><li><button type="button">' + ic('bouclier') + 'Administration</button></li>' +
+        '<li class="sep-l"></li><li><div>' + ic('reglages') + 'Thème<span class="seg"><button type="button" data-theme-app="light" aria-pressed="' + (th === 'light') + '">Jour</button><button type="button" data-theme-app="dark" aria-pressed="' + (th === 'dark') + '">Nuit</button></span></div></li>' +
+        '<li><button type="button">' + ic('sortie') + 'Se déconnecter</button></li></ul></div></div></div>';
+    }
+    if (c === 'classer') {
+      var s = SEANCE[E.seance] || seanceOuverte();
+      var cur = E.classeEnCours || { niv: '', ph: [] };
+      var corps2 = '<p style="font-size:14px;color:var(--attenue);margin-top:-6px">« ' + esc(titreSeance(s)) + ' »</p>' +
+        '<div class="p-sec"><span>Catégorie</span><div class="options"><span class="select">' + (s.cats[0] || 'U13') + ic('chevron') + '</span></div></div>' +
+        '<div class="p-sec"><span>Niveau</span><div class="options">' + NIV.map(function (x) { return '<button type="button" class="puce" data-cl-niv="' + x + '" aria-pressed="' + (cur.niv === x) + '">' + x + '</button>'; }).join('') + '</div></div>' +
+        '<div class="p-sec"><span>Phase de jeu, une ou deux</span><div class="phases-f">' + ORDRE_PH.map(function (q) { return '<button type="button" class="phase" data-cl-ph="' + q + '" aria-pressed="' + (cur.ph.indexOf(q) >= 0) + '">' + picto(q) + '<span class="nom">' + PH_C[q] + '</span></button>'; }).join('') + '</div></div>';
+      return feuille('Classer la séance', 'Elle rejoint la Communauté une fois classée.', corps2, '<button type="button" class="btn-texte" data-fermer>Plus tard</button><button type="button" class="btn-orange" data-cl="ok">Classer</button>');
+    }
+    if (c === 'partager') {
+      return feuille('Partager avec un groupe', '', '<ul class="groupes-l" style="margin:-18px -20px">' + GROUPES.map(function (g, i) {
+        return '<li><button type="button" data-partage="' + g.nom + '" aria-pressed="' + (i === 0) + '">' + picto('staff') + '<span><b>' + esc(g.nom) + '</b><small>' + g.membres + ' membres</small></span>' + ic('coche') + '</button></li>';
+      }).join('') + '</ul>', '', 'menu');
+    }
+    if (c === 'creer') return creer();
+    return '';
+  }
+
+  /* ---------- créer (étape 3) ---------- */
+  function proposition(ph) {
+    var base = S.filter(function (s) { return s.src === 'com' && s.ph.indexOf(ph) >= 0 && (s.cats.indexOf('U13') >= 0 || s.cats.indexOf('U15') >= 0) && s.niv === 'Intermédiaire'; })[0];
+    var choix = {};
+    ['ech', 'gb', 'tr', 'fj'].forEach(function (t) {
+      var l = SITS.filter(function (x) { return x.ty === t && x.ph === ph; }).sort(function (a, b) { return (b.de === COMITE) - (a.de === COMITE) || b.rep - a.rep; });
+      if (!l.length) l = SITS.filter(function (x) { return x.ty === t; }).sort(function (a, b) { return b.rep - a.rep; });
+      choix[t] = l[(E.creer && E.creer.decalage && E.creer.decalage[t]) || 0] || l[0];
+    });
+    return { base: base, choix: choix };
+  }
+  function creer() {
+    var cr = E.creer || { pas: 1 };
+    if (cr.pas === 1) {
+      var corps = '<div class="pour-qui"><span>Pour <b>U13 · Intermédiaire</b></span><button type="button">Changer</button></div>' + rep(1) +
+        '<h3>Que voulez-vous travailler&#8239;?</h3><div class="phases-f">' + ORDRE_PH.map(function (q) { return '<button type="button" class="phase" data-creer-ph="' + q + '" aria-pressed="false">' + picto(q) + '<span class="nom">' + PH[q] + '</span></button>'; }).join('') + '</div>' +
+        '<button type="button" class="btn-contour" data-creer="blanche" style="height:44px">Partir d’une page blanche</button>';
+      return feuille('Nouvel entraînement', 'Une séance déjà dessinée, à partir de vos équipes.', '<div class="creer" style="display:grid;gap:14px">' + corps + '</div>');
+    }
+    var p = proposition(cr.ph), t = ['ech', 'gb', 'tr', 'fj'];
+    var corps2 = (p.base ? '<div class="source-p">' + logo() + '<span><small style="color:var(--orange-texte);font-weight:600">D’après la séance du comité</small><b>' + esc(p.base.t) + '</b></span></div>' : '<p style="font-size:13.5px;color:var(--attenue)">Les situations les plus reprises de la Communauté.</p>') +
+      '<h3>' + PH[cr.ph] + ', U13</h3><ol class="temps">' + t.map(function (k, i) {
+        var x = p.choix[k];
+        return '<li><span class="n">' + (i + 1) + '</span><img src="schemas/' + x.img + '.webp" alt="" width="640" height="514"><span><small>' + lib(TYPES, k) + '</small>' + esc(x.t) + '<em>d’après ' + esc(x.de) + '</em></span><button type="button" class="changer" data-changer="' + k + '">Changer</button></li>';
+      }).join('') + '</ol>';
+    return feuille('Nouvel entraînement', 'Chaque temps se change ou se retire.', '<div class="creer" style="display:grid;gap:14px">' + rep(2) + corps2 + '</div>', '<button type="button" class="btn-texte" data-creer="retour">Retour</button><button type="button" class="btn-orange" data-creer="valider">Créer l’entraînement</button>');
+  }
+
+  /* ---------- explications ---------- */
+  var LEGENDES = [
+    '<b>L’application en production.</b> Trois onglets en haut, une barre du bas qui mène surtout ailleurs qu’aux séances, des cartes d’environ 440 px sur téléphone, et le comité rangé dans Groupes.',
+    '<b>On range l’accès aux séances.</b> La barre du bas sur téléphone et tablette, le tiroir de gauche sur ordinateur mènent aux séances, le comité rejoint la Communauté, chaque filtre s’ouvre seul et la fiche se resserre en gardant toutes ses actions. Aucune donnée ne change.',
+    '<b>Chaque séance porte ses repères</b> : catégorie, niveau, phase de jeu, forme de jeu. La Communauté s’organise avec, et reste une page simple.',
+    '<b>Le bouton + propose une séance déjà construite</b>, d’après celles du comité et les situations les plus reprises. Présenter se termine par une page qui propose de classer.'
+  ];
+  function explications() {
+    var e = E.ecran, t = E.etape, titre, items = [], essai = '';
+    function it(n, h, p) { items.push([n, h, p]); }
+    if (E.couche === 'creer') {
+      titre = 'Nouvel entraînement';
+      if (!E.creer || E.creer.pas === 1) { it(1, 'Pour qui, puis quoi travailler', 'L’équipe vient du profil, <b>Mes équipes</b>. On choisit une phase de jeu, dessinée comme dans la Communauté. Rien n’est créé à ce stade.'); essai = 'Touchez une phase.'; }
+      else { it(2, 'Une séance en quatre temps, déjà dessinée', 'Celle du comité s’il en a une pour cette équipe et cette phase, sinon les situations les plus reprises. <b>Chaque temps se change</b>. Échauffement, gardien·ne de but, travail, forme jouée (D10).'); essai = 'Touchez « Changer », puis « Créer l’entraînement ».'; }
+      return [titre, items, essai];
+    }
+    if (E.couche === 'menu') { return ['Sous l’avatar', [['', 'Ce qu’on ouvre rarement', 'Profil, import, administration, thème et déconnexion. ' + (t >= 2 ? 'À l’étape 2, <b>Mes équipes</b> s’y ajoute : catégories et niveau, qui ouvrent la Communauté sur vos équipes.' : 'La pastille « profil à compléter » passe sur l’avatar.')]], '']; }
+    if (E.couche === 'classer') { return ['Classer en quelques gestes', [['', 'Trois choix, pas un mot-clé', 'Catégorie, niveau, une ou deux phases. Les mêmes contrôles que les filtres et le profil. Les types restent sur les situations, posés par le modèle.']], '']; }
+    if (e === 'presenter') {
+      titre = 'Présenter';
+      if (t === 3) it(1, 'Une page de fin', 'Elle récapitule la séance et, <b>si elle n’est pas classée</b>, propose de le faire : le niveau, puis la phase. Jamais au lancement, jamais sur la séance d’un autre.');
+      else it('', 'Inchangé', 'Lancé par le bouton Présenter de la fiche' + (t === 0 ? ', ou en touchant la carte sur téléphone.' : '.'));
+      return [titre, items, t === 3 ? 'Allez jusqu’à la dernière page.' : ''];
+    }
+    if (e === 'editeur') {
+      titre = 'Une séance ouverte';
+      if (t >= 2) it(1, 'Les repères dans l’en-tête', 'Catégorie, niveau, phase et forme de jeu se posent ici, avec les contrôles des filtres. Une phrase dit si la séance est classée, donc visible dans la Communauté.');
+      if (t === 3 && E.seance === 'CREE') it('', 'Chaque reprise cite son auteur', 'Les situations reprises affichent « d’après » leur auteur, et la reprise lui est comptée.');
+      if (t < 2) it('', 'Inchangé', 'Les mots-clés se posent situation par situation, comme aujourd’hui.');
+      return [titre, items, ''];
+    }
+    if (e === 'gestion' || e === 'profil') return [e === 'gestion' ? 'Mes groupes' : 'Mon profil', [['', 'Hors du cœur de la refonte', t === 0 ? 'Aujourd’hui, dans la barre du bas.' : 'On y arrive par l’avatar' + (e === 'gestion' ? ' ou par le titre d’un groupe.' : '.') + ' La page elle-même ne change pas' + (t >= 2 && e === 'profil' ? ', sauf Mes équipes.' : '.')]], ''];
+    if (t === 0) {
+      titre = e === 'communaute' ? 'La Communauté, aujourd’hui' : e === 'groupes' ? 'Un groupe, aujourd’hui' : 'Mes entraînements, aujourd’hui';
+      if (e === 'mes') {
+        it(1, 'Trois onglets en haut', 'Mes entraînements, Groupes et Communauté. Sur téléphone, les noms de groupe se tronquent : « Comité de… ».');
+        it(2, 'Une pilule « Filtrer »', 'Sur téléphone, elle ouvre un panneau ; sur ordinateur, une barre en segments.');
+        it(3, 'Une carte d’environ 440 px sur téléphone', 'Une séance par écran. Texte centré, quatre métadonnées en capitales même vides, un bouton Ouvrir sous chaque carte. Sur ordinateur, la même carte en largeur, avec son rail à droite.');
+        if (pousse()) it(4, 'Le tiroir à gauche', 'Replié par défaut : Entraînements, Groupes, Profil, Importer, Admin. Ouvert par ☰, il liste vos groupes et pousse la page. Il n’apparaît qu’à partir de 1024 px.');
+        else it(4, 'La barre du bas', 'Entraînements, Groupes, Profil, Admin : trois entrées sur quatre mènent ailleurs qu’aux séances. Elle s’efface quand on descend.');
+      } else if (e === 'communaute') {
+        it('', 'La même liste que Mes entraînements', 'Rien ne guide un entraîneur qui ne sait pas quoi chercher. Les mots-clés sont surtout des types de situation : Échauffement, Duel GB/T…');
+        it('', 'Le comité est caché', 'Il faut ouvrir Groupes ▾ pour trouver le Comité de Gironde.');
+      } else it('', 'Groupes ▾', 'Le comité est un groupe parmi les autres. Son nom se tronque sur téléphone.');
+      return [titre, items, 'Passez à l’étape 1 dans le train.'];
+    }
+    if (e === 'mes') {
+      titre = 'Mes séances';
+      if (t === 1) {
+        var L = large(), T = pousse();
+        if (T) it(1, 'Le tiroir de gauche, gardé', 'Replié, il montre Mes séances, Groupes et Communauté. Ouvert, ce qu’il est par défaut, il liste aussi <b>vos groupes</b>, comme aujourd’hui, et pousse la page. Comme aujourd’hui, il n’existe qu’à partir de 1024 px.');
+        else it(1, 'La barre, ce sont les séances', 'Mes séances, Groupes, Communauté. La place d’une quatrième destination est gardée pour la Planification de saison.');
+        it(2, T ? 'Le compte, en bas du tiroir' : 'Le compte passe sous l’avatar', 'Profil, import, administration, thème, déconnexion.');
+        it(3, 'Une puce par filtre', 'Plus de bouton Filtres : chaque puce ouvre <b>son seul contenu</b>, ' + (L ? 'dans une liste juste dessous' : 'dans un panneau qui monte') + ', et affiche ensuite sa valeur.');
+        it(4, 'La fiche : même contenu, mieux rangé', 'Alignée à gauche, <b>seules les infos remplies</b>, une rangée d’étiquettes. Toute la fiche ouvre la séance ; <b>Présenter, PDF, Dupliquer, Partager, Supprimer</b> restent en pied. Environ 280 px au lieu de 440 sur téléphone. Sur ordinateur, la même fiche en largeur, rail à droite.');
+        it(5, 'La recherche, sur place', (L ? 'Le champ est dans la barre du haut' : 'La loupe change la barre du haut en champ ; la flèche le referme et l’efface') + '. La liste se filtre pendant la frappe.');
+        if (!T) it('', 'Les barres s’effacent', 'En descendant, la barre du haut et celle du bas disparaissent ; elles reviennent dès qu’on remonte. La barre du bas le fait déjà aujourd’hui.');
+        essai = T ? 'Touchez ☰, puis « Catégories ».' : 'Faites défiler la liste, puis touchez « Catégories ».';
+      } else if (t === 2) {
+        it(1, 'À classer', 'Une puce compte les séances sans niveau ni phase. Sur la fiche, « À classer » ouvre une feuille de trois choix.');
+        it(2, 'Les repères remplacent les mots-clés', 'Phase dessinée, niveau, forme de jeu : ce qu’un entraîneur veut savoir avant d’ouvrir.');
+        essai = 'Touchez « À classer » sur une fiche.';
+      } else {
+        it(1, 'Le + ne crée plus une séance vide', 'Il ouvre « Nouvel entraînement » : pour quelle équipe, quoi travailler, et une séance proposée.');
+        essai = 'Touchez le bouton +.';
+      }
+      return [titre, items, essai];
+    }
+    if (e === 'groupes') {
+      return ['Un groupe', [[1, 'Le titre change de groupe', 'Le groupe affiché en tête, vos autres groupes dessous, et « Créer ou rejoindre un groupe » en bas.' + (pousse() ? ' Le tiroir ouvert les liste aussi.' : '')],
+        [2, 'Le groupe affiché, avec ses actions', '« Inviter » et « Informations et membres », qui ouvre la page du groupe : on gère celui qu’on regarde, comme dans un sélecteur de compte. Les autres groupes ne servent qu’à changer. Plus de page « Mes groupes ».'],
+        ['', 'Le comité n’y est plus', 'Un groupe mis en avant vit dans la Communauté.']], 'Touchez le titre, puis « Informations et membres ».'];
+    }
+    if (e === 'gerer') return ['La page du groupe', [['', 'Celle d’aujourd’hui, inchangée', 'Informations, entraîneurs et invitations. On y arrive par « Informations et membres », sous le groupe affiché, dans la liste du titre.']], 'Revenez aux séances du groupe.'];
+    if (e === 'communaute') {
+      titre = E.source === 'comite' ? 'Le comité, dans la Communauté' : 'La Communauté';
+      if (t === 1) {
+        it(1, 'Le comité, en vitrine', 'Par défaut, la Communauté montre tout. Le comité a son bandeau, son logo en grand : « Voir les séances » ouvre ses séances modèles sur leur propre écran, la flèche du haut ramène à la Communauté. D’autres groupes mis en avant s’ajoutent à côté, <b>sans toucher à la barre</b>' + (pousse() ? '.' : '.'));
+        it('', '« En préparation » remplace le statut', 'Un interrupteur, éteint par défaut : allumé, il ajoute les brouillons et les séances en cours des autres entraîneurs. Il n’apparaît pas pour le comité, dont on ne voit que les séances prêtes ou terminées, comme aujourd’hui pour un groupe mis en avant.');
+        it('', 'Le reste ne change pas encore', 'La liste, triée par date. L’entrée par phase arrive à l’étape 2.');
+        essai = E.source === 'comite' ? 'Touchez la flèche du haut pour revenir.' : 'Touchez « Voir les 7 séances ».';
+      } else {
+        it(1, 'Catégories et niveau, deux puces', 'Préremplies par <b>Mes équipes</b> du profil : « U13, U15 » et « Intermédiaire ». Chacune s’ouvre seule et se change sans toucher à l’autre.');
+        it(2, 'Les quatre phases, dessinées', 'La question de chaque séance : quoi travailler. Toutes visibles sur une rangée, dans l’ordre du jeu, même sur téléphone.');
+        if (!E.phase) it(3, 'À la une', 'Les plus ouvertes ce mois-ci. Elle s’efface dès qu’on choisit une phase.');
+        it(4, 'Piocher une situation', 'Par type. Le seul endroit avec un schéma : une situation se juge à son dessin.');
+        it(5, 'Toutes les séances classées', 'Dessous, en fiches. Les séances pas encore classées restent accessibles à part.');
+        essai = E.phase ? 'Retouchez la phase pour revenir.' : 'Touchez une phase, puis le logo du comité.';
+      }
+      return [titre, items, essai];
+    }
+    return ['', [], ''];
+  }
+  function rendPourquoi() {
+    var x = explications();
+    var h = '<h3>' + x[0] + '</h3>';
+    if (x[1].length) h += '<ol class="pq">' + x[1].map(function (i) { return '<li><span class="n' + (i[0] === '' ? ' point' : '') + '">' + i[0] + '</span><h4>' + i[1] + '</h4><p>' + i[2] + '</p></li>'; }).join('') + '</ol>';
+    if (x[2]) h += '<p class="essai">' + x[2] + '</p>';
+    pourquoi.innerHTML = h;
+  }
+
+  /* ---------- écrans rapides ---------- */
+  function rendRapides() {
+    var l = [['mes', E.etape === 0 ? 'Mes entraînements' : 'Mes séances'], ['groupes', 'Un groupe'], ['communaute', 'Communauté'], ['editeur', 'Une séance'], ['presenter', 'Présenter']];
+    if (E.etape >= 1) l.splice(3, 0, ['comite', 'Le comité']);
+    if (E.etape === 3) l.push(['creer', 'Nouvel entraînement']);
+    document.getElementById('rapides').innerHTML = l.map(function (x) {
+      var on = x[0] === 'comite' ? E.ecran === 'communaute' && E.source === 'comite' : x[0] === 'creer' ? E.couche === 'creer' : x[0] === 'communaute' ? E.ecran === 'communaute' && E.source !== 'comite' : E.ecran === x[0] && !(E.couche === 'creer');
+      return '<button type="button" data-rapide="' + x[0] + '" aria-pressed="' + on + '">' + x[1] + '</button>';
+    }).join('');
+  }
+
+  /* ---------- rendu ---------- */
+  var minuteur;
+  function champVisible() { return Array.prototype.filter.call(ecran.querySelectorAll('input.q'), function (i) { return i.offsetParent !== null; })[0]; }
+  function placePop() {
+    var p = calque.querySelector('.voile.pop .feuille'); if (!p) return;
+    var a = ecran.querySelector(E.couche === 'filtre' ? '.pf[data-quoi="' + E.quoi + '"]' : '.selecteur'); if (!a) return;
+    var r = a.getBoundingClientRect(), base = calque.getBoundingClientRect(), haut = r.bottom - base.top + 8;
+    p.style.left = Math.max(12, Math.min(r.left - base.left, base.width - p.offsetWidth - 12)) + 'px';
+    p.style.top = haut + 'px'; p.style.maxHeight = (base.height - haut - 12) + 'px';
+  }
+  function rend() {
+    zone.dataset.format = format; zone.dataset.explications = expl ? 'oui' : 'non';
+    // la recherche garde le focus et le curseur d'un rendu à l'autre
+    var actif = document.activeElement, focusQ = E.focusQ || (actif && actif.classList && actif.classList.contains('q') && ecran.contains(actif));
+    var curseur = actif && actif.classList && actif.classList.contains('q') ? actif.selectionStart : E.q.length;
+    E.focusQ = false;
+    var vrai = E.ecran;
+    if (vrai === 'presenter') E.ecran = E.retourPres || 'mes';
+    ecran.innerHTML = app();
+    E.ecran = vrai;
+    if (focusQ) { var champ = champVisible(); if (champ) { champ.focus({ preventScroll: true }); champ.setSelectionRange(curseur, curseur); } }
+    calque.innerHTML = calqueHtml();
+    placePop();
+    rendPourquoi(); rendRapides();
+    var train = document.getElementById('train');
+    train.style.setProperty('--avance', E.etape); train.style.setProperty('--pointe', E.etape === 3 ? 1 : 0);
+    train.querySelectorAll('.gare').forEach(function (g) { var n = +g.dataset.etape; g.classList.toggle('faite', n < E.etape); if (n === E.etape) g.setAttribute('aria-current', 'step'); else g.removeAttribute('aria-current'); });
+    document.getElementById('legende').innerHTML = LEGENDES[E.etape];
+    document.querySelectorAll('[data-format]').forEach(function (b) { if (b.tagName === 'BUTTON') b.setAttribute('aria-pressed', String(b.dataset.format === format)); });
+    document.querySelectorAll('[data-explications]').forEach(function (b) { if (b.tagName === 'BUTTON') b.setAttribute('aria-pressed', String((b.dataset.explications === 'oui') === expl)); });
+  }
+  function dit(t) { E.bulle = t; clearTimeout(minuteur); minuteur = setTimeout(function () { E.bulle = ''; rend(); }, 2200); }
+  function va(ecr) { E.ecran = ecr; E.couche = null; E.cherche = false; ecran.scrollTop = 0; dernierY = 0; ecran.dataset.masque = ''; ecran.dataset.defile = ''; }
+
+  /* ---------- défilement : les barres s'effacent en descendant, reviennent en remontant ---------- */
+  var dernierY = 0;
+  ecran.addEventListener('scroll', function () {
+    var y = ecran.scrollTop, d = y - dernierY;
+    ecran.dataset.defile = y > 4 ? 'oui' : '';
+    if (y <= 4) { ecran.dataset.masque = ''; dernierY = y; return; }
+    if (Math.abs(d) < 8) return;
+    ecran.dataset.masque = d > 0 && y > 60 ? 'oui' : '';
+    dernierY = y;
+  }, { passive: true });
+
+  /* ---------- interactions ---------- */
+  cadre.addEventListener('click', function (ev) {
+    var t = ev.target, b;
+    if ((b = t.closest('[data-theme-app]'))) { changeTheme(b.dataset.themeApp); return; }
+    if ((b = t.closest('[data-tiroir]'))) {
+      // sans nouveau rendu, pour que le tiroir glisse
+      var o = !tiroirOuvert(), r = ecran.querySelector('.rail');
+      E.tiroir = o;
+      if (r) { r.dataset.ouvert = String(o); r.querySelector('.burger').setAttribute('aria-expanded', String(o)); }
+      return;
+    }
+    if ((b = t.closest('[data-fermer]')) && (b === t || b.tagName === 'BUTTON')) { E.couche = null; E.creer = null; rend(); return; }
+    if ((b = t.closest('[data-nav]'))) {
+      var n = b.dataset.nav;
+      if (n === 'admin' || n === 'importer' || n === 'creer-groupe') { E.couche = null; dit(n === 'admin' ? 'Administration : inchangée' : n === 'importer' ? 'Import : inchangé' : 'Créer ou rejoindre un groupe : inchangé'); rend(); return; }
+      if (n === 'communaute') { E.phase = null; E.source = 'tout'; }
+      va(n); rend(); return;
+    }
+    if ((b = t.closest('[data-groupe-nav]'))) { E.groupe = b.dataset.groupeNav; va('groupes'); rend(); return; }
+    if ((b = t.closest('[data-source-nav]'))) { E.source = b.dataset.sourceNav; E.phase = null; va('communaute'); rend(); return; }
+    if ((b = t.closest('[data-gerer]'))) { E.groupe = b.dataset.gerer || E.groupe; va('gerer'); rend(); return; }
+    if ((b = t.closest('[data-inviter]'))) { E.couche = null; dit('Lien d’invitation copié'); rend(); return; }
+    if ((b = t.closest('[data-prepa]'))) { E.prepa = !E.prepa; dit(E.prepa ? 'Brouillons et séances en cours affichés' : 'Séances prêtes et terminées seulement'); rend(); return; }
+    if ((b = t.closest('[data-quoi]'))) { E.couche = 'filtre'; E.quoi = b.dataset.quoi; rend(); return; }
+    if ((b = t.closest('[data-opt]'))) { var l0 = sel()[b.dataset.opt], i0 = l0.indexOf(b.dataset.v); if (i0 >= 0) l0.splice(i0, 1); else l0.push(b.dataset.v); rend(); return; }
+    if ((b = t.closest('[data-effacer]'))) { sel()[b.dataset.effacer] = []; rend(); return; }
+    if ((b = t.closest('[data-effacer-tout]'))) { E.q = ''; E.sel[E.ecran] = { cat: [], mots: [], st: [], niv: [], ph: [], fo: [] }; E.aClasser = false; rend(); return; }
+    if ((b = t.closest('[data-cherche]'))) {
+      var ch = b.dataset.cherche;
+      if (ch === 'ouvrir') { E.cherche = true; E.focusQ = true; }
+      else if (ch === 'fermer') { E.cherche = false; E.q = ''; }
+      else { E.q = ''; E.focusQ = true; }
+      rend(); return;
+    }
+    if ((b = t.closest('[data-couche]'))) { E.couche = b.dataset.couche; rend(); return; }
+    if ((b = t.closest('[data-groupe0]'))) { E.groupe = b.dataset.groupe0; va('groupes'); rend(); return; }
+    if ((b = t.closest('[data-groupe]'))) { E.groupe = b.dataset.groupe; E.couche = null; rend(); return; }
+    if ((b = t.closest('[data-source]'))) { E.source = b.dataset.source; E.phase = null; ecran.scrollTop = 0; ecran.dataset.masque = ''; rend(); return; }
+    if ((b = t.closest('[data-phase]'))) { E.phase = E.phase === b.dataset.phase ? null : b.dataset.phase; rend(); return; }
+    if ((b = t.closest('[data-type]'))) { E.typeSit = b.dataset.type; rend(); return; }
+    if ((b = t.closest('[data-copier]'))) { var k = b.dataset.copier; E.copiees[k] = !E.copiees[k]; if (E.copiees[k]) dit('Situation copiée : collez-la dans une séance'); rend(); return; }
+    if ((b = t.closest('[data-filtre]'))) { E.aClasser = !E.aClasser; rend(); return; }
+    if ((b = t.closest('[data-partage]'))) { E.couche = null; dit('Partagée avec ' + b.dataset.partage); rend(); return; }
+    if ((b = t.closest('[data-cl-niv]'))) { E.classeEnCours.niv = b.dataset.clNiv; rend(); return; }
+    if ((b = t.closest('[data-cl-ph]'))) { var ph = b.dataset.clPh, l = E.classeEnCours.ph, i = l.indexOf(ph); if (i >= 0) l.splice(i, 1); else if (l.length < 2) l.push(ph); rend(); return; }
+    if ((b = t.closest('[data-cl]'))) {
+      var c = E.classeEnCours;
+      if (!c.niv || !c.ph.length) { dit('Choisissez un niveau et une phase'); rend(); return; }
+      E.classees[E.seance] = { niv: c.niv, ph: c.ph.slice() }; E.couche = null; dit('Séance classée : elle rejoint la Communauté'); rend(); return;
+    }
+    if ((b = t.closest('[data-fin-niv]'))) { E.finNiv = b.dataset.finNiv; rend(); return; }
+    if ((b = t.closest('[data-classer-ph]'))) { if (!E.finNiv) { dit('Choisissez d’abord le niveau'); rend(); return; } var sc = seanceOuverte(); E.classees[sc.id] = { niv: E.finNiv, ph: [b.dataset.classerPh] }; dit('Séance classée : ' + PH[b.dataset.classerPh]); rend(); return; }
+    if ((b = t.closest('[data-pres]'))) {
+      var a = b.dataset.pres;
+      if (a === 'suiv') E.pres++; else if (a === 'prec') E.pres = Math.max(0, E.pres - 1); else { E.ecran = E.retourPres || 'mes'; E.pres = 0; }
+      rend(); return;
+    }
+    if ((b = t.closest('[data-retour]'))) { va(E.retourEd || 'mes'); rend(); return; }
+    if ((b = t.closest('[data-creer-ph]'))) { E.creer = { pas: 2, ph: b.dataset.creerPh, decalage: {} }; rend(); return; }
+    if ((b = t.closest('[data-changer]'))) { var tt = b.dataset.changer; E.creer.decalage[tt] = ((E.creer.decalage[tt] || 0) + 1) % 2; rend(); return; }
+    if ((b = t.closest('[data-creer]'))) {
+      var v = b.dataset.creer;
+      if (v === 'ouvrir') {
+        if (E.etape === 3) { E.couche = 'creer'; E.creer = { pas: 1 }; rend(); return; }
+        E.retourEd = E.ecran; E.seance = 'NEW'; va('editeur'); dit('Entraînement vide créé'); rend(); return;
+      }
+      if (v === 'retour') { E.creer = { pas: 1 }; rend(); return; }
+      if (v === 'blanche') { E.couche = null; E.creer = null; E.retourEd = 'mes'; E.seance = 'NEW'; va('editeur'); rend(); return; }
+      if (v === 'valider') {
+        var p = proposition(E.creer.ph), base = p.base;
+        E.creee = { id: 'CREE', src: 'moi', t: base ? base.t : PH[E.creer.ph] + ', U13', o: base ? base.o : ['Travailler ' + PH[E.creer.ph].toLowerCase() + '.'], cats: ['U13'], st: 'pret', n: 4, eff: '', du: '1h30', d: '', mots: [], plus: 0, niv: 'Intermédiaire', ph: [E.creer.ph], fo: base ? base.fo : [], sits: ['ech', 'gb', 'tr', 'fj'].map(function (k) { return p.choix[k].img; }) };
+        SEANCE.CREE = E.creee; E.couche = null; E.creer = null; E.seance = 'CREE'; E.retourEd = 'mes'; va('editeur'); dit('Entraînement créé, prêt à présenter'); rend(); return;
+      }
+    }
+    if ((b = t.closest('[data-act]'))) {
+      var act = b.dataset.act, id = b.dataset.id;
+      if (act === 'presenter') { E.seance = id; E.pres = 0; E.retourPres = E.ecran; E.ecran = 'presenter'; E.couche = null; rend(); return; }
+      if (act === 'pdf') dit('PDF téléchargé');
+      else if (act === 'dupliquer') dit('Séance dupliquée dans Mes séances');
+      else if (act === 'partager') { E.couche = 'partager'; }
+      else if (act === 'supprimer') dit('La séance sera supprimée après confirmation');
+      else if (act === 'classer') { E.seance = id; var s0 = SEANCE[id]; E.classeEnCours = { niv: s0.niv || '', ph: s0.ph.slice() }; E.couche = 'classer'; }
+      rend(); return;
+    }
+    if ((b = t.closest('[data-ouvrir]'))) { E.seance = b.dataset.ouvrir; E.retourEd = E.ecran; va('editeur'); rend(); return; }
+  });
+  cadre.addEventListener('keydown', function (ev) {
+    if (ev.target.classList.contains('q')) { if (ev.key === 'Escape' && E.cherche) { E.cherche = false; E.q = ''; rend(); } return; }
+    if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.matches('.fiche')) { ev.preventDefault(); ev.target.click(); }
+  });
+  cadre.addEventListener('input', function (ev) { if (ev.target.classList.contains('q')) { E.q = ev.target.value; rend(); } });
+
+  document.getElementById('train').addEventListener('click', function (ev) {
+    var g = ev.target.closest('.gare'); if (!g) return;
+    var ecr = E.ecran === 'editeur' || E.ecran === 'presenter' ? 'mes' : E.ecran, src = E.source;
+    E = etatDepart(+g.dataset.etape); E.ecran = ecr === 'gestion' || ecr === 'profil' ? 'mes' : ecr; E.source = E.etape === 0 ? 'tout' : src;
+    ecran.dataset.masque = ''; rend();
+  });
+  document.getElementById('rapides').addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-rapide]'); if (!b) return;
+    var r = b.dataset.rapide; E.couche = null; E.creer = null;
+    if (r === 'comite') { E.source = 'comite'; E.phase = null; va('communaute'); }
+    else if (r === 'communaute') { E.source = 'tout'; va('communaute'); }
+    else if (r === 'editeur') { E.seance = E.etape >= 2 ? 'M2' : 'M1'; E.retourEd = 'mes'; va('editeur'); }
+    else if (r === 'presenter') { E.seance = E.etape === 3 ? 'M4' : 'M2'; E.pres = 0; E.retourPres = 'mes'; va('presenter'); }
+    else if (r === 'creer') { va('mes'); E.couche = 'creer'; E.creer = { pas: 1 }; }
+    else if (r === 'groupes' && E.etape === 0) { E.groupe = 'comite'; va('groupes'); }
+    else va(r);
+    rend();
+  });
+  document.querySelectorAll('button[data-format]').forEach(function (b) { b.addEventListener('click', function () { format = b.dataset.format; E.tiroir = null; E.cherche = false; ecran.dataset.masque = ''; rend(); }); });
+  document.querySelectorAll('button[data-explications]').forEach(function (b) { b.addEventListener('click', function () { expl = b.dataset.explications === 'oui'; rend(); }); });
+  document.getElementById('recommencer').addEventListener('click', function () { E = etatDepart(E.etape); ecran.scrollTop = 0; rend(); });
+
+  marqueTheme();
+  rend();
+})();
+</script>
+</body>
+</html>
