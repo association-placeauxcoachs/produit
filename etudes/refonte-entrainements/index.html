@@ -593,7 +593,7 @@
   .voile{position:absolute;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center;background:var(--voile)}
   .feuille{display:flex;flex-direction:column;width:100%;max-height:88%;background:var(--paper);border-radius:22px 22px 0 0;overflow:hidden;animation:monte .22s ease-out}
   @keyframes monte{from{transform:translateY(20%);opacity:.5}to{transform:none;opacity:1}}
-  @media (prefers-reduced-motion: reduce){.feuille,.voile.pop .feuille{animation:none}.voie-faite,.nav-bas,.entete-app,.fab-zone,.rail,.rail-in{transition:none}}
+  @media (prefers-reduced-motion: reduce){.feuille,.voile.pop .feuille,.sugg{animation:none}.entete-app.charge::after{animation:none;background:var(--orange);opacity:.6}.voie-faite,.nav-bas,.entete-app,.fab-zone,.rail,.rail-in{transition:none}}
   .poignee{flex:none;width:40px;height:4px;border-radius:2px;background:var(--filet-fort);margin:10px auto 0}
   .p-tete{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 12px 20px;border-bottom:1px solid var(--filet)}
   .p-tete h4{font-size:16px;font-weight:600}
@@ -675,7 +675,6 @@
   .moi-ident{display:flex;align-items:center;gap:12px;padding:16px 20px 6px}
   .moi-ident i{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1.5px solid var(--filet-fort);background:var(--surface);font-style:normal;font-weight:700}
   .moi-ident b{display:block;font-weight:600}
-  .moi-ident small{font-size:13px;color:var(--attenue)}
   .moi-ident .fermer{margin-left:auto;align-self:flex-start;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--attenue)}
   .moi-equipes{display:grid;gap:12px;margin:12px 16px 4px;padding:14px;border:1px solid var(--filet);border-radius:16px;background:var(--surface)}
   .moi-equipes h5{font-family:var(--display);font-weight:600;font-size:17px}
@@ -689,6 +688,21 @@
   .moi-liens .seg button{font-size:12.5px;padding:.3em .9em}
   .moi-liens .sep-l{height:1px;background:var(--filet);margin:6px 22px}
   .moi-p{flex:1;overflow-y:auto}
+  .moi-ident .nom-l{flex:1;min-width:0;display:flex;align-items:center;gap:4px}
+  .nom-crayon{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;color:var(--attenue)}
+  .nom-crayon:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+  .nom-crayon .ic{width:15px;height:15px}
+  .nom-f{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .nom-champ{flex:1;min-width:0;height:40px;padding:0 12px;border:1px solid var(--filet-fort);border-radius:10px;background:var(--surface);font-size:15px}
+  .nom-champ:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+  .nom-f .btn-orange{flex:none;height:40px;padding:0 14px;font-size:14px}
+  .nom-f small{flex-basis:100%;font-size:12.5px;line-height:1.4;color:var(--attenue)}
+  .moi-liens .obs{align-items:flex-start}
+  .obs>span{flex:1;min-width:0;line-height:1.35}
+  .obs a{display:block;margin-top:2px;font-size:12.5px;color:var(--violet);text-underline-offset:3px}
+  .inter{flex:none;display:grid;place-items:center;width:44px;height:28px;margin:-4px -6px 0 0}
+  .inter[aria-checked="true"] .interrupteur{background:var(--orange)}
+  .inter[aria-checked="true"] .interrupteur::after{transform:translateX(13px)}
   .creer h3{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.15}
   .pour-qui{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--filet);font-size:14px}
   .pour-qui b{font-weight:600}
@@ -716,6 +730,39 @@
   .voile.pop .p-corps{padding:14px 16px}
   .voile.pop .p-pied{padding:10px 12px}
   .voile.pop :is(.btn-orange,.btn-texte){height:40px;font-size:14px}
+  .p-tete .effacer-f{width:auto;height:32px;padding:0 12px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--violet)}
+  .p-tete .effacer-f:hover{background:color-mix(in srgb,var(--violet) 10%,transparent)}
+  .p-pied :disabled,.p-tete .effacer-f:disabled{color:var(--attenue);opacity:.45;background:none;cursor:default}
+  /* une requête en cours : l'ancienne liste reste, atténuée, sous une fine ligne qui avance */
+  .entete-app.charge::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--orange) 25%,var(--orange) 75%,transparent) no-repeat;background-size:35% 100%;animation:avance 1s ease-in-out infinite}
+  @keyframes avance{from{background-position:-60% 0}to{background-position:160% 0}}
+  .corps-l{transition:opacity .2s}
+  .corps-l[data-charge]{opacity:.5}
+  /* pagination */
+  .pagin{display:flex;justify-content:center;align-items:center;gap:2px;margin:22px 12px 6px}
+  .pagin button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:36px;height:36px;padding:0 4px;border-radius:999px;font-size:14px;color:var(--attenue);font-variant-numeric:tabular-nums}
+  .pagin button:hover:not(:disabled){background:color-mix(in srgb,var(--orange) 8%,transparent);color:var(--ink)}
+  .pagin [aria-current="page"]{background:color-mix(in srgb,var(--orange) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--orange) 35%,transparent);color:var(--orange-texte);font-weight:700}
+  .pagin :disabled{opacity:.35;cursor:default}
+  .pagin .ell{min-width:22px;text-align:center;color:var(--attenue)}
+  .pagin .pg-lib{display:none}
+  @container cadre (min-width:720px){.pagin{gap:6px;margin:28px 28px 8px}.pagin button{min-width:40px;height:40px}.pagin .pg-sens{padding:0 14px}.pagin .pg-lib{display:inline}}
+  /* suggestions sous le champ de recherche */
+  .sugg{position:absolute;display:grid;padding:6px;border-radius:16px;background:var(--surface);box-shadow:0 24px 50px -18px rgba(0,0,0,.45),0 0 0 1px var(--filet);animation:pop .16s ease-out}
+  .sugg[hidden]{display:none}
+  .sg{display:flex;align-items:center;gap:12px;min-height:44px;padding:6px 10px;border-radius:10px;text-align:left;font-size:14.5px}
+  .sg:hover,.sg[aria-selected="true"]{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+  .sg>.picto{width:26px;height:26px}
+  .sg>.ic{width:18px;height:18px;margin:0 4px;color:var(--attenue)}
+  .sg b{flex:1;min-width:0;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sg mark{background:none;color:inherit;font-weight:700}
+  .sg small{flex:none;font-size:12.5px;color:var(--attenue)}
+  .sg small mark{color:var(--ink)}
+  .sg.texte{position:relative;margin-top:7px;color:var(--attenue)}
+  .sg.texte::before{content:"";position:absolute;left:10px;right:10px;top:-4px;border-top:1px solid var(--filet)}
+  .sg.texte b{font-weight:400}
+  .sg kbd{flex:none;font:inherit;font-size:11.5px;padding:1px 7px;border:1px solid var(--filet-fort);border-radius:6px}
+  @container cadre (max-width:719px){.sg kbd{display:none}}
   @keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
   .pf[aria-expanded="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
   .vide .lien-v{display:block;margin:6px auto 0;font-weight:600;color:var(--violet);text-align:center}
@@ -807,8 +854,8 @@
     <table class="tableau">
       <thead><tr><th scope="col">Étape</th><th scope="col">Ce que l’entraîneur voit</th><th scope="col">Ce qu’il faut construire</th><th scope="col">D’après</th></tr></thead>
       <tbody>
-        <tr><td><span class="num">1</span>Naviguer</td><td>Trois destinations : Mes séances, Groupes, Communauté. Sur téléphone et tablette, dans la barre du bas ; sur ordinateur, dans le tiroir de gauche, qui liste aussi vos groupes. Le compte passe sous l’avatar. Chaque puce de filtre ouvre son seul contenu ; la recherche se fait dans la barre du haut. Sur téléphone et tablette, les barres s’effacent quand on descend. Le comité a sa vitrine dans la Communauté : sa carte n’affiche que ses séances. Dans la Communauté, un interrupteur « En préparation » remplace le filtre de statut. La fiche se resserre et garde toutes ses actions.</td><td><b>Aucune donnée ne change.</b> Barre, tiroir, en-tête, puces de filtres, nouvelle fiche.</td><td>Étude « Naviguer par les séances », avec trois écarts : le comité dans la Communauté plutôt qu’en destination (N5), une fiche unique plutôt que lignes et cartes (N8), pas de vignette (N9).</td></tr>
-        <tr><td><span class="num">2</span>Organiser</td><td>La séance porte catégorie, niveau, phase de jeu (attaque placée, repli défensif, défense placée, grand espace) et forme de jeu (le dispositif défensif). La situation ne garde que son type, posé par le modèle. La Communauté s’ouvre sur les phases dessinées, À la une et les situations à piocher. « À classer » dans Mes séances. Mes équipes dans le profil.</td><td>Colonnes niveau, phases et formes ; reprise des anciens mots-clés ; compte des ouvertures pour À la une.</td><td>Étude « Organiser la Communauté » (D1 à D9), avec la classification de Thomas (issue 31, 12 octobre) : <b>Repli défensif</b> plutôt que « Du jeu tout terrain au jeu placé » (D2), compétences et ressources retirées. Les phases sur une rangée sur téléphone (N11).</td></tr>
+        <tr><td><span class="num">1</span>Naviguer</td><td>Trois destinations : Mes séances, Groupes, Communauté. Sur téléphone et tablette, dans la barre du bas ; sur ordinateur, dans le tiroir de gauche, qui liste aussi vos groupes. Le compte passe sous l’avatar. Chaque puce de filtre ouvre son seul contenu, appliqué à sa fermeture ; la recherche se fait dans la barre du haut, avec des suggestions qui deviennent des filtres. Sur téléphone et tablette, les barres s’effacent quand on descend. Le comité a sa vitrine dans la Communauté : sa carte n’affiche que ses séances. Dans la Communauté, un interrupteur « En préparation » remplace le filtre de statut. La fiche se resserre et garde toutes ses actions.</td><td><b>Aucune donnée ne change.</b> Barre, tiroir, en-tête, puces de filtres, nouvelle fiche.</td><td>Étude « Naviguer par les séances », avec trois écarts : le comité dans la Communauté plutôt qu’en destination (N5), une fiche unique plutôt que lignes et cartes (N8), pas de vignette (N9).</td></tr>
+        <tr><td><span class="num">2</span>Organiser</td><td>La séance porte catégorie, niveau, phase de jeu (attaque placée, repli défensif, défense placée, grand espace) et forme de jeu (le dispositif défensif). La situation ne garde que son type, posé par le modèle. La Communauté s’ouvre sur les phases dessinées, À la une et les situations à piocher. « À classer » dans Mes séances. Mes équipes dans le panneau du compte.</td><td>Colonnes niveau, phases et formes ; reprise des anciens mots-clés ; compte des ouvertures pour À la une.</td><td>Étude « Organiser la Communauté » (D1 à D9), avec la classification de Thomas (issue 31, 12 octobre) : <b>Repli défensif</b> plutôt que « Du jeu tout terrain au jeu placé » (D2), compétences et ressources retirées. Les phases sur une rangée sur téléphone (N11).</td></tr>
         <tr><td><span class="num">3</span>Créer</td><td>Le + demande quoi travailler et propose une séance en quatre temps, déjà dessinée. Chaque situation reprise cite son auteur. Présenter gagne une page de fin, qui propose de classer.</td><td>Proposition calculée à partir des repères ; compte des reprises.</td><td>Étude « Créer un entraînement en trois gestes », alignée sur les quatre phases de Thomas et les quatre temps d’« Organiser » (D10).</td></tr>
       </tbody>
     </table>
@@ -827,7 +874,7 @@
         <tr><td>Présenter</td><td>Lancé par le bouton de la fiche.</td><td>—</td><td>Une page de fin, qui propose de classer une séance qui ne l’est pas.</td></tr>
         <tr><td>PDF, dupliquer, partager, supprimer</td><td>Sur la fiche, comme aujourd’hui.</td><td>Le PDF imprime les repères dans l’en-tête.</td><td>—</td></tr>
         <tr><td>Groupes : création, invitations, membres</td><td>Le titre d’un groupe ne sert qu’à en changer ; « Créer ou rejoindre un groupe » est en bas de sa liste, et sur le + du tiroir. Le groupe affiché y est en tête, avec « Inviter » et « Informations et membres », qui ouvre la page du groupe d’aujourd’hui. La page « Mes groupes » disparaît.</td><td>—</td><td>—</td></tr>
-        <tr><td>Profil</td><td>Sous l’avatar ; la pastille « profil incomplet » passe sur l’avatar.</td><td>Mes équipes : catégories et niveaux, qui ouvrent la Communauté sur vos équipes.</td><td>Mes équipes servent au +.</td></tr>
+        <tr><td>Profil</td><td>Plus de page : le nom, le thème, l’observation de la navigation et la déconnexion tiennent dans le panneau du compte. La pastille « profil incomplet » passe sur l’avatar.</td><td>Mes équipes : catégories et niveaux, qui ouvrent la Communauté sur vos équipes.</td><td>Mes équipes servent au +.</td></tr>
         <tr><td>Import d’un entraînement</td><td>Sous l’avatar.</td><td>La séance importée arrive « à classer ».</td><td>—</td></tr>
         <tr><td>Administration, groupes mis en avant</td><td>Sous l’avatar. Mettre un groupe en avant lui donne sa carte dans la vitrine de la Communauté.</td><td>—</td><td>—</td></tr>
         <tr><td>Planification de saison</td><td>La quatrième place de la barre lui est gardée.</td><td>Les thèmes de saison pourront reprendre catégorie, niveau et phase.</td><td>—</td></tr>
@@ -851,6 +898,9 @@
     <div class="d"><span class="d-num">R7</span><p class="d-q">« À classer » en puce de filtre dans Mes séances, plutôt qu’en bandeau ?</p><p class="d-p">Oui : elle compte les séances à classer et ne s’affiche que s’il en reste.</p></div>
     <div class="d"><span class="d-num">R8</span><p class="d-q">La prochaine séance en tête de Mes séances ?</p><p class="d-p">Pas dans cette refonte : elle revient à la Planification de saison.</p></div>
     <div class="d"><span class="d-num">R9</span><p class="d-q">Sur ordinateur, le compte en bas du tiroir plutôt qu’en haut à droite ?</p><p class="d-p">Oui : le tiroir porte déjà la navigation, et la barre du haut garde le titre et la recherche. Sur téléphone et tablette, l’avatar reste en haut à droite.</p></div>
+    <div class="d"><span class="d-num">R10</span><p class="d-q">Appliquer un filtre à la fermeture de son panneau, sans bouton ni compte ?<span>Un compte en direct coûterait une requête à chaque clic.</span></p><p class="d-p">Oui. Pendant la requête, l’ancienne liste reste affichée, atténuée, sous une fine ligne orange. Sur téléphone, le panneau qui monte garde « Voir les séances » pour en sortir.</p></div>
+    <div class="d"><span class="d-num">R11</span><p class="d-q">Des suggestions sous la recherche, qui changent le texte en filtre ?</p><p class="d-p">Oui. « 1-5 » propose la forme de jeu, « contre » la phase Grand espace, « U13 » la catégorie. Elles ne coûtent rien : le vocabulaire est fixe.</p></div>
+    <div class="d"><span class="d-num">R12</span><p class="d-q">Plus de page Profil : tout dans le panneau du compte ?<span>La page ne porte qu’un champ, le nom, et trois réglages.</span></p><p class="d-p">Oui. Le nom se modifie sur place, au crayon ; sans nom, le champ s’affiche d’emblée. L’observation de la navigation devient une ligne à interrupteur, à côté du thème.</p></div>
   </div>
 </section>
 
@@ -859,7 +909,7 @@
   <h2 id="titre-dev">Livraison</h2>
   <p>On peut s’arrêter ici. Les détails restent dans les trois études ; voici ce que la maquette change à leur découpage.</p>
   <ul>
-    <li><b>Étape 1</b> : <code>navigation-par-destinations</code> et <code>filtres-en-puces</code> de l’étude Naviguer. <code>DESTINATIONS</code> à trois entrées ; les groupes mis en avant quittent <code>navigation-contexte.tsx</code> pour une vitrine dans la Communauté (paramètre <code>source</code> à côté de <code>tab=communaute</code>). <code>navigation-rail.tsx</code> reste le tiroir, à partir de <code>lg</code> comme aujourd’hui, ouvert par défaut, avec vos groupes en sous-liens sous Groupes, comme aujourd’hui ; le comité n’y est pas, son bandeau suffit ; en dessous, la barre du bas. <code>useScrollDirection</code> masque aussi la barre du haut sous <code>lg</code>. <code>panel-filtres-mobile.tsx</code> laisse place à un panneau par puce, qui reprend <code>SelectionCategories</code>, <code>SelecteurMotsCles</code> et <code>SelecteurStatuts</code> ; sur ordinateur, ces mêmes listes s’ouvrent sous la puce. La recherche passe dans la barre du haut. La page <code>/groupes</code> disparaît : la liste sous le titre du groupe la remplace, et « Informations et membres » mène à <code>/groupes-de-travail/[id]</code>. Dans la Communauté, <code>SelecteurStatuts</code> devient un interrupteur « En préparation » (brouillon et en cours), masqué pour un groupe mis en avant comme aujourd’hui. <code>carte-entrainement.tsx</code> devient la fiche : mêmes actions, mêmes droits, <code>@container</code> à 500 px au lieu de <code>@lg</code>, métadonnées vides retirées. <code>ligne-entrainement.tsx</code> et le cookie lignes ou cartes ne sont plus nécessaires.</li>
+    <li><b>Étape 1</b> : <code>navigation-par-destinations</code> et <code>filtres-en-puces</code> de l’étude Naviguer. Une requête par panneau de filtre, à sa fermeture : plus de bouton « Appliquer » ni de compte en direct. La recherche garde le délai de <code>barre-filtres.tsx</code> (500 ms), à partir de 3 caractères, Entrée pour la lancer tout de suite, et la requête en cours est annulée par la suivante. Les suggestions se calculent sur place, à partir des listes fixes. La page <code>/profil</code> disparaît : <code>formulaire-profil.tsx</code> et <code>actions-compte.tsx</code> passent dans le panneau du compte, et l’ancienne adresse redirige vers les entraînements, panneau ouvert. La pagination reste celle de <code>pagination-entrainements.tsx</code> (12 par page, inactive pendant un chargement) ; tout filtre ramène en page 1, et un changement de page remonte en tête de liste. <code>DESTINATIONS</code> à trois entrées ; les groupes mis en avant quittent <code>navigation-contexte.tsx</code> pour une vitrine dans la Communauté (paramètre <code>source</code> à côté de <code>tab=communaute</code>). <code>navigation-rail.tsx</code> reste le tiroir, à partir de <code>lg</code> comme aujourd’hui, ouvert par défaut, avec vos groupes en sous-liens sous Groupes, comme aujourd’hui ; le comité n’y est pas, son bandeau suffit ; en dessous, la barre du bas. <code>useScrollDirection</code> masque aussi la barre du haut sous <code>lg</code>. <code>panel-filtres-mobile.tsx</code> laisse place à un panneau par puce, qui reprend <code>SelectionCategories</code>, <code>SelecteurMotsCles</code> et <code>SelecteurStatuts</code> ; sur ordinateur, ces mêmes listes s’ouvrent sous la puce. La recherche passe dans la barre du haut. La page <code>/groupes</code> disparaît : la liste sous le titre du groupe la remplace, et « Informations et membres » mène à <code>/groupes-de-travail/[id]</code>. Dans la Communauté, <code>SelecteurStatuts</code> devient un interrupteur « En préparation » (brouillon et en cours), masqué pour un groupe mis en avant comme aujourd’hui. <code>carte-entrainement.tsx</code> devient la fiche : mêmes actions, mêmes droits, <code>@container</code> à 500 px au lieu de <code>@lg</code>, métadonnées vides retirées. <code>ligne-entrainement.tsx</code> et le cookie lignes ou cartes ne sont plus nécessaires.</li>
     <li><b>Étape 2</b> : <code>reperes-seance</code>, <code>filtres-reperes</code>, <code>communaute-par-phase</code>, <code>piocher-situations</code>, <code>a-la-une</code> de l’étude Organiser, sans changement. Puce « À classer » : un critère <code>aClasser</code> dans <code>ParametresRecherche</code>, réservé à Mes séances.</li>
     <li><b>Étape 3</b> : <code>aide-creation-entrainement</code> de l’étude Créer, avec les phases et les temps de l’étude Organiser.</li>
     <li><b>Mesure</b> (ADR-0024) : <code>source_communaute_choisie</code> et <code>fiche_action</code> (présenter, pdf, dupliquer, partager, supprimer) s’ajoutent aux événements des études.</li>
@@ -893,6 +943,8 @@
     chevron: '<path d="m6 9 6 6 6-6"/>',
     droite: '<path d="m9 6 6 6-6 6"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
+    prec: '<path d="m15 18-6-6 6-6"/>',
+    suiv: '<path d="m9 18 6-6-6-6"/>',
     retour: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
     presenter: '<path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/>',
     pdf: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
@@ -906,6 +958,7 @@
     bouclier: '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/>',
     sortie: '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',
     sifflet: '<path d="M9 7a5 5 0 1 0 4.9 6H21V9h-9.3"/><circle cx="9" cy="12" r="1.2"/>',
+    oeil: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
     crayon: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
     cible: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/>'
   };
@@ -1009,7 +1062,7 @@
 
   /* ---------- état ---------- */
   function etatDepart(etape) {
-    return { etape: etape === undefined ? 1 : etape, ecran: 'mes', couche: null, seance: 'M2', pres: 0, source: 'tout', phase: null, typeSit: 'ech', groupe: 'club', aClasser: false, copiees: {}, classees: {}, creer: null, creee: null, bulle: '', tiroir: null, cherche: false, q: '', sel: {}, quoi: null, prepa: false };
+    return { etape: etape === undefined ? 1 : etape, ecran: 'mes', couche: null, seance: 'M2', pres: 0, source: 'tout', phase: null, typeSit: 'ech', groupe: 'club', aClasser: false, copiees: {}, classees: {}, creer: null, creee: null, bulle: '', tiroir: null, cherche: false, q: '', qs: '', sel: {}, quoi: null, prepa: false, page: 1, nom: null, nomSaisi: null, editNom: false, obs: false, brouillon: null, charge: false, fige: '', sgI: -1, sgCache: false };
   }
   var E = etatDepart(0);
   var format = 'tel', expl = true;
@@ -1042,7 +1095,7 @@
     if (E.ecran === 'editeur') return '<div class="app"><div class="contenu">' + editeur() + '</div></div>';
     return '<div class="app ' + (E.etape === 0 ? 'e0' : 'e1') + '">' + rail() + '<div class="contenu"><div class="page">' + page() + '</div>' + fab() + barreBas() + '</div></div>';
   }
-  function calqueHtml() { return (E.ecran === 'presenter' ? presenter() : '') + couche() + bulle(); }
+  function calqueHtml() { return (E.ecran === 'presenter' ? presenter() : '') + couche() + sugg() + bulle(); }
   function bulle() { return E.bulle ? '<div class="bulle" role="status">' + E.bulle + '</div>' : ''; }
 
   function dest(cle, libelle, icone, actif, type) {
@@ -1082,7 +1135,7 @@
         '<div class="sous">' + GROUPES.map(function (g) { return si('data-groupe-nav="' + g.id + '"', '<span>' + esc(g.nom) + '</span>', (e === 'groupes' || e === 'gerer') && E.groupe === g.id); }).join('') + '</div>' +
         rd('communaute', 'Communauté', 'ronde', e === 'communaute', 'picto') +
         (E.etape === 1 && e === 'mes' ? rep(1) : '') + '</div>' +
-        '<div class="rail-bas"><button type="button" class="moi" data-couche="menu" aria-label="Mon compte"><span class="avatar">CD' + (E.etape === 1 ? '<span class="pastille"></span>' : '') + '</span><span class="lib">Mon compte</span><span class="nom">' + MOI + '<small>Mon compte</small></span></button>' + (E.etape === 1 && e === 'mes' ? rep(2) : '') + '</div>';
+        '<div class="rail-bas"><button type="button" class="moi" data-couche="menu" aria-label="Mon compte"><span class="avatar">CD' + (incomplet() ? '<span class="pastille"></span>' : '') + '</span><span class="lib">Mon compte</span><span class="nom">' + MOI + '<small>Mon compte</small></span></button>' + (E.etape === 1 && e === 'mes' ? rep(2) : '') + '</div>';
     }
     return h + '</div></nav>';
   }
@@ -1100,7 +1153,7 @@
     if (E.ecran === 'gerer') return pageGroupe();
     if (E.ecran === 'profil') return pageProfil();
     if (E.etape === 0) return pageAujourdhui();
-    return entete() + (E.ecran === 'communaute' ? corpsCommunaute() : corpsListe());
+    return entete() + '<div class="corps-l"' + (E.charge ? ' data-charge="oui" aria-busy="true"' : '') + '>' + (E.charge && E.fige ? E.fige : corps()) + '</div>';
   }
 
   /* ---------- aujourd'hui ---------- */
@@ -1116,7 +1169,7 @@
       '<div class="barre0"><span>' + ic('dossier') + 'Catégories</span><span class="sep"></span><span>' + ic('diese') + 'Mots-clés</span><span class="sep"></span><span>' + ic('liste') + st + '</span><span class="sep"></span><span>' + ic('loupe') + '</span></div></div>';
     if (e === 'groupes' && E.groupe === 'comite') h += '<p class="desc-groupe" style="margin-top:14px">La bibliothèque de référence du Comité de Gironde : des entraînements modèles pour accompagner les entraîneurs qui débutent.</p>';
     var l = seancesDe(e);
-    h += '<div class="liste ancre" style="margin-top:18px">' + l.map(function (s, i) { return carte0(s, i === 0 && e === 'mes'); }).join('') + '</div>';
+    h += '<div class="liste ancre" style="margin-top:18px">' + l.map(function (s, i) { return carte0(s, i === 0 && e === 'mes'); }).join('') + '</div>' + pagination(totalListe(l));
     return h;
   }
   function carte0(s, avecRep) {
@@ -1143,16 +1196,16 @@
       titre = '<button type="button" class="selecteur" data-couche="groupes">' + picto('staff') + '<span>' + esc(g.nom) + '</span>' + ic('chevron') + '</button>';
     } else if (e === 'communaute' && E.source === 'comite') titre = '<button type="button" class="btn-rond" data-source="tout" aria-label="Retour à la Communauté">' + ic('retour') + '</button><span class="titre-logo" role="img" aria-label="' + COMITE + '">' + logo() + '</span>';
     else titre = e === 'mes' ? picto('plaquette') + '<span>Mes séances</span>' : picto('ronde') + '<span>Communauté</span>';
-    var champ = '<input class="q" type="text" enterkeyhint="search" autocomplete="off" value="' + esc(E.q) + '" placeholder="Thème, objectif, auteur…" aria-label="Rechercher une séance">' +
-      (E.q ? '<button type="button" class="efface" data-cherche="effacer" aria-label="Effacer la recherche">' + ic('croix') + '</button>' : '');
+    var champ = '<input class="q" type="text" enterkeyhint="search" autocomplete="off" value="' + esc(E.qs) + '" placeholder="Thème, objectif, auteur…" aria-label="Rechercher une séance" aria-autocomplete="list" aria-controls="sugg"' + (E.sgI >= 0 ? ' aria-activedescendant="sg-' + E.sgI + '"' : '') + '>' +
+      (E.qs ? '<button type="button" class="efface" data-cherche="effacer" aria-label="Effacer la recherche">' + ic('croix') + '</button>' : '');
     var barre;
     // téléphone : la loupe change la barre du haut en champ, sur place
     if (E.cherche) barre = '<div class="barre-haut"><button type="button" class="btn-rond" data-cherche="fermer" aria-label="Fermer la recherche">' + ic('retour') + '</button><label class="recherche">' + champ + '</label></div>';
     else barre = '<div class="barre-haut"><h2 class="titre-app">' + titre + '</h2>' + (e === 'groupes' ? rep(1, 'r-titre') : '') +
       '<label class="champ-app">' + ic('loupe') + champ + (repEtape1 ? rep(5) : '') + '</label>' +
       '<span class="loupe"><button type="button" class="btn-rond" data-cherche="ouvrir" aria-label="Rechercher">' + ic('loupe') + '</button>' + (repEtape1 ? rep(5) : '') + '</span>' +
-      '<span class="av-haut"><button type="button" class="avatar" data-couche="menu" aria-label="Mon compte">CD' + (E.etape === 1 ? '<span class="pastille"></span>' : '') + '</button>' + (repEtape1 ? rep(2) : '') + '</span></div>';
-    return '<div class="entete-app' + (E.cherche ? ' fige' : '') + '">' + barre + '<div class="puces-f">' + puces() + '</div>' + (repEtape1 ? rep(3) : E.etape >= 2 && e === 'communaute' ? rep(1) : '') + '</div>';
+      '<span class="av-haut"><button type="button" class="avatar" data-couche="menu" aria-label="Mon compte">CD' + (incomplet() ? '<span class="pastille"></span>' : '') + '</button>' + (repEtape1 ? rep(2) : '') + '</span></div>';
+    return '<div class="entete-app' + (E.cherche ? ' fige' : '') + (E.charge ? ' charge' : '') + '">' + barre + '<div class="puces-f">' + puces() + '</div>' + (repEtape1 ? rep(3) : E.etape >= 2 && e === 'communaute' ? rep(1) : '') + '</div>';
   }
 
   /* filtres : une puce par filtre, chacune ouvre son seul contenu */
@@ -1163,10 +1216,96 @@
     if (!E.sel[ecr]) E.sel[ecr] = { cat: equipes ? ['U13', 'U15'] : [], mots: [], st: [], niv: equipes ? ['Intermédiaire'] : [], ph: [], fo: [] };
     return E.sel[ecr];
   }
+  // le panneau ouvert modifie un brouillon ; la requête part à sa fermeture
+  function vueSel() { return E.couche === 'filtre' && E.brouillon ? E.brouillon : sel(); }
+  function copie(o) { return JSON.parse(JSON.stringify(o)); }
+
+  /* requêtes simulées : l'ancienne liste reste affichée, atténuée, jusqu'à la réponse ; une nouvelle requête remplace celle en cours */
+  var tReq, tSaisie;
+  function corps() { return E.ecran === 'communaute' ? corpsCommunaute() : corpsListe(); }
+  function requete(maj) {
+    if (!E.charge) E.fige = corps();
+    var p0 = E.page; maj(); if (E.page === p0) E.page = 1;
+    E.charge = true; clearTimeout(tReq);
+    tReq = setTimeout(function () { E.charge = false; E.fige = ''; rend(); }, 650);
+  }
+  function stopReq() { clearTimeout(tReq); E.charge = false; E.fige = ''; }
+  function ferme() {
+    var b = E.couche === 'filtre' ? E.brouillon : null;
+    E.couche = null; E.creer = null; E.brouillon = null; E.editNom = false; E.nomSaisi = null;
+    if (b && JSON.stringify(b) !== JSON.stringify(sel())) requete(function () { E.sel[E.ecran] = b; });
+  }
+  // la recherche part quand on s'arrête de taper, à partir de 3 caractères ; Entrée la lance tout de suite
+  function cibleQ(force) { var v = E.qs.trim(); return force || v.length >= 3 ? v : ''; }
+  function lanceRecherche(force) { clearTimeout(tSaisie); var c = cibleQ(force); if (c !== E.q) requete(function () { E.q = c; }); }
+  function fermeRecherche() { E.cherche = false; E.qs = ''; clearTimeout(tSaisie); if (E.q) requete(function () { E.q = ''; }); }
+
+  /* suggestions : le vocabulaire est fixe, elles se calculent sur place, sans requête */
+  var ALIAS_PH = { ge: ['montée de balle', 'contre-attaque', 'engagement rapide'] };
+  var ICONES_F = { cat: 'dossier', mots: 'diese', st: 'liste', niv: 'niveau', ph: 'cible', fo: 'forme' };
+  var NOMS_F = { cat: 'Catégorie', mots: 'Mot-clé', niv: 'Niveau', ph: 'Phase de jeu', fo: 'Forme de jeu' };
+  function suggestions() {
+    var v = sansAccent(E.qs.trim()), f = sel(), com = E.ecran === 'communaute', r = [];
+    if (!v || E.etape < 1) return r;
+    function a(t) { return sansAccent(t).indexOf(v) >= 0; }
+    function ajoute(quoi, val, lib, alias) { if (quoi === 'ph' && com ? E.phase === val : f[quoi].indexOf(val) >= 0) return; r.push({ quoi: quoi, v: val, lib: lib, alias: alias }); }
+    if (E.etape >= 2) {
+      ORDRE_PH.forEach(function (p) { var al = (ALIAS_PH[p] || []).filter(a)[0]; if (a(PH[p])) ajoute('ph', p, PH[p]); else if (al) ajoute('ph', p, PH[p], al); });
+      FORMES.forEach(function (x) { if (a(x)) ajoute('fo', x, x); });
+      NIV.forEach(function (x) { if (a(x)) ajoute('niv', x, x); });
+    } else motsFrequents().forEach(function (m) { if (a(m)) ajoute('mots', m, m); });
+    CATS.forEach(function (c) { if (a(c[0]) || a(c[1])) ajoute('cat', c[0], c[1]); });
+    return r.slice(0, 5);
+  }
+  function surligne(t, v) { var i = sansAccent(t).indexOf(v); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + v.length)) + '</mark>' + esc(t.slice(i + v.length)); }
+  function sugg() {
+    if (E.couche || E.sgCache || ['mes', 'groupes', 'communaute'].indexOf(E.ecran) < 0) return '';
+    var l = suggestions(), v = sansAccent(E.qs.trim());
+    if (!l.length) return '';
+    return '<div class="sugg" id="sugg" role="listbox" aria-label="Suggestions de filtres" hidden>' + l.map(function (x, i) {
+      return '<button type="button" class="sg" role="option" id="sg-' + i + '" aria-selected="' + (E.sgI === i) + '" data-sugg="' + x.quoi + '" data-v="' + esc(x.v) + '">' + (x.quoi === 'ph' ? picto(x.v) : ic(ICONES_F[x.quoi])) +
+        '<b>' + surligne(x.lib, v) + '</b><small>' + NOMS_F[x.quoi] + (x.alias ? ' : ' + surligne(x.alias, v) : '') + '</small></button>';
+    }).join('') + '<button type="button" class="sg texte" role="option" id="sg-' + l.length + '" aria-selected="' + (E.sgI === l.length) + '" data-sugg-texte>' + ic('loupe') + '<b>Chercher « ' + esc(E.qs.trim()) + ' » dans les séances</b><kbd>Entrée</kbd></button></div>';
+  }
+  function placeSugg() {
+    var s = calque.querySelector('.sugg'), f = champVisible(); if (!s || !f) return;
+    var a = f.closest('.champ-app, .recherche') || f, r = a.getBoundingClientRect(), base = calque.getBoundingClientRect(), w, g;
+    if (base.width < 720) { g = 12; w = base.width - 24; } else { w = Math.max(r.width, 360); g = Math.max(12, Math.min(r.left - base.left, base.width - w - 12)); }
+    s.style.left = g + 'px'; s.style.width = w + 'px'; s.style.top = (r.bottom - base.top + 6) + 'px';
+  }
+  function montreSugg(oui) { var s = calque.querySelector('.sugg'); if (!s) return; s.hidden = !oui; if (oui) placeSugg(); }
+
+  /* pagination : celle d'aujourd'hui, 12 séances par page ; les totaux sont inventés pour montrer plusieurs pages */
+  var TOTAUX = { mes: 31, groupes: 54, communaute: 148 };
+  function totalListe(l) { return E.etape === 0 || (!filtreActif() && !E.phase && !E.aClasser && E.source !== 'comite') ? Math.max(l.length, TOTAUX[E.ecran] || 0) : l.length; }
+  function pagination(total) {
+    var n = Math.ceil(total / 12); if (n <= 1) return '';
+    var p = Math.min(E.page, n), nums = [], i;
+    if (n <= 7) for (i = 1; i <= n; i++) nums.push(i);
+    else {
+      var de = Math.max(2, p - 1), a = Math.min(n - 1, p + 1);
+      nums.push(1); if (de > 2) nums.push(0);
+      for (i = de; i <= a; i++) nums.push(i);
+      if (a < n - 1) nums.push(0); nums.push(n);
+    }
+    function bt(cible, html, attr) { return '<button type="button" data-page="' + cible + '"' + attr + '>' + html + '</button>'; }
+    return '<nav class="pagin" aria-label="Pages de séances">' +
+      bt(p - 1, ic('prec') + '<span class="pg-lib">Précédente</span>', ' class="pg-sens" aria-label="Page précédente"' + (p === 1 ? ' disabled' : '')) +
+      nums.map(function (x) { return x ? bt(x, String(x), x === p ? ' aria-current="page"' : ' aria-label="Page ' + x + '"') : '<span class="ell" aria-hidden="true">…</span>'; }).join('') +
+      bt(p + 1, '<span class="pg-lib">Suivante</span>' + ic('suiv'), ' class="pg-sens" aria-label="Page suivante"' + (p === n ? ' disabled' : '')) + '</nav>';
+  }
+  // après un changement de page, la liste reprend en tête, sous la barre du haut
+  function remonteListe() {
+    var a = ecran.querySelector('[data-ancre-pages]');
+    if (!a) { ecran.scrollTop = 0; return; }
+    var h = ecran.querySelector('.entete-app'), d = a.getBoundingClientRect().top - ecran.getBoundingClientRect().top - (h ? h.offsetHeight : 0) - 8;
+    ecran.scrollTop += d;
+  }
+
   function libV(quoi, v) { return quoi === 'st' ? LIB_ST[v] : quoi === 'ph' ? PH[v] : v; }
   function pf(attr, icone, texte, actif, compte) { return '<button type="button" class="pf" ' + attr + (actif ? ' data-actif="true"' : '') + '>' + ic(icone) + texte + (compte ? '<span class="compte">' + compte + '</span>' : '') + '<svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true">' + I.chevron + '</svg></button>'; }
   function pfq(quoi, icone) {
-    var v = sel()[quoi], texte = TITRES_F[quoi];
+    var v = vueSel()[quoi], texte = TITRES_F[quoi];
     if (v.length) texte = esc(v.slice(0, 2).map(function (x) { return libV(quoi, x); }).join(', ')) + (v.length > 2 ? ' +' + (v.length - 2) : '');
     return pf('data-quoi="' + quoi + '"' + (E.couche === 'filtre' && E.quoi === quoi ? ' aria-expanded="true"' : ''), icone, texte, v.length > 0);
   }
@@ -1253,7 +1392,7 @@
     var e = E.ecran, l, h = '';
     l = listeCourante();
     if (!l.length) return h + aucune();
-    h += '<div class="liste haut">' + l.map(function (s, i) { return fiche(s, { rep: E.etape === 1 && e === 'mes' && i === 0 ? 4 : E.etape === 2 && e === 'mes' && !classee(s) && i < 3 && !E.aClasser && s.id === 'M3' ? 1 : E.etape === 2 && e === 'mes' && i === 0 ? 2 : 0 }); }).join('') + '</div>';
+    h += '<div class="liste haut">' + l.map(function (s, i) { return fiche(s, { rep: E.etape === 1 && e === 'mes' && i === 0 ? 4 : E.etape === 2 && e === 'mes' && !classee(s) && i < 3 && !E.aClasser && s.id === 'M3' ? 1 : E.etape === 2 && e === 'mes' && i === 0 ? 2 : 0 }); }).join('') + '</div>' + pagination(totalListe(l));
     return h;
   }
 
@@ -1274,11 +1413,11 @@
     var h = vitrine();
     if (E.etape === 1) {
       var l = listeCourante();
-      return h + (l.length ? '<div class="liste haut" style="margin-top:14px">' + l.map(function (s) { return fiche(s); }).join('') + '</div>' : aucune());
+      return h + (l.length ? '<div class="liste haut" style="margin-top:14px">' + l.map(function (s) { return fiche(s); }).join('') + '</div>' + pagination(totalListe(l)) : aucune());
     }
     var cl = communauteClassees(), cherche = filtreActif();
     // une recherche ou un filtre : la page se réduit aux résultats
-    if (cherche) { var lr = listeCourante(); return h + (lr.length ? '<div class="liste haut" style="margin-top:14px">' + lr.map(function (s) { return fiche(s); }).join('') + '</div>' : aucune()); }
+    if (cherche) { var lr = listeCourante(); return h + (lr.length ? '<div class="liste haut" style="margin-top:14px">' + lr.map(function (s) { return fiche(s); }).join('') + '</div>' + pagination(totalListe(lr)) : aucune()); }
     h += '<div class="phases" role="group" aria-label="Phases de jeu">' + rep(2) + ORDRE_PH.map(function (p) {
       var n = cl.filter(function (s) { return phs(s).indexOf(p) >= 0; }).length;
       return '<button type="button" class="phase" data-phase="' + p + '" aria-pressed="' + (E.phase === p) + '">' + picto(p) + '<span class="nom">' + PH[p] + '</span><span class="nb">' + n + ' séance' + (n > 1 ? 's' : '') + '</span></button>';
@@ -1300,8 +1439,9 @@
     }).join('') + '</div>' : '<p class="vide">Pas encore de situation de ce type pour cette phase.</p>';
     // toutes les séances
     var l2 = listeCourante();
-    h += '<div class="r-tete"><h3>' + (E.phase ? PH[E.phase] : 'Toutes les séances') + '</h3><small>' + l2.length + ' séance' + (l2.length > 1 ? 's' : '') + (estProfil() ? ' pour vos équipes' : '') + '</small>' + rep(5) + '</div>';
-    h += l2.length ? '<div class="liste">' + l2.map(function (s) { return fiche(s); }).join('') + '</div>' : '<p class="vide">Aucune séance classée ici pour ces catégories et ce niveau. Élargissez l’une des deux puces.</p>';
+    var t2 = totalListe(l2);
+    h += '<div class="r-tete" data-ancre-pages><h3>' + (E.phase ? PH[E.phase] : 'Toutes les séances') + '</h3><small>' + t2 + ' séance' + (t2 > 1 ? 's' : '') + (estProfil() ? ' pour vos équipes' : '') + '</small>' + rep(5) + '</div>';
+    h += l2.length ? '<div class="liste">' + l2.map(function (s) { return fiche(s); }).join('') + '</div>' + pagination(t2) : '<p class="vide">Aucune séance classée ici pour ces catégories et ce niveau. Élargissez l’une des deux puces.</p>';
     var nc = seancesDe('communaute').filter(function (s) { return !classee(s); }).length;
     if (nc && !E.phase) h += '<div class="ligne-nc"><span><b>' + nc + ' séances</b> pas encore classées</span><span>Voir</span></div>';
     return h;
@@ -1326,6 +1466,18 @@
   function pageProfil() {
     return '<div class="page-simple"><h3>Mon profil</h3><div class="carte-s"><b>' + MOI + '</b><small>' + CLUB + ' · entraîneur U13</small></div>' +
       (E.etape >= 2 ? equipes() : '<div class="carte-s"><small>Nom, club, photo, mot de passe.</small></div>') + '</div>';
+  }
+  // le nom se modifie sur place ; vide, le champ s'affiche d'emblée
+  function nomMoi() { return E.nom === null ? (E.etape === 1 ? '' : MOI) : E.nom; }
+  function incomplet() { return E.etape >= 1 && !nomMoi(); }
+  function identite() {
+    var n = nomMoi();
+    if (E.etape >= 1 && (E.editNom || !n)) {
+      var v = E.nomSaisi === null ? n : E.nomSaisi;
+      return '<form class="nom-f" data-nom-form><input class="nom-champ" type="text" autocomplete="name" value="' + esc(v) + '" placeholder="Votre nom complet" aria-label="Nom complet"><button type="submit" class="btn-orange">Enregistrer</button>' +
+        (n ? '' : '<small>Ajoutez votre nom : il apparaît sur les séances que vous partagez.</small>') + '</form>';
+    }
+    return '<span class="nom-l"><b>' + esc(n) + '</b>' + (E.etape >= 1 ? '<button type="button" class="nom-crayon" data-nom-editer aria-label="Modifier mon nom">' + ic('crayon') + '</button>' : '') + '</span>';
   }
   function equipes() {
     return '<div class="moi-equipes"><h5>Mes équipes</h5><p>La Communauté s’ouvre sur elles, et le + en part.</p><div class="grille-cat">' +
@@ -1401,10 +1553,10 @@
     return '<div class="voile' + (cls ? ' ' + cls : '') + '" data-fermer><div class="feuille" role="dialog" aria-modal="true" aria-label="' + esc(titre) + '"><span class="poignee"></span><div class="p-tete"><h4>' + titre + (sous ? '<small>' + sous + '</small>' : '') + '</h4><button type="button" data-fermer aria-label="Fermer">' + ic('croix') + '</button></div><div class="p-corps">' + corps + '</div>' + (pied ? '<div class="p-pied">' + pied + '</div>' : '') + '</div></div>';
   }
   // sur tablette et ordinateur, une liste qui s'ouvre sous ce qu'on a touché (placée par placePop)
-  function pop(titre, corps, pied, cls) {
-    return '<div class="voile pop" data-fermer><div class="feuille' + (cls ? ' ' + cls : '') + '" role="dialog" aria-label="' + esc(titre) + '"><div class="p-tete"><h4>' + titre + '</h4><button type="button" data-fermer aria-label="Fermer">' + ic('croix') + '</button></div><div class="p-corps">' + corps + '</div>' + (pied ? '<div class="p-pied">' + pied + '</div>' : '') + '</div></div>';
+  function pop(titre, corps, pied, cls, action) {
+    return '<div class="voile pop" data-fermer><div class="feuille' + (cls ? ' ' + cls : '') + '" role="dialog" aria-label="' + esc(titre) + '"><div class="p-tete"><h4>' + titre + '</h4>' + (action || '<button type="button" data-fermer aria-label="Fermer">' + ic('croix') + '</button>') + '</div><div class="p-corps">' + corps + '</div>' + (pied ? '<div class="p-pied">' + pied + '</div>' : '') + '</div></div>';
   }
-  function opt(quoi, v, libelle) { return '<button type="button" class="puce" data-opt="' + quoi + '" data-v="' + esc(v) + '" aria-pressed="' + (sel()[quoi].indexOf(v) >= 0) + '">' + esc(libelle) + '</button>'; }
+  function opt(quoi, v, libelle) { return '<button type="button" class="puce" data-opt="' + quoi + '" data-v="' + esc(v) + '" aria-pressed="' + (vueSel()[quoi].indexOf(v) >= 0) + '">' + esc(libelle) + '</button>'; }
   function couche() {
     var c = E.couche;
     if (!c) return '';
@@ -1413,12 +1565,13 @@
       if (q === 'cat') corpsF = '<div class="grille-cat">' + CATS.map(function (x) { return opt('cat', x[0], x[1]); }).join('') + '</div>';
       else if (q === 'mots') corpsF = '<div class="options">' + motsFrequents().map(function (m) { return opt('mots', m, m); }).join('') + '</div>';
       else if (q === 'st') corpsF = '<div class="options">' + (E.ecran === 'communaute' ? ['pret', 'termine'] : ['brouillon', 'encours', 'pret', 'termine']).map(function (v) { return opt('st', v, LIB_ST[v]); }).join('') + '</div>';
-      else if (q === 'ph') corpsF = '<div class="phases-f">' + ORDRE_PH.map(function (v) { return '<button type="button" class="phase" data-opt="ph" data-v="' + v + '" aria-pressed="' + (sel().ph.indexOf(v) >= 0) + '">' + picto(v) + '<span class="nom">' + PH[v] + '</span></button>'; }).join('') + '</div>';
+      else if (q === 'ph') corpsF = '<div class="phases-f">' + ORDRE_PH.map(function (v) { return '<button type="button" class="phase" data-opt="ph" data-v="' + v + '" aria-pressed="' + (vueSel().ph.indexOf(v) >= 0) + '">' + picto(v) + '<span class="nom">' + PH[v] + '</span></button>'; }).join('') + '</div>';
       else if (q === 'niv') corpsF = '<div class="options">' + NIV.map(function (v) { return opt('niv', v, v); }).join('') + '</div>';
       else corpsF = '<div class="options">' + FORMES.map(function (v) { return opt('fo', v, v); }).join('') + '</div>';
-      var nb = listeCourante().length;
-      var piedF = '<button type="button" class="btn-texte" data-effacer="' + q + '">Effacer</button><button type="button" class="btn-orange" data-fermer>' + (nb ? 'Voir ' + nb + ' séance' + (nb > 1 ? 's' : '') : 'Aucune séance') + '</button>';
-      return large() ? pop(TITRES_F[q], corpsF, piedF) : feuille(TITRES_F[q], '', corpsF, piedF);
+      // pas de compte en direct : il coûterait une requête par clic ; la liste se met à jour à la fermeture du panneau
+      var effF = ' data-effacer="' + q + '"' + (vueSel()[q].length ? '' : ' disabled') + '>Effacer</button>';
+      if (large()) return pop(TITRES_F[q], corpsF, '', '', '<button type="button" class="effacer-f"' + effF);
+      return feuille(TITRES_F[q], '', corpsF, '<button type="button" class="btn-texte"' + effF + '<button type="button" class="btn-orange" data-fermer>Voir les séances</button>');
     }
     if (c === 'filtres') {
       var corps = '<div class="champ-texte">' + ic('loupe') + 'Thème, objectif, auteur…</div>' +
@@ -1448,11 +1601,13 @@
       var th = themeActuel();
       // ordinateur : le compte est en bas du tiroir, le menu s'ouvre à côté
       var bas = pousse() && E.etape > 0, g = tiroirOuvert() ? 292 : 96;
-      return '<div class="voile menu' + (bas ? ' bas" style="--g:' + g + 'px"' : '"') + ' data-fermer><div class="feuille" role="dialog" aria-modal="true" aria-label="Mon compte"><span class="poignee"></span><div class="moi-p"><div class="moi-ident"><i>CD</i><span><b>' + MOI + '</b><small>' + CLUB + '</small></span><button type="button" class="fermer" data-fermer aria-label="Fermer">' + ic('croix') + '</button></div>' +
+      return '<div class="voile menu' + (bas ? ' bas" style="--g:' + g + 'px"' : '"') + ' data-fermer><div class="feuille" role="dialog" aria-modal="true" aria-label="Mon compte"><span class="poignee"></span><div class="moi-p"><div class="moi-ident"><i>CD</i>' + identite() + '<button type="button" class="fermer" data-fermer aria-label="Fermer">' + ic('croix') + '</button></div>' +
         (E.etape >= 2 ? equipes() : '') +
-        '<ul class="moi-liens"><li><button type="button" data-nav="profil">' + ic('personne') + 'Mon profil' + (E.etape === 1 ? '<span class="compte" style="margin-left:auto;font-size:11px;font-weight:600;color:var(--orange-texte)">à compléter</span>' : '') + '</button></li>' +
+        // aujourd'hui, une page Profil ; à partir de l'étape 1, tout tient dans ce panneau
+        '<ul class="moi-liens">' + (E.etape === 0 ? '<li><button type="button" data-nav="profil">' + ic('personne') + 'Mon profil</button></li>' : '') +
         '<li><button type="button">' + ic('importer') + 'Importer un entraînement</button></li><li><button type="button">' + ic('bouclier') + 'Administration</button></li>' +
         '<li class="sep-l"></li><li><div>' + ic('reglages') + 'Thème<span class="seg"><button type="button" data-theme-app="light" aria-pressed="' + (th === 'light') + '">Jour</button><button type="button" data-theme-app="dark" aria-pressed="' + (th === 'dark') + '">Nuit</button></span></div></li>' +
+        '' + (E.etape >= 1 ? '<li><div class="obs">' + ic('oeil') + '<span>Observation de la navigation<a href="#" data-confidentialite>En savoir plus</a></span><button type="button" class="inter" role="switch" aria-checked="' + E.obs + '" aria-label="Observation de la navigation" data-obs><span class="interrupteur"></span></button></div></li>' : '') +
         '<li><button type="button">' + ic('sortie') + 'Se déconnecter</button></li></ul></div></div></div>';
     }
     if (c === 'classer') {
@@ -1513,11 +1668,11 @@
     function it(n, h, p) { items.push([n, h, p]); }
     if (E.couche === 'creer') {
       titre = 'Nouvel entraînement';
-      if (!E.creer || E.creer.pas === 1) { it(1, 'Pour qui, puis quoi travailler', 'L’équipe vient du profil, <b>Mes équipes</b>. On choisit une phase de jeu, dessinée comme dans la Communauté. Rien n’est créé à ce stade.'); essai = 'Touchez une phase.'; }
+      if (!E.creer || E.creer.pas === 1) { it(1, 'Pour qui, puis quoi travailler', 'L’équipe vient de <b>Mes équipes</b>, dans le panneau du compte. On choisit une phase de jeu, dessinée comme dans la Communauté. Rien n’est créé à ce stade.'); essai = 'Touchez une phase.'; }
       else { it(2, 'Une séance en quatre temps, déjà dessinée', 'Celle du comité s’il en a une pour cette équipe et cette phase, sinon les situations les plus reprises. <b>Chaque temps se change</b>. Échauffement, gardien·ne de but, travail, forme jouée (D10).'); essai = 'Touchez « Changer », puis « Créer l’entraînement ».'; }
       return [titre, items, essai];
     }
-    if (E.couche === 'menu') { return ['Sous l’avatar', [['', 'Ce qu’on ouvre rarement', 'Profil, import, administration, thème et déconnexion. ' + (t >= 2 ? 'À l’étape 2, <b>Mes équipes</b> s’y ajoute : catégories et niveau, qui ouvrent la Communauté sur vos équipes.' : 'La pastille « profil à compléter » passe sur l’avatar.')]], '']; }
+    if (E.couche === 'menu') { return ['Sous l’avatar', [['', 'Ce qu’on ouvre rarement', (t === 0 ? 'Profil, import, administration, thème et déconnexion.' : '<b>Plus de page Profil</b> : le nom se modifie ici, au crayon, et l’observation de la navigation y passe à côté du thème. ' + (t >= 2 ? '<b>Mes équipes</b> s’y ajoute : catégories et niveau, qui ouvrent la Communauté sur vos équipes.' : 'Sans nom, la pastille de l’avatar mène ici, où le champ attend.'))]], t === 1 ? 'Ajoutez un nom, puis Enregistrer.' : '']; }
     if (E.couche === 'classer') { return ['Classer en quelques gestes', [['', 'Trois choix, pas un mot-clé', 'Catégorie, niveau, une ou deux phases. Les mêmes contrôles que les filtres et le profil. Les types restent sur les situations, posés par le modèle.']], '']; }
     if (e === 'presenter') {
       titre = 'Présenter';
@@ -1553,10 +1708,10 @@
         var L = large(), T = pousse();
         if (T) it(1, 'Le tiroir de gauche, gardé', 'Replié, il montre Mes séances, Groupes et Communauté. Ouvert, ce qu’il est par défaut, il liste aussi <b>vos groupes</b>, comme aujourd’hui, et pousse la page. Comme aujourd’hui, il n’existe qu’à partir de 1024 px.');
         else it(1, 'La barre, ce sont les séances', 'Mes séances, Groupes, Communauté. La place d’une quatrième destination est gardée pour la Planification de saison.');
-        it(2, T ? 'Le compte, en bas du tiroir' : 'Le compte passe sous l’avatar', 'Profil, import, administration, thème, déconnexion.');
-        it(3, 'Une puce par filtre', 'Plus de bouton Filtres : chaque puce ouvre <b>son seul contenu</b>, ' + (L ? 'dans une liste juste dessous' : 'dans un panneau qui monte') + ', et affiche ensuite sa valeur.');
+        it(2, T ? 'Le compte, en bas du tiroir' : 'Le compte passe sous l’avatar', 'Nom, import, administration, thème, déconnexion : tout le profil tient dans ce panneau.');
+        it(3, 'Une puce par filtre', 'Plus de bouton Filtres : chaque puce ouvre <b>son seul contenu</b>, ' + (L ? 'dans une liste juste dessous' : 'dans un panneau qui monte') + ', et affiche ensuite sa valeur. La liste se met à jour à la fermeture du panneau, en une seule requête' + (L ? ' : pas de bouton Appliquer.' : '.'));
         it(4, 'La fiche : même contenu, mieux rangé', 'Alignée à gauche, <b>seules les infos remplies</b>, une rangée d’étiquettes. Toute la fiche ouvre la séance ; <b>Présenter, PDF, Dupliquer, Partager, Supprimer</b> restent en pied. Environ 280 px au lieu de 440 sur téléphone. Sur ordinateur, la même fiche en largeur, rail à droite.');
-        it(5, 'La recherche, sur place', (L ? 'Le champ est dans la barre du haut' : 'La loupe change la barre du haut en champ ; la flèche le referme et l’efface') + '. La liste se filtre pendant la frappe.');
+        it(5, 'La recherche, sur place', (L ? 'Le champ est dans la barre du haut' : 'La loupe change la barre du haut en champ ; la flèche le referme et l’efface') + '. La liste se met à jour quand on s’arrête de taper. Sous le champ, des suggestions changent le texte en filtre, sans requête.');
         if (!T) it('', 'Les barres s’effacent', 'En descendant, la barre du haut et celle du bas disparaissent ; elles reviennent dès qu’on remonte. La barre du bas le fait déjà aujourd’hui.');
         essai = T ? 'Touchez ☰, puis « Catégories ».' : 'Faites défiler la liste, puis touchez « Catégories ».';
       } else if (t === 2) {
@@ -1583,7 +1738,7 @@
         it('', 'Le reste ne change pas encore', 'La liste, triée par date. L’entrée par phase arrive à l’étape 2.');
         essai = E.source === 'comite' ? 'Touchez la flèche du haut pour revenir.' : 'Touchez « Voir les 7 séances ».';
       } else {
-        it(1, 'Catégories et niveau, deux puces', 'Préremplies par <b>Mes équipes</b> du profil : « U13, U15 » et « Intermédiaire ». Chacune s’ouvre seule et se change sans toucher à l’autre.');
+        it(1, 'Catégories et niveau, deux puces', 'Préremplies par <b>Mes équipes</b>, dans le panneau du compte : « U13, U15 » et « Intermédiaire ». Chacune s’ouvre seule et se change sans toucher à l’autre.');
         it(2, 'Les quatre phases, dessinées', 'La question de chaque séance : quoi travailler. Toutes visibles sur une rangée, dans l’ordre du jeu, même sur téléphone.');
         if (!E.phase) it(3, 'À la une', 'Les plus ouvertes ce mois-ci. Elle s’efface dès qu’on choisit une phase.');
         it(4, 'Piocher une situation', 'Par type. Le seul endroit avec un schéma : une situation se juge à son dessin.');
@@ -1636,6 +1791,7 @@
     if (focusQ) { var champ = champVisible(); if (champ) { champ.focus({ preventScroll: true }); champ.setSelectionRange(curseur, curseur); } }
     calque.innerHTML = calqueHtml();
     placePop();
+    var fq = champVisible(); montreSugg(!!fq && document.activeElement === fq);
     rendPourquoi(); rendRapides();
     var train = document.getElementById('train');
     train.style.setProperty('--avance', E.etape); train.style.setProperty('--pointe', E.etape === 3 ? 1 : 0);
@@ -1645,7 +1801,7 @@
     document.querySelectorAll('[data-explications]').forEach(function (b) { if (b.tagName === 'BUTTON') b.setAttribute('aria-pressed', String((b.dataset.explications === 'oui') === expl)); });
   }
   function dit(t) { E.bulle = t; clearTimeout(minuteur); minuteur = setTimeout(function () { E.bulle = ''; rend(); }, 2200); }
-  function va(ecr) { E.ecran = ecr; E.couche = null; E.cherche = false; ecran.scrollTop = 0; dernierY = 0; ecran.dataset.masque = ''; ecran.dataset.defile = ''; }
+  function va(ecr) { stopReq(); E.page = 1; clearTimeout(tSaisie); E.qs = E.q; E.brouillon = null; E.sgI = -1; E.ecran = ecr; E.couche = null; E.cherche = false; ecran.scrollTop = 0; dernierY = 0; ecran.dataset.masque = ''; ecran.dataset.defile = ''; }
 
   /* ---------- défilement : les barres s'effacent en descendant, reviennent en remontant ---------- */
   var dernierY = 0;
@@ -1669,7 +1825,14 @@
       if (r) { r.dataset.ouvert = String(o); r.querySelector('.burger').setAttribute('aria-expanded', String(o)); }
       return;
     }
-    if ((b = t.closest('[data-fermer]')) && (b === t || b.tagName === 'BUTTON')) { E.couche = null; E.creer = null; rend(); return; }
+    if ((b = t.closest('[data-fermer]')) && (b === t || b.tagName === 'BUTTON')) {
+      // sur ordinateur, une autre puce touchée à travers le voile ouvre son contenu, sans requête entre les deux
+      if (b === t && E.couche === 'filtre' && b.classList.contains('pop')) {
+        var dessous = document.elementsFromPoint(ev.clientX, ev.clientY).filter(function (el) { return ecran.contains(el); })[0], pq = dessous && dessous.closest('[data-quoi]');
+        if (pq && pq.dataset.quoi !== E.quoi) { E.quoi = pq.dataset.quoi; rend(); return; }
+      }
+      ferme(); rend(); return;
+    }
     if ((b = t.closest('[data-nav]'))) {
       var n = b.dataset.nav;
       if (n === 'admin' || n === 'importer' || n === 'creer-groupe') { E.couche = null; dit(n === 'admin' ? 'Administration : inchangée' : n === 'importer' ? 'Import : inchangé' : 'Créer ou rejoindre un groupe : inchangé'); rend(); return; }
@@ -1680,26 +1843,43 @@
     if ((b = t.closest('[data-source-nav]'))) { E.source = b.dataset.sourceNav; E.phase = null; va('communaute'); rend(); return; }
     if ((b = t.closest('[data-gerer]'))) { E.groupe = b.dataset.gerer || E.groupe; va('gerer'); rend(); return; }
     if ((b = t.closest('[data-inviter]'))) { E.couche = null; dit('Lien d’invitation copié'); rend(); return; }
-    if ((b = t.closest('[data-prepa]'))) { E.prepa = !E.prepa; dit(E.prepa ? 'Brouillons et séances en cours affichés' : 'Séances prêtes et terminées seulement'); rend(); return; }
-    if ((b = t.closest('[data-quoi]'))) { E.couche = 'filtre'; E.quoi = b.dataset.quoi; rend(); return; }
-    if ((b = t.closest('[data-opt]'))) { var l0 = sel()[b.dataset.opt], i0 = l0.indexOf(b.dataset.v); if (i0 >= 0) l0.splice(i0, 1); else l0.push(b.dataset.v); rend(); return; }
-    if ((b = t.closest('[data-effacer]'))) { sel()[b.dataset.effacer] = []; rend(); return; }
-    if ((b = t.closest('[data-effacer-tout]'))) { E.q = ''; E.sel[E.ecran] = { cat: [], mots: [], st: [], niv: [], ph: [], fo: [] }; E.aClasser = false; rend(); return; }
+    if ((b = t.closest('[data-prepa]'))) { requete(function () { E.prepa = !E.prepa; }); dit(E.prepa ? 'Brouillons et séances en cours affichés' : 'Séances prêtes et terminées seulement'); rend(); return; }
+    if ((b = t.closest('[data-quoi]'))) { if (E.couche !== 'filtre') E.brouillon = copie(sel()); E.couche = 'filtre'; E.quoi = b.dataset.quoi; rend(); return; }
+    if ((b = t.closest('[data-opt]'))) { var l0 = vueSel()[b.dataset.opt], i0 = l0.indexOf(b.dataset.v); if (i0 >= 0) l0.splice(i0, 1); else l0.push(b.dataset.v); rend(); return; }
+    if ((b = t.closest('[data-effacer]'))) { vueSel()[b.dataset.effacer] = []; rend(); return; }
+    if ((b = t.closest('[data-effacer-tout]'))) { clearTimeout(tSaisie); E.qs = ''; requete(function () { E.q = ''; E.sel[E.ecran] = { cat: [], mots: [], st: [], niv: [], ph: [], fo: [] }; E.aClasser = false; }); rend(); return; }
     if ((b = t.closest('[data-cherche]'))) {
       var ch = b.dataset.cherche;
       if (ch === 'ouvrir') { E.cherche = true; E.focusQ = true; }
-      else if (ch === 'fermer') { E.cherche = false; E.q = ''; }
-      else { E.q = ''; E.focusQ = true; }
+      else if (ch === 'fermer') fermeRecherche();
+      else { E.qs = ''; E.sgCache = false; E.focusQ = true; clearTimeout(tSaisie); if (E.q) requete(function () { E.q = ''; }); }
       rend(); return;
     }
+    if ((b = t.closest('[data-page]'))) {
+      // comme aujourd'hui : inactive pendant un chargement
+      if (E.charge || b.disabled) return;
+      var np = +b.dataset.page;
+      if (E.etape === 0) E.page = np; else requete(function () { E.page = np; });
+      rend(); remonteListe(); return;
+    }
+    if ((b = t.closest('[data-nom-editer]'))) { E.editNom = true; E.nomSaisi = null; rend(); var nc = calque.querySelector('.nom-champ'); if (nc) { nc.focus(); nc.select(); } return; }
+    if ((b = t.closest('[data-obs]'))) { E.obs = !E.obs; dit(E.obs ? 'Observation activée' : 'Observation désactivée'); rend(); return; }
+    if ((b = t.closest('[data-confidentialite]'))) { ev.preventDefault(); dit('Page Confidentialité : inchangée'); rend(); return; }
+    // une suggestion change le texte tapé en filtre
+    if ((b = t.closest('[data-sugg]'))) {
+      var qu = b.dataset.sugg, vv = b.dataset.v; clearTimeout(tSaisie);
+      requete(function () { if (qu === 'ph' && E.ecran === 'communaute') E.phase = vv; else if (sel()[qu].indexOf(vv) < 0) sel()[qu].push(vv); E.q = ''; });
+      E.qs = ''; E.sgI = -1; E.cherche = false; var fs = champVisible(); if (fs) fs.blur(); rend(); return;
+    }
+    if ((b = t.closest('[data-sugg-texte]'))) { lanceRecherche(true); E.sgCache = true; E.sgI = -1; rend(); return; }
     if ((b = t.closest('[data-couche]'))) { E.couche = b.dataset.couche; rend(); return; }
     if ((b = t.closest('[data-groupe0]'))) { E.groupe = b.dataset.groupe0; va('groupes'); rend(); return; }
     if ((b = t.closest('[data-groupe]'))) { E.groupe = b.dataset.groupe; E.couche = null; rend(); return; }
-    if ((b = t.closest('[data-source]'))) { E.source = b.dataset.source; E.phase = null; ecran.scrollTop = 0; ecran.dataset.masque = ''; rend(); return; }
-    if ((b = t.closest('[data-phase]'))) { E.phase = E.phase === b.dataset.phase ? null : b.dataset.phase; rend(); return; }
+    if ((b = t.closest('[data-source]'))) { stopReq(); E.page = 1; E.source = b.dataset.source; E.phase = null; ecran.scrollTop = 0; ecran.dataset.masque = ''; rend(); return; }
+    if ((b = t.closest('[data-phase]'))) { var ph0 = b.dataset.phase; requete(function () { E.phase = E.phase === ph0 ? null : ph0; }); rend(); return; }
     if ((b = t.closest('[data-type]'))) { E.typeSit = b.dataset.type; rend(); return; }
     if ((b = t.closest('[data-copier]'))) { var k = b.dataset.copier; E.copiees[k] = !E.copiees[k]; if (E.copiees[k]) dit('Situation copiée : collez-la dans une séance'); rend(); return; }
-    if ((b = t.closest('[data-filtre]'))) { E.aClasser = !E.aClasser; rend(); return; }
+    if ((b = t.closest('[data-filtre]'))) { requete(function () { E.aClasser = !E.aClasser; }); rend(); return; }
     if ((b = t.closest('[data-partage]'))) { E.couche = null; dit('Partagée avec ' + b.dataset.partage); rend(); return; }
     if ((b = t.closest('[data-cl-niv]'))) { E.classeEnCours.niv = b.dataset.clNiv; rend(); return; }
     if ((b = t.closest('[data-cl-ph]'))) { var ph = b.dataset.clPh, l = E.classeEnCours.ph, i = l.indexOf(ph); if (i >= 0) l.splice(i, 1); else if (l.length < 2) l.push(ph); rend(); return; }
@@ -1745,14 +1925,40 @@
     if ((b = t.closest('[data-ouvrir]'))) { E.seance = b.dataset.ouvrir; E.retourEd = E.ecran; va('editeur'); rend(); return; }
   });
   cadre.addEventListener('keydown', function (ev) {
-    if (ev.target.classList.contains('q')) { if (ev.key === 'Escape' && E.cherche) { E.cherche = false; E.q = ''; rend(); } return; }
+    if (ev.target.classList.contains('q')) {
+      var sg = calque.querySelector('.sugg:not([hidden])'), opts = sg ? sg.querySelectorAll('.sg') : [];
+      if ((ev.key === 'ArrowDown' || ev.key === 'ArrowUp') && opts.length) { ev.preventDefault(); E.sgI = ev.key === 'ArrowDown' ? (E.sgI + 1) % opts.length : (E.sgI <= 0 ? opts.length - 1 : E.sgI - 1); rend(); return; }
+      if (ev.key === 'Enter') { ev.preventDefault(); if (sg && E.sgI >= 0 && opts[E.sgI]) { opts[E.sgI].click(); return; } lanceRecherche(true); E.sgCache = true; E.sgI = -1; rend(); return; }
+      if (ev.key === 'Escape') { if (sg) { E.sgCache = true; E.sgI = -1; rend(); } else if (E.cherche) { fermeRecherche(); rend(); } }
+      return;
+    }
     if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.matches('.fiche')) { ev.preventDefault(); ev.target.click(); }
   });
-  cadre.addEventListener('input', function (ev) { if (ev.target.classList.contains('q')) { E.q = ev.target.value; rend(); } });
+  cadre.addEventListener('input', function (ev) {
+    if (!ev.target.classList.contains('q')) return;
+    E.qs = ev.target.value; E.sgI = -1; E.sgCache = false; clearTimeout(tSaisie);
+    if (cibleQ() !== E.q) tSaisie = setTimeout(function () { lanceRecherche(); rend(); }, 500);
+    rend();
+  });
+  // les suggestions ne s'affichent que tant que le champ a le focus ; les toucher ne le lui retire pas
+  cadre.addEventListener('focusin', function (ev) { if (ev.target.classList && ev.target.classList.contains('q')) montreSugg(true); });
+  cadre.addEventListener('focusout', function (ev) { if (ev.target.classList && ev.target.classList.contains('q')) montreSugg(false); });
+  calque.addEventListener('mousedown', function (ev) { if (ev.target.closest('.sugg')) ev.preventDefault(); });
+  cadre.addEventListener('submit', function (ev) {
+    if (!ev.target.matches('[data-nom-form]')) return;
+    ev.preventDefault();
+    var v = ev.target.querySelector('.nom-champ').value.trim();
+    if (!v) { dit('Ajoutez votre nom pour l’enregistrer'); rend(); return; }
+    E.nom = v; E.nomSaisi = null; E.editNom = false; dit('Nom enregistré'); rend();
+  });
+  cadre.addEventListener('input', function (ev) { if (ev.target.classList.contains('nom-champ')) E.nomSaisi = ev.target.value; });
+  // Échap ferme le panneau ouvert, comme un clic à côté
+  document.addEventListener('keydown', function (ev) { if (ev.key !== 'Escape' || !E.couche || (ev.target.classList && ev.target.classList.contains('q'))) return; ferme(); rend(); });
 
   document.getElementById('train').addEventListener('click', function (ev) {
     var g = ev.target.closest('.gare'); if (!g) return;
     var ecr = E.ecran === 'editeur' || E.ecran === 'presenter' ? 'mes' : E.ecran, src = E.source;
+    clearTimeout(tReq); clearTimeout(tSaisie);
     E = etatDepart(+g.dataset.etape); E.ecran = ecr === 'gestion' || ecr === 'profil' ? 'mes' : ecr; E.source = E.etape === 0 ? 'tout' : src;
     ecran.dataset.masque = ''; rend();
   });
