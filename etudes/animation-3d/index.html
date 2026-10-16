@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animation en 3D</title>
+<meta name="description" content="Voir une animation de schéma en 3D, en mode Présenter : un bouton couche le terrain et lève les joueurs, sans rien ressaisir ; trois points de vue, la tribune, derrière un joueur, dans les yeux du gardien. L'éditeur reste en 2D.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+} }
+</script>
+<style>
+:root{
+  --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF;
+  --attenue:#6E6678; --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+  --orange:#EB5D21; --violet:#5D32F5; --peach:#F4AD8E;
+  --ombre-tel:0 1px 0 rgba(28,23,38,.06),0 24px 60px -28px rgba(28,23,38,.45);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+  --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF;
+  --ombre-tel:0 0 0 1px rgba(242,235,222,.10),0 24px 60px -24px rgba(0,0,0,.8); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926;
+  --attenue:#A69DB1; --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --violet:#9B82FF;
+  --ombre-tel:0 0 0 1px rgba(242,235,222,.10),0 24px 60px -24px rgba(0,0,0,.8); color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;letter-spacing:-.01em;padding:0 16px 96px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:var(--violet);text-underline-offset:3px}
+:is(a,button,[tabindex]):focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.nw{white-space:nowrap}
+
+/* ---------- la page d'étude ---------- */
+.outils{position:sticky;top:0;z-index:20;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
+.outils-in{display:flex;justify-content:flex-end;align-items:center;gap:12px;font-size:.84rem;flex-wrap:wrap}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--filet-fort)}
+.seg button{font:inherit;font-size:.84rem;font-weight:600;background:none;border:0;color:var(--attenue);padding:.45em 1em;cursor:pointer}
+.seg button+button{border-left:1px solid var(--filet-fort)}
+.seg [aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.tete{padding-top:56px;max-width:68ch}
+h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.04;letter-spacing:-.02em;margin-bottom:.35em}
+h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.5rem;line-height:1.15;letter-spacing:-.01em;margin-bottom:.5em}
+h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
+.lede{color:var(--attenue);font-size:1.08rem;max-width:64ch}
+.lede b,.bloc p b,.bloc li b{color:var(--ink);font-weight:600}
+.bloc{margin-top:64px}
+.bloc>p,.bloc>ul,.bloc>ol{max-width:68ch;color:var(--attenue)}
+.bloc>p+p{margin-top:.7em}
+.liste{padding-left:1.1em;margin-top:.6em}
+.liste li+li{margin-top:.45em}
+.note{font-size:.86rem;color:var(--attenue)}
+
+.constat{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:start;margin-top:24px}
+@media(max-width:820px){.constat{grid-template-columns:minmax(0,1fr)}}
+.capture{border-radius:14px;overflow:hidden;box-shadow:var(--ombre-tel);outline:1px solid var(--filet)}
+.capture img{display:block;width:100%;height:auto}
+.constat figcaption{font-size:.82rem;color:var(--attenue);margin-top:10px;max-width:46ch}
+.constats{list-style:none;display:grid;gap:22px}
+.constats li{max-width:56ch;color:var(--attenue)}
+.constats b{display:block;color:var(--ink);font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.15rem;line-height:1.25;margin-bottom:.2em}
+
+.banc{display:grid;grid-template-columns:auto minmax(0,1fr);gap:48px;align-items:start;margin-top:32px}
+@media(max-width:900px){.banc{grid-template-columns:minmax(0,1fr);gap:28px}}
+.col-tel{position:sticky;top:64px;display:flex;justify-content:center}
+@media(max-width:900px){.col-tel{position:static}}
+.scenario{list-style:none;counter-reset:etape;display:grid;gap:14px;margin-top:6px}
+.scenario li{counter-increment:etape;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:4px 10px;color:var(--attenue);max-width:60ch}
+.scenario li::before{content:counter(etape);grid-row:span 2;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.4rem;line-height:1.1;color:var(--orange)}
+.scenario b{color:var(--ink);font-weight:600}
+
+.moments{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:28px 24px;margin-top:22px}
+.moments figure{display:flex;flex-direction:column;gap:10px}
+.moments .vue{aspect-ratio:64/50;border-radius:12px;overflow:hidden;background:var(--paper-2);outline:1px solid var(--filet)}
+.moments img{display:block;width:100%;height:100%;object-fit:cover}
+.moments figcaption{font-size:.86rem;color:var(--attenue);max-width:40ch}
+.moments figcaption b{color:var(--ink);font-weight:600}
+
+.tableau{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:16px}
+.tableau th,.tableau td{text-align:left;vertical-align:top;padding:.7em .8em;border-bottom:1px solid var(--filet)}
+.tableau thead th{font-weight:600;color:var(--ink);border-bottom:1px solid var(--filet-fort)}
+.tableau tbody th{font-weight:600;color:var(--ink);width:20%}
+.tableau td{color:var(--attenue)}
+.defile{overflow-x:auto;margin:0 -16px;padding:0 16px}
+.defile .tableau{min-width:680px}
+
+.etapes{list-style:none;counter-reset:etape;display:grid;gap:18px;margin-top:14px;max-width:72ch}
+.etapes li{counter-increment:etape;display:grid;grid-template-columns:2.4rem minmax(0,1fr);gap:2px 12px;color:var(--attenue)}
+.etapes li::before{content:counter(etape);grid-row:span 2;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.6rem;line-height:1.1;color:var(--orange)}
+.etapes b{color:var(--ink);font-weight:600}
+
+/* ---------- le téléphone : le mode Présenter ---------- */
+.tel{--a-ink:#1C1726;--a-paper:#FAF4EC;--a-paper-2:#F3E9DA;--a-attenue:#6E6678;--a-filet:rgba(28,23,38,.12);--a-filet-fort:rgba(28,23,38,.28);--a-orange:#EB5D21;--a-peach:#F4AD8E;--a-violet:#5D32F5;
+  width:390px;height:844px;flex:none;position:absolute;top:0;left:0;transform-origin:0 0;overflow:hidden;background:#fff;color:var(--a-ink);border-radius:30px;box-shadow:var(--ombre-tel);outline:1px solid rgba(28,23,38,.12);font-family:Inter,system-ui,sans-serif;letter-spacing:-.01em;-webkit-user-select:none;user-select:none;color-scheme:light;display:flex;flex-direction:column}
+:where(.tel button){font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tel svg.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.p-barre{display:flex;align-items:center;gap:8px;padding:16px 14px 12px;border-bottom:1px solid var(--a-filet)}
+.p-barre .ib{width:30px;height:30px;display:grid;place-items:center;color:var(--a-ink)}
+.p-progres{flex:1;display:flex;gap:4px}
+.p-progres span{height:5px;flex:1;border-radius:3px;background:var(--a-peach)}
+.p-progres span.ici{background:var(--a-orange)}
+.p-progres span.apres{background:#EEE5D9}
+.p-compte{font:600 .64rem 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.08em;color:var(--a-attenue)}
+.p-defile{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 16px 28px}
+.p-sur{display:flex;align-items:center;gap:8px;font:600 .62rem 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--a-attenue)}
+.p-sur::before{content:"";width:18px;height:1px;background:currentColor}
+.p-titre{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.5rem;line-height:1.12;letter-spacing:-.01em;margin:.35em 0 .7em}
+.p-onglets{display:flex;gap:6px;margin-bottom:8px}
+.p-onglets span{border-radius:999px;padding:.45em 1.1em;font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#F1EBE2}
+.p-onglets span.actif{background:var(--a-ink);color:#fff}
+
+.p-lecteur{border:1px solid var(--a-filet);background:#fff}
+.p-scene{position:relative;height:186px;background:#ECE5DA;overflow:hidden;transition:height .6s cubic-bezier(.2,.8,.2,1)}
+.p-scene[data-mode="3d"]{height:440px}
+.p-scene canvas{position:absolute;inset:0;display:block;width:100%;height:100%;outline:none}
+.p-scene[data-mode="3d"] canvas{touch-action:none;cursor:grab}
+.p-coin{position:absolute;top:8px;display:flex;gap:6px;align-items:flex-start;z-index:2}
+.p-coin.g{left:8px}.p-coin.d{right:8px}
+.p-seg{display:inline-flex;background:rgba(250,244,236,.94);border:1px solid var(--a-filet-fort);box-shadow:0 2px 10px -4px rgba(28,23,38,.35)}
+.p-seg button{font-size:.68rem;font-weight:600;padding:0 .75em;height:30px;color:var(--a-ink)}
+.p-seg button+button{border-left:1px solid var(--a-filet-fort)}
+.p-seg [aria-pressed="true"]{background:var(--a-ink);color:#fff}
+.p-carre{width:32px;height:32px;display:grid;place-items:center;align-items:center;justify-content:center;background:rgba(250,244,236,.94);border:1px solid var(--a-filet-fort);box-shadow:0 2px 10px -4px rgba(28,23,38,.35)}
+.p-carre[aria-pressed="true"]{background:var(--a-ink);color:#fff}
+[data-seul-3d]{display:none!important}
+.p-scene[data-mode="3d"] [data-seul-3d]{display:flex!important}
+.p-postes{position:absolute;top:46px;left:8px;right:8px;gap:4px;overflow-x:auto;z-index:2;scrollbar-width:none}
+.p-scene[data-mode="3d"] .p-postes[hidden]{display:none!important}
+.p-postes button{flex:none;height:28px;padding:0 .7em;font:600 .64rem 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.06em;background:rgba(250,244,236,.94);border:1px solid var(--a-filet-fort);color:var(--a-ink)}
+.p-postes button[aria-pressed="true"]{background:#D7262E;border-color:#D7262E;color:#fff}
+.p-note{position:absolute;left:0;right:0;bottom:0;padding:22px 14px 9px;color:#fff;background:linear-gradient(180deg,transparent,rgba(28,23,38,.8));font-size:.84rem;line-height:1.35;pointer-events:none;opacity:0;transition:opacity .2s;z-index:2}
+.p-note.visible{opacity:1}
+.p-note b{font:600 .68rem 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.1em;color:var(--a-peach);margin-right:8px}
+.p-aide{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);background:rgba(28,23,38,.78);color:#fff;font-size:.74rem;font-weight:500;padding:.55em 1em;border-radius:999px;pointer-events:none;opacity:0;transition:opacity .4s;white-space:nowrap;z-index:2}
+.p-aide.visible{opacity:1}
+.p-secours{position:absolute;inset:0;display:grid;place-items:center;padding:20px;text-align:center;font-size:.86rem;color:var(--a-attenue)}
+.p-commandes{display:flex;align-items:center;gap:10px;border-top:1px solid var(--a-filet);padding:8px 10px}
+.p-btn{width:32px;height:32px;flex:none;display:grid;place-items:center;border:1px solid var(--a-filet-fort)}
+.p-btn:hover{background:var(--a-ink);color:#fff}
+.p-pause{display:block;width:12px;height:12px;border-left:3px solid currentColor;border-right:3px solid currentColor}
+.p-piste{flex:1;display:flex;gap:4px}
+.p-piste button{flex:1;height:26px;display:flex;align-items:center;padding:0}
+.p-piste button>span{display:block;position:relative;height:6px;width:100%;background:var(--a-filet);overflow:hidden}
+.p-piste button>span>i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--a-orange)}
+.p-piste button:hover>span{background:var(--a-filet-fort)}
+.p-etat{flex:none;font:600 .6rem 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--a-attenue);white-space:nowrap}
+.p-figure{border-top:1px solid var(--a-filet);padding:7px 12px;font-size:.7rem;line-height:1.45;font-style:italic;color:var(--a-attenue)}
+/* Dans la grille de la tablette, un bloc en absolu suit encore son alignement : il faut l'étirer. */
+.tel .p-lecteur.plein{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;border:0;overflow:hidden;align-self:stretch!important;justify-self:stretch!important}
+.tel .p-lecteur.plein .p-scene[data-mode]{flex:1;height:auto}
+.p-lecteur.plein .p-figure{display:none}
+.p-lecteur.plein .p-commandes{padding-bottom:22px}
+.p-blocs{display:grid;gap:12px;margin-top:18px}
+.p-carte{flex:1;min-height:0;position:relative;display:flex;flex-direction:column;background:#fff}
+.p-scene:focus-visible{outline:2px solid var(--a-orange);outline-offset:-2px}
+.p-raccourcis{display:none}
+
+/* ---------- l'appareil, réduit pour tenir dans sa colonne ---------- */
+.commandes{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:24px}
+.commandes+.banc{margin-top:20px}
+.porte-tel{position:relative;flex:none;width:390px;height:844px;max-width:100%}
+.banc[data-format]:not([data-format="telephone"]){grid-template-columns:minmax(0,1fr)}
+.banc[data-format]:not([data-format="telephone"]) .col-tel{position:static}
+.d-chrome,.d-fond{display:none}
+
+/* ---------- tablette et ordinateur : la scène à gauche, la situation à droite ---------- */
+.tel[data-format="tablette"]{width:1180px;height:820px;border-radius:26px}
+.tel[data-format="ordinateur"]{width:1440px;height:900px;border-radius:12px;background:#E4DCD0}
+.tel:not([data-format="telephone"]) .p-defile{display:grid;grid-template-columns:minmax(0,1fr) 300px;grid-template-areas:"lecteur sur" "lecteur titre" "lecteur onglets" "lecteur blocs";grid-template-rows:auto auto auto 1fr;column-gap:28px;align-content:start;padding:22px 26px}
+.tel:not([data-format="telephone"]) .p-sur{grid-area:sur}
+.tel:not([data-format="telephone"]) .p-titre{grid-area:titre;font-size:1.9rem}
+.tel:not([data-format="telephone"]) .p-onglets{grid-area:onglets}
+.tel:not([data-format="telephone"]) .p-lecteur{grid-area:lecteur;align-self:start}
+.tel:not([data-format="telephone"]) .p-blocs{grid-area:blocs;align-self:start;margin-top:10px}
+.tel:not([data-format="telephone"]) .p-bloc p{font-size:.86rem}
+.tel[data-format="tablette"] .p-scene{height:404px}
+.tel[data-format="tablette"] .p-scene[data-mode="3d"]{height:600px}
+.tel[data-format="ordinateur"] .p-scene{height:450px}
+.tel[data-format="ordinateur"] .p-scene[data-mode="3d"]{height:568px}
+.tel[data-format="ordinateur"] .d-chrome{display:flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-bottom:1px solid rgba(28,23,38,.12)}
+.d-chrome span{width:12px;height:12px;border-radius:50%;background:#CFC4B6}
+.d-chrome b{margin:0 auto;font-size:.76rem;font-weight:500;color:#6E6678;background:#F6F1EA;border-radius:6px;padding:.35em 2.4em}
+.tel[data-format="ordinateur"] .d-fond{display:block;position:absolute;inset:38px 0 0 0;background:#FAF4EC;overflow:hidden}
+.d-fond i{position:absolute;display:block;background:#ECE3D7;border-radius:8px}
+.d-fond i:nth-child(1){left:0;top:0;bottom:0;width:260px;border-radius:0;background:#F3EADF}
+.d-fond i:nth-child(2){left:300px;top:28px;width:460px;height:34px}
+.d-fond i:nth-child(3){left:300px;top:84px;right:60px;height:330px}
+.d-fond i:nth-child(4){left:300px;top:436px;width:520px;height:220px}
+.d-fond i:nth-child(5){left:840px;top:436px;right:60px;height:220px}
+.d-fond b{position:absolute;inset:0;background:rgba(28,23,38,.55)}
+.tel[data-format="ordinateur"] .p-carte{position:absolute;top:66px;left:80px;right:80px;bottom:28px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.6)}
+.tel[data-format="ordinateur"] .p-raccourcis{display:block;border-top:1px solid var(--a-filet);padding:6px 12px;font:500 .66rem 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.04em;color:var(--a-attenue)}
+.tel[data-format="ordinateur"] .p-raccourcis kbd{font:inherit;font-weight:600;color:var(--a-ink);border:1px solid var(--a-filet-fort);border-radius:3px;padding:0 .35em;margin-right:.3em}
+.p-bloc{border-left:3px solid var(--a-orange);background:#FDF5EE;padding:10px 12px}
+.p-bloc.v{border-color:var(--a-violet);background:#F4F1FE}
+.p-bloc h4{font-size:.74rem;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#B5461A;margin-bottom:4px}
+.p-bloc.v h4{color:var(--a-violet)}
+.p-bloc p{font-size:.8rem;color:#3B3446}
+</style>
+</head>
+<body>
+<div class="outils"><div class="wrap outils-in">
+  <div class="seg" role="group" aria-label="Thème">
+    <button type="button" data-theme-choix="light">Jour</button><button type="button" data-theme-choix="dark">Nuit</button>
+  </div>
+</div></div>
+
+<main class="wrap">
+  <header class="tete">
+    <h1>Voir une animation en 3D</h1>
+    <p class="lede">Étude exploratoire, à verser au <a href="https://github.com/orgs/association-placeauxcoachs/projects/2">tableau Produit</a> sous forme de fiche si l'idée est retenue. <b>En mode Présenter, un bouton 3D couche le terrain et lève les joueurs</b> : la même animation, sans rien ressaisir, vue de la tribune, derrière un joueur ou dans les yeux du gardien. L'éditeur, lui, reste en 2D : on dessine de dessus, on regarde en 3D.</p>
+  </header>
+
+  <section class="bloc">
+    <h2>Aujourd'hui</h2>
+    <div class="constat">
+      <figure>
+        <div class="capture"><img src="../film-accueil/affiche-presenter.webp" width="1280" height="720" alt="Le mode Présenter sur ordinateur et au téléphone : une situation dont le schéma montre, vu de dessus, des attaquants rouges et des défenseurs noirs devant le but."></div>
+        <figcaption>Le mode Présenter : une animation se joue vue de dessus, temps par temps.</figcaption>
+      </figure>
+      <ul class="constats">
+        <li><b>Vu de dessus, le schéma parle à l'entraîneur.</b> Le joueur, lui, doit traduire un rond qui glisse en « je cours entre le 2 et le 3 ».</li>
+        <li><b>Personne ne voit ce que verra le joueur</b> : l'intervalle qui s'ouvre, la ligne de passe, l'angle de tir.</li>
+        <li><b>Une passe est un trait au sol.</b> La passe en cloche par-dessus la défense et la passe à terre se dessinent pareil.</li>
+        <li><b>Le gardien ne voit jamais le tir arriver.</b> Les séances de gardiens, en attente au tableau, demanderont de montrer le jeu depuis le but.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Essayer</h2>
+    <p>La maquette joue une vraie animation de six temps : une attaque placée contre une défense <span class="nw">0-6</span>, posée par la mise en place, jusqu'au tir de l'ailier droit. Elle se touche, ou se clique, comme l'application, et passe d'un appareil à l'autre en gardant son état.</p>
+    <div class="commandes">
+      <div class="seg" role="group" aria-label="Appareil">
+        <button type="button" data-choix-format="telephone" aria-pressed="true">Téléphone</button><button type="button" data-choix-format="tablette" aria-pressed="false">Tablette</button><button type="button" data-choix-format="ordinateur" aria-pressed="false">Ordinateur</button>
+      </div>
+    </div>
+    <div class="banc" data-format="telephone">
+      <div class="col-tel">
+       <div class="porte-tel" id="porte">
+        <div class="tel" id="tel" data-format="telephone">
+          <div class="d-chrome" aria-hidden="true"><span></span><span></span><span></span><b>placeauxcoachs.fr/entrainements</b></div>
+          <div class="d-fond" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><b></b></div>
+          <div class="p-carte">
+          <div class="p-barre">
+            <span class="ib" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span>
+            <span class="ib" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></span>
+            <div class="p-progres" aria-hidden="true"><span></span><span></span><span class="ici"></span><span class="apres"></span></div>
+            <span class="ib" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+            <span class="p-compte">02 / 03</span>
+          </div>
+          <div class="p-defile">
+            <p class="p-sur">Situation 02</p>
+            <h3 class="p-titre">Décaler jusqu'à l'aile</h3>
+            <div class="p-onglets" aria-hidden="true"><span class="actif">Animation 1</span><span>Schéma 2</span></div>
+
+            <div class="p-lecteur" id="lecteur">
+              <div class="p-scene" id="scene" data-mode="2d" role="group" aria-label="Animation de la situation">
+                <div class="p-coin g" data-seul-3d>
+                  <div class="p-seg" role="group" aria-label="Point de vue">
+                    <button type="button" data-vue="tribune" aria-pressed="true">Tribune</button><button type="button" data-vue="joueur" aria-pressed="false">Joueur</button><button type="button" data-vue="gardien" aria-pressed="false">Gardien</button>
+                  </div>
+                </div>
+                <div class="p-coin d">
+                  <div class="p-seg" role="group" aria-label="Affichage">
+                    <button type="button" data-affichage="2d" aria-pressed="true">2D</button><button type="button" data-affichage="3d" aria-pressed="false">3D</button>
+                  </div>
+                  <button type="button" class="p-carre" id="plein" data-seul-3d aria-pressed="false" aria-label="Plein écran">
+                    <svg class="ic" viewBox="0 0 24 24" data-icone="ouvrir"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                    <svg class="ic" viewBox="0 0 24 24" data-icone="fermer" style="display:none"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>
+                  </button>
+                </div>
+                <div class="p-postes" id="postes" data-seul-3d hidden role="group" aria-label="Joueur suivi"></div>
+                <div class="p-aide" id="aide">Glisse pour tourner · pince pour zoomer</div>
+                <p class="p-note" id="note" aria-live="polite"></p>
+              </div>
+              <div class="p-commandes">
+                <button type="button" class="p-btn" id="lire" aria-label="Lire l'animation"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;stroke:none"><path d="M7 4v16l13-8z"/></svg></button>
+                <button type="button" class="p-btn" id="debut" aria-label="Revenir au début"><svg class="ic" viewBox="0 0 24 24" style="width:15px;height:15px"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button>
+                <div class="p-piste" id="piste" role="group" aria-label="Progression par temps"></div>
+                <span class="p-etat" id="etat">Vue schéma</span>
+              </div>
+              <p class="p-raccourcis"><kbd>Espace</kbd>lire · <kbd>←</kbd><kbd>→</kbd>temps · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd>point de vue · <kbd>F</kbd>plein écran · molette : zoom · clic droit : décaler</p>
+              <p class="p-figure" id="figure"></p>
+            </div>
+
+            <div class="p-blocs">
+              <div class="p-bloc"><h4>À faire</h4><p>Six contre six avec gardien, sur un demi-terrain. L'attaque part du demi-centre, toujours du même côté, puis on change de côté.</p></div>
+              <div class="p-bloc v"><h4>À vérifier / observer</h4><p>L'arrière attaque l'intervalle dès la réception, sans dribble, et fixe son défenseur avant de donner.</p></div>
+            </div>
+          </div>
+          </div>
+        </div>
+       </div>
+      </div>
+
+      <div class="col-texte">
+        <h3>À essayer</h3>
+        <ol class="scenario">
+          <li><span>La situation s'ouvre comme aujourd'hui, en vue schéma. Touche <b>3D</b> : le terrain se couche, les joueurs se lèvent. C'est la même animation, rien n'a été ressaisi.</span></li>
+          <li><span>Touche <b>Lire</b>. La passe vole en cloche, le ballon porté reste dans la main, l'ailier saute pour tirer.</span></li>
+          <li><span>Glisse le doigt pour tourner autour du terrain, pince pour zoomer, glisse à deux doigts pour te décaler. <b>Touche deux fois</b> pour revenir à la tribune.</span></li>
+          <li><span>Touche un segment de la piste, sous la scène : elle se fige à la fin de ce temps, ses tracés au sol. Tourne autour.</span></li>
+          <li><span>Choisis <b>Joueur</b> : la caméra se place derrière l'arrière droit et le suit. Choisis un autre poste, ou touche un défenseur sur le terrain pour te mettre derrière lui.</span></li>
+          <li><span>Choisis <b>Gardien</b> : la caméra se met dans ses yeux et suit le ballon jusqu'au tir.</span></li>
+          <li><span>Touche <b>plein écran</b>, à côté de 3D : la scène prend tout l'écran, pour tendre le téléphone aux joueurs.</span></li>
+          <li><span>Passe en <b>Tablette</b> ou en <b>Ordinateur</b>, au-dessus de l'appareil : la scène garde son état et s'agrandit, la situation se range à droite. À l'ordinateur, essaie le clavier : Espace, les flèches, 1, 2, 3 et F.</span></li>
+        </ol>
+
+        <h3 style="margin-top:32px">Ce qui change dans l'application</h3>
+        <ul class="liste note">
+          <li><b>Un bouton 2D · 3D sur la scène animée, en mode Présenter.</b> L'éditeur reste en 2D : on y pose et on y anime de dessus, avec la précision du plan.</li>
+          <li><b>La bascule est un mouvement, pas un changement d'écran.</b> Le terrain se couche devant soi, les joueurs se lèvent à leur place : on reconnaît la scène qu'on regardait.</li>
+          <li><b>Trois points de vue</b> : Tribune, libre, par défaut ; Joueur, derrière le joueur choisi ; Gardien, dans ses yeux.</li>
+          <li><b>Les commandes ne changent pas</b> : Lire, Revenir au début, la piste d'un segment par temps, la note du temps posée sur la scène.</li>
+          <li><b>La piste devient touchable</b> : un segment fige la scène à la fin de son temps. En 3D, c'est ce qui permet de tourner autour d'un moment ; la 2D en profiterait aussi.</li>
+          <li><b>Plein écran en 3D</b>, pour montrer la scène aux joueurs, téléphone ou tablette tendu.</li>
+          <li><b>Sur tablette et ordinateur, la scène prend la place</b> et la situation passe dans une colonne à droite : titre, onglets des schémas, À faire, À vérifier. En 2D, la scène garde la forme du terrain ; en 3D, elle prend toute la hauteur.</li>
+          <li><b>À l'ordinateur, Présenter reste une fenêtre au-dessus de l'éditeur</b>, qui s'agrandit pour la 3D. La souris tourne, la molette zoome, le clic droit décale ; le clavier lit (Espace), passe d'un temps à l'autre (← →), choisit le point de vue (1, 2, 3) et met en plein écran (F, Échap pour en sortir).</li>
+          <li><b>Rien de nouveau à saisir.</b> La 3D lit le schéma tel qu'il est enregistré : les positions, les temps, les postes et le regard. Toutes les animations existantes se jouent en 3D.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Les points de vue</h2>
+    <div class="defile">
+      <table class="tableau">
+        <thead><tr><th scope="col">Vue</th><th scope="col">Où est la caméra</th><th scope="col">Pour quoi faire</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Schéma (2D)</th><td>Au-dessus, le terrain à plat</td><td>Le schéma de toujours, celui qu'on imprime et qu'on retouche.</td></tr>
+          <tr><th scope="row">Tribune</th><td>En hauteur, le long de la touche ; libre : on tourne, on zoome, on se décale</td><td>Voir le mouvement d'ensemble, les intervalles, les lignes de passe.</td></tr>
+          <tr><th scope="row">Joueur</th><td>Derrière le joueur choisi, au-dessus de son épaule ; elle le suit quand il court</td><td>Montrer à un joueur ce qu'il verra : où il court, d'où vient le ballon, qui sort sur lui.</td></tr>
+          <tr><th scope="row">Gardien</th><td>Dans les yeux du gardien ; elle suit le ballon</td><td>Lire le tir qui arrive, travailler le placement du gardien.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Les moments clés</h2>
+    <p>Images tirées de la maquette elle-même, au fil de l'animation.</p>
+    <div class="moments" id="moments">
+      <figure><div class="vue" data-moment="schema"></div><figcaption><b>La vue schéma, comme aujourd'hui.</b> Les tracés au sol, chaque temps numéroté.</figcaption></figure>
+      <figure><div class="vue" data-moment="bascule"></div><figcaption><b>La bascule.</b> Le terrain se couche, les joueurs se lèvent à leur place.</figcaption></figure>
+      <figure><div class="vue" data-moment="tribune"></div><figcaption><b>Tribune, au temps 3.</b> L'arrière droit attaque entre le 2 et le 3 ; le 2 sort sur lui.</figcaption></figure>
+      <figure><div class="vue" data-moment="joueur"></div><figcaption><b>Derrière l'arrière droit, au même instant.</b> Ce qu'il voit : le 2 qui sort sur lui, le 3 qui ferme l'intérieur.</figcaption></figure>
+      <figure><div class="vue" data-moment="passe"></div><figcaption><b>La passe à l'ailier, en cloche</b> par-dessus le bras du 1.</figcaption></figure>
+      <figure><div class="vue" data-moment="gardien"></div><figcaption><b>Dans les yeux du gardien, au tir.</b> Il a fermé son premier poteau ; le ballon part au second.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Ce que la 3D lit dans le schéma</h2>
+    <p>Chaque pièce de l'éditeur a son pendant en volume, posé au sol à sa taille réelle. La maquette ne montre que des joueurs et un ballon.</p>
+    <div class="defile">
+      <table class="tableau">
+        <thead><tr><th scope="col">Pièce</th><th scope="col">En 3D</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Joueur</th><td>Une silhouette articulée, en tenue de son camp (le gardien en manches longues et pantalon), son poste au-dessus de la tête, sur la poitrine et dans le dos, le regard du schéma ou de l'orientation auto. Debout au repos, fléchi bras hauts en défense, bras levés et ouverts au but ; il court, tient le ballon, arme son bras et saute pour tirer.</td></tr>
+          <tr><th scope="row">Ballon</th><td>Dans la main du joueur le plus proche. En vol pendant une passe, en cloche d'autant plus haute que la passe est longue ; tendu vers le but pour un tir.</td></tr>
+          <tr><th scope="row">Tracés des temps</th><td>Au sol pour une course, en pointillé ; en l'air pour une passe, en trait plein ; numérotés comme en 2D, le temps en cours en orange.</td></tr>
+          <tr><th scope="row">Plot, coupelle, cerceau, latte, haie, échelle</th><td>Leur volume, posé au sol.</td></tr>
+          <tr><th scope="row">Tracé dessiné, carré, séparation</th><td>Peints au sol.</td></tr>
+          <tr><th scope="row">Texte</th><td>Une étiquette qui fait toujours face à la caméra.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 style="margin-top:28px">Déduit, faute d'être dans le schéma</h3>
+    <ul class="liste note" style="max-width:68ch">
+      <li><b>La hauteur du ballon.</b> Le schéma ne connaît que le plan. La passe monte en cloche selon sa longueur, le tir arrive à 1,45 m.</li>
+      <li><b>Le saut du tireur.</b> Un ballon qui finit dans le but est un tir : son lanceur saute.</li>
+      <li><b>La taille des joueurs</b> : un adulte, quelle que soit la catégorie de la séance.</li>
+    </ul>
+  </section>
+
+  <section class="bloc">
+    <h2>À trancher</h2>
+    <ul class="liste" style="max-width:68ch;color:var(--attenue)">
+      <li><b>Régler la hauteur d'une passe ou d'un tir</b> (à terre, en cloche, en lucarne) ? Ce serait un réglage de plus dans l'éditeur, que la 2D montrerait d'un signe sur le tracé.</li>
+      <li><b>La vitesse</b> : la 3D joue à la vitesse de la 2D, qui est à peu près celle du jeu, et l'action file en trois secondes. Faut-il un ralenti, pour la vue Joueur surtout ?</li>
+      <li><b>La vue Joueur, à l'épaule ou dans les yeux ?</b> L'épaule montre le joueur et ce qu'il voit ; les yeux sont plus parlants, mais on y perd ses repères.</li>
+      <li><b>Des joueurs plus petits pour les jeunes catégories</b>, d'après la catégorie de la séance ?</li>
+      <li><b>La 3D seulement en Présenter</b>, ou aussi en aperçu dans l'éditeur, pour vérifier une animation ?</li>
+      <li><b>Le gardien</b> : la vue Gardien suffit-elle à ses séances, ou faut-il aussi un terrain du gardien, le but vu de face, dans l'éditeur ?</li>
+    </ul>
+  </section>
+
+  <section class="bloc">
+    <h2>Ce que ça coûte</h2>
+    <ul class="liste" style="max-width:68ch;color:var(--attenue)">
+      <li><b>Une bibliothèque 3D, chargée seulement au premier toucher de 3D</b> : three.js, la plus répandue, celle de cette maquette, avec son adaptation à React. Environ 250 Ko compressés à télécharger une fois, rien pour qui ne s'en sert pas.</li>
+      <li><b>Le moteur de lecture des animations est repris tel quel.</b> Il calcule déjà, à chaque instant, la place de chaque pièce ; la 3D la dessine autrement.</li>
+      <li><b>Les téléphones modestes</b> : des silhouettes simples, des ombres peintes et non calculées, une image redessinée seulement quand quelque chose bouge. Sans WebGL, le bouton 3D n'apparaît pas.</li>
+      <li><b>Effort pressenti : L</b>, en trois livraisons sous un feature flag.</li>
+    </ul>
+    <ol class="etapes">
+      <li><b>Les joueurs et le ballon en tribune.</b> La bascule, la lecture, la piste touchable ; mesurée à l'ouverture de la 3D.</li>
+      <li><b>Les points de vue Joueur et Gardien</b>, et le plein écran ; mesurés par point de vue choisi.</li>
+      <li><b>Les autres pièces</b> : plots, coupelles, cerceaux, lattes, haies, échelles, tracés dessinés, textes.</li>
+    </ol>
+  </section>
+</main>
+
+<script>
+  // Le thème de la page : celui du système, ou le dernier choisi.
+  (() => {
+    const boutons = document.querySelectorAll('[data-theme-choix]');
+    const applique = (t) => {
+      document.documentElement.dataset.theme = t;
+      boutons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.themeChoix === t)));
+      try { localStorage.setItem('etude-theme', t); } catch (_) { /* stockage indisponible */ }
+    };
+    let t = null;
+    try { t = localStorage.getItem('etude-theme'); } catch (_) { /* stockage indisponible */ }
+    applique(t || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    boutons.forEach((b) => b.addEventListener('click', () => applique(b.dataset.themeChoix)));
+  })();
+</script>
+
+<script>
+  // L'appareil : téléphone, tablette couchée ou fenêtre d'ordinateur, réduit pour tenir dans sa colonne.
+  (() => {
+    const banc = document.querySelector('.banc'), porte = document.getElementById('porte'), tel = document.getElementById('tel');
+    const FORMATS = { telephone: [390, 844], tablette: [1180, 820], ordinateur: [1440, 900] };
+    const ajuste = () => {
+      const [l, h] = FORMATS[tel.dataset.format];
+      const e = Math.min(1, porte.parentElement.clientWidth / l);
+      tel.style.transform = e < 1 ? `scale(${e})` : '';
+      porte.style.width = `${l * e}px`; porte.style.height = `${h * e}px`;
+    };
+    document.querySelectorAll('[data-choix-format]').forEach((b) => b.addEventListener('click', () => {
+      tel.dataset.format = banc.dataset.format = b.dataset.choixFormat;
+      document.querySelectorAll('[data-choix-format]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      ajuste();
+    }));
+    new ResizeObserver(ajuste).observe(porte.parentElement);
+    ajuste();
+  })();
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ======================================================================
+   Le schéma animé, en mètres. Le terrain va de x = -20 à x = 20, le but
+   attaqué est à droite (x = 20) ; z va de -10 (touche de gauche, vue de
+   l'attaque) à 10. Les places de départ sont celles de la mise en place
+   (étude « postes-joueurs ») : x = distance à la ligne de but, l = distance
+   à la touche de gauche.
+   ====================================================================== */
+const PLACES = {
+  ALG: { l: 0.9, x: 1.1 }, ARG: { l: 2.0, x: 11.5 }, DC: { l: 10, x: 14 },
+  ARD: { l: 18.0, x: 11.5 }, ALD: { l: 19.1, x: 1.1 }, PVT: { l: 6.46, x: 6.28 },
+  D1G: { l: 2.57, x: 2.89 }, D2G: { l: 4.81, x: 5.47 }, D3G: { l: 8.27, x: 6.6 },
+  D3D: { l: 11.73, x: 6.6 }, D2D: { l: 15.19, x: 5.47 }, D1D: { l: 17.43, x: 2.89 },
+  GB: { l: 10, x: 1.0 },
+};
+const CAMPS = { ALG: 'attaque', ARG: 'attaque', DC: 'attaque', ARD: 'attaque', ALD: 'attaque', PVT: 'attaque',
+  D1G: 'defense', D2G: 'defense', D3G: 'defense', D3D: 'defense', D2D: 'defense', D1D: 'defense', GB: 'gardien' };
+const JOUEURS = Object.keys(PLACES).map((poste) => {
+  const camp = CAMPS[poste];
+  return {
+    id: poste, poste, camp,
+    libelle: camp === 'defense' ? poste[1] : poste,
+    // Le regard du poste : l'attaquant regarde le but, le pivot, le défenseur et le gardien lui tournent le dos.
+    dos: poste === 'PVT' || camp !== 'attaque',
+    x: 20 - PLACES[poste].x, z: PLACES[poste].l - 10,
+  };
+});
+const PAR_ID = Object.fromEntries(JOUEURS.map((j) => [j.id, j]));
+const BALLON = { x: 6.3, z: 0.5 };
+
+const TEMPS = [
+  { note: "Le demi-centre attaque entre les deux 3, qui sortent sur lui ; les arrières prennent leur élan.",
+    poses: { DC: [10.4, 0.5], ballon: [10.7, 1.0], D3G: [12.6, -0.8], D3D: [12.5, 1.0], ARD: [9.6, 6.5], ARG: [9.4, -6.6] } },
+  { note: "Passe à l'arrière droit, lancé.", poses: { ballon: [10.12, 6.76] } },
+  { note: "L'arrière droit attaque entre le 2 et le 3 : le 2 sort, le 1 rentre aider.",
+    poses: { ARD: { a: [12.3, 4.5], par: [[11.0, 5.8]] }, ballon: [12.62, 4.66], D2D: [13.3, 5.0], D1D: [16.2, 6.2], D3D: [13.3, 1.9], D3G: [13.3, -1.5], DC: [8.8, 0.6] } },
+  { note: "Passe à l'ailier droit, resté seul dans son coin.", poses: { ballon: [19.22, 8.94] } },
+  { note: "L'ailier droit prend son appel ; le gardien ferme son premier poteau.",
+    poses: { ALD: { a: [16.75, 6.65], par: [[18.1, 8.4]] }, ballon: [17.11, 6.6], GB: [19.35, 0.95], D1D: [16.0, 5.5] } },
+  { note: "Tir au second poteau.", poses: { ballon: [20.4, -1.05] } },
+];
+
+/* ======================================================================
+   Le moteur de lecture : les règles de l'application (lecture.ts), en
+   mètres. Un ballon déplacé seul est une passe ; déplacé avec autre chose,
+   il est porté. Une course démarre et s'arrête en douceur, pas une passe.
+   ====================================================================== */
+const PX_PAR_M = 565 * 0.9 / 20;
+const MS_PAR_M = { course: 6.5 * PX_PAR_M, passe: 2.4 * PX_PAR_M };
+const DUREE_MIN = 280, DUREE_MAX = 2400;
+/** Après le dernier temps : le saut s'achève, le ballon tombe dans le filet. */
+const QUEUE = 900;
+
+const lerp = (a, b, t) => a + (b - a) * t;
+const borne = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lisse = (a, b, v) => { const t = borne((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+const doux = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+const adoucis = (u, mode) => (mode === 'passe' ? u : u < 0.5 ? 2 * u * u : 1 - (-2 * u + 2) ** 2 / 2);
+const angleCourt = (d) => Math.atan2(Math.sin(d), Math.cos(d));
+const dansLeBut = (p) => Math.abs(p.x) > 19.9 && Math.abs(p.z) < 1.5;
+
+function plusProche(positions, point, ids, max) {
+  let meilleur = null, dmin = max;
+  for (const id of ids) {
+    const d = Math.hypot(positions[id].x - point.x, positions[id].z - point.z);
+    if (d < dmin) { dmin = d; meilleur = id; }
+  }
+  return meilleur;
+}
+
+function compile() {
+  const depart = { ballon: { ...BALLON } };
+  JOUEURS.forEach((j) => { depart[j.id] = { x: j.x, z: j.z }; });
+  const bornes = [depart], etapes = [];
+  let cumul = 0;
+  TEMPS.forEach((t, i) => {
+    const avant = bornes[i], apres = { ...avant };
+    const ids = Object.keys(t.poses);
+    const bougeAutreChose = ids.some((id) => id !== 'ballon');
+    const mouvements = ids.map((id) => {
+      const pose = Array.isArray(t.poses[id]) ? { a: t.poses[id] } : t.poses[id];
+      const mode = id === 'ballon' ? (bougeAutreChose ? 'porte' : 'passe') : 'course';
+      const d = avant[id], a = { x: pose.a[0], z: pose.a[1] };
+      const par = mode === 'porte' ? [] : (pose.par || []).map(([x, z]) => ({ x, z }));
+      const courbe = new THREE.CatmullRomCurve3([d, ...par, a].map((p) => new THREE.Vector3(p.x, 0, p.z)), false, 'centripetal');
+      const longueur = courbe.getLength();
+      const duree = borne(longueur * MS_PAR_M[mode === 'passe' ? 'passe' : 'course'], DUREE_MIN, DUREE_MAX);
+      apres[id] = a;
+      return { id, mode, depart: d, arrivee: a, courbe, longueur, duree, etape: i };
+    });
+    const etape = { numero: i + 1, note: t.note, mouvements, debut: cumul, duree: Math.max(...mouvements.map((m) => m.duree)) };
+    // Qui porte, qui passe, qui reçoit : lu une fois pour toutes.
+    const ids3 = JOUEURS.map((j) => j.id);
+    mouvements.forEach((m) => {
+      if (m.id !== 'ballon') return;
+      if (m.mode === 'porte') {
+        m.porteur = plusProche(avant, m.depart, ids.filter((id) => id !== 'ballon'), 3);
+      } else {
+        m.passeur = plusProche(avant, m.depart, ids3, 1.5);
+        m.tir = dansLeBut(m.arrivee);
+        m.receveur = m.tir ? null : plusProche(apres, m.arrivee, ids3, 1.5);
+      }
+      etape.ballon = m;
+    });
+    etapes.push(etape);
+    cumul += etape.duree;
+    bornes.push(apres);
+  });
+  etapes.forEach((e, i) => { if (e.ballon && e.ballon.mode === 'porte') e.ballon.prochainTir = Boolean(etapes[i + 1]?.ballon?.tir); });
+  return { etapes, bornes, total: cumul, fin: cumul + QUEUE };
+}
+const L = compile();
+
+/** La place de chaque pièce à un instant, et le mouvement qui l'y amène. */
+function positionsA(instant) {
+  const pos = {};
+  for (const [id, p] of Object.entries(L.bornes[0])) pos[id] = { x: p.x, z: p.z, brut: 1, u: 1, mvt: null };
+  for (const e of L.etapes) {
+    const ecoule = instant - e.debut;
+    if (ecoule <= 0) break;
+    for (const m of e.mouvements) {
+      const brut = borne(ecoule / m.duree);
+      const u = adoucis(brut, m.mode);
+      const p = m.courbe.getPointAt(u);
+      pos[m.id] = { x: p.x, z: p.z, brut, u, mvt: m };
+    }
+  }
+  return pos;
+}
+
+/** Le dernier temps commencé : -1 au départ. */
+function etapeEnCours(instant) {
+  let c = -1;
+  L.etapes.forEach((e, i) => { if (instant > e.debut) c = i; });
+  return c;
+}
+
+/* ======================================================================
+   La scène three.js
+   ====================================================================== */
+const conteneur = document.getElementById('scene');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+} catch (_) {
+  conteneur.insertAdjacentHTML('beforeend', '<p class="p-secours">Cette maquette demande WebGL, absent de ce navigateur.</p>');
+  document.getElementById('moments').insertAdjacentHTML('beforebegin', '<p class="note">Les images demandent WebGL.</p>');
+  throw new Error('WebGL indisponible');
+}
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+conteneur.prepend(renderer.domElement);
+renderer.domElement.setAttribute('role', 'img');
+renderer.domElement.setAttribute('aria-label', "Le terrain et les joueurs de l'animation");
+
+const FOND = new THREE.Color('#ECE5DA');
+const scene = new THREE.Scene();
+scene.background = FOND;
+scene.fog = new THREE.Fog(FOND, 400, 600);
+const camera = new THREE.PerspectiveCamera(40, 2, 0.1, 500);
+
+scene.add(new THREE.HemisphereLight('#FFF8EE', '#7D97A8', 2.1));
+const soleil = new THREE.DirectionalLight('#FFFFFF', 1.7);
+soleil.position.set(6, 20, 14);
+scene.add(soleil);
+
+const ENCRE = '#1C1726', PAPIER = '#FAF4EC', ORANGE = '#EB5D21';
+const COULEURS = {
+  attaque: { maillot: '#D7262E', short: '#2B2A33', texte: '#FFFFFF' },
+  defense: { maillot: '#24222A', short: '#111015', texte: '#FFFFFF' },
+  gardien: { maillot: '#F2CD1E', short: '#2B2A33', texte: ENCRE },
+};
+
+function toile(l, h) { const c = document.createElement('canvas'); c.width = l; c.height = h; return [c, c.getContext('2d')]; }
+function enTexture(c) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t; }
+
+/** Une étiquette en pilule : le poste, au-dessus de la tête ou dans le dos. */
+function etiquette(texte, fond, encre, l = 128, h = 64, taille = 38) {
+  const [c, g] = toile(l, h);
+  if (fond) { g.fillStyle = fond; g.beginPath(); g.roundRect(2, 2, l - 4, h - 4, (h - 4) / 2); g.fill(); }
+  g.fillStyle = encre;
+  g.font = `700 ${taille}px Inter, system-ui, sans-serif`;
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(texte, l / 2, h / 2 + 2);
+  return enTexture(c);
+}
+
+/** La pastille d'un temps, comme sur le schéma : papier et encre, orange pour le temps en cours. */
+function pastille(numero, courant) {
+  const [c, g] = toile(128, 128);
+  g.fillStyle = courant ? ORANGE : PAPIER;
+  g.strokeStyle = courant ? ORANGE : ENCRE;
+  g.lineWidth = 9;
+  g.beginPath(); g.arc(64, 64, 52, 0, Math.PI * 2); g.fill(); g.stroke();
+  g.fillStyle = courant ? '#FFFFFF' : ENCRE;
+  g.font = '700 62px Inter, system-ui, sans-serif';
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(String(numero), 64, 68);
+  return enTexture(c);
+}
+
+/* ---------- le terrain : peint comme celui de l'éditeur ---------- */
+const PPM = 48, MX = 26, MZ = 14;
+function textureTerrain() {
+  const [c, g] = toile(2 * MX * PPM, 2 * MZ * PPM);
+  g.fillStyle = '#2F86B4'; g.fillRect(0, 0, c.width, c.height);
+  g.save();
+  g.translate(MX * PPM, MZ * PPM);
+  g.scale(PPM, PPM);
+  g.fillStyle = '#3796C4'; g.fillRect(-20, -10, 40, 20);
+  g.strokeStyle = '#FFFFFF'; g.lineWidth = 0.08; g.lineCap = 'butt';
+  for (const s of [1, -1]) {
+    g.save(); g.scale(s, 1);
+    // La zone des 6 m
+    g.beginPath();
+    g.moveTo(20, -7.5);
+    g.arc(20, -1.5, 6, -Math.PI / 2, -Math.PI, true);
+    g.lineTo(14, 1.5);
+    g.arc(20, 1.5, 6, Math.PI, Math.PI / 2, true);
+    g.closePath();
+    g.fillStyle = '#D1994B'; g.fill(); g.stroke();
+    // Les 9 m, en pointillé
+    const a0 = Math.atan2(-8.5, -Math.sqrt(81 - 8.5 * 8.5));
+    g.setLineDash([0.3, 0.22]);
+    g.beginPath();
+    g.arc(20, -1.5, 9, a0, -Math.PI, true);
+    g.lineTo(11, 1.5);
+    g.arc(20, 1.5, 9, Math.PI, -a0, true);
+    g.stroke();
+    g.setLineDash([]);
+    // Les 7 m et les 4 m
+    g.beginPath(); g.moveTo(13, -0.5); g.lineTo(13, 0.5); g.moveTo(16, -0.075); g.lineTo(16, 0.075); g.stroke();
+    g.restore();
+  }
+  g.strokeRect(-20, -10, 40, 20);
+  g.beginPath(); g.moveTo(0, -10); g.lineTo(0, 10); g.stroke();
+  g.beginPath(); g.arc(0, 0, 2, 0, Math.PI * 2); g.stroke();
+  g.restore();
+  return enTexture(c);
+}
+const sol = new THREE.Mesh(new THREE.PlaneGeometry(2 * MX, 2 * MZ), new THREE.MeshBasicMaterial({ map: textureTerrain() }));
+sol.rotation.x = -Math.PI / 2;
+scene.add(sol);
+const dalle = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshBasicMaterial({ color: '#D9D0C3' }));
+dalle.rotation.x = -Math.PI / 2; dalle.position.y = -0.06;
+scene.add(dalle);
+
+/* ---------- les buts : poteaux rayés, filet ---------- */
+function textureRayee() {
+  const [c, g] = toile(16, 64);
+  g.fillStyle = '#D7262E'; g.fillRect(0, 0, 16, 32);
+  g.fillStyle = '#FFFFFF'; g.fillRect(0, 32, 16, 32);
+  const t = enTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; return t;
+}
+function textureFilet() {
+  const [c, g] = toile(64, 64);
+  g.strokeStyle = 'rgba(255,255,255,.85)'; g.lineWidth = 3;
+  g.strokeRect(0, 0, 64, 64);
+  const t = enTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; return t;
+}
+const RAYE = textureRayee(), FILET = textureFilet();
+function barre(longueur) {
+  const t = RAYE.clone(); t.repeat.set(1, longueur / 0.4); t.needsUpdate = true;
+  return new THREE.Mesh(new THREE.BoxGeometry(0.08, longueur, 0.08), new THREE.MeshLambertMaterial({ map: t }));
+}
+function pan(l, h) {
+  const t = FILET.clone(); t.repeat.set(l / 0.12, h / 0.12); t.needsUpdate = true;
+  return new THREE.Mesh(new THREE.PlaneGeometry(l, h), new THREE.MeshBasicMaterial({ map: t, transparent: true, side: THREE.DoubleSide, depthWrite: false }));
+}
+const buts = [1, -1].map((s) => {
+  const but = new THREE.Group();
+  but.position.x = s * 20;
+  for (const z of [-1.54, 1.54]) { const p = barre(2.04); p.position.set(s * 0.04, 1.02, z); but.add(p); }
+  const transversale = barre(3.16); transversale.rotation.x = Math.PI / 2; transversale.position.set(s * 0.04, 2.04, 0); but.add(transversale);
+  const fond = pan(3.08, 2); fond.rotation.y = Math.PI / 2; fond.position.set(s * 0.95, 1, 0); but.add(fond);
+  for (const z of [-1.54, 1.54]) { const cote = pan(0.9, 2); cote.position.set(s * 0.5, 1, z); but.add(cote); }
+  const toit = pan(0.9, 3.08); toit.rotation.x = -Math.PI / 2; toit.position.set(s * 0.5, 2, 0); but.add(toit);
+  scene.add(but);
+  return but;
+});
+
+/* ---------- les joueurs : une silhouette articulée, un symbole à plat ----------
+   Repère d'un joueur : il regarde vers +x, y monte, sa droite est en +z.
+   Une rotation positive autour de z porte un membre vers l'avant ; le genou
+   se plie en négatif, le coude en positif. */
+/** Un volume tourné autour de l'axe vertical, d'après un profil (rayon, hauteur) lissé. */
+function tourne(profil, segments = 32) {
+  const courbe = new THREE.SplineCurve(profil.map(([rayon, y]) => new THREE.Vector2(rayon, y)));
+  return new THREE.LatheGeometry(courbe.getPoints(28), segments);
+}
+const GEO = {
+  // Les membres galbés, dans le repère de leur articulation : la cuisse descend de la hanche au genou.
+  cuisse: tourne([[0, 0.025], [0.066, 0.012], [0.08, -0.05], [0.076, -0.2], [0.063, -0.36], [0.056, -0.42], [0, -0.445]], 20),
+  jambeShort: new THREE.CylinderGeometry(0.09, 0.088, 0.21, 20),
+  // Le pantalon du gardien, de la hanche au genou puis jusqu'à la cheville.
+  cuissard: new THREE.CylinderGeometry(0.09, 0.068, 0.45, 20),
+  tibia: tourne([[0, 0.015], [0.055, 0.0], [0.062, -0.1], [0.05, -0.25], [0.04, -0.38], [0, -0.41]], 18),
+  chaussette: new THREE.CylinderGeometry(0.063, 0.058, 0.2, 14),
+  jambiere: new THREE.CylinderGeometry(0.07, 0.062, 0.4, 16),
+  chaussure: new THREE.CapsuleGeometry(0.047, 0.15, 6, 12),
+  semelle: new THREE.BoxGeometry(0.25, 0.022, 0.094),
+  // Le short : la ceinture, le galbe des hanches, puis l'entrejambe d'où sortent les cuisses.
+  // Le short enveloppe le haut des cuisses : ses jambes ne dépassent jamais du bassin.
+  bassin: tourne([[0.132, 0.13], [0.142, 0.08], [0.158, 0.02], [0.165, -0.03], [0.158, -0.08]]),
+  // Le maillot : la taille, la poitrine, les aisselles, la pente des épaules jusqu'au cou.
+  tronc: tourne([[0.13, 0.0], [0.134, 0.08], [0.13, 0.16], [0.148, 0.26], [0.17, 0.36], [0.178, 0.44], [0.17, 0.5], [0.135, 0.56], [0.075, 0.6], [0.05, 0.615]]),
+  epaule: new THREE.SphereGeometry(0.062, 18, 14),
+  manche: new THREE.CylinderGeometry(0.062, 0.056, 0.15, 16),
+  mancheLongue: new THREE.CylinderGeometry(0.062, 0.055, 0.27, 14),
+  manchetteLongue: new THREE.CylinderGeometry(0.052, 0.047, 0.19, 14),
+  lisere: new THREE.TorusGeometry(0.06, 0.011, 6, 18),
+  bras: tourne([[0, 0.03], [0.05, 0.02], [0.054, -0.08], [0.044, -0.26], [0, -0.3]], 16),
+  avantBras: tourne([[0, 0.02], [0.043, 0.0], [0.046, -0.06], [0.034, -0.24], [0, -0.27]], 16),
+  main: new THREE.SphereGeometry(0.05, 14, 10),
+  cou: new THREE.CylinderGeometry(0.047, 0.054, 0.12, 14),
+  col: new THREE.TorusGeometry(0.068, 0.016, 8, 22),
+  tete: new THREE.SphereGeometry(0.104, 28, 20),
+  cheveux: new THREE.SphereGeometry(0.111, 28, 14, 0, Math.PI * 2, 0, Math.PI * 0.56),
+  oreille: new THREE.SphereGeometry(0.022, 10, 8),
+  nez: new THREE.SphereGeometry(0.018, 8, 6),
+  dos: new THREE.PlaneGeometry(0.24, 0.15),
+  poitrine: new THREE.PlaneGeometry(0.1, 0.06),
+  tetePlate: new THREE.CircleGeometry(0.47, 32),
+  // L'arc des bras, ouvert devant le joueur : il entoure la tête par l'arrière.
+  arcPlat: new THREE.RingGeometry(0.58, 0.8, 40, 1, Math.PI / 2 - 0.35, Math.PI + 0.7),
+  ombre: new THREE.PlaneGeometry(1, 1),
+};
+const OMBRE = (() => {
+  const [c, g] = toile(64, 64);
+  const d = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  d.addColorStop(0, 'rgba(15,20,30,.55)'); d.addColorStop(1, 'rgba(15,20,30,0)');
+  g.fillStyle = d; g.fillRect(0, 0, 64, 64);
+  return enTexture(c);
+})();
+
+/** Des teintes et des cheveux variés, répartis sans rapport avec le camp. */
+const TEINTES = ['#F2CFB0', '#E3B48C', '#C98E62', '#A06A45', '#74492F'];
+const CHEVEUX = ['#2A1C14', '#4A3021', '#15110F', '#7A5734', '#3A2A20', '#1E1714'];
+const TENUES = {
+  attaque: { lisere: '#FFFFFF', chaussettes: '#F4F2F6', chaussures: '#24232B', semelle: '#FFFFFF' },
+  defense: { lisere: '#FFFFFF', chaussettes: '#E9E6EE', chaussures: '#1A1920', semelle: '#FFFFFF' },
+  gardien: { lisere: '#1C1726', chaussettes: '#2B2A33', chaussures: '#24232B', semelle: '#FFFFFF' },
+};
+const materiaux = new Map();
+function matiere(couleur, rugosite = 0.7) {
+  const cle = `${couleur}/${rugosite}`;
+  // Les deux faces : un volume tourné est ouvert à ses extrémités.
+  if (!materiaux.has(cle)) materiaux.set(cle, new THREE.MeshStandardMaterial({ color: couleur, roughness: rugosite, metalness: 0, side: THREE.DoubleSide }));
+  return materiaux.get(cle);
+}
+
+function creeSilhouette(j, rang) {
+  const c = COULEURS[j.camp], t = TENUES[j.camp];
+  const peau = matiere(TEINTES[(rang * 3) % TEINTES.length], 0.62);
+  const maillot = matiere(c.maillot, 0.5), short = matiere(c.short, 0.72), lisere = matiere(t.lisere, 0.6);
+  const gardien = j.camp === 'gardien';
+  const groupe = (parent, x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g); return g; };
+  const piece = (parent, geo, mat, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); parent.add(m); return m; };
+
+  const corps = new THREE.Group();
+  const bassin = groupe(corps, 0, 0.92, 0);
+  piece(bassin, GEO.bassin, short, 0, 0, 0).scale.set(0.8, 1, 1.1);
+
+  const jambe = (cote) => {
+    const hanche = groupe(bassin, 0, 0, cote * 0.085);
+    piece(hanche, GEO.cuisse, peau, 0, 0, 0);
+    if (gardien) piece(hanche, GEO.cuissard, short, 0, -0.2, 0);
+    else piece(hanche, GEO.jambeShort, short, 0, -0.08, 0);
+    const genou = groupe(hanche, 0, -0.42, 0);
+    piece(genou, GEO.tibia, peau, 0, 0, 0);
+    if (gardien) piece(genou, GEO.jambiere, short, 0, -0.2, 0);
+    else piece(genou, GEO.chaussette, matiere(t.chaussettes, 0.8), 0, -0.29, 0);
+    const cheville = groupe(genou, 0, -0.4, 0);
+    piece(cheville, GEO.chaussure, matiere(t.chaussures, 0.55), 0.045, -0.052, 0).rotation.z = Math.PI / 2;
+    piece(cheville, GEO.semelle, matiere(t.semelle, 0.6), 0.045, -0.088, 0);
+    return { hanche, genou, cheville };
+  };
+  const jg = jambe(-1), jd = jambe(1);
+
+  const buste = groupe(bassin, 0, 0.02, 0);
+  piece(buste, GEO.tronc, maillot, 0, 0, 0).scale.set(0.7, 1, 1.15);
+  const bras = (cote) => {
+    const epaule = groupe(buste, 0, 0.5, cote * 0.19);
+    piece(epaule, GEO.epaule, maillot, 0, 0, 0).scale.set(1, 0.9, 1);
+    piece(epaule, GEO.bras, peau, 0, 0, 0);
+    piece(epaule, gardien ? GEO.mancheLongue : GEO.manche, maillot, 0, gardien ? -0.135 : -0.075, 0);
+    if (!gardien) piece(epaule, GEO.lisere, lisere, 0, -0.15, 0).rotation.x = Math.PI / 2;
+    const coude = groupe(epaule, 0, -0.28, 0);
+    piece(coude, GEO.avantBras, peau, 0, 0, 0);
+    if (gardien) {
+      piece(coude, GEO.manchetteLongue, maillot, 0, -0.095, 0);
+      piece(coude, GEO.lisere, lisere, 0, -0.19, 0).rotation.x = Math.PI / 2;
+    }
+    const main = piece(coude, GEO.main, peau, 0, -0.29, 0);
+    main.scale.set(0.85, 1.15, 0.7);
+    return { epaule, coude, main };
+  };
+  const bg = bras(-1), bd = bras(1);
+
+  piece(buste, GEO.cou, peau, 0, 0.62, 0);
+  const col = piece(buste, GEO.col, lisere, 0, 0.59, 0);
+  col.rotation.x = Math.PI / 2; col.scale.set(0.82, 1.12, 1);
+  const tete = groupe(buste, 0, 0.73, 0);
+  piece(tete, GEO.tete, peau, 0, 0, 0).scale.set(0.97, 1.1, 0.9);
+  const cheveux = piece(tete, GEO.cheveux, matiere(CHEVEUX[(rang * 5) % CHEVEUX.length], 0.9), -0.006, 0.006, 0);
+  cheveux.rotation.z = 0.42; cheveux.scale.set(1, 1.06, 0.95);
+  for (const cote of [-1, 1]) piece(tete, GEO.oreille, peau, -0.005, -0.005, cote * 0.094);
+  piece(tete, GEO.nez, peau, 0.1, -0.012, 0);
+
+  const dos = piece(buste, GEO.dos, new THREE.MeshBasicMaterial({ map: etiquette(j.libelle, null, c.texte, 128, 72, 52), transparent: true }), -0.124, 0.37, 0);
+  dos.rotation.y = -Math.PI / 2;
+  const poitrine = piece(buste, GEO.poitrine, new THREE.MeshBasicMaterial({ map: etiquette(j.libelle, null, c.texte, 128, 72, 52), transparent: true }), 0.125, 0.42, 0.07);
+  poitrine.rotation.y = Math.PI / 2;
+
+  corps.traverse((o) => { if (o.isMesh) o.userData.joueur = j.id; });
+  return { corps, bassin, buste, tete, dos, poitrine, jg, jd, bg, bd };
+}
+
+const figures = JOUEURS.map((j, rang) => {
+  const c = COULEURS[j.camp];
+  const racine = new THREE.Group();
+  const s = creeSilhouette(j, rang);
+  racine.add(s.corps);
+
+  // Le symbole de l'éditeur, à plat : la tête pleine et l'arc des bras.
+  const plat = new THREE.Group();
+  const matPlat = new THREE.MeshBasicMaterial({ color: c.maillot, transparent: true, depthWrite: false });
+  const tetePlate = new THREE.Mesh(GEO.tetePlate, matPlat); tetePlate.rotation.x = -Math.PI / 2;
+  const arc = new THREE.Mesh(GEO.arcPlat, matPlat); arc.rotation.x = -Math.PI / 2; arc.position.x = 0.12;
+  tetePlate.renderOrder = arc.renderOrder = 2;
+  plat.add(tetePlate, arc); plat.position.y = 0.03;
+  racine.add(plat);
+  const libellePlat = new THREE.Mesh(new THREE.PlaneGeometry(0.86, 0.43), new THREE.MeshBasicMaterial({ map: etiquette(j.libelle, null, c.texte, 128, 64, j.libelle.length > 2 ? 34 : 44), transparent: true, depthWrite: false }));
+  libellePlat.rotation.x = -Math.PI / 2; libellePlat.position.y = 0.04; libellePlat.renderOrder = 3;
+  racine.add(libellePlat);
+
+  // L'étiquette garde sa taille à l'écran : lisible au loin, discrète de près.
+  const bulle = new THREE.Sprite(new THREE.SpriteMaterial({ map: etiquette(j.libelle, c.maillot, c.texte), transparent: true, depthWrite: false, sizeAttenuation: false }));
+  bulle.scale.set(0.046, 0.023, 1); bulle.position.y = 2.2;
+  racine.add(bulle);
+
+  const ombre = new THREE.Mesh(GEO.ombre, new THREE.MeshBasicMaterial({ map: OMBRE, transparent: true, depthWrite: false }));
+  ombre.rotation.x = -Math.PI / 2; ombre.position.y = 0.012;
+  racine.add(ombre);
+
+  scene.add(racine);
+  return { j, rang, racine, ...s, plat, matPlat, libellePlat, bulle, ombre, regard: 0 };
+});
+const FIG = Object.fromEntries(figures.map((f) => [f.j.id, f]));
+
+/* ---------- le ballon ---------- */
+const ballon = (() => {
+  const [c, g] = toile(256, 128);
+  g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, 256, 128);
+  const bande = (couleur, phase, y) => {
+    g.strokeStyle = couleur; g.lineWidth = 16; g.beginPath();
+    for (let x = 0; x <= 256; x += 4) g.lineTo(x, y + Math.sin((x / 256) * Math.PI * 4 + phase) * 22);
+    g.stroke();
+  };
+  bande('#D7262E', 0, 44); bande('#26306E', Math.PI, 84);
+  const m = new THREE.Mesh(new THREE.SphereGeometry(0.095, 24, 16), new THREE.MeshLambertMaterial({ map: enTexture(c) }));
+  scene.add(m);
+  return m;
+})();
+
+/* ======================================================================
+   Poser la scène à un instant : positions, regards, postures, ballon.
+   `k` va de 0 (le schéma à plat) à 1 (la 3D) ; tout ce qui change entre
+   les deux en dépend.
+   ====================================================================== */
+const V = new THREE.Vector3();
+const Q = new THREE.Quaternion(), BAS = new THREE.Vector3(0, -1, 0);
+/** Le ballon dans la main droite : au bout des doigts, dans le prolongement de l'avant-bras. */
+function main(id, cible) {
+  const { coude, main: m } = FIG[id].bd;
+  m.getWorldPosition(cible);
+  return cible.addScaledVector(V.copy(BAS).applyQuaternion(coude.getWorldQuaternion(Q)), 0.085);
+}
+
+/** La posture au repos d'un poste, en radians : h hanche, g genou, e épaule vers l'avant, b écart du bras, c coude. */
+function postureDeBase(j) {
+  const P = { hG: 0.06, hD: 0.06, gG: -0.14, gD: -0.14, ecart: 0.05, eG: 0.12, eD: 0.12, bG: 0.1, bD: 0.1, cG: 0.3, cD: 0.3, penche: 0.04 };
+  // Le pivot, au contact, écarte les bras pour se faire de la place.
+  if (j.poste === 'PVT') Object.assign(P, { hG: 0.15, hD: 0.15, gG: -0.3, gD: -0.3, ecart: 0.1, eG: 0.55, eD: 0.55, bG: 0.6, bD: 0.6, cG: 0.9, cD: 0.9 });
+  // Le défenseur : fléchi, appuis écartés, bras hauts devant lui. Un bras levé s'ouvre par un écart
+  // négatif : l'écart tourne autour de l'axe des épaules, qui ramène vers l'intérieur un bras déjà haut.
+  if (j.camp === 'defense') Object.assign(P, { hG: 0.34, hD: 0.34, gG: -0.66, gD: -0.66, ecart: 0.13, eG: 2.4, eD: 2.4, bG: -0.3, bD: -0.3, cG: 0.2, cD: 0.2, penche: 0.2 });
+  // Le gardien : appuis larges, bras levés et ouverts.
+  if (j.camp === 'gardien') Object.assign(P, { hG: 0.24, hD: 0.24, gG: -0.46, gD: -0.46, ecart: 0.24, eG: 0.3, eD: 0.3, bG: 2.3, bD: 2.3, cG: 0.35, cD: 0.35, penche: 0.1 });
+  return P;
+}
+
+/** Le bras qui tient le ballon : tenu devant soi, armé derrière la tête, lâché, poussé, au repos. */
+const BRAS = {
+  tenue: { eD: 0.9, bD: 0.25, cD: 1.0 },
+  arme: { eD: 2.65, bD: -0.35, cD: 1.7 },
+  lache: { eD: 1.55, bD: 0.2, cD: 0.15 },
+  pousse: { eD: 1.45, bD: 0.15, cD: 0.2 },
+  repos: { eD: 0.3, bD: 0.12, cD: 0.4 },
+};
+const brasDroit = (a, b, t) => ({ eD: lerp(a.eD, b.eD, t), bD: lerp(a.bD, b.bD, t), cD: lerp(a.cD, b.cD, t) });
+
+const CUISSE = 0.42, TIBIA = 0.4, CHEVILLE = 0.1;
+function poseFigure(f, P, enLAir) {
+  f.jg.hanche.rotation.set(P.ecart, 0, P.hG);
+  f.jd.hanche.rotation.set(-P.ecart, 0, P.hD);
+  f.jg.genou.rotation.z = P.gG; f.jd.genou.rotation.z = P.gD;
+  // Le pied reste à plat.
+  f.jg.cheville.rotation.z = -(P.hG + P.gG); f.jd.cheville.rotation.z = -(P.hD + P.gD);
+  f.bg.epaule.rotation.set(P.bG, 0, P.eG);
+  f.bd.epaule.rotation.set(-P.bD, 0, P.eD);
+  f.bg.coude.rotation.z = P.cG; f.bd.coude.rotation.z = P.cD;
+  f.buste.rotation.z = -P.penche;
+  // Le bassin à la hauteur de la jambe la plus tendue : les pieds touchent le sol.
+  const hauteur = (h, g) => (CUISSE * Math.cos(h) + TIBIA * Math.cos(h + g)) * Math.cos(P.ecart) + CHEVILLE;
+  f.bassin.position.y = lerp(Math.max(hauteur(P.hG, P.gG), hauteur(P.hD, P.gD)), CUISSE + TIBIA + CHEVILLE, enLAir);
+}
+
+
+/** Le regard d'un joueur à sa place : vers le but le plus proche, ou dos à lui. */
+function regardA(j, p) {
+  const butX = p.x >= 0 ? 20 : -20;
+  let dx = butX - p.x, dz = -p.z;
+  if (j.dos) { dx = -dx; dz = -dz; }
+  return Math.atan2(-dz, dx);
+}
+
+function etatDuBallon(pos, instant) {
+  const b = pos.ballon, m = b.mvt;
+  if (m && b.brut < 1) return m.mode === 'porte' ? { porteur: m.porteur } : { vol: m, u: b.brut };
+  if (m && m.tir) return { filet: m, apres: instant - (L.etapes[m.etape].debut + m.duree) };
+  return { porteur: plusProche(pos, b, JOUEURS.map((j) => j.id), 1.2) };
+}
+
+let tracesConstruites = false;
+function appliqueScene(instant, k, options = {}) {
+  const pos = positionsA(instant);
+  const eb = etatDuBallon(pos, instant);
+  const tireur = eb.vol && eb.vol.tir ? eb.vol.passeur : eb.filet ? eb.filet.passeur : null;
+  const debutTir = eb.vol && eb.vol.tir ? L.etapes[eb.vol.etape].debut : eb.filet ? L.etapes[eb.filet.etape].debut : 0;
+  const yeuxDuGardien = options.vue === 'gardien' && k > 0.5;
+  const suivi = options.vue === 'joueur' && k > 0.5 ? options.suivi : null;
+
+  for (const f of figures) {
+    const { j } = f, p = pos[j.id];
+    const regard = regardA(j, p);
+    f.regard = regard;
+    // Le saut du tireur : un ballon qui finit dans le but est un tir.
+    const tSaut = j.id === tireur ? instant - debutTir : -1;
+    const saut = tSaut >= 0 && tSaut <= 750 ? 0.45 * Math.sin((Math.PI * tSaut) / 750) : 0;
+    f.racine.position.set(p.x, 0, p.z);
+    f.corps.position.y = saut;
+    f.corps.rotation.y = regard;
+    f.plat.rotation.y = regard;
+
+    // La posture : celle du poste au repos, la foulée en course, le ballon en main.
+    const P = postureDeBase(j);
+    let ampl = 0, phase = 0;
+    if (p.mvt && p.mvt.mode === 'course' && p.brut < 1) {
+      ampl = Math.sin(Math.PI * p.brut) * Math.min(1, p.mvt.longueur / 1.5);
+      phase = (p.u * p.mvt.longueur / 2.4) * Math.PI * 2;
+    }
+    if (ampl > 0) {
+      const s = Math.sin(phase);
+      // Le genou se plie surtout quand la jambe revient de l'arrière.
+      const genou = (ph) => -(0.22 + 1.1 * Math.max(0, -Math.sin(ph - 0.7)));
+      P.hG = lerp(P.hG, 0.1 + 0.6 * s, ampl); P.hD = lerp(P.hD, 0.1 - 0.6 * s, ampl);
+      P.gG = lerp(P.gG, genou(phase), ampl); P.gD = lerp(P.gD, genou(phase + Math.PI), ampl);
+      P.penche += 0.14 * ampl;
+      if (j.camp === 'attaque') {
+        P.eG = lerp(P.eG, -0.55 * s, ampl); P.eD = lerp(P.eD, 0.55 * s, ampl);
+        P.cG = lerp(P.cG, 1.35, ampl); P.cD = lerp(P.cD, 1.35, ampl);
+      }
+    }
+
+    const mb = pos.ballon.mvt;
+    const tient = eb.porteur === j.id;
+    const passe = eb.vol && !eb.vol.tir && eb.vol.passeur === j.id;
+    const recoit = eb.vol && eb.vol.receveur === j.id;
+    if (tient) {
+      // Le porteur qui va tirer arme son bras à la fin de sa course.
+      const arme = mb && mb.mode === 'porte' && mb.prochainTir && mb.porteur === j.id ? lisse(0.45, 1, pos.ballon.brut) : 0;
+      Object.assign(P, brasDroit(BRAS.tenue, BRAS.arme, arme), { eG: 0.55, bG: 0.2, cG: 1.1 });
+    }
+    if (passe) Object.assign(P, brasDroit(BRAS.tenue, BRAS.pousse, lisse(0, 0.45, eb.u)), { eG: 0.5, bG: 0.2, cG: 1.0 });
+    if (j.id === tireur) {
+      const lache = eb.vol ? lisse(0, 0.3, eb.u) : 1;
+      const retombe = eb.filet ? lisse(150, 650, eb.apres) : 0;
+      Object.assign(P, brasDroit(brasDroit(BRAS.arme, BRAS.lache, lache), BRAS.repos, retombe), { eG: 0.95, bG: 0.5, cG: 0.6 });
+    }
+    if (recoit) Object.assign(P, { eD: 1.0, bD: 0.25, cD: 0.8, eG: 1.0, bG: 0.25, cG: 0.8 });
+    if (saut > 0) {
+      // Le genou d'appel monte, l'autre jambe pend.
+      const s = saut / 0.45;
+      P.hG = lerp(P.hG, 1.25, s); P.gG = lerp(P.gG, -1.5, s);
+      P.hD = lerp(P.hD, -0.15, s); P.gD = lerp(P.gD, -0.45, s);
+    }
+    poseFigure(f, P, saut > 0 ? saut / 0.45 : 0);
+    f.ombre.scale.setScalar(1 - saut * 0.7);
+
+    // La bascule : les joueurs se lèvent l'un après l'autre, le symbole s'efface.
+    const leve = borne((k - 0.12 - f.rang * 0.012) / 0.62);
+    const hauteur = Math.max(0.001, 1 - (1 - leve) ** 3);
+    f.corps.scale.set(1, hauteur, 1);
+    f.corps.visible = leve > 0.005 && !(yeuxDuGardien && j.camp === 'gardien');
+    const aPlat = 1 - lisse(0, 0.45, k);
+    f.matPlat.opacity = aPlat;
+    f.libellePlat.material.opacity = aPlat;
+    f.plat.visible = f.libellePlat.visible = aPlat > 0.01;
+    f.bulle.material.opacity = lisse(0.6, 1, k);
+    f.bulle.visible = k > 0.6 && !(yeuxDuGardien && j.camp === 'gardien') && j.id !== suivi;
+    f.ombre.material.opacity = 0.5 * lisse(0.3, 1, k);
+    f.ombre.visible = k > 0.3;
+  }
+  for (const but of buts) but.scale.y = Math.max(0.02, k);
+  scene.updateMatrixWorld();
+
+  // Le ballon : à plat sur le schéma, dans la main ou en vol en 3D.
+  const b = pos.ballon;
+  const en3D = new THREE.Vector3(b.x, 0.11, b.z);
+  if (eb.porteur) {
+    main(eb.porteur, en3D);
+  } else if (eb.vol) {
+    const m = eb.vol, u = eb.u;
+    const depart = m.passeur ? main(m.passeur, new THREE.Vector3()) : new THREE.Vector3(m.depart.x, 0.11, m.depart.z);
+    const arrivee = m.receveur ? main(m.receveur, new THREE.Vector3())
+      : m.tir ? new THREE.Vector3(m.arrivee.x, 1.45, m.arrivee.z) : new THREE.Vector3(m.arrivee.x, 0.11, m.arrivee.z);
+    const cloche = m.tir ? 0.25 : borne(0.06 * m.longueur, 0.2, 1.1);
+    en3D.lerpVectors(depart, arrivee, u);
+    en3D.y += 4 * cloche * u * (1 - u);
+  } else if (eb.filet) {
+    const m = eb.filet, t = borne(eb.apres / 450);
+    const a = new THREE.Vector3(m.arrivee.x, 1.45, m.arrivee.z);
+    const fin = new THREE.Vector3(m.arrivee.x + Math.sign(m.arrivee.x) * 0.45, 0.1, m.arrivee.z + 0.05);
+    en3D.lerpVectors(a, fin, t * t);
+  }
+  ballon.position.lerpVectors(new THREE.Vector3(b.x, 0.12, b.z), en3D, doux(k));
+  ballon.scale.setScalar(lerp(3.4, 1, lisse(0, 0.8, k)));
+
+  if (tracesConstruites) majTraces(instant, k, options.lecture ?? instant > 0, k > 0.5 ? options.vue : null);
+  return pos;
+}
+
+/* ======================================================================
+   Les tracés des temps : au sol pour une course, en l'air pour une passe,
+   chacun avec sa pastille, comme sur le schéma.
+   ====================================================================== */
+const traces = [];
+const groupeTraces = new THREE.Group();
+scene.add(groupeTraces);
+
+function rubanPointille(points, largeur, plein, vide) {
+  const sommets = [], indices = [];
+  let allume = true, reste = plein;
+  const quad = (a, b) => {
+    V.subVectors(b, a).normalize();
+    const nx = -V.z * largeur / 2, nz = V.x * largeur / 2, n = sommets.length / 3;
+    sommets.push(a.x - nx, a.y, a.z - nz, a.x + nx, a.y, a.z + nz, b.x + nx, b.y, b.z + nz, b.x - nx, b.y, b.z - nz);
+    indices.push(n, n + 1, n + 2, n, n + 2, n + 3);
+  };
+  for (let i = 0; i < points.length - 1; i++) {
+    const a = points[i], b = points[i + 1], longueur = a.distanceTo(b);
+    let t = 0;
+    while (t < longueur - 1e-6) {
+      const pasLocal = Math.min(reste, longueur - t);
+      if (allume) quad(a.clone().lerp(b, t / longueur), a.clone().lerp(b, (t + pasLocal) / longueur));
+      t += pasLocal; reste -= pasLocal;
+      if (reste <= 1e-6) { allume = vide === 0 ? true : !allume; reste = allume ? plein : vide; }
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(sommets, 3));
+  geo.setIndex(indices);
+  return geo;
+}
+
+function construitTraces() {
+  const matPastilles = L.etapes.map((e) => ({ normal: pastille(e.numero, false), courant: pastille(e.numero, true) }));
+  L.etapes.forEach((e, i) => {
+    for (const m of e.mouvements) {
+      if (m.mode === 'porte') continue;
+      const mat = new THREE.MeshBasicMaterial({ color: ENCRE, transparent: true, side: THREE.DoubleSide, depthWrite: false });
+      const groupe = new THREE.Group();
+      let geo, segments, rayons, milieu, fleche;
+      if (m.mode === 'course') {
+        const bout = Math.max(0, (m.longueur - 0.3) / m.longueur);
+        const points = Array.from({ length: 61 }, (_, s) => m.courbe.getPointAt((s / 60) * bout).setY(0.02));
+        geo = rubanPointille(points, 0.1, 0.34, 0.2);
+        segments = geo.index.count / 6; rayons = 1;
+        const fin = points[60], avant = points[57];
+        V.subVectors(fin, avant).normalize();
+        const n = new THREE.Vector3(-V.z, 0, V.x);
+        const pointe = new THREE.BufferGeometry().setFromPoints([
+          fin.clone().addScaledVector(V, 0.18), fin.clone().addScaledVector(V, -0.3).addScaledVector(n, 0.2), fin.clone().addScaledVector(V, -0.3).addScaledVector(n, -0.2),
+        ]);
+        fleche = new THREE.Mesh(pointe, mat);
+        milieu = m.courbe.getPointAt(0.5);
+        const avantMilieu = m.courbe.getPointAt(0.46), apresMilieu = m.courbe.getPointAt(0.54);
+        V.subVectors(apresMilieu, avantMilieu).normalize();
+        milieu.add(new THREE.Vector3(-V.z, 0, V.x).multiplyScalar(0.75));
+        milieu.y = 0;
+      } else {
+        // La passe suit le vrai trajet du ballon, échantillonné en 3D.
+        const echantillons = [];
+        for (let s = 0; s <= 32; s++) {
+          appliqueScene(e.debut + m.duree * (s / 32) * 0.999, 1);
+          echantillons.push(ballon.position.clone());
+        }
+        const courbe = new THREE.CatmullRomCurve3(echantillons);
+        segments = 48; rayons = 6;
+        const tube = new THREE.CatmullRomCurve3(echantillons.slice(0, 32));
+        geo = new THREE.TubeGeometry(tube, segments, 0.032, rayons, false);
+        const pointe = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.32, 10), mat);
+        const fin = echantillons[32], tangente = courbe.getTangentAt(0.97);
+        pointe.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), tangente);
+        pointe.position.copy(fin).addScaledVector(tangente, -0.16);
+        fleche = pointe;
+        milieu = courbe.getPointAt(0.5);
+        milieu.y += 0.45;
+      }
+      const ruban = new THREE.Mesh(geo, mat);
+      ruban.renderOrder = fleche.renderOrder = 1;
+      groupe.add(ruban, fleche);
+      const spriteMat = new THREE.SpriteMaterial({ map: matPastilles[i].normal, transparent: true, depthWrite: false });
+      const sprite = new THREE.Sprite(spriteMat);
+      sprite.renderOrder = 4;
+      groupe.add(sprite);
+      groupeTraces.add(groupe);
+      traces.push({ etape: i, m, groupe, mat, geo, segments, rayons, fleche, sprite, spriteMat, milieu, passe: m.mode === 'passe', textures: matPastilles[i] });
+    }
+  });
+  tracesConstruites = true;
+}
+
+function majTraces(instant, k, lecture, vue) {
+  const c = etapeEnCours(instant);
+  for (const t of traces) {
+    // À plat, une passe se couche sur le terrain ; en 3D, elle reprend sa cloche.
+    if (t.passe) t.groupe.scale.y = Math.max(0.015, k);
+    const hauteurPastille = t.passe ? lerp(0.1, t.milieu.y, k) : lerp(0.1, 0.55, k);
+    t.sprite.position.set(t.milieu.x, t.passe ? hauteurPastille / Math.max(0.015, k) : hauteurPastille, t.milieu.z);
+    const taille = lerp(1.0, 0.72, k);
+    t.sprite.scale.set(taille, t.passe ? taille / Math.max(0.015, k) : taille, 1);
+    let visible = true, opacite = 0.92, part = 1, courant = false;
+    if (lecture) {
+      // À hauteur de joueur, seuls les tracés du temps en cours restent : les autres barreraient la vue.
+      if (t.etape > c || (t.etape < c && (vue === 'joueur' || vue === 'gardien'))) visible = false;
+      else if (t.etape < c) opacite = 0.25;
+      else {
+        courant = true;
+        part = borne((instant - L.etapes[c].debut) / t.m.duree);
+      }
+    }
+    // Dans les yeux du gardien, le tracé du tir lui passerait devant l'œil.
+    t.groupe.visible = visible && !(vue === 'gardien' && t.m.tir);
+    t.mat.opacity = opacite;
+    t.spriteMat.opacity = opacite < 0.5 ? 0.35 : 1;
+    t.spriteMat.map = courant ? t.textures.courant : t.textures.normal;
+    t.geo.setDrawRange(0, Math.round(part * t.segments) * t.rayons * 6);
+    t.fleche.visible = part >= 1;
+    // Au ras du sol, une pastille près de la caméra masquerait la scène.
+    t.sprite.visible = vue !== 'joueur' && vue !== 'gardien';
+  }
+}
+
+/* ======================================================================
+   La caméra : un état (position, cible, haut, ouverture) par point de vue,
+   et un mélange en coordonnées sphériques autour de la cible, pour que la
+   bascule soit une rotation et non une glissade.
+   ====================================================================== */
+const HAUT_Y = new THREE.Vector3(0, 1, 0);
+function etatDessus(aspect) {
+  const fov = 10, demi = Math.max(10.9, 20.9 / aspect);
+  const d = demi / Math.tan(THREE.MathUtils.degToRad(fov / 2));
+  return { pos: new THREE.Vector3(0, d, 0.001), cible: new THREE.Vector3(0, 0, 0), haut: new THREE.Vector3(0, 0, -1), fov };
+}
+function depuisSpherique(cible, d, theta, phi) {
+  return cible.clone().add(new THREE.Vector3(d * Math.sin(theta) * Math.sin(phi), d * Math.cos(theta), d * Math.sin(theta) * Math.cos(phi)));
+}
+function etatTribune(aspect) {
+  const fov = 40;
+  const demiLargeur = Math.atan(Math.tan(THREE.MathUtils.degToRad(fov / 2)) * aspect);
+  const d = Math.max(21, 10.2 / Math.tan(demiLargeur));
+  const cible = new THREE.Vector3(13.8, 0.4, 1.2);
+  return { pos: depuisSpherique(cible, d, THREE.MathUtils.degToRad(55), -0.2), cible, haut: HAUT_Y.clone(), fov };
+}
+function etatJoueur(id) {
+  const f = FIG[id], a = f.regard;
+  const av = new THREE.Vector3(Math.cos(a), 0, -Math.sin(a)), droite = new THREE.Vector3(-av.z, 0, av.x);
+  const p = f.racine.position;
+  return {
+    pos: p.clone().addScaledVector(av, -3.4).addScaledVector(droite, 0.75).setY(2.6),
+    cible: p.clone().addScaledVector(av, 8).setY(0.5),
+    haut: HAUT_Y.clone(), fov: 58,
+  };
+}
+function etatGardien() {
+  const f = FIG.GB, a = f.regard;
+  const av = new THREE.Vector3(Math.cos(a), 0, -Math.sin(a));
+  const yeux = f.racine.position.clone().addScaledVector(av, 0.06).setY(1.62 + f.corps.position.y);
+  // Il suit le ballon tant qu'il est devant lui ; au fond du filet, il regarde de nouveau le jeu.
+  const versBallon = ballon.position.clone().sub(yeux);
+  const devant = versBallon.x * av.x + versBallon.z * av.z;
+  const cible = devant > 0.6 ? ballon.position.clone() : yeux.clone().addScaledVector(av, 6).setY(1.2);
+  return { pos: yeux, cible, haut: HAUT_Y.clone(), fov: 64 };
+}
+function versSpherique(e) {
+  const r = e.pos.clone().sub(e.cible), d = r.length();
+  return { d, theta: Math.acos(borne(r.y / d, -1, 1)), phi: Math.atan2(r.x, r.z) };
+}
+function melange(a, b, t) {
+  const sa = versSpherique(a), sb = versSpherique(b);
+  const cible = a.cible.clone().lerp(b.cible, t);
+  return {
+    pos: depuisSpherique(cible, lerp(sa.d, sb.d, t), lerp(sa.theta, sb.theta, t), sa.phi + angleCourt(sb.phi - sa.phi) * t),
+    cible, haut: a.haut.clone().lerp(b.haut, t).normalize(), fov: lerp(a.fov, b.fov, t),
+  };
+}
+function pose(cam, e) {
+  cam.position.copy(e.pos); cam.up.copy(e.haut); cam.fov = e.fov;
+  // Le plan proche suit la distance : vu de très haut, le sol et ses tracés ne scintillent pas.
+  const distance = e.pos.distanceTo(e.cible);
+  cam.near = borne(distance * 0.01, 0.05, 4); cam.far = distance + 300;
+  cam.lookAt(e.cible); cam.updateProjectionMatrix();
+}
+
+/* ======================================================================
+   L'état de la maquette, la boucle et les commandes
+   ====================================================================== */
+const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const etat = { instant: 0, enCours: false, k: 0, cibleK: 0, vue: 'tribune', suivi: 'ARD' };
+let etatCam = null, photo3D = null, orbiteActive = false, besoin = true, visible = true;
+
+const controles = new OrbitControls(camera, renderer.domElement);
+controles.enabled = false;
+controles.enableDamping = true;
+controles.minDistance = 5; controles.maxDistance = 70;
+controles.maxPolarAngle = THREE.MathUtils.degToRad(86);
+controles.addEventListener('change', () => { besoin = true; });
+controles.addEventListener('start', () => masqueAide());
+renderer.domElement.style.touchAction = 'pan-y';
+
+function etatVoulu(aspect) {
+  if (etat.vue === 'joueur') return etatJoueur(etat.suivi);
+  if (etat.vue === 'gardien') return etatGardien();
+  return etatTribune(aspect);
+}
+
+function appliqueCamera(dt) {
+  const aspect = camera.aspect;
+  if (etat.k < 1 || etat.cibleK < 1) {
+    orbiteActive = false; controles.enabled = false;
+    const haut3D = etat.cibleK === 0 && photo3D ? photo3D : etatVoulu(aspect);
+    etatCam = etat.k === 0 ? etatDessus(aspect) : melange(etatDessus(aspect), haut3D, doux(etat.k));
+    pose(camera, etatCam);
+    return false;
+  }
+  if (orbiteActive) {
+    const bouge = controles.update();
+    etatCam = { pos: camera.position.clone(), cible: controles.target.clone(), haut: HAUT_Y.clone(), fov: camera.fov };
+    return bouge;
+  }
+  const voulu = etatVoulu(aspect);
+  const suivant = etatCam ? melange(etatCam, voulu, 1 - Math.exp(-dt / 170)) : voulu;
+  const ecart = suivant.pos.distanceTo(voulu.pos) + suivant.cible.distanceTo(voulu.cible) + Math.abs(suivant.fov - voulu.fov) / 10;
+  etatCam = ecart < 0.01 ? voulu : suivant;
+  pose(camera, etatCam);
+  if (etat.vue === 'tribune' && ecart < 0.01) {
+    orbiteActive = true; controles.target.copy(voulu.cible); controles.enabled = true; controles.update();
+  }
+  return ecart >= 0.01 || etat.vue !== 'tribune';
+}
+
+function taille() {
+  const l = conteneur.clientWidth, h = conteneur.clientHeight;
+  if (!l || !h) return;
+  renderer.setSize(l, h, false);
+  camera.aspect = l / h;
+  camera.updateProjectionMatrix();
+  besoin = true;
+}
+new ResizeObserver(taille).observe(conteneur);
+new IntersectionObserver((entrees) => { visible = entrees.some((e) => e.isIntersecting); besoin = true; }).observe(conteneur);
+
+let dernier = performance.now();
+function boucle(t) {
+  requestAnimationFrame(boucle);
+  const dt = Math.min(64, t - dernier); dernier = t;
+  if (!visible) return;
+  let anime = false;
+  if (etat.enCours) {
+    etat.instant = Math.min(L.fin, etat.instant + dt);
+    if (etat.instant >= L.fin) etat.enCours = false;
+    anime = true;
+    majInterface();
+  }
+  if (etat.k !== etat.cibleK) {
+    const pas = reduit ? 1 : dt / 1300;
+    etat.k = etat.cibleK > etat.k ? Math.min(etat.cibleK, etat.k + pas) : Math.max(etat.cibleK, etat.k - pas);
+    anime = true;
+    if (etat.k === 1 && etat.vue === 'tribune') montreAide();
+  }
+  if (!(anime || besoin || etat.k === 1)) return;
+  scene.fog.near = lerp(400, 40, etat.k); scene.fog.far = lerp(600, 130, etat.k);
+  appliqueScene(etat.instant, etat.k, { vue: etat.vue, suivi: etat.suivi, lecture: etat.enCours || etat.instant > 0 });
+  const bouge = appliqueCamera(dt);
+  if (anime || besoin || bouge) renderer.render(scene, camera);
+  besoin = false;
+}
+
+/* ---------- l'interface du lecteur ---------- */
+const piste = document.getElementById('piste');
+const segments = L.etapes.map((e, i) => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.setAttribute('aria-label', `Aller à la fin du temps ${e.numero}`);
+  b.innerHTML = '<span><i></i></span>';
+  b.addEventListener('click', () => allerAuTemps(i));
+  piste.append(b);
+  return b.querySelector('i');
+});
+/** Fige la scène à la fin d'un temps ; le dernier va jusqu'au ballon dans le filet. */
+function allerAuTemps(i) {
+  etat.enCours = false;
+  etat.instant = i < 0 ? 0 : i === L.etapes.length - 1 ? L.fin : L.etapes[i].debut + L.etapes[i].duree;
+  besoin = true; majInterface();
+}
+const CERCLES = '①②③④⑤⑥⑦⑧⑨';
+document.getElementById('figure').textContent = L.etapes.map((e) => `${CERCLES[e.numero - 1]} ${e.note}`).join('  ·  ');
+
+const boutonLire = document.getElementById('lire');
+const ICONE_LIRE = boutonLire.innerHTML;
+boutonLire.addEventListener('click', () => {
+  if (etat.enCours) { etat.enCours = false; }
+  else { if (etat.instant >= L.fin) etat.instant = 0; etat.enCours = true; }
+  besoin = true; majInterface();
+});
+document.getElementById('debut').addEventListener('click', () => {
+  etat.enCours = false; etat.instant = 0; besoin = true; majInterface();
+});
+
+const lecteur = document.getElementById('lecteur');
+const boutonPlein = document.getElementById('plein');
+function plein(oui) {
+  lecteur.classList.toggle('plein', oui);
+  boutonPlein.setAttribute('aria-pressed', String(oui));
+  boutonPlein.setAttribute('aria-label', oui ? 'Quitter le plein écran' : 'Plein écran');
+  boutonPlein.querySelector('[data-icone="ouvrir"]').style.display = oui ? 'none' : '';
+  boutonPlein.querySelector('[data-icone="fermer"]').style.display = oui ? '' : 'none';
+  besoin = true;
+}
+boutonPlein.addEventListener('click', () => plein(!lecteur.classList.contains('plein')));
+
+document.querySelectorAll('[data-affichage]').forEach((b) => b.addEventListener('click', () => {
+  const en3D = b.dataset.affichage === '3d';
+  if (en3D === (etat.cibleK === 1)) return;
+  if (!en3D) { photo3D = etatCam; plein(false); masqueAide(); }
+  etat.cibleK = en3D ? 1 : 0;
+  conteneur.dataset.mode = en3D ? '3d' : '2d';
+  renderer.domElement.style.touchAction = en3D ? 'none' : 'pan-y';
+  besoin = true; majInterface();
+}));
+
+function choisisVue(vue, suivi) {
+  etat.vue = vue;
+  if (suivi) etat.suivi = suivi;
+  orbiteActive = false; controles.enabled = false;
+  masqueAide(); besoin = true; majInterface();
+}
+document.querySelectorAll('[data-vue]').forEach((b) => b.addEventListener('click', () => choisisVue(b.dataset.vue)));
+
+const postes = document.getElementById('postes');
+['ALG', 'ARG', 'DC', 'ARD', 'ALD', 'PVT'].forEach((id) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.textContent = id; b.dataset.suivi = id;
+  b.addEventListener('click', () => choisisVue('joueur', id));
+  postes.append(b);
+});
+
+// Toucher un joueur s'y place derrière ; toucher deux fois revient à la tribune.
+const rayon = new THREE.Raycaster();
+let appui = null, dernierToucher = 0;
+renderer.domElement.addEventListener('pointerdown', (e) => { appui = { x: e.clientX, y: e.clientY, t: performance.now() }; });
+renderer.domElement.addEventListener('pointerup', (e) => {
+  if (!appui || etat.k < 1) return;
+  const tap = Math.hypot(e.clientX - appui.x, e.clientY - appui.y) < 8 && performance.now() - appui.t < 350;
+  appui = null;
+  if (!tap) return;
+  const maintenant = performance.now();
+  if (maintenant - dernierToucher < 320) { dernierToucher = 0; choisisVue('tribune'); return; }
+  dernierToucher = maintenant;
+  const r = renderer.domElement.getBoundingClientRect();
+  rayon.setFromCamera(new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), camera);
+  const touche = rayon.intersectObjects(figures.map((f) => f.corps), true)[0];
+  if (touche && touche.object.userData.joueur && touche.object.userData.joueur !== 'GB') choisisVue('joueur', touche.object.userData.joueur);
+  else if (touche && touche.object.userData.joueur === 'GB') choisisVue('gardien');
+});
+
+const aide = document.getElementById('aide');
+let aideVue = false, minuterieAide;
+function montreAide() {
+  if (aideVue) return;
+  aideVue = true;
+  aide.textContent = document.getElementById('tel').dataset.format === 'ordinateur' ? 'Glisse pour tourner · molette pour zoomer' : 'Glisse pour tourner · pince pour zoomer';
+  aide.classList.add('visible');
+  minuterieAide = setTimeout(masqueAide, 3200);
+}
+function masqueAide() { clearTimeout(minuterieAide); aide.classList.remove('visible'); }
+
+// Au clavier, sur la scène ou ses commandes : la lecture, les temps, les points de vue, le plein écran.
+conteneur.tabIndex = 0;
+renderer.domElement.addEventListener('pointerdown', () => conteneur.focus({ preventScroll: true }));
+lecteur.addEventListener('keydown', (e) => {
+  if (e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+  const c = etapeEnCours(etat.instant), en3D = etat.cibleK === 1;
+  if (e.key === ' ') boutonLire.click();
+  else if (e.key === 'ArrowRight') allerAuTemps(Math.min(L.etapes.length - 1, c + 1));
+  else if (e.key === 'ArrowLeft') allerAuTemps(etat.instant >= L.fin ? L.etapes.length - 2 : c - 1);
+  else if (['1', '2', '3'].includes(e.key) && en3D) choisisVue(['tribune', 'joueur', 'gardien'][Number(e.key) - 1]);
+  else if (e.key.toLowerCase() === 'f' && en3D) plein(!lecteur.classList.contains('plein'));
+  else if (e.key === 'Escape' && lecteur.classList.contains('plein')) plein(false);
+  else return;
+  e.preventDefault();
+});
+
+const note = document.getElementById('note');
+function majInterface() {
+  const c = etapeEnCours(etat.instant);
+  segments.forEach((i, n) => {
+    const e = L.etapes[n];
+    i.style.width = `${borne((etat.instant - e.debut) / e.duree) * 100}%`;
+  });
+  const enLecture = etat.enCours || etat.instant > 0;
+  document.getElementById('etat').textContent = enLecture && c >= 0 ? `Temps ${c + 1} / ${L.etapes.length}` : 'Vue schéma';
+  if (enLecture && c >= 0) {
+    note.innerHTML = `<b>T${c + 1}</b>${L.etapes[c].note}`;
+    note.classList.add('visible');
+  } else note.classList.remove('visible');
+  boutonLire.innerHTML = etat.enCours ? '<span class="p-pause"></span>' : ICONE_LIRE;
+  boutonLire.setAttribute('aria-label', etat.enCours ? 'Mettre en pause' : "Lire l'animation");
+  document.querySelectorAll('[data-affichage]').forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.affichage === '3d') === (etat.cibleK === 1))));
+  document.querySelectorAll('[data-vue]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.vue === etat.vue)));
+  postes.hidden = etat.vue !== 'joueur';
+  postes.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.suivi === etat.suivi)));
+  renderer.domElement.setAttribute('aria-label', enLecture && c >= 0 ? `Temps ${c + 1} : ${L.etapes[c].note}` : "Le terrain et les joueurs de l'animation, au départ");
+}
+
+/* ======================================================================
+   Les moments clés : la même scène, posée et photographiée hors écran.
+   ====================================================================== */
+function photographie() {
+  const l = 640, h = 500, aspect = l / h;
+  const r2 = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  r2.setPixelRatio(1); r2.setSize(l, h, false);
+  const cam = new THREE.PerspectiveCamera(40, aspect, 0.1, 500);
+  const t3 = L.etapes[2], t4 = L.etapes[3], t6 = L.etapes[5];
+  const moments = {
+    schema: { instant: 0, k: 0, lecture: false, etat: () => etatDessus(aspect) },
+    bascule: { instant: 0, k: 0.5, lecture: false, etat: () => melange(etatDessus(aspect), etatTribune(aspect), doux(0.5)) },
+    tribune: { instant: t3.debut + t3.duree * 0.62, k: 1, etat: () => etatTribune(aspect) },
+    joueur: { instant: t3.debut + t3.duree * 0.62, k: 1, vue: 'joueur', suivi: 'ARD', etat: () => etatJoueur('ARD') },
+    passe: { instant: t4.debut + t4.duree * 0.55, k: 1, etat: () => ({ pos: new THREE.Vector3(12.4, 2.3, 15.2), cible: new THREE.Vector3(15.9, 1.5, 6.9), haut: HAUT_Y.clone(), fov: 50 }) },
+    gardien: { instant: t6.debut + t6.duree * 0.45, k: 1, vue: 'gardien', etat: () => etatGardien() },
+  };
+  for (const [nom, m] of Object.entries(moments)) {
+    const cadre = document.querySelector(`[data-moment="${nom}"]`);
+    if (!cadre) continue;
+    scene.fog.near = lerp(400, 40, m.k); scene.fog.far = lerp(600, 130, m.k);
+    appliqueScene(m.instant, m.k, { vue: m.vue, suivi: m.suivi, lecture: m.lecture ?? true });
+    pose(cam, m.etat());
+    r2.render(scene, cam);
+    const img = new Image();
+    img.alt = cadre.parentElement.querySelector('figcaption').textContent;
+    img.src = r2.domElement.toDataURL('image/webp', 0.9);
+    cadre.append(img);
+  }
+  r2.dispose(); r2.forceContextLoss();
+}
+
+// Les polices d'abord, pour les étiquettes peintes ; puis les tracés, les photos et la boucle.
+await document.fonts.ready;
+figures.forEach((f) => {
+  const c = COULEURS[f.j.camp];
+  f.bulle.material.map = etiquette(f.j.libelle, c.maillot, c.texte);
+  f.libellePlat.material.map = etiquette(f.j.libelle, null, c.texte, 128, 64, f.j.libelle.length > 2 ? 34 : 44);
+  f.dos.material.map = etiquette(f.j.libelle, null, c.texte, 128, 72, 52);
+  f.poitrine.material.map = etiquette(f.j.libelle, null, c.texte, 128, 72, 52);
+});
+construitTraces();
+photographie();
+taille();
+majInterface();
+requestAnimationFrame(boucle);
+</script>
+</body>
+</html>
