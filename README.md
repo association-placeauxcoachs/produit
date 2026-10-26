@@ -37,6 +37,8 @@ Le tableau [**Produit PlaceAuxCoachs**](https://github.com/orgs/association-plac
 | [`retours-utilisateurs.html`](retours-utilisateurs.html) | Message de sollicitation de retours envoyé aux utilisateurs |
 | [`etudes/`](etudes/) | Études de design et de planification |
 
+Les études sont temporaires : elles restent ici tant que leur sujet est ouvert, puis disparaissent une fois la fonctionnalité livrée ou l'idée abandonnée. L'historique du dépôt les conserve.
+
 ## Règles
 
 - **Aucun identifiant, mot de passe ni donnée personnelle** dans une issue ou un fichier : ce dépôt est public et son historique est permanent.
