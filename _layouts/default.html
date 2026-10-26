@@ -26,7 +26,27 @@
 
   <main class="document">
     <div class="conteneur">
-      {% if page.url == "/" %}<p class="kicker">{{ site.rubrique }}</p>{% else %}<a class="kicker" href="{{ "/" | relative_url }}">{{ site.rubrique }}</a>{% endif %}
+      <nav class="fil" aria-label="Fil d'Ariane">
+        <ol>
+          <li><a href="/">Accueil</a></li>
+          {%- if page.url == "/" %}
+          <li aria-current="page">{{ site.rubrique }}</li>
+          {%- else %}
+          <li><a href="{{ "/" | relative_url }}">{{ site.rubrique }}</a></li>
+          {%- assign morceaux = page.url | split: "/" -%}
+          {%- assign chemin = "/" -%}
+          {%- for morceau in morceaux offset: 1 -%}
+          {%- if forloop.last %}
+          <li aria-current="page">{{ page.title | default: morceau }}</li>
+          {%- else -%}
+          {%- assign chemin = chemin | append: morceau | append: "/" -%}
+          {%- assign dossier = site.pages | where: "url", chemin | first %}
+          <li><a href="{{ chemin | relative_url }}">{{ dossier.title | default: morceau }}</a></li>
+          {%- endif -%}
+          {%- endfor -%}
+          {%- endif %}
+        </ol>
+      </nav>
       <div class="contenu">
 {{ content }}
       </div>
