@@ -235,6 +235,47 @@
   .interrupteur{margin-left:auto;width:34px;height:20px;border-radius:999px;background:var(--ink);position:relative}
   .interrupteur::after{content:"";position:absolute;right:3px;top:3px;width:14px;height:14px;border-radius:999px;background:var(--paper)}
 
+  /* ---------- la proposition ---------- */
+  .defile{margin-top:24px;overflow-x:auto}
+  .inventaire{width:100%;min-width:640px;border-collapse:collapse;font-size:.92rem}
+  .inventaire th,.inventaire td{text-align:left;vertical-align:top;padding:10px 14px 10px 0;border-bottom:1px solid var(--filet)}
+  .inventaire thead th{font-size:.8rem;font-weight:600;color:var(--attenue)}
+  .inventaire tbody th{font-weight:600;width:24%}
+  .inventaire td{color:var(--attenue)}
+  .inventaire td.retire{font-style:italic}
+
+  .pZ{background:var(--paper-2);border-top:1px solid var(--filet);padding:44px 20px 0;overflow:hidden;text-align:center}
+  .pZ .accroche{margin:12px auto 0;max-width:30ch;color:var(--attenue);font-size:14px}
+  .pZ .terrain{margin:22px -20px 0;height:259px}
+  .pZ .terrain>svg{width:576px}
+  .pZ .dans-zone{bottom:40px;width:340px}
+  .pZ .dans-zone ul{display:grid;grid-template-columns:auto auto;justify-content:center;gap:8px 20px}
+  .pZ .sous-ligne{padding:20px 0 24px;display:grid;gap:14px;justify-items:center;font-size:13px;color:var(--attenue)}
+  .pZ .sous-ligne ul{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px}
+  @container (min-width:720px){
+    .pZ{padding:56px 56px 0}
+    .pZ .terrain{margin:26px -56px 0;height:324px}
+    .pZ .terrain>svg{width:720px}
+    .pZ .dans-zone{bottom:62px;width:460px}
+    .pZ .dans-zone ul{display:flex;gap:18px}
+    .pZ .sous-ligne{grid-template-columns:1fr auto;align-items:center;row-gap:18px;padding:24px 0 28px}
+    .pZ .sous-ligne ul{grid-column:1/-1}
+    .pZ .sous-ligne .copy{justify-self:start;text-align:left}
+    .pZ .sous-ligne .theme{justify-self:end}
+  }
+
+  .p3b{border-top:1px solid var(--filet);margin-top:14px;padding:16px 16px 96px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;font-size:12.5px;color:var(--attenue)}
+  .p3b ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px 16px}
+  @container (min-width:720px){ .p3b{padding:18px 32px 26px} }
+
+  .ouvert{margin-top:48px;max-width:66ch}
+  .ouvert h3{font-family:var(--display);font-weight:600;font-size:1.25rem}
+  .ouvert ul{margin:10px 0 0 1.1em;display:grid;gap:.5em;color:var(--attenue)}
+
+  .depart{margin-top:96px;border-top:1px solid var(--filet-fort);padding-top:20px}
+  .depart>summary{cursor:pointer;font-family:var(--display);font-weight:600;font-size:1.3rem}
+  .depart[open]>summary{margin-bottom:8px}
+
   /* ---------- recommandation ---------- */
   .avis{margin-top:88px;padding:28px;border:1px solid var(--filet-fort);border-radius:18px;max-width:72ch;background:var(--surface)}
   .avis h2{font-family:var(--display);font-weight:600;font-size:1.5rem;line-height:1.15}
@@ -259,6 +300,8 @@
   <symbol id="i-contraste" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></symbol>
   <symbol id="i-oeil" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-ampoule" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
   <symbol id="i-sortie" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5M21 12H9M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></symbol>
 </svg>
 
@@ -271,8 +314,145 @@
 <header class="entete">
   <h1>Le pied de page</h1>
   <p class="lede">Place aux Coachs a désormais son association, une page Instagram et une chaîne YouTube. Le pied de page doit y mener sans devenir un fourre-tout. Il en existe deux : celui du site, sous l’accueil et les pages publiques, et celui de l’application, sous les séances.</p>
-  <p class="lede">Trois pistes pour chacun. Chaque piste se lit au téléphone, puis sur ordinateur.</p>
+  <p class="lede">La proposition reprend la zone de but pour le site et le panneau du compte pour l’application, et donne à chaque lien une seule place. Les six pistes de départ suivent.</p>
 </header>
+
+<!-- ================================================================== -->
+<section class="partie" aria-labelledby="titre-proposition">
+  <h2 id="titre-proposition">La proposition</h2>
+  <p class="chapo">Chaque lien garde une place par écran, celle où l’on va le chercher. Ce qui ne sert à personne disparaît.</p>
+
+  <div class="defile">
+  <table class="inventaire">
+    <thead><tr><th scope="col">Lien</th><th scope="col">Aujourd’hui</th><th scope="col">Sur le site</th><th scope="col">Dans l’application</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Entraînements, Groupes de travail</th><td>Pied de page du site</td><td class="retire" colspan="2">Retirés : un visiteur y est renvoyé vers la connexion, et un coach les a déjà dans sa navigation</td></tr>
+      <tr><th scope="row">L’association, Instagram, YouTube</th><td>Nulle part</td><td>Dans la zone</td><td>Panneau du compte</td></tr>
+      <tr><th scope="row">Soutenir sur Tipeee</th><td>Pied de page du site, section Soutenir de l’accueil</td><td>Dans la zone, et la section Soutenir</td><td>Panneau du compte</td></tr>
+      <tr><th scope="row">Donner mon avis, Contact</th><td>Les deux pieds de page</td><td>Sous la ligne de but</td><td>Panneau du compte</td></tr>
+      <tr><th scope="row">Mentions légales, Confidentialité, CGU</th><td>Les deux pieds de page</td><td>Sous la ligne de but</td><td>Pied de page, seuls</td></tr>
+      <tr><th scope="row">Thème</th><td>Pied de page de l’accueil, panneau du compte</td><td>Sous la ligne de but, sur l’accueil</td><td>Panneau du compte</td></tr>
+      <tr><th scope="row">Marque et accroche</th><td>Pied de page du site</td><td>Au-dessus des 9 mètres</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <article class="piste" aria-labelledby="titre-site-final">
+    <div class="piste-tete">
+      <h3 id="titre-site-final">Le site : tout se range sur le terrain</h3>
+      <p>Au-dessus des 9 mètres, la marque et son accroche. Dans la zone, l’association et ses quatre chemins : son site, Instagram, YouTube et le soutien sur Tipeee. Sous la ligne de but, ce qui est pratique et légal, et le choix du thème sur l’accueil. Il n’y a plus de colonnes.</p>
+      <p class="pour">Le pied de page se lit de haut en bas, du projet aux mentions légales.</p>
+    </div>
+    <div class="duo">
+      <div><p class="legende">Téléphone</p><div class="cadre tel"><div class="page">
+        <div class="suite"><b>Rejoignez la communauté</b><span>Commencer</span></div>
+        <footer class="pZ">
+          <span class="marque"><img src="logo.png" alt=""><span>Place <i>aux coachs</i></span></span>
+          <p class="accroche">Conçu par des coachs, pour des coachs. Les valeurs du handball, appliquées au quotidien.</p>
+          <div class="terrain">
+            <svg viewBox="-12 -9.6 24 10.8" aria-hidden="true">
+              <path class="neuf" d="M-10.5 0 A9 9 0 0 1 -1.5 -9 L1.5 -9 A9 9 0 0 1 10.5 0"/>
+              <path class="six" d="M-7.5 0 A6 6 0 0 1 -1.5 -6 L1.5 -6 A6 6 0 0 1 7.5 0 Z"/>
+              <path class="ligne" d="M-14 0 H14"/>
+              <path class="filet-but" d="M-1.5 .35 H1.5 M-1.5 .7 H1.5 M-.75 0 V1 M0 0 V1 M.75 0 V1"/>
+              <path class="but" d="M-1.5 0 V1 H1.5 V0"/>
+            </svg>
+            <div class="dans-zone">
+              <b>Une association de coachs bénévoles</b>
+              <ul><li><span class="lien avec-ic"><svg class="ic"><use href="#i-asso"/></svg>L’association</span></li><li><span class="lien avec-ic"><svg class="ic"><use href="#i-insta"/></svg>Instagram</span></li><li><span class="lien avec-ic"><svg class="ic"><use href="#i-yt"/></svg>YouTube</span></li><li><span class="lien avec-ic"><svg class="ic"><use href="#i-coeur"/></svg>Soutenir</span></li></ul>
+            </div>
+          </div>
+          <div class="sous-ligne">
+            <ul><li><span class="lien">Donner mon avis</span></li><li><span class="lien">Contact</span></li><li><span class="lien">Mentions légales</span></li><li><span class="lien">Confidentialité</span></li><li><span class="lien">CGU</span></li></ul>
+            <span class="copy">© 2026 Association Place aux Coachs<br>Fait avec passion en Gironde 🤾</span>
+            <span class="theme"><span><svg class="ic"><use href="#i-soleil"/></svg></span><span><svg class="ic"><use href="#i-lune"/></svg></span><span><svg class="ic"><use href="#i-auto"/></svg></span></span>
+          </div>
+        </footer>
+      </div></div></div>
+      <div><p class="legende">Ordinateur</p><div class="cadre ordi"><div class="page">
+        <div class="suite"><b>Rejoignez la communauté</b><span>Commencer</span></div>
+        <footer class="pZ">
+          <span class="marque"><img src="logo.png" alt=""><span>Place <i>aux coachs</i></span></span>
+          <p class="accroche">Conçu par des coachs, pour des coachs. Les valeurs du handball, appliquées au quotidien.</p>
+          <div class="terrain">
+            <svg viewBox="-12 -9.6 24 10.8" aria-hidden="true">
+              <path class="neuf" d="M-10.5 0 A9 9 0 0 1 -1.5 -9 L1.5 -9 A9 9 0 0 1 10.5 0"/>
+              <path class="six" d="M-7.5 0 A6 6 0 0 1 -1.5 -6 L1.5 -6 A6 6 0 0 1 7.5 0 Z"/>
+              <path class="ligne" d="M-30 0 H30"/>
+              <path class="filet-but" d="M-1.5 .35 H1.5 M-1.5 .7 H1.5 M-.75 0 V1 M0 0 V1 M.75 0 V1"/>
+              <path class="but" d="M-1.5 0 V1 H1.5 V0"/>
+            </svg>
+            <div class="dans-zone">
+              <b>Une association de coachs bénévoles</b>
+              <ul><li><span class="lien avec-ic"><svg class="ic"><use href="#i-asso"/></svg>L’association</span></li><li><span class="lien avec-ic"><svg class="ic"><use href="#i-insta"/></svg>Instagram</span></li><li><span class="lien avec-ic"><svg class="ic"><use href="#i-yt"/></svg>YouTube</span></li><li><span class="lien avec-ic"><svg class="ic"><use href="#i-coeur"/></svg>Soutenir</span></li></ul>
+            </div>
+          </div>
+          <div class="sous-ligne">
+            <ul><li><span class="lien">Donner mon avis</span></li><li><span class="lien">Contact</span></li><li><span class="lien">Mentions légales</span></li><li><span class="lien">Confidentialité</span></li><li><span class="lien">CGU</span></li></ul>
+            <span class="copy">© 2026 Association Place aux Coachs — Fait avec passion en Gironde 🤾</span>
+            <span class="theme"><span><svg class="ic"><use href="#i-soleil"/></svg></span><span><svg class="ic"><use href="#i-lune"/></svg></span><span><svg class="ic"><use href="#i-auto"/></svg></span></span>
+          </div>
+        </footer>
+      </div></div></div>
+    </div>
+  </article>
+
+  <article class="piste" aria-labelledby="titre-app-final">
+    <div class="piste-tete">
+      <h3 id="titre-app-final">L’application : le panneau du compte prend le relais</h3>
+      <p>Sous les séances, le pied de page ne garde que les mentions légales. Le panneau qui s’ouvre en touchant son avatar gagne deux groupes : l’aide (astuces, avis, contact) et Place aux Coachs (le site de l’association, Instagram, YouTube, le soutien sur Tipeee).</p>
+      <p class="pour">Le coach trouve tout au même endroit que son thème et ses astuces, et le bas de la liste reste calme.</p>
+    </div>
+    <div class="duo">
+      <div><p class="legende">Téléphone, panneau ouvert</p><div class="cadre tel"><div class="page app-tel" style="min-height:780px">
+        <div class="carte"><b>Défense étagée</b><span>U13 · Prête</span></div>
+        <div class="carte"><b>Tirs à 9 m</b><span>Seniors · En cours</span></div>
+        <footer class="p3b">
+          <ul><li><span class="lien">Mentions légales</span></li><li><span class="lien">Confidentialité</span></li><li><span class="lien">CGU</span></li></ul>
+          <span>© 2026 Association Place aux Coachs</span>
+        </footer>
+        <nav class="nav-bas"><span><i><svg class="ic"><use href="#i-seances"/></svg></i>Mes séances</span><span><i><svg class="ic"><use href="#i-groupes"/></svg></i>Groupes</span><span><i><svg class="ic"><use href="#i-communaute"/></svg></i>Communauté</span></nav>
+        <div class="voile"></div>
+        <div class="tiroir">
+          <div class="poignee"></div>
+          <div class="compte-nom">Alex Sorel<small>Mon compte</small></div>
+          <ul class="groupe"><li><svg class="ic"><use href="#i-contraste"/></svg>Thème<small>Auto</small></li><li><svg class="ic"><use href="#i-oeil"/></svg>Observation de la navigation<span class="interrupteur"></span></li></ul>
+          <ul class="groupe"><li class="titre">Aide</li><li><svg class="ic"><use href="#i-ampoule"/></svg>Astuces</li><li><svg class="ic"><use href="#i-message"/></svg>Donner mon avis</li><li><svg class="ic"><use href="#i-mail"/></svg>Nous écrire</li></ul>
+          <ul class="groupe"><li class="titre">Place aux Coachs</li><li><svg class="ic"><use href="#i-asso"/></svg>L’association</li><li><svg class="ic"><use href="#i-insta"/></svg>Instagram</li><li><svg class="ic"><use href="#i-yt"/></svg>YouTube</li><li><svg class="ic"><use href="#i-coeur"/></svg>Soutenir sur Tipeee</li></ul>
+          <ul class="groupe"><li><svg class="ic"><use href="#i-sortie"/></svg>Se déconnecter</li></ul>
+        </div>
+      </div></div></div>
+      <div><p class="legende">Ordinateur, panneau ouvert</p><div class="cadre ordi"><div class="page app-ordi" style="min-height:640px">
+        <aside class="rail"><span class="avatar">AS</span></aside>
+        <div>
+          <div class="cartes"><div class="carte"><b>Défense étagée</b><span>U13 · Prête</span></div><div class="carte"><b>Tirs à 9 m</b><span>Seniors · En cours</span></div><div class="carte"><b>Montée de balle</b><span>U15 · Brouillon</span></div></div>
+          <footer class="p3b" style="margin-top:420px">
+            <span>© 2026 Association Place aux Coachs</span>
+            <ul><li><span class="lien">Mentions légales</span></li><li><span class="lien">Confidentialité</span></li><li><span class="lien">CGU</span></li></ul>
+          </footer>
+        </div>
+        <div class="panneau">
+          <div class="compte-nom">Alex Sorel<small>Mon compte</small></div>
+          <ul class="groupe"><li><svg class="ic"><use href="#i-contraste"/></svg>Thème<small>Auto</small></li><li><svg class="ic"><use href="#i-oeil"/></svg>Observation de la navigation<span class="interrupteur"></span></li></ul>
+          <ul class="groupe"><li class="titre">Aide</li><li><svg class="ic"><use href="#i-ampoule"/></svg>Astuces</li><li><svg class="ic"><use href="#i-message"/></svg>Donner mon avis</li><li><svg class="ic"><use href="#i-mail"/></svg>Nous écrire</li></ul>
+          <ul class="groupe"><li class="titre">Place aux Coachs</li><li><svg class="ic"><use href="#i-asso"/></svg>L’association</li><li><svg class="ic"><use href="#i-insta"/></svg>Instagram</li><li><svg class="ic"><use href="#i-yt"/></svg>YouTube</li><li><svg class="ic"><use href="#i-coeur"/></svg>Soutenir sur Tipeee</li></ul>
+          <ul class="groupe"><li><svg class="ic"><use href="#i-sortie"/></svg>Se déconnecter</li></ul>
+        </div>
+      </div></div></div>
+    </div>
+  </article>
+
+  <div class="ouvert">
+    <h3>Ce qui reste à trancher</h3>
+    <ul>
+      <li>Sur l’accueil, le bouton flottant « Donner mon avis » fait doublon avec le lien sous la ligne de but. On peut garder les deux, ou ne garder que le bouton.</li>
+      <li>Sur les pages de connexion et d’inscription, le terrain prend de la hauteur sous un formulaire court. Ces pages peuvent recevoir le pied de page de l’application.</li>
+    </ul>
+  </div>
+</section>
+
+<details class="depart">
+<summary>Les six pistes de départ</summary>
 
 <!-- ================================================================== -->
 <section class="partie" aria-labelledby="titre-site">
@@ -559,6 +739,7 @@
   <p><b>3 pour l’application</b>, complétée par la ligne d’association de la piste 1 dans le pied de page : le panneau du compte est l’endroit que les coachs ouvrent, le pied de page celui qu’ils ne voient presque jamais.</p>
   <p>Dans toutes les pistes, le copyright passe à l’association, comme les mentions légales le feront.</p>
 </aside>
+</details>
 </main>
 
 <script>
