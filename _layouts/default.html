@@ -48,7 +48,37 @@
         </ol>
       </nav>
       <div class="contenu">
+{%- assign etudes = site.pages | where: "url", "/etudes/" | first -%}
+{%- if site.baseurl == "/produit" and page.url == "/" and etudes %}
+{%- comment -%} Les études en cours, lues dans le tableau de etudes/README.md, viennent sous l'introduction. {%- endcomment -%}
+{%- assign parties = content | split: "<h2 " %}
+{{ parties[0] }}
+        <section class="etudes-en-avant" aria-labelledby="etudes-en-cours">
+          <h2 id="etudes-en-cours">Études en cours</h2>
+          <p>Les maquettes et les pistes des sujets ouverts. Une étude disparaît une fois son sujet livré ou abandonné.</p>
+          <div class="cartes">
+          {%- assign lignes = etudes.content | split: "
+" -%}
+          {%- for ligne in lignes -%}
+          {%- assign debut = ligne | slice: 0, 3 -%}
+          {%- if debut == "| [" -%}
+          {%- assign morceaux = ligne | split: "](" -%}
+          {%- assign titre = morceaux[0] | remove_first: "| [" -%}
+          {%- assign suite = morceaux[1] | split: ") | " -%}
+          {%- assign sujet = suite[1] | split: " |" | first %}
+            <a class="carte" href="{{ "/etudes/" | append: suite[0] | relative_url }}">
+              <h3>{{ titre }}</h3>
+              <p>{{ sujet }}</p>
+            </a>
+          {%- endif -%}
+          {%- endfor %}
+          </div>
+          <p class="toutes"><a href="{{ "/etudes/" | relative_url }}">Toutes les études</a></p>
+        </section>
+{% for partie in parties offset: 1 %}<h2 {{ partie }}{% endfor %}
+{%- else %}
 {{ content }}
+{%- endif %}
       </div>
     </div>
   </main>

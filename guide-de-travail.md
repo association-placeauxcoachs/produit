@@ -15,7 +15,7 @@ Il peut être utilisé **en autonomie**, notamment avec l'aide d'une IA et de la
 
 **Le référent métier apporte la valeur, les usages et l'ordre d'importance des besoins.
 Le développeur décide de la solution technique et de l'implémentation.
-Le bureau de l'association arrête les orientations, dans une feuille de route.**
+Le bureau de l'association arrête les évolutions, dans une feuille de route ; son responsable du développement priorise dans ce cadre.**
 
 Ce document ne sert **pas** à :
 - parler de technologie ;
