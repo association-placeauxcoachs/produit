@@ -2,11 +2,23 @@
 
 Ce document décrit **l'amont** du développement : comment une idée exprimée par un entraîneur devient une fonctionnalité spécifiée, prête à être implémentée. La réalisation elle-même est suivie dans le dépôt de code, sous forme de changes OpenSpec.
 
-```
-idée  →  besoin formulé  →  priorisation  →  change OpenSpec  →  code
-          (assistant produit)  (responsable du développement)
-└──────── ce dépôt : issues et tableau ────────┘  └── dépôt de code ──┘
-```
+<figure class="parcours" aria-label="D'une idée au code">
+  <div class="parcours-zone">
+    <p class="parcours-lieu">Ce dépôt · issues et tableau</p>
+    <ol>
+      <li><strong>Idée</strong><span>d'un entraîneur, par un avis, une issue ou un e-mail</span></li>
+      <li><strong>Besoin formulé</strong><span>avec l'assistant produit</span></li>
+      <li><strong>Priorisation</strong><span>par le responsable du développement, dans la feuille de route</span></li>
+    </ol>
+  </div>
+  <div class="parcours-zone code">
+    <p class="parcours-lieu">Dépôt de code</p>
+    <ol start="4">
+      <li><strong>Change OpenSpec</strong><span>la fonctionnalité spécifiée</span></li>
+      <li><strong>Code</strong><span>livré dans l'application</span></li>
+    </ol>
+  </div>
+</figure>
 
 ## Qui décide quoi
 
