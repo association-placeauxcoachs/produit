@@ -239,13 +239,13 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
     <p>La maquette joue une vraie animation de six temps : une attaque placée contre une défense <span class="nw">0-6</span>, posée par la mise en place, jusqu'au tir de l'ailier droit. Elle se touche, ou se clique, comme l'application, et passe d'un appareil à l'autre en gardant son état.</p>
     <div class="commandes">
       <div class="seg" role="group" aria-label="Appareil">
-        <button type="button" data-choix-format="telephone" aria-pressed="true">Téléphone</button><button type="button" data-choix-format="tablette" aria-pressed="false">Tablette</button><button type="button" data-choix-format="ordinateur" aria-pressed="false">Ordinateur</button>
+        <button type="button" data-choix-format="telephone" aria-pressed="false">Téléphone</button><button type="button" data-choix-format="tablette" aria-pressed="false">Tablette</button><button type="button" data-choix-format="ordinateur" aria-pressed="true">Ordinateur</button>
       </div>
     </div>
-    <div class="banc" data-format="telephone">
+    <div class="banc" data-format="ordinateur">
       <div class="col-tel">
        <div class="porte-tel" id="porte">
-        <div class="tel" id="tel" data-format="telephone">
+        <div class="tel" id="tel" data-format="ordinateur">
           <div class="d-chrome" aria-hidden="true"><span></span><span></span><span></span><b>placeauxcoachs.fr/entrainements</b></div>
           <div class="d-fond" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><b></b></div>
           <div class="p-carte">
@@ -262,7 +262,7 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
             <div class="p-onglets" aria-hidden="true"><span class="actif">Animation 1</span><span>Schéma 2</span></div>
 
             <div class="p-lecteur" id="lecteur">
-              <div class="p-scene" id="scene" data-mode="2d" role="group" aria-label="Animation de la situation">
+              <div class="p-scene" id="scene" data-mode="3d" role="group" aria-label="Animation de la situation">
                 <div class="p-coin g" data-seul-3d>
                   <div class="p-seg" role="group" aria-label="Point de vue">
                     <button type="button" data-vue="tribune" aria-pressed="true">Tribune</button><button type="button" data-vue="joueur" aria-pressed="false">Joueur</button><button type="button" data-vue="gardien" aria-pressed="false">Gardien</button>
@@ -270,7 +270,7 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
                 </div>
                 <div class="p-coin d">
                   <div class="p-seg" role="group" aria-label="Affichage">
-                    <button type="button" data-affichage="2d" aria-pressed="true">2D</button><button type="button" data-affichage="3d" aria-pressed="false">3D</button>
+                    <button type="button" data-affichage="2d" aria-pressed="false">2D</button><button type="button" data-affichage="3d" aria-pressed="true">3D</button>
                   </div>
                   <button type="button" class="p-carre" id="plein" data-seul-3d aria-pressed="false" aria-label="Plein écran">
                     <svg class="ic" viewBox="0 0 24 24" data-icone="ouvrir"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
@@ -304,14 +304,14 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
       <div class="col-texte">
         <h3>À essayer</h3>
         <ol class="scenario">
-          <li><span>La situation s'ouvre comme aujourd'hui, en vue schéma. Touche <b>3D</b> : le terrain se couche, les joueurs se lèvent. C'est la même animation, rien n'a été ressaisi.</span></li>
-          <li><span>Touche <b>Lire</b>. La passe vole en cloche, le ballon porté reste dans la main, l'ailier saute pour tirer.</span></li>
+          <li><span>La démo s'ouvre en 3D, à l'ordinateur ; dans l'application, la situation s'ouvrirait comme aujourd'hui, en vue schéma. Touche <b>2D</b> puis <b>3D</b> : le terrain se couche, les joueurs se lèvent. C'est la même animation, rien n'a été ressaisi.</span></li>
+          <li><span>Touche <b>Lire</b>. Le demi-centre remonte le ballon en dribble, le passeur arme et fouette, le receveur tend les mains, l'ailier saute pour tirer ; les défenseurs glissent en pas chassés, lèvent les bras quand le ballon arrive devant eux, sortent au contact, et le 1 s'écarte pour laisser passer l'ailier ; le gardien part du bon côté.</span></li>
           <li><span>Glisse le doigt pour tourner autour du terrain, pince pour zoomer, glisse à deux doigts pour te décaler. <b>Touche deux fois</b> pour revenir à la tribune.</span></li>
-          <li><span>Touche un segment de la piste, sous la scène : elle se fige à la fin de ce temps, ses tracés au sol. Tourne autour.</span></li>
+          <li><span>Touche un segment de la piste, sous la scène : elle se fige à la fin de ce temps. Tourne autour.</span></li>
           <li><span>Choisis <b>Joueur</b> : la caméra se place derrière l'arrière droit et le suit. Choisis un autre poste, ou touche un défenseur sur le terrain pour te mettre derrière lui.</span></li>
           <li><span>Choisis <b>Gardien</b> : la caméra se met dans ses yeux et suit le ballon jusqu'au tir.</span></li>
           <li><span>Touche <b>plein écran</b>, à côté de 3D : la scène prend tout l'écran, pour tendre le téléphone aux joueurs.</span></li>
-          <li><span>Passe en <b>Tablette</b> ou en <b>Ordinateur</b>, au-dessus de l'appareil : la scène garde son état et s'agrandit, la situation se range à droite. À l'ordinateur, essaie le clavier : Espace, les flèches, 1, 2, 3 et F.</span></li>
+          <li><span>À l'ordinateur, essaie le clavier : Espace, les flèches, 1, 2, 3 et F. Passe en <b>Tablette</b> ou en <b>Téléphone</b>, au-dessus de l'appareil : la scène garde son état ; sur téléphone, la situation passe sous la scène.</span></li>
         </ol>
 
         <h3 style="margin-top:32px">Ce qui change dans l'application</h3>
@@ -353,8 +353,8 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
       <figure><div class="vue" data-moment="bascule"></div><figcaption><b>La bascule.</b> Le terrain se couche, les joueurs se lèvent à leur place.</figcaption></figure>
       <figure><div class="vue" data-moment="tribune"></div><figcaption><b>Tribune, au temps 3.</b> L'arrière droit attaque entre le 2 et le 3 ; le 2 sort sur lui.</figcaption></figure>
       <figure><div class="vue" data-moment="joueur"></div><figcaption><b>Derrière l'arrière droit, au même instant.</b> Ce qu'il voit : le 2 qui sort sur lui, le 3 qui ferme l'intérieur.</figcaption></figure>
-      <figure><div class="vue" data-moment="passe"></div><figcaption><b>La passe à l'ailier, en cloche</b> par-dessus le bras du 1.</figcaption></figure>
-      <figure><div class="vue" data-moment="gardien"></div><figcaption><b>Dans les yeux du gardien, au tir.</b> Il a fermé son premier poteau ; le ballon part au second.</figcaption></figure>
+      <figure><div class="vue" data-moment="passe"></div><figcaption><b>La passe à l'ailier</b>, tendue, par-dessus le bras du 1.</figcaption></figure>
+      <figure><div class="vue" data-moment="gardien"></div><figcaption><b>Dans les yeux du gardien, au tir.</b> Il a fermé son premier poteau ; le ballon file au second, il part du bras.</figcaption></figure>
     </div>
   </section>
 
@@ -365,8 +365,8 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
       <table class="tableau">
         <thead><tr><th scope="col">Pièce</th><th scope="col">En 3D</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Joueur</th><td>Une silhouette articulée, en tenue de son camp (le gardien en manches longues et pantalon), son poste au-dessus de la tête, sur la poitrine et dans le dos, le regard du schéma ou de l'orientation auto. Debout au repos, fléchi bras hauts en défense, bras levés et ouverts au but ; il court, tient le ballon, arme son bras et saute pour tirer.</td></tr>
-          <tr><th scope="row">Ballon</th><td>Dans la main du joueur le plus proche. En vol pendant une passe, en cloche d'autant plus haute que la passe est longue ; tendu vers le but pour un tir.</td></tr>
+          <tr><th scope="row">Joueur</th><td>Un corps maillé d'un seul tenant, au visage modelé, dont un squelette plie le corps, animé au repos, en course et au saut. La peau va de très claire à foncée ; coiffure, crâne rasé, barbe et couleur des cheveux changent d'un joueur à l'autre. La morphologie suit le poste : arrières, pivot et défenseurs centraux plus grands et plus costauds que les ailiers. La tenue ne reprend pas le relief du corps : elle passe sur une version lissée de celui-ci, flotte autour, maillot ample porté hors du short et tombant droit de la poitrine, qui ondule et se plisse à la course, short large, le poste dans le dos et sur la poitrine, chaussettes et chaussures ; le gardien en manches longues et pantalon. L'arrière droit et l'ailier droit lancent du bras gauche. Ballon en main, quatre appuis au plus : au-delà, le porteur dribble, un rebond tous les deux appuis, et reprend le ballon pour ses trois derniers appuis. Le passeur ne pivote pas : son buste se tourne un peu vers le receveur, il lève le coude à hauteur d'épaule, avance le pied opposé au bras et finit les doigts vers la cible ; le receveur, s'il repart ballon en main, s'élance pendant que la passe arrive et la prend en courant. L'ailier tire à l'aile : course basse ballon à la hanche, appel hors de la zone, vol de plus de deux mètres vers le point de penalty, corps allongé et bras armé haut, tir en fin de vol, bascule dès le lâcher, réception dans la zone puis glissade sur le côté avant de se relever. L'arrière tire en suspension : ballon à la hanche, armé en arrière bras tendu puis derrière la tête, cuisse libre à l'horizontale, lâcher en redescendant. Le défenseur proche du ballon s'oriente vers lui sans tourner le dos à l'attaque et, pendant une passe, passe du lanceur au receveur ; appuis plus larges que les épaules, genoux fléchis, bassin bas ; il ne lève les bras, paumes vers l'attaque, que si le ballon est devant lui, et garde sinon les mains prêtes à hauteur de poitrine ; il glisse en pas chassés, prend contact avec le porteur et relâche quand le ballon part, met une main dans le dos du pivot et lève les bras devant un tireur proche ; face à l'ailier, il ne cherche pas le contact et s'écarte d'un pas chassé pour le laisser passer ; le gardien part du bras et de la jambe du côté du ballon, dans une détente latérale.</td></tr>
+          <tr><th scope="row">Ballon</th><td>Dans la main du porteur, au bout des doigts. En vol, une passe tendue qui tourne sur elle-même, à peine plus haute quand elle est longue ; un tir plus rapide qu'une passe, à plus de 20 m/s, puis le ballon tombe dans le filet.</td></tr>
           <tr><th scope="row">Tracés des temps</th><td>Au sol pour une course, en pointillé ; en l'air pour une passe, en trait plein ; numérotés comme en 2D, le temps en cours en orange.</td></tr>
           <tr><th scope="row">Plot, coupelle, cerceau, latte, haie, échelle</th><td>Leur volume, posé au sol.</td></tr>
           <tr><th scope="row">Tracé dessiné, carré, séparation</th><td>Peints au sol.</td></tr>
@@ -377,8 +377,13 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
     <h3 style="margin-top:28px">Déduit, faute d'être dans le schéma</h3>
     <ul class="liste note" style="max-width:68ch">
       <li><b>La hauteur du ballon.</b> Le schéma ne connaît que le plan. La passe monte en cloche selon sa longueur, le tir arrive à 1,45 m.</li>
-      <li><b>Le saut du tireur.</b> Un ballon qui finit dans le but est un tir : son lanceur saute.</li>
-      <li><b>La taille des joueurs</b> : un adulte, quelle que soit la catégorie de la séance.</li>
+      <li><b>Le saut du tireur.</b> Un ballon qui finit dans le but est un tir : son lanceur saute, d'un appel pris avant le lâcher.</li>
+      <li><b>Les gestes.</b> La passe, la réception, le tir, le contact, le contre et la parade se déduisent de qui tient le ballon, à qui il va, et de qui est à moins de deux mètres.</li>
+      <li><b>Le bras qui lance</b> : l'arrière droit et l'ailier droit en gauchers, les autres en droitiers ; le pied d'appel est celui du côté opposé au bras.</li>
+      <li><b>La prise de balle en course</b> : un joueur qui repart ballon en main s'élance pendant que la passe arrive. Le schéma, lui, sépare la passe et la course en deux temps.</li>
+      <li><b>Le dribble</b> : quatre appuis ballon en main au plus, la prise de balle puis trois pas, à 1,6 m l'appui. Une course portée plus longue se fait en dribble, et le ballon est repris pour les trois derniers appuis. Ici, le demi-centre remonte le ballon de plus loin : un rebond, puis trois appuis.</li>
+      <li><b>La taille des joueurs</b> : un adulte, quelle que soit la catégorie de la séance ; sa stature et sa carrure viennent de son poste.</li>
+      <li><b>Les bras du défenseur</b> : levés quand le ballon est devant lui, à moins de dix mètres ; au contact du porteur s'il est tout près, sauf de l'ailier, qu'il laisse passer.</li>
     </ul>
   </section>
 
@@ -386,9 +391,11 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
     <h2>À trancher</h2>
     <ul class="liste" style="max-width:68ch;color:var(--attenue)">
       <li><b>Régler la hauteur d'une passe ou d'un tir</b> (à terre, en cloche, en lucarne) ? Ce serait un réglage de plus dans l'éditeur, que la 2D montrerait d'un signe sur le tracé.</li>
+      <li><b>Le dribble</b> : la 3D l'ajoute à une course portée trop longue. Faut-il plutôt le laisser dessiner au coach, et l'avertir d'une course portée de plus de quatre appuis ?</li>
+      <li><b>Les gauchers</b> : la 3D les déduit du poste, arrière et ailier droits. Faut-il pouvoir le préciser joueur par joueur, un droitier à l'aile droite par exemple ?</li>
       <li><b>La vitesse</b> : la 3D joue à la vitesse de la 2D, qui est à peu près celle du jeu, et l'action file en trois secondes. Faut-il un ralenti, pour la vue Joueur surtout ?</li>
       <li><b>La vue Joueur, à l'épaule ou dans les yeux ?</b> L'épaule montre le joueur et ce qu'il voit ; les yeux sont plus parlants, mais on y perd ses repères.</li>
-      <li><b>Des joueurs plus petits pour les jeunes catégories</b>, d'après la catégorie de la séance ?</li>
+      <li><b>Des joueurs plus petits pour les jeunes catégories</b>, d'après la catégorie de la séance ? Et la morphologie, déduite du poste : suffit-elle, ou faut-il pouvoir la régler joueur par joueur ?</li>
       <li><b>La 3D seulement en Présenter</b>, ou aussi en aperçu dans l'éditeur, pour vérifier une animation ?</li>
       <li><b>Le gardien</b> : la vue Gardien suffit-elle à ses séances, ou faut-il aussi un terrain du gardien, le but vu de face, dans l'éditeur ?</li>
     </ul>
@@ -399,7 +406,8 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
     <ul class="liste" style="max-width:68ch;color:var(--attenue)">
       <li><b>Une bibliothèque 3D, chargée seulement au premier toucher de 3D</b> : three.js, la plus répandue, celle de cette maquette, avec son adaptation à React. Environ 250 Ko compressés à télécharger une fois, rien pour qui ne s'en sert pas.</li>
       <li><b>Le moteur de lecture des animations est repris tel quel.</b> Il calcule déjà, à chaque instant, la place de chaque pièce ; la 3D la dessine autrement.</li>
-      <li><b>Les téléphones modestes</b> : des silhouettes simples, des ombres peintes et non calculées, une image redessinée seulement quand quelque chose bouge. Sans WebGL, le bouton 3D n'apparaît pas.</li>
+      <li><b>Un seul joueur pour tous</b>, maillé, articulé et animé, avec ses coiffures et les textures de sa peau, de 650 Ko environ : chacun n'en change que la teinte, la coiffure et la tenue. Celui de la maquette est dans le domaine public ; des joueuses, ou des gabarits de jeunes catégories, seraient d'autres corps du même auteur ou une commande à un graphiste.</li>
+      <li><b>Les téléphones modestes</b> : un joueur léger, pas d'ombre, une résolution plafonnée et une image redessinée seulement quand quelque chose bouge. Sans WebGL, le bouton 3D n'apparaît pas.</li>
       <li><b>Effort pressenti : L</b>, en trois livraisons sous un feature flag.</li>
     </ul>
     <ol class="etapes">
@@ -407,6 +415,7 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
       <li><b>Les points de vue Joueur et Gardien</b>, et le plein écran ; mesurés par point de vue choisi.</li>
       <li><b>Les autres pièces</b> : plots, coupelles, cerceaux, lattes, haies, échelles, tracés dessinés, textes.</li>
     </ol>
+    <p class="note" style="margin-top:28px">Le joueur, ses coiffures et les textures de sa peau viennent des <a href="https://quaternius.itch.io/universal-base-characters">Universal Base Characters</a> de Quaternius, ses animations de l'<a href="https://quaternius.itch.io/universal-animation-library">Universal Animation Library</a> du même auteur, tous deux dans le domaine public (CC0). Le tir en suspension suit une <a href="https://www.youtube.com/watch?v=uO_O4Ytwz5Y">vidéo filmée de côté</a>, et le tir à l'aile une <a href="https://www.youtube.com/watch?v=sHXpIqcLKZk">vidéo au ralenti</a>, regardées image par image ; les gestes s'appuient aussi sur les études du tir en suspension, dont celle du <a href="https://jssm.org/jssm-10-73.xml-Fulltext">Journal of Sports Science and Medicine</a>, et sur des fiches d'entraîneurs (<a href="https://www.sportplan.net/drills/Handball/548-6-0-defence/548-6-0-defence12.jsp">défense <span class="nw">0-6</span></a>, <a href="https://www.sportplan.net/drills/Handball/318-jump-shot-far/jump-shot-far-ver3.jsp">tir en suspension</a>).</p>
   </section>
 </main>
 
@@ -447,19 +456,23 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
   })();
 </script>
 
+<script src="joueur-modele.js"></script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
 
 /* ======================================================================
    Le schéma animé, en mètres. Le terrain va de x = -20 à x = 20, le but
    attaqué est à droite (x = 20) ; z va de -10 (touche de gauche, vue de
    l'attaque) à 10. Les places de départ sont celles de la mise en place
    (table des postes) : x = distance à la ligne de but, l = distance
-   à la touche de gauche.
+   à la touche de gauche ; le demi-centre part de plus loin, pour
+   remonter le ballon.
    ====================================================================== */
 const PLACES = {
-  ALG: { l: 0.9, x: 1.1 }, ARG: { l: 2.0, x: 11.5 }, DC: { l: 10, x: 14 },
+  ALG: { l: 0.9, x: 1.1 }, ARG: { l: 2.0, x: 11.5 }, DC: { l: 10, x: 16.6 },
   ARD: { l: 18.0, x: 11.5 }, ALD: { l: 19.1, x: 1.1 }, PVT: { l: 6.46, x: 6.28 },
   D1G: { l: 2.57, x: 2.89 }, D2G: { l: 4.81, x: 5.47 }, D3G: { l: 8.27, x: 6.6 },
   D3D: { l: 11.73, x: 6.6 }, D2D: { l: 15.19, x: 5.47 }, D1D: { l: 17.43, x: 2.89 },
@@ -474,14 +487,16 @@ const JOUEURS = Object.keys(PLACES).map((poste) => {
     libelle: camp === 'defense' ? poste[1] : poste,
     // Le regard du poste : l'attaquant regarde le but, le pivot, le défenseur et le gardien lui tournent le dos.
     dos: poste === 'PVT' || camp !== 'attaque',
+    // L'arrière droit et l'ailier droit sont gauchers : à droite, le bras gauche ouvre l'angle de tir.
+    gaucher: poste === 'ARD' || poste === 'ALD',
     x: 20 - PLACES[poste].x, z: PLACES[poste].l - 10,
   };
 });
 const PAR_ID = Object.fromEntries(JOUEURS.map((j) => [j.id, j]));
-const BALLON = { x: 6.3, z: 0.5 };
+const BALLON = { x: 3.7, z: 0.4 };
 
 const TEMPS = [
-  { note: "Le demi-centre attaque entre les deux 3, qui sortent sur lui ; les arrières prennent leur élan.",
+  { note: "Le demi-centre remonte le ballon en dribble, puis attaque entre les deux 3, qui sortent sur lui ; les arrières prennent leur élan.",
     poses: { DC: [10.4, 0.5], ballon: [10.7, 1.0], D3G: [12.6, -0.8], D3D: [12.5, 1.0], ARD: [9.6, 6.5], ARG: [9.4, -6.6] } },
   { note: "Passe à l'arrière droit, lancé.", poses: { ballon: [10.12, 6.76] } },
   { note: "L'arrière droit attaque entre le 2 et le 3 : le 2 sort, le 1 rentre aider.",
@@ -502,6 +517,10 @@ const MS_PAR_M = { course: 6.5 * PX_PAR_M, passe: 2.4 * PX_PAR_M };
 const DUREE_MIN = 280, DUREE_MAX = 2400;
 /** Après le dernier temps : le saut s'achève, le ballon tombe dans le filet. */
 const QUEUE = 900;
+/** Un tir file à plus de 20 m/s, plus vite qu'une passe : le ballon est au fond du but aux sept dixièmes de son temps. */
+const FRACTION_TIR = 0.7;
+/** Ballon en main, quatre appuis au plus : la prise de balle, puis trois pas. Un appui de course couvre 1,6 m. */
+const PAS_MAX = 4, FOULEE = 1.6;
 
 const lerp = (a, b, t) => a + (b - a) * t;
 const borne = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -559,7 +578,39 @@ function compile() {
     bornes.push(apres);
   });
   etapes.forEach((e, i) => { if (e.ballon && e.ballon.mode === 'porte') e.ballon.prochainTir = Boolean(etapes[i + 1]?.ballon?.tir); });
-  return { etapes, bornes, total: cumul, fin: cumul + QUEUE };
+  // Au-delà de quatre appuis ballon en main, le porteur dribble, un rebond tous les deux appuis, puis garde
+  // le ballon pour ses trois derniers. Les courses portées comptent de la prise de balle au lâcher.
+  let possession = null;
+  const conclus = () => {
+    const total = possession?.portes.reduce((s, p) => s + p.course.longueur, 0) ?? 0;
+    if (total > PAS_MAX * FOULEE) {
+      const enDribble = total - 3 * FOULEE;
+      let cumul = 0;
+      for (const { m, course } of possession.portes) {
+        const ici = borne(enDribble - cumul, 0, course.longueur);
+        if (ici > 0) m.dribble = { jusqua: ici / course.longueur, rebonds: Math.max(1, Math.round(ici / (2 * FOULEE))) };
+        cumul += course.longueur;
+      }
+    }
+    possession = null;
+  };
+  for (const e of etapes) {
+    const m = e.ballon;
+    if (!m) continue;
+    if (m.mode === 'porte') {
+      const course = e.mouvements.find((x) => x.id === m.porteur);
+      if (!course) continue;
+      if (possession?.id !== m.porteur) { conclus(); possession = { id: m.porteur, portes: [] }; }
+      possession.portes.push({ m, course });
+    } else {
+      conclus();
+      if (m.receveur) possession = { id: m.receveur, portes: [] };
+    }
+  }
+  conclus();
+  // Les lancers, passes et tirs : le geste commence avant le lâcher et finit après.
+  const lancers = etapes.filter((e) => e.ballon && e.ballon.mode === 'passe' && e.ballon.passeur).map((e) => ({ m: e.ballon, debut: e.debut }));
+  return { etapes, bornes, lancers, total: cumul, fin: cumul + QUEUE };
 }
 const L = compile();
 
@@ -599,7 +650,7 @@ try {
   document.getElementById('moments').insertAdjacentHTML('beforebegin', '<p class="note">Les images demandent WebGL.</p>');
   throw new Error('WebGL indisponible');
 }
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
 conteneur.prepend(renderer.domElement);
 renderer.domElement.setAttribute('role', 'img');
 renderer.domElement.setAttribute('aria-label', "Le terrain et les joueurs de l'animation");
@@ -730,147 +781,387 @@ const buts = [1, -1].map((s) => {
   return but;
 });
 
-/* ---------- les joueurs : une silhouette articulée, un symbole à plat ----------
-   Repère d'un joueur : il regarde vers +x, y monte, sa droite est en +z.
-   Une rotation positive autour de z porte un membre vers l'avant ; le genou
-   se plie en négatif, le coude en positif. */
-/** Un volume tourné autour de l'axe vertical, d'après un profil (rayon, hauteur) lissé. */
-function tourne(profil, segments = 32) {
-  const courbe = new THREE.SplineCurve(profil.map(([rayon, y]) => new THREE.Vector2(rayon, y)));
-  return new THREE.LatheGeometry(courbe.getPoints(28), segments);
-}
+/* ---------- les joueurs : un corps maillé, articulé, habillé à ses couleurs, un symbole à plat ----------
+   Le joueur vient de joueur-modele.js : un corps d'un seul tenant déformé par un squelette humanoïde,
+   ses animations (repos, jog, sprint, saut, accroupi), des coiffures, et les textures de la peau, des
+   yeux et des cheveux. La peau suit le dépliage du modèle. La tenue est peinte sur un atlas où chaque
+   point est projeté d'après sa place dans la pose de référence — en cylindre pour le tronc et les
+   jambes, en bande le long des bras — et posée par-dessus la peau ; elle flotte autour du corps.
+   Repère d'un joueur : il regarde vers +x, y monte, sa droite est en +z. */
 const GEO = {
-  // Les membres galbés, dans le repère de leur articulation : la cuisse descend de la hanche au genou.
-  cuisse: tourne([[0, 0.025], [0.066, 0.012], [0.08, -0.05], [0.076, -0.2], [0.063, -0.36], [0.056, -0.42], [0, -0.445]], 20),
-  jambeShort: new THREE.CylinderGeometry(0.09, 0.088, 0.21, 20),
-  // Le pantalon du gardien, de la hanche au genou puis jusqu'à la cheville.
-  cuissard: new THREE.CylinderGeometry(0.09, 0.068, 0.45, 20),
-  tibia: tourne([[0, 0.015], [0.055, 0.0], [0.062, -0.1], [0.05, -0.25], [0.04, -0.38], [0, -0.41]], 18),
-  chaussette: new THREE.CylinderGeometry(0.063, 0.058, 0.2, 14),
-  jambiere: new THREE.CylinderGeometry(0.07, 0.062, 0.4, 16),
-  chaussure: new THREE.CapsuleGeometry(0.047, 0.15, 6, 12),
-  semelle: new THREE.BoxGeometry(0.25, 0.022, 0.094),
-  // Le short : la ceinture, le galbe des hanches, puis l'entrejambe d'où sortent les cuisses.
-  // Le short enveloppe le haut des cuisses : ses jambes ne dépassent jamais du bassin.
-  bassin: tourne([[0.132, 0.13], [0.142, 0.08], [0.158, 0.02], [0.165, -0.03], [0.158, -0.08]]),
-  // Le maillot : la taille, la poitrine, les aisselles, la pente des épaules jusqu'au cou.
-  tronc: tourne([[0.13, 0.0], [0.134, 0.08], [0.13, 0.16], [0.148, 0.26], [0.17, 0.36], [0.178, 0.44], [0.17, 0.5], [0.135, 0.56], [0.075, 0.6], [0.05, 0.615]]),
-  epaule: new THREE.SphereGeometry(0.062, 18, 14),
-  manche: new THREE.CylinderGeometry(0.062, 0.056, 0.15, 16),
-  mancheLongue: new THREE.CylinderGeometry(0.062, 0.055, 0.27, 14),
-  manchetteLongue: new THREE.CylinderGeometry(0.052, 0.047, 0.19, 14),
-  lisere: new THREE.TorusGeometry(0.06, 0.011, 6, 18),
-  bras: tourne([[0, 0.03], [0.05, 0.02], [0.054, -0.08], [0.044, -0.26], [0, -0.3]], 16),
-  avantBras: tourne([[0, 0.02], [0.043, 0.0], [0.046, -0.06], [0.034, -0.24], [0, -0.27]], 16),
-  main: new THREE.SphereGeometry(0.05, 14, 10),
-  cou: new THREE.CylinderGeometry(0.047, 0.054, 0.12, 14),
-  col: new THREE.TorusGeometry(0.068, 0.016, 8, 22),
-  tete: new THREE.SphereGeometry(0.104, 28, 20),
-  cheveux: new THREE.SphereGeometry(0.111, 28, 14, 0, Math.PI * 2, 0, Math.PI * 0.56),
-  oreille: new THREE.SphereGeometry(0.022, 10, 8),
-  nez: new THREE.SphereGeometry(0.018, 8, 6),
-  dos: new THREE.PlaneGeometry(0.24, 0.15),
-  poitrine: new THREE.PlaneGeometry(0.1, 0.06),
   tetePlate: new THREE.CircleGeometry(0.47, 32),
   // L'arc des bras, ouvert devant le joueur : il entoure la tête par l'arrière.
   arcPlat: new THREE.RingGeometry(0.58, 0.8, 40, 1, Math.PI / 2 - 0.35, Math.PI + 0.7),
-  ombre: new THREE.PlaneGeometry(1, 1),
+  prise: new THREE.CylinderGeometry(0.32, 0.32, 1.9, 8),
 };
-const OMBRE = (() => {
-  const [c, g] = toile(64, 64);
-  const d = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-  d.addColorStop(0, 'rgba(15,20,30,.55)'); d.addColorStop(1, 'rgba(15,20,30,0)');
-  g.fillStyle = d; g.fillRect(0, 0, 64, 64);
-  return enTexture(c);
-})();
 
-/** Des teintes et des cheveux variés, répartis sans rapport avec le camp. */
-const TEINTES = ['#F2CFB0', '#E3B48C', '#C98E62', '#A06A45', '#74492F'];
-const CHEVEUX = ['#2A1C14', '#4A3021', '#15110F', '#7A5734', '#3A2A20', '#1E1714'];
+/** Des peaux, des cheveux, des coiffures et des barbes variés, répartis sans rapport avec le camp. */
+// La couleur moyenne de la peau, de très claire à foncée : la texture du modèle en garde le modelé.
+const TEINTES = ['#DBB399', '#CC9A78', '#A87857', '#7A523B', '#4E3426'];
+const CHEVEUX = ['#2A1C14', '#5A3520', '#15110F', '#8C5A30', '#3A2A20', '#B97A40'];
+const COIFFURES = ['Hair_Buzzed', 'Hair_SimpleParted', null];
+/**
+ * La morphologie d'un poste : stature, carrure, taille, épaisseur, bras, jambes, en facteurs du corps du modèle.
+ * Les arrières, le pivot et les défenseurs centraux sont plus grands et plus costauds que les ailiers ; le corps
+ * du modèle, très en V, est un peu adouci pour tous : épaules moins larges, taille plus pleine.
+ */
+const MORPHOLOGIES = {
+  ailier: [0.96, 0.86, 1.0, 0.92, 0.88, 0.92],
+  centre: [0.99, 0.91, 1.05, 0.98, 0.94, 0.97],
+  arriere: [1.04, 0.95, 1.1, 1.04, 1.0, 1.02],
+  pivot: [1.01, 0.97, 1.22, 1.14, 1.05, 1.08],
+  exterieur: [0.99, 0.9, 1.04, 0.97, 0.94, 0.97],
+  base: [1.03, 0.95, 1.13, 1.07, 1.0, 1.04],
+  gardien: [1.04, 0.92, 1.08, 1.02, 0.96, 1.0],
+};
+const MORPHOLOGIE_DU_POSTE = {
+  ALG: 'ailier', ALD: 'ailier', DC: 'centre', ARG: 'arriere', ARD: 'arriere', PVT: 'pivot',
+  D1G: 'exterieur', D1D: 'exterieur', D2G: 'base', D2D: 'base', D3G: 'base', D3D: 'base', GB: 'gardien',
+};
 const TENUES = {
   attaque: { lisere: '#FFFFFF', chaussettes: '#F4F2F6', chaussures: '#24232B', semelle: '#FFFFFF' },
   defense: { lisere: '#FFFFFF', chaussettes: '#E9E6EE', chaussures: '#1A1920', semelle: '#FFFFFF' },
   gardien: { lisere: '#1C1726', chaussettes: '#2B2A33', chaussures: '#24232B', semelle: '#FFFFFF' },
 };
-const materiaux = new Map();
-function matiere(couleur, rugosite = 0.7) {
-  const cle = `${couleur}/${rugosite}`;
-  // Les deux faces : un volume tourné est ouvert à ses extrémités.
-  if (!materiaux.has(cle)) materiaux.set(cle, new THREE.MeshStandardMaterial({ color: couleur, roughness: rugosite, metalness: 0, side: THREE.DoubleSide }));
-  return materiaux.get(cle);
+
+/** La zone d'un sommet, d'après l'os qui le porte le plus : 0 tronc, 1 et 2 jambes, 3 et 4 bras (gauche puis droite), 5 cou et tête. */
+function zoneDeLOs(nom) {
+  const gauche = /_l$/.test(nom);
+  if (/^(neck|Head)/.test(nom)) return 5;
+  if (/^(thigh|calf|foot|ball)/.test(nom)) return gauche ? 1 : 2;
+  if (/^(upperarm|lowerarm|hand|index|middle|pinky|ring|thumb)/.test(nom)) return gauche ? 3 : 4;
+  return 0;
 }
 
-function creeSilhouette(j, rang) {
-  const c = COULEURS[j.camp], t = TENUES[j.camp];
-  const peau = matiere(TEINTES[(rang * 3) % TEINTES.length], 0.62);
-  const maillot = matiere(c.maillot, 0.5), short = matiere(c.short, 0.72), lisere = matiere(t.lisere, 0.6);
-  const gardien = j.camp === 'gardien';
-  const groupe = (parent, x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g); return g; };
-  const piece = (parent, geo, mat, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); parent.add(m); return m; };
-
-  const corps = new THREE.Group();
-  const bassin = groupe(corps, 0, 0.92, 0);
-  piece(bassin, GEO.bassin, short, 0, 0, 0).scale.set(0.8, 1, 1.1);
-
-  const jambe = (cote) => {
-    const hanche = groupe(bassin, 0, 0, cote * 0.085);
-    piece(hanche, GEO.cuisse, peau, 0, 0, 0);
-    if (gardien) piece(hanche, GEO.cuissard, short, 0, -0.2, 0);
-    else piece(hanche, GEO.jambeShort, short, 0, -0.08, 0);
-    const genou = groupe(hanche, 0, -0.42, 0);
-    piece(genou, GEO.tibia, peau, 0, 0, 0);
-    if (gardien) piece(genou, GEO.jambiere, short, 0, -0.2, 0);
-    else piece(genou, GEO.chaussette, matiere(t.chaussettes, 0.8), 0, -0.29, 0);
-    const cheville = groupe(genou, 0, -0.4, 0);
-    piece(cheville, GEO.chaussure, matiere(t.chaussures, 0.55), 0.045, -0.052, 0).rotation.z = Math.PI / 2;
-    piece(cheville, GEO.semelle, matiere(t.semelle, 0.6), 0.045, -0.088, 0);
-    return { hanche, genou, cheville };
-  };
-  const jg = jambe(-1), jd = jambe(1);
-
-  const buste = groupe(bassin, 0, 0.02, 0);
-  piece(buste, GEO.tronc, maillot, 0, 0, 0).scale.set(0.7, 1, 1.15);
-  const bras = (cote) => {
-    const epaule = groupe(buste, 0, 0.5, cote * 0.19);
-    piece(epaule, GEO.epaule, maillot, 0, 0, 0).scale.set(1, 0.9, 1);
-    piece(epaule, GEO.bras, peau, 0, 0, 0);
-    piece(epaule, gardien ? GEO.mancheLongue : GEO.manche, maillot, 0, gardien ? -0.135 : -0.075, 0);
-    if (!gardien) piece(epaule, GEO.lisere, lisere, 0, -0.15, 0).rotation.x = Math.PI / 2;
-    const coude = groupe(epaule, 0, -0.28, 0);
-    piece(coude, GEO.avantBras, peau, 0, 0, 0);
-    if (gardien) {
-      piece(coude, GEO.manchetteLongue, maillot, 0, -0.095, 0);
-      piece(coude, GEO.lisere, lisere, 0, -0.19, 0).rotation.x = Math.PI / 2;
+async function chargeModele() {
+  const binaire = Uint8Array.from(atob(window.JOUEUR_GLB), (c) => c.charCodeAt(0));
+  const gltf = await new GLTFLoader().parseAsync(binaire.buffer, '');
+  let squelette = null;
+  gltf.scene.traverse((o) => {
+    if (!o.isSkinnedMesh) return;
+    squelette ??= o.skeleton;
+    const g = o.geometry, noms = o.skeleton.bones.map((b) => b.name);
+    const index = g.attributes.skinIndex, poids = g.attributes.skinWeight;
+    const zones = new Float32Array(index.count);
+    for (let i = 0; i < index.count; i++) {
+      let os = 0, max = -1;
+      for (let c = 0; c < 4; c++) if (poids.getComponent(i, c) > max) { max = poids.getComponent(i, c); os = index.getComponent(i, c); }
+      zones[i] = zoneDeLOs(noms[os]);
     }
-    const main = piece(coude, GEO.main, peau, 0, -0.29, 0);
-    main.scale.set(0.85, 1.15, 0.7);
-    return { epaule, coude, main };
+    // La pose de référence de chaque sommet : c'est elle qu'on projette, pas la pose animée.
+    g.setAttribute('aRepos', g.attributes.position.clone());
+    g.setAttribute('aZone', new THREE.BufferAttribute(zones, 1));
+    if (o.name === 'SuperHero_Male') lisseCorps(g);
+  });
+  // Les coiffures sont placées dans le repère du modèle : on les ramène dans celui de l'os de la tête, qui les portera.
+  const tete = squelette.bones.findIndex((b) => b.name === 'Head');
+  gltf.scene.traverse((o) => { if (o.isMesh && !o.isSkinnedMesh) o.geometry.applyMatrix4(squelette.boneInverses[tete]); });
+  return gltf;
+}
+
+/** Les textures du modèle : la peau et son relief, les cheveux, les yeux. */
+async function chargeTextures() {
+  const chargeur = new THREE.TextureLoader();
+  return Object.fromEntries(await Promise.all(Object.entries(window.JOUEUR_TEXTURES).map(async ([nom, url]) => {
+    const t = await chargeur.loadAsync(url);
+    // Le dépliage glTF ne retourne pas l'image.
+    t.flipY = false;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.colorSpace = nom === 'peauRelief' ? THREE.NoColorSpace : THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    return [nom, t];
+  })));
+}
+
+/* L'atlas de la tenue : 512 px de côté, transparent là où la peau se voit. Le tronc occupe la moitié
+   gauche, enroulé autour du corps (la couture sur le flanc gauche, le dos au quart, la face aux trois
+   quarts) ; les jambes, la moitié droite sous un mètre ; les bras, le haut de la moitié droite, de
+   l'épaule à la main. */
+const ATLAS = 512, HAUTEUR_ATLAS = 1.9;
+const UV_ATLAS = `
+vec2 uvAtlas(vec3 p, float zone) {
+  float z = floor(zone + 0.5);
+  if (z < 0.5 || z > 4.5) {
+    // Le col suit le cou d'après la seule position, pas la zone, pour que son bord ne suive pas les triangles :
+    // bas devant, un peu plus haut derrière, il remonte sur les trapèzes.
+    float r = abs(p.x);
+    float col = 1.5 + 0.035 * smoothstep(0.0, 0.07, r) + 0.02 * (1.0 - smoothstep(-0.04, 0.02, p.z)) + 0.07 * smoothstep(0.075, 0.1, r);
+    float h = p.y + (1.5 - col) * smoothstep(1.38, 1.46, p.y);
+    float phi = mod(atan(p.x, p.z) - 1.5707963 + 12.5663706, 6.2831853);
+    return vec2(phi / 6.2831853 * 0.5, h / ${HAUTEUR_ATLAS.toFixed(1)});
+  }
+  if (z < 2.5) {
+    float cx = z < 1.5 ? 0.1 : -0.1;
+    float phi = mod(atan(p.x - cx, p.z) + 3.14159265, 6.2831853);
+    return vec2(0.5 + (z - 1.0) * 0.25 + phi / 6.2831853 * 0.249, p.y / ${HAUTEUR_ATLAS.toFixed(1)});
+  }
+  float s = clamp((abs(p.x) - 0.15) / 0.85, 0.0, 1.0);
+  return vec2(0.5 + (z - 3.0) * 0.25 + s * 0.249, 0.77);
+}`;
+/** Le bas du maillot, porté hors du short, et le bas du short, en mètres dans la pose de référence. */
+const OURLET = 0.98, BAS_SHORT = 0.6;
+
+/** Peint la tenue d'un joueur : celle de son camp, son poste dans le dos et sur la poitrine. */
+function peintAtlas(j) {
+  const [c, g] = toile(ATLAS, ATLAS);
+  const camp = COULEURS[j.camp], t = TENUES[j.camp], gardien = j.camp === 'gardien';
+  const W = ATLAS, T = W / 2, Q = W / 4;
+  const y = (m) => (1 - m / HAUTEUR_ATLAS) * ATLAS;
+  const bande = (x0, largeur, bas, haut, couleur) => { g.fillStyle = couleur; g.fillRect(x0, y(haut), largeur, y(bas) - y(haut)); };
+  const pxParMetre = ATLAS / HAUTEUR_ATLAS;
+
+  // Le tronc : le short, puis le maillot par-dessus, son col.
+  bande(0, T, 0.64, OURLET, camp.short);
+  // Les bandes du short sur les côtés : la couture à gauche (0 et T), le flanc droit au milieu.
+  for (const x of [0, T / 2, T]) { g.fillStyle = t.lisere; g.fillRect(x - 4, y(OURLET), 8, y(0.64) - y(OURLET)); }
+  bande(0, T, OURLET, 1.5, camp.maillot);
+  bande(0, T, 1.497, 1.512, t.lisere);
+  // Le poste : grand dans le dos, petit sur la poitrine, côté cœur. Un mètre de tour de taille vaut une demi-bande.
+  const texte = (libelle, x, hauteur, taille) => {
+    const etirement = (T / 1.0) / pxParMetre;
+    g.save(); g.translate(x, y(hauteur)); g.scale(etirement, 1);
+    g.fillStyle = camp.texte; g.font = `800 ${taille * pxParMetre}px Inter, system-ui, sans-serif`;
+    g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText(libelle, 0, 0);
+    g.restore();
   };
-  const bg = bras(-1), bd = bras(1);
+  texte(j.libelle, T * 0.25, 1.25, j.libelle.length > 2 ? 0.13 : 0.2);
+  texte(j.libelle, T * 0.75 + T * 0.06, 1.37, 0.055);
 
-  piece(buste, GEO.cou, peau, 0, 0.62, 0);
-  const col = piece(buste, GEO.col, lisere, 0, 0.59, 0);
-  col.rotation.x = Math.PI / 2; col.scale.set(0.82, 1.12, 1);
-  const tete = groupe(buste, 0, 0.73, 0);
-  piece(tete, GEO.tete, peau, 0, 0, 0).scale.set(0.97, 1.1, 0.9);
-  const cheveux = piece(tete, GEO.cheveux, matiere(CHEVEUX[(rang * 5) % CHEVEUX.length], 0.9), -0.006, 0.006, 0);
-  cheveux.rotation.z = 0.42; cheveux.scale.set(1, 1.06, 0.95);
-  for (const cote of [-1, 1]) piece(tete, GEO.oreille, peau, -0.005, -0.005, cote * 0.094);
-  piece(tete, GEO.nez, peau, 0.1, -0.012, 0);
+  // Les jambes : le short, ou le pantalon du gardien, les chaussettes et les chaussures.
+  for (const x0 of [T, T + Q]) {
+    bande(x0, Q, gardien ? 0.1 : BAS_SHORT, 1.0, camp.short);
+    if (!gardien) { bande(x0, Q, 0.1, 0.42, t.chaussettes); bande(x0, Q, 0.37, 0.395, camp.maillot); }
+    bande(x0, Q, 0, 0.12, t.chaussures);
+    bande(x0, Q, 0, 0.028, t.semelle);
+    bande(x0, Q, 0.055, 0.07, t.lisere);
+  }
+  // Les bras : la manche, courte ou longue pour le gardien, et son liseré.
+  for (const x0 of [T, T + Q]) {
+    const haut = 0.04 * ATLAS, bas = 0.42 * ATLAS;
+    const manche = gardien ? MANCHE_LONGUE : MANCHE;
+    g.fillStyle = camp.maillot; g.fillRect(x0, haut, Q * manche, bas - haut);
+    g.fillStyle = t.lisere; g.fillRect(x0 + Q * manche - 3, haut, 3, bas - haut);
+  }
+  const tex = enTexture(c);
+  tex.generateMipmaps = false;
+  tex.minFilter = THREE.LinearFilter;
+  return tex;
+}
+/** La longueur des manches, de l'épaule à la main. */
+const MANCHE = 0.26, MANCHE_LONGUE = 0.66;
 
-  const dos = piece(buste, GEO.dos, new THREE.MeshBasicMaterial({ map: etiquette(j.libelle, null, c.texte, 128, 72, 52), transparent: true }), -0.124, 0.37, 0);
-  dos.rotation.y = -Math.PI / 2;
-  const poitrine = piece(buste, GEO.poitrine, new THREE.MeshBasicMaterial({ map: etiquette(j.libelle, null, c.texte, 128, 72, 52), transparent: true }), 0.125, 0.42, 0.07);
-  poitrine.rotation.y = Math.PI / 2;
+/* Le tissu ne suit pas le relief du corps. Le maillot, le short, les manches et les chaussures passent sur une
+   version lissée de la pose de référence, sans muscles ni orteils, éclairée par ses propres normales ; le
+   maillot et le short s'évasent vers l'ourlet et ondulent quand le joueur court ou saute. Puis la morphologie
+   du joueur : plus ou moins large d'épaules et de taille, épais, de bras et de jambes. Tout se fait dans la
+   pose de référence, avant le squelette. */
+const TISSU_COMMUN = `
+attribute vec3 aRepos, aLisse, aNormaleLisse;
+attribute float aZone;
+uniform float temps, vitesse, manche, gardien;
+uniform vec4 morpho;
+uniform float jambes;
+varying vec3 vRepos;
+flat varying float vZone;
+// La part de tissu d'un sommet : le short et le maillot sur le tronc, le cou nu ; le short, ou le pantalon du
+// gardien, et la chaussure sur les jambes ; la manche sur les bras.
+float poidsTissu(vec3 p, float zone) {
+  float z = floor(zone + 0.5);
+  if (z < 0.5 || z > 4.5) return smoothstep(0.6, 0.64, p.y) * (1.0 - smoothstep(1.43, 1.5, p.y));
+  if (z < 2.5) return max(smoothstep(${BAS_SHORT - 0.04}, ${BAS_SHORT}, p.y), gardien * smoothstep(0.1, 0.14, p.y)) + 1.0 - smoothstep(0.1, 0.14, p.y);
+  float s = (abs(p.x) - 0.15) / 0.85;
+  return 1.0 - smoothstep(manche - 0.03, manche, s);
+}`;
 
-  corps.traverse((o) => { if (o.isMesh) o.userData.joueur = j.id; });
-  return { corps, bassin, buste, tete, dos, poitrine, jg, jd, bg, bd };
+const NORMALE_TISSU = `
+float tissuV = clamp(poidsTissu(aRepos, aZone), 0.0, 1.0);
+objectNormal = normalize(mix(objectNormal, aNormaleLisse, tissuV));`;
+
+const AMPLE = `
+float zoneT = floor(aZone + 0.5), hT = aRepos.y;
+float ondule = sin(temps * 13.0 + atan(aRepos.x, aRepos.z) * 3.0 + hT * 11.0);
+transformed += aLisse * tissuV;
+float ample = 0.0;
+if (zoneT < 0.5) {
+  float maillot = smoothstep(${OURLET - 0.02}, ${OURLET}, hT) * (1.0 - smoothstep(1.36, 1.46, hT));
+  float ourlet = 1.0 - smoothstep(${OURLET}, 1.32, hT);
+  ample = maillot * (0.012 + ourlet * (0.016 + 0.012 * vitesse * ondule)) + (1.0 - maillot) * step(0.64, hT) * 0.01;
+  // Le maillot tombe droit de la poitrine : il s'évase vers l'ourlet au lieu de serrer la taille.
+  float evase = 1.0 + 0.12 * maillot * ourlet;
+  transformed.xz = vec2(0.0, -0.03) + (transformed.xz - vec2(0.0, -0.03)) * evase;
+} else if (zoneT < 2.5) {
+  float short_ = smoothstep(${BAS_SHORT - 0.02}, ${BAS_SHORT + 0.02}, hT) * (1.0 - gardien);
+  float bas = 1.0 - smoothstep(${BAS_SHORT}, 0.92, hT);
+  ample = short_ * (0.01 + 0.014 * bas * (1.0 + 0.5 * vitesse * ondule)) + (1.0 - smoothstep(0.1, 0.14, hT)) * 0.01;
+  // Le short s'évase autour de la cuisse.
+  vec2 axe = vec2(zoneT < 1.5 ? 0.114 : -0.114, -0.03);
+  transformed.xz = axe + (transformed.xz - axe) * (1.0 + 0.16 * short_ * bas);
+} else if (zoneT < 4.5) {
+  float s = (abs(aRepos.x) - 0.15) / 0.85;
+  ample = smoothstep(0.02, manche * 0.6, s) * (1.0 - smoothstep(manche - 0.03, manche, s)) * (0.01 + 0.004 * vitesse * ondule);
+}
+transformed += normal * ample;
+// La morphologie : morpho = carrure, taille, épaisseur, bras ; jambes à part. Ni la tête, ni les mains, ni les pieds.
+if (zoneT < 0.5) {
+  float largeur = mix(morpho.y, morpho.x, smoothstep(1.05, 1.35, hT));
+  transformed.x *= largeur;
+  transformed.z = -0.03 + (transformed.z + 0.03) * morpho.z;
+} else if (zoneT < 2.5) {
+  vec2 axe = vec2(zoneT < 1.5 ? 0.114 : -0.114, -0.03);
+  float k = mix(1.0, jambes, smoothstep(0.1, 0.18, hT));
+  transformed.xz = axe + (transformed.xz - axe) * k;
+} else if (zoneT < 4.5) {
+  float k = mix(1.0, morpho.w, smoothstep(0.18, 0.26, abs(aRepos.x)) * (1.0 - smoothstep(0.6, 0.68, abs(aRepos.x))));
+  transformed.yz = vec2(1.455, -0.07) + (transformed.yz - vec2(1.455, -0.07)) * k;
+}`;
+
+/* Des plis sur le bas du maillot, qui bougent avec lui. */
+const PLIS = `
+if (floor(vZone + 0.5) < 0.5 && vRepos.y > ${OURLET} && vRepos.y < 1.3) {
+  float phi = atan(vRepos.x, vRepos.z);
+  float pli = sin(phi * 11.0 + sin(temps * 9.0 + phi * 2.0) * vitesse * 1.4);
+  tenue.rgb *= 1.0 - 0.09 * (1.0 - smoothstep(${OURLET}, 1.3, vRepos.y)) * (0.5 + 0.5 * pli);
+}`;
+
+/** Le temps du tissu, commun à tous : celui du schéma, pour que l'arrêt sur image fige aussi les plis. */
+const TISSU = { temps: { value: 0 } };
+
+/**
+ * Le matériau d'un joueur : la peau du modèle, recolorée à sa teinte, et sa tenue lue
+ * sur l'atlas par la projection, posée par-dessus ; le tissu est plus mat que la peau et sans son relief.
+ */
+function materiauJoueur(atlas, teinte, gardien, morphologie) {
+  const m = new THREE.MeshStandardMaterial({ map: TEX.peauClaire, normalMap: TEX.peauRelief, roughness: 0.58, metalness: 0 });
+  m.userData.vitesse = { value: 0 };
+  const [, carrure, taille, epaisseur, bras, jambes] = morphologie;
+  m.onBeforeCompile = (shader) => {
+    Object.assign(shader.uniforms, {
+      atlas: { value: atlas }, teinte: { value: new THREE.Color(teinte) },
+      manche: { value: gardien ? MANCHE_LONGUE : MANCHE }, gardien: { value: gardien ? 1 : 0 },
+      morpho: { value: new THREE.Vector4(carrure, taille, epaisseur, bras) }, jambes: { value: jambes },
+      temps: TISSU.temps, vitesse: m.userData.vitesse,
+    });
+    shader.vertexShader = shader.vertexShader
+      // La zone est constante sur un triangle : interpolée entre le tronc (0) et le cou (5), elle passerait par les jambes et les bras.
+      .replace('#include <common>', `#include <common>\n${TISSU_COMMUN}`)
+      .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>\n${NORMALE_TISSU}`)
+      .replace('#include <begin_vertex>', `#include <begin_vertex>\nvRepos = aRepos;\nvZone = aZone;\n${AMPLE}`);
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', `#include <common>\nuniform sampler2D atlas;\nuniform vec3 teinte;\nuniform float temps, vitesse;\nvarying vec3 vRepos;\nflat varying float vZone;\nfloat tissu;\n${UV_ATLAS}`)
+      // La peau garde la luminosité et un peu de la nuance de la texture, autour de la teinte du joueur.
+      .replace('#include <map_fragment>', `vec3 s = sqrt(texture(map, vMapUv).rgb);
+float l = dot(s, vec3(0.3, 0.59, 0.11));
+vec3 peau = sqrt(teinte) * (l / 0.511) * mix(vec3(1.0), s / max(l, 1e-3) / vec3(1.274, 0.922, 0.675), 0.6);
+peau *= peau;
+vec4 tenue = textureLod(atlas, uvAtlas(vRepos, vZone), 0.0);
+tissu = tenue.a;
+${PLIS}
+diffuseColor.rgb *= mix(peau, tenue.rgb, tissu);`)
+      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.88, tissu);')
+      .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>\nnormal = normalize(mix(normal, nonPerturbedNormal, tissu));');
+  };
+  return m;
+}
+
+/**
+ * La version lissée du corps, pour le tissu : un lissage de Taubin, qui ne fait pas fondre le volume, sur les
+ * sommets soudés (le dépliage les dédouble le long de ses coutures). On garde, pour chaque sommet, son écart
+ * à la surface lissée et la normale de celle-ci.
+ */
+function lisseCorps(g) {
+  const P = g.attributes.position, n = P.count;
+  const cles = new Map(), unique = new Int32Array(n), points = [];
+  for (let i = 0; i < n; i++) {
+    const cle = `${Math.round(P.getX(i) * 1e4)},${Math.round(P.getY(i) * 1e4)},${Math.round(P.getZ(i) * 1e4)}`;
+    if (!cles.has(cle)) { cles.set(cle, points.length / 3); points.push(P.getX(i), P.getY(i), P.getZ(i)); }
+    unique[i] = cles.get(cle);
+  }
+  const m = points.length / 3, idx = g.index.array;
+  const voisins = Array.from({ length: m }, () => new Set());
+  for (let t = 0; t < idx.length; t += 3) {
+    const a = unique[idx[t]], b = unique[idx[t + 1]], c = unique[idx[t + 2]];
+    voisins[a].add(b).add(c); voisins[b].add(a).add(c); voisins[c].add(a).add(b);
+  }
+  const listes = voisins.map((v) => [...v]);
+  let p = Float32Array.from(points), q = new Float32Array(p.length);
+  for (let passe = 0; passe < 80; passe++) {
+    const f = passe % 2 ? -0.53 : 0.5;
+    for (let i = 0; i < m; i++) {
+      const v = listes[i], k = v.length || 1;
+      let x = 0, y = 0, z = 0;
+      for (const j of v) { x += p[3 * j]; y += p[3 * j + 1]; z += p[3 * j + 2]; }
+      q[3 * i] = p[3 * i] + f * (x / k - p[3 * i]);
+      q[3 * i + 1] = p[3 * i + 1] + f * (y / k - p[3 * i + 1]);
+      q[3 * i + 2] = p[3 * i + 2] + f * (z / k - p[3 * i + 2]);
+    }
+    [p, q] = [q, p];
+  }
+  // Les normales de la surface lissée, sommées sur les faces autour de chaque sommet soudé.
+  const normales = new Float32Array(m * 3), A = new THREE.Vector3(), B = new THREE.Vector3(), C = new THREE.Vector3();
+  for (let t = 0; t < idx.length; t += 3) {
+    const a = unique[idx[t]], b = unique[idx[t + 1]], c = unique[idx[t + 2]];
+    A.fromArray(p, 3 * a); B.fromArray(p, 3 * b); C.fromArray(p, 3 * c);
+    C.sub(B); A.sub(B); C.cross(A);
+    for (const s of [a, b, c]) { normales[3 * s] += C.x; normales[3 * s + 1] += C.y; normales[3 * s + 2] += C.z; }
+  }
+  const ecart = new Float32Array(n * 3), normale = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const u = unique[i];
+    A.fromArray(normales, 3 * u).normalize();
+    normale.set([A.x, A.y, A.z], 3 * i);
+    ecart.set([p[3 * u] - points[3 * u], p[3 * u + 1] - points[3 * u + 1], p[3 * u + 2] - points[3 * u + 2]], 3 * i);
+  }
+  g.setAttribute('aLisse', new THREE.BufferAttribute(ecart, 3));
+  g.setAttribute('aNormaleLisse', new THREE.BufferAttribute(normale, 3));
+}
+
+await document.fonts.ready;
+const [MODELE, TEX] = await Promise.all([chargeModele(), chargeTextures()]);
+const MAT_YEUX = new THREE.MeshStandardMaterial({ map: TEX.yeux, roughness: 0.25 });
+
+function creeMannequin(j, rang) {
+  const modele = SkeletonUtils.clone(MODELE.scene);
+  const gardien = j.camp === 'gardien';
+  const morphologie = MORPHOLOGIES[MORPHOLOGIE_DU_POSTE[j.poste]];
+  const materiau = materiauJoueur(peintAtlas(j), TEINTES[(rang * 3) % TEINTES.length], gardien, morphologie);
+  const poil = new THREE.MeshStandardMaterial({ map: TEX.cheveux, color: CHEVEUX[(rang * 5) % CHEVEUX.length], roughness: 0.8 });
+  const coiffure = COIFFURES[rang % COIFFURES.length], barbe = rang % 4 === 1;
+  const os = {}, coiffures = [];
+  modele.traverse((o) => {
+    if (o.isBone) os[o.name] = o;
+    else if (o.isSkinnedMesh) { o.material = o.name === 'Eyes' ? MAT_YEUX : o.name === 'Eyebrows' ? poil : materiau; o.frustumCulled = false; }
+    else if (o.isMesh) coiffures.push(o);
+  });
+  // Une coiffure ou le crâne rasé, parfois une barbe : portées par l'os de la tête.
+  for (const o of coiffures) {
+    o.removeFromParent();
+    if (o.name === coiffure || (o.name === 'Hair_Beard' && barbe)) { o.material = poil; os.Head.add(o); }
+  }
+  // Le mannequin regarde vers +z, le joueur vers +x ; sa stature est celle de son poste.
+  modele.rotation.y = Math.PI / 2;
+  modele.scale.setScalar(morphologie[0]);
+  const corps = new THREE.Group();
+  // Le lacet d'abord, puis le roulis autour de l'axe du regard : la chute de l'ailier dans la zone.
+  corps.rotation.order = 'YXZ';
+  corps.add(modele);
+  const melangeur = new THREE.AnimationMixer(modele);
+  const actions = Object.fromEntries(MODELE.animations.map((clip) => {
+    const a = melangeur.clipAction(clip);
+    a.play(); a.setEffectiveWeight(0);
+    return [clip.name, a];
+  }));
+  // Un cylindre invisible pour toucher le joueur, plutôt que le maillage déformé.
+  const prise = new THREE.Mesh(GEO.prise, new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false }));
+  prise.position.y = 0.95; prise.userData.joueur = j.id;
+  corps.add(prise);
+  return { corps, modele, os, melangeur, actions, prise, materiau, stature: morphologie[0] };
 }
 
 const figures = JOUEURS.map((j, rang) => {
   const c = COULEURS[j.camp];
   const racine = new THREE.Group();
-  const s = creeSilhouette(j, rang);
+  const s = creeMannequin(j, rang);
   racine.add(s.corps);
 
   // Le symbole de l'éditeur, à plat : la tête pleine et l'arc des bras.
@@ -890,12 +1181,9 @@ const figures = JOUEURS.map((j, rang) => {
   bulle.scale.set(0.046, 0.023, 1); bulle.position.y = 2.2;
   racine.add(bulle);
 
-  const ombre = new THREE.Mesh(GEO.ombre, new THREE.MeshBasicMaterial({ map: OMBRE, transparent: true, depthWrite: false }));
-  ombre.rotation.x = -Math.PI / 2; ombre.position.y = 0.012;
-  racine.add(ombre);
 
   scene.add(racine);
-  return { j, rang, racine, ...s, plat, matPlat, libellePlat, bulle, ombre, regard: 0 };
+  return { j, rang, racine, ...s, plat, matPlat, libellePlat, bulle, regard: 0 };
 });
 const FIG = Object.fromEntries(figures.map((f) => [f.j.id, f]));
 
@@ -919,54 +1207,527 @@ const ballon = (() => {
    `k` va de 0 (le schéma à plat) à 1 (la 3D) ; tout ce qui change entre
    les deux en dépend.
    ====================================================================== */
-const V = new THREE.Vector3();
-const Q = new THREE.Quaternion(), BAS = new THREE.Vector3(0, -1, 0);
-/** Le ballon dans la main droite : au bout des doigts, dans le prolongement de l'avant-bras. */
+const V = new THREE.Vector3(), VA = new THREE.Vector3(), VB = new THREE.Vector3(), VC = new THREE.Vector3();
+const QA = new THREE.Quaternion(), QB = new THREE.Quaternion(), QC = new THREE.Quaternion(), QD = new THREE.Quaternion();
+
+/** Le ballon dans la main forte, droite ou gauche : devant la paume, dans le prolongement de l'avant-bras. */
 function main(id, cible) {
-  const { coude, main: m } = FIG[id].bd;
-  m.getWorldPosition(cible);
-  return cible.addScaledVector(V.copy(BAS).applyQuaternion(coude.getWorldQuaternion(Q)), 0.085);
+  const { os, j } = FIG[id], c = j.gaucher ? 'l' : 'r';
+  os[`hand_${c}`].getWorldPosition(cible);
+  os[`lowerarm_${c}`].getWorldPosition(VC);
+  return cible.addScaledVector(VC.subVectors(cible, VC).normalize(), 0.1);
 }
 
-/** La posture au repos d'un poste, en radians : h hanche, g genou, e épaule vers l'avant, b écart du bras, c coude. */
-function postureDeBase(j) {
-  const P = { hG: 0.06, hD: 0.06, gG: -0.14, gD: -0.14, ecart: 0.05, eG: 0.12, eD: 0.12, bG: 0.1, bD: 0.1, cG: 0.3, cD: 0.3, penche: 0.04 };
-  // Le pivot, au contact, écarte les bras pour se faire de la place.
-  if (j.poste === 'PVT') Object.assign(P, { hG: 0.15, hD: 0.15, gG: -0.3, gD: -0.3, ecart: 0.1, eG: 0.55, eD: 0.55, bG: 0.6, bD: 0.6, cG: 0.9, cD: 0.9 });
-  // Le défenseur : fléchi, appuis écartés, bras hauts devant lui. Un bras levé s'ouvre par un écart
-  // négatif : l'écart tourne autour de l'axe des épaules, qui ramène vers l'intérieur un bras déjà haut.
-  if (j.camp === 'defense') Object.assign(P, { hG: 0.34, hD: 0.34, gG: -0.66, gD: -0.66, ecart: 0.13, eG: 2.4, eD: 2.4, bG: -0.3, bD: -0.3, cG: 0.2, cD: 0.2, penche: 0.2 });
-  // Le gardien : appuis larges, bras levés et ouverts.
-  if (j.camp === 'gardien') Object.assign(P, { hG: 0.24, hD: 0.24, gG: -0.46, gD: -0.46, ecart: 0.24, eG: 0.3, eD: 0.3, bG: 2.3, bD: 2.3, cG: 0.35, cD: 0.35, penche: 0.1 });
-  return P;
+/** Tourne un os pour que son segment, vers l'os suivant, pointe dans une direction donnée en monde. */
+function oriente(os, suivant, direction, poids) {
+  os.getWorldPosition(VA); suivant.getWorldPosition(VB);
+  QA.setFromUnitVectors(VB.sub(VA).normalize(), direction);
+  os.parent.getWorldQuaternion(QB);
+  // La même rotation, exprimée dans le repère du parent, puis appliquée à l'os.
+  QC.copy(QB).invert().multiply(QA).multiply(QB).multiply(os.quaternion);
+  os.quaternion.slerp(QC, poids);
+  os.updateMatrixWorld(true);
 }
 
-/** Le bras qui tient le ballon : tenu devant soi, armé derrière la tête, lâché, poussé, au repos. */
-const BRAS = {
-  tenue: { eD: 0.9, bD: 0.25, cD: 1.0 },
-  arme: { eD: 2.65, bD: -0.35, cD: 1.7 },
-  lache: { eD: 1.55, bD: 0.2, cD: 0.15 },
-  pousse: { eD: 1.45, bD: 0.15, cD: 0.2 },
-  repos: { eD: 0.3, bD: 0.12, cD: 0.4 },
+/* Les gestes du handball, dans le repère du joueur. Un bras ou une jambe : [segment haut, segment bas],
+   chacun [devant, haut, dehors] ; « dehors » s'écarte du corps, du côté du membre. Le tir suit une vidéo
+   de tir en suspension filmée de côté et les études du geste ; la défense, les consignes d'entraîneurs. */
+const POSES = {
+  // Le défenseur, ballon devant lui : bras levés, coudes pliés, mains ouvertes au-dessus de la tête, paumes vers
+  // l'attaque. Un bras peut porter un troisième segment : la direction de la paume, les doigts dans l'axe de l'avant-bras.
+  defense: [[0.35, 0.62, 0.7], [0.3, 0.95, -0.08], [0.95, 0.1, -0.15]],
+  // Ballon ailleurs : coudes près du corps, mains prêtes à hauteur de poitrine.
+  defensePrete: [[0.35, -0.78, 0.45], [0.85, 0.38, -0.2], [0.85, 0.1, -0.45]],
+  gardien: [[0.15, 0.55, 0.8], [0.1, 0.95, 0.25]],
+  pivot: [[0.25, -0.55, 0.75], [0.55, -0.1, 0.6]],
+  tenue: [[0.35, -0.9, 0.15], [0.95, 0.2, -0.1]],
+  // Le dribble : la main à hauteur de hanche, devant et sur le côté, pousse le ballon vers le sol puis l'accueille.
+  dribbleHaut: [[0.3, -0.88, 0.35], [0.85, -0.3, 0.3]],
+  dribbleBas: [[0.35, -0.88, 0.3], [0.5, -0.85, 0.15]],
+  soutien: [[0.25, -0.92, 0.15], [0.85, 0.35, -0.35]],
+  // La passe à l'épaule : coude levé à hauteur d'épaule, ballon près de l'oreille, puis les doigts vers la cible.
+  armePasse: [[-0.2, 0.05, 0.95], [-0.15, 0.95, 0.15]],
+  lachePasse: [[0.75, 0.25, 0.4], [0.9, 0.35, 0]],
+  suiviPasse: [[0.85, 0, 0.3], [0.95, -0.1, 0]],
+  equilibre: [[0.75, 0.15, 0.35], [0.95, 0.2, 0.1]],
+  tirage: [[0.1, -0.85, 0.5], [-0.3, -0.9, 0.2]],
+  // Le tir : le ballon descend à la hanche, passe en arrière bras tendu à hauteur d'épaule, remonte derrière
+  // la tête coude haut, part bras haut, puis le bras finit vers le bas.
+  tirHanche: [[0.05, -0.95, 0.3], [0.45, -0.85, 0.2]],
+  tirArriere: [[-0.9, 0.05, 0.4], [-0.95, 0.1, 0.3]],
+  tirArme: [[-0.3, 0.4, 0.85], [-0.45, 0.85, 0.15]],
+  tirLache: [[0.55, 0.75, 0.35], [0.75, 0.65, 0.05]],
+  tirSuivi: [[0.75, -0.45, 0.1], [0.75, -0.6, -0.2]],
+  tirRelache: [[0.3, -0.9, -0.15], [0.4, -0.85, -0.3]],
+  // Le bras libre du tireur : il monte, reste tendu à l'horizontale vers le but pendant l'armé, puis revient à la hanche.
+  libreMonte: [[0.85, 0.05, 0.45], [0.95, 0.25, 0.1]],
+  libreTendu: [[0.95, 0.1, 0.25], [0.97, 0.15, 0.05]],
+  libreHanche: [[0.15, -0.9, 0.4], [-0.2, -0.95, 0.25]],
+  // Le tir à l'aile : le ballon porté bas, à la hanche, pendant la course.
+  porteHanche: [[0.1, -0.97, 0.25], [0.55, -0.8, 0.15]],
+  // La jambe d'appel, tendue loin derrière pendant le vol.
+  appelArriere: [[-0.55, -0.83, 0.05], [-0.75, -0.65, 0]],
+  // Les jambes de la passe : le pied opposé au bras devant.
+  fenteAvant: [[0.45, -0.88, 0.1], [0.05, -1, 0.05]],
+  fenteArriere: [[-0.3, -0.95, 0.12], [-0.5, -0.86, 0.05]],
+  // Les jambes du tir : dernier appui gauche, appel tendu, cuisse droite à l'horizontale qui redescend derrière,
+  // réception sur le pied gauche, jambe droite tendue en arrière.
+  appuiGauche: [[0.35, -0.94, 0.05], [-0.05, -1, 0]],
+  appuiDroitArriere: [[-0.35, -0.93, 0.08], [-0.55, -0.83, 0]],
+  appelTendu: [[-0.15, -0.99, 0.05], [-0.3, -0.95, 0]],
+  cuisseHaute: [[0.95, -0.2, 0.1], [0.05, -1, 0]],
+  droiteRedescend: [[0.2, -0.98, 0.08], [-0.6, -0.8, 0]],
+  gaucheSousCorps: [[0.25, -0.97, 0.05], [-0.1, -0.99, 0]],
+  receptionGauche: [[0.25, -0.97, 0.05], [-0.25, -0.97, 0]],
+  droiteTendueArriere: [[-0.4, -0.92, 0.08], [-0.75, -0.66, 0]],
+  // Les appuis du défenseur et du gardien : larges, genoux fléchis.
+  // Appuis plus larges que les épaules, genoux fléchis au-dessus des pieds.
+  appuisDefense: [[0.42, -0.85, 0.36], [-0.05, -0.98, 0.18]],
+  appuisGardien: [[0.2, -0.92, 0.4], [-0.15, -0.98, 0.15]],
+  // La réception : coudes fléchis, mains ouvertes devant le visage.
+  recoit: [[0.5, -0.35, 0.45], [0.55, 0.75, -0.3]],
+  // Le gardien qui part du côté du ballon.
+  jambeParade: [[0.1, -0.88, 0.45], [0, -1, 0.2]],
 };
-const brasDroit = (a, b, t) => ({ eD: lerp(a.eD, b.eD, t), bD: lerp(a.bD, b.bD, t), cD: lerp(a.cD, b.cD, t) });
+const melangePose = (a, b, t) => a.map((d, i) => d.map((v, k) => lerp(v, b[i][k], t)));
 
-const CUISSE = 0.42, TIBIA = 0.4, CHEVILLE = 0.1;
-function poseFigure(f, P, enLAir) {
-  f.jg.hanche.rotation.set(P.ecart, 0, P.hG);
-  f.jd.hanche.rotation.set(-P.ecart, 0, P.hD);
-  f.jg.genou.rotation.z = P.gG; f.jd.genou.rotation.z = P.gD;
-  // Le pied reste à plat.
-  f.jg.cheville.rotation.z = -(P.hG + P.gG); f.jd.cheville.rotation.z = -(P.hD + P.gD);
-  f.bg.epaule.rotation.set(P.bG, 0, P.eG);
-  f.bd.epaule.rotation.set(-P.bD, 0, P.eD);
-  f.bg.coude.rotation.z = P.cG; f.bd.coude.rotation.z = P.cD;
-  f.buste.rotation.z = -P.penche;
-  // Le bassin à la hauteur de la jambe la plus tendue : les pieds touchent le sol.
-  const hauteur = (h, g) => (CUISSE * Math.cos(h) + TIBIA * Math.cos(h + g)) * Math.cos(P.ecart) + CHEVILLE;
-  f.bassin.position.y = lerp(Math.max(hauteur(P.hG, P.gG), hauteur(P.hD, P.gD)), CUISSE + TIBIA + CHEVILLE, enLAir);
+/** Un geste dans le temps : des poses clés, à des instants comptés depuis le lâcher, fondues l'une dans l'autre. */
+function chronologie(t, cles) {
+  if (t <= cles[0][0]) return cles[0][1];
+  for (let i = 1; i < cles.length; i++) {
+    if (t > cles[i][0]) continue;
+    const [t0, a] = cles[i - 1], [t1, b] = cles[i];
+    return typeof a === 'number' ? lerp(a, b, doux((t - t0) / (t1 - t0))) : melangePose(a, b, doux((t - t0) / (t1 - t0)));
+  }
+  return cles[cles.length - 1][1];
 }
 
+/** Tourne un os autour d'un axe donné en monde. */
+function tourneOs(os, axe, angle) {
+  if (!angle) return;
+  QA.setFromAxisAngle(axe, angle);
+  os.parent.getWorldQuaternion(QB);
+  os.quaternion.premultiply(QC.copy(QB).invert().multiply(QA).multiply(QB));
+  os.updateMatrixWorld(true);
+}
+
+const AXE_Y = new THREE.Vector3(0, 1, 0);
+/**
+ * Pose un membre : bras (upperarm, lowerarm, hand) ou jambe (thigh, calf, foot), d'après une pose du joueur.
+ * Le lacet tourne le repère du geste : le bras d'une passe vise le receveur sans que le joueur pivote.
+ */
+const MEMBRES = { bras: ['upperarm', 'lowerarm', 'hand'], jambe: ['thigh', 'calf', 'foot'] };
+function placeMembre(f, membre, cote, pose, poids, lacet = 0) {
+  if (!pose || poids <= 0) return;
+  const [a, b, c] = MEMBRES[membre].map((n) => f.os[`${n}_${cote}`]);
+  const dehors = cote === 'r' ? 1 : -1;
+  f.corps.getWorldQuaternion(QD);
+  if (lacet) QD.premultiply(new THREE.Quaternion().setFromAxisAngle(AXE_Y, lacet));
+  const versMonde = ([devant, haut, ecart]) => new THREE.Vector3(devant, haut, ecart * dehors).normalize().applyQuaternion(QD);
+  oriente(a, b, versMonde(pose[0]), poids);
+  oriente(b, c, versMonde(pose[1]), poids);
+  if (membre === 'bras' && pose[2]) orienteMain(f, cote, versMonde(pose[1]), versMonde(pose[2]), poids);
+}
+/**
+ * Tend un bras vers un point du terrain : le bras d'un attaquant, le ballon d'un tireur. La flexion abaisse
+ * et écarte le bras pour que l'avant-bras remonte vers le point : un coude plié, pas un bras raide.
+ */
+function tendBras(f, cote, point, poids, flexion = 0, paume = false) {
+  if (poids <= 0) return;
+  const epaule = f.os[`upperarm_${cote}`], coude = f.os[`lowerarm_${cote}`], poignet = f.os[`hand_${cote}`];
+  const haut = point.clone().sub(epaule.getWorldPosition(new THREE.Vector3())).normalize();
+  if (flexion) {
+    f.corps.getWorldQuaternion(QD);
+    haut.add(new THREE.Vector3(0, -flexion, (cote === 'r' ? 1 : -1) * flexion * 0.6).applyQuaternion(QD)).normalize();
+  }
+  oriente(epaule, coude, haut, poids);
+  const avantBras = point.clone().sub(coude.getWorldPosition(new THREE.Vector3())).normalize();
+  oriente(coude, poignet, avantBras, poids);
+  if (paume) orienteMain(f, cote, avantBras, point.clone().sub(poignet.getWorldPosition(new THREE.Vector3())).normalize(), poids);
+}
+
+/**
+ * Oriente la main : les doigts dans la direction donnée, poignet droit, puis un tour autour d'eux pour que la
+ * paume regarde où on veut. La paume se déduit des doigts et de la ligne des jointures, de l'index à l'auriculaire.
+ */
+function orienteMain(f, cote, doigts, paume, poids) {
+  const main = f.os[`hand_${cote}`];
+  oriente(main, f.os[`middle_01_${cote}`], doigts, poids);
+  const axe = f.os[`middle_01_${cote}`].getWorldPosition(VA).sub(main.getWorldPosition(VB)).normalize().clone();
+  const travers = f.os[`index_01_${cote}`].getWorldPosition(VA).sub(f.os[`pinky_01_${cote}`].getWorldPosition(VB)).normalize();
+  const actuelle = new THREE.Vector3().crossVectors(axe, travers).multiplyScalar(cote === 'l' ? 1 : -1);
+  actuelle.addScaledVector(axe, -actuelle.dot(axe)).normalize();
+  const voulue = paume.clone().addScaledVector(axe, -paume.dot(axe)).normalize();
+  const angle = Math.atan2(VC.crossVectors(actuelle, voulue).dot(axe), actuelle.dot(voulue));
+  tourneOs(main, axe, angle * poids);
+}
+
+const angleVers = (de, vers) => Math.atan2(-(vers.z - de.z), vers.x - de.x);
+const melangeAngle = (a, b, t) => a + angleCourt(b - a) * t;
+const versPoint = (p, y) => new THREE.Vector3(p.x, y, p.z);
+
+/** Le lancer en cours ou tout proche : passe ou tir, et l'instant compté depuis le lâcher. */
+function lancerProche(instant) {
+  let meilleur = null;
+  for (const l of L.lancers) {
+    const t = instant - l.debut;
+    if (t < -800 || t > (l.m.tir ? Infinity : l.m.duree + 800)) continue;
+    if (!meilleur || Math.abs(t) < Math.abs(meilleur.t)) meilleur = { m: l.m, t };
+  }
+  return meilleur;
+}
+
+/**
+ * Le lancer que prépare, exécute ou vient de faire un joueur, et le temps qu'il a eu le ballon en main
+ * avant de le lâcher : son élan ne commence qu'une fois le ballon reçu.
+ */
+function lancerDuJoueur(id, instant) {
+  let choix = null;
+  for (const l of L.lancers) {
+    if (l.m.passeur !== id) continue;
+    const t = instant - l.debut;
+    // Après un tir, le tireur reste là où il est retombé jusqu'à la fin.
+    if (t < -1500 || t > (l.m.tir ? Infinity : l.m.duree + 800)) continue;
+    if (!choix || Math.abs(t) < Math.abs(choix.t)) choix = { m: l.m, t, debut: l.debut };
+  }
+  if (!choix) return null;
+  const recus = L.lancers.filter((l) => l.m.receveur === id && l.debut + l.m.duree <= choix.debut).map((l) => l.debut + l.m.duree);
+  choix.enMain = recus.length ? choix.debut - Math.max(...recus) : Infinity;
+  return choix;
+}
+/** La passe qu'un joueur attend ou vient de recevoir. */
+function receptionDuJoueur(id, instant) {
+  let choix = null;
+  for (const l of L.lancers) {
+    if (l.m.receveur !== id) continue;
+    const t = instant - l.debut;
+    if (t < -600 || t > l.m.duree + 400) continue;
+    if (!choix || Math.abs(t) < Math.abs(choix.t)) choix = { m: l.m, t };
+  }
+  return choix;
+}
+/** Resserre l'élan d'un geste sur le temps disponible : avant le lâcher, le temps s'accélère. */
+const elan = (t, duree, enMain) => (t < 0 && enMain < duree + 60 ? t * (duree / Math.max(150, enMain - 40)) : t);
+
+/** Vers où regarde la défense : le porteur, ou, pendant une passe, un point qui glisse du lanceur au receveur. */
+function cibleDuBallon(pos, eb) {
+  if (eb.porteur) return pos[eb.porteur];
+  if (eb.vol) {
+    const de = pos[eb.vol.passeur] ?? eb.vol.depart, vers = (eb.vol.receveur && pos[eb.vol.receveur]) ?? eb.vol.arrivee;
+    const u = doux(eb.u);
+    return { x: lerp(de.x, vers.x, u), z: lerp(de.z, vers.z, u) };
+  }
+  if (eb.filet) return eb.filet.arrivee;
+  return pos.ballon;
+}
+
+/** La course d'un joueur juste avant un temps donné : celle d'où il prend son appel. */
+function derniereCourse(id, etape) {
+  for (let i = etape - 1; i >= 0; i--) {
+    const c = L.etapes[i].mouvements.find((x) => x.id === id && x.mode === 'course');
+    if (c) return c;
+  }
+  return null;
+}
+
+/**
+ * Ce que fait un joueur à cet instant : son regard, sa course, son saut et ses gestes. Tout est déduit du
+ * schéma : qui tient le ballon, qui le lance, à qui, et qui est assez près pour s'en mêler.
+ */
+function gesteDuJoueur(j, p, ctx) {
+  const { pos, eb, lancer, instant } = ctx;
+  // Le lancer commun, pour ceux qui y réagissent : défenseurs, gardien.
+  const t = lancer ? lancer.t : 0, m = lancer?.m;
+  // Son propre rôle : il lance s'il a déjà le ballon, il reçoit s'il l'attend encore.
+  const lance = lancerDuJoueur(j.id, instant), recoit = receptionDuJoueur(j.id, instant);
+  const enMain = lance && lance.t > -lance.enMain;
+  const monLancer = enMain || (lance && !recoit) ? lance : null;
+  const maReception = monLancer ? null : recoit;
+  // Le bras qui lance et le bras libre : l'arrière droit et l'ailier droit sont gauchers, et tout s'inverse.
+  const fort = j.gaucher ? 'l' : 'r', faible = j.gaucher ? 'r' : 'l', sens = j.gaucher ? -1 : 1;
+  const g = {
+    regard: regardA(j, p), saut: 0, accroupi: 0, derive: null, flexion: 0, chute: 0, roulis: 0,
+    torsion: [0, 0, 0], inclinaison: 0, chasse: 0, recule: false, bras: [], jambes: [], appuis: null,
+  };
+  // La torsion du buste, répartie du bassin aux épaules, dans le sens du bras qui lance.
+  let t2 = 0;
+  const tordre = (cles, fin) => [0.3, 0.3, 0.4].map((part) => chronologie(t2, cles) * part * 3 * sens * fin);
+
+  if (j.camp === 'defense') {
+    // Le défenseur proche du ballon s'oriente vers lui, sans jamais tourner le dos à l'attaque ; une cible tout
+    // près ou dans son dos ne le fait pas pivoter. Pendant une passe, il passe du lanceur au receveur, en anticipant.
+    const vise = (cible) => {
+      const d = Math.hypot(cible.x - p.x, cible.z - p.z), ecart = angleCourt(angleVers(p, cible) - g.regard);
+      return 0.7 * Math.tanh(ecart / 0.7) * lisse(6, 3, d) * lisse(1.2, 2.5, d) * lisse(-0.2, 0.5, Math.cos(ecart));
+    };
+    g.regard += eb.vol
+      ? lerp(vise(pos[eb.vol.passeur] ?? eb.vol.depart), vise((eb.vol.receveur && pos[eb.vol.receveur]) ?? eb.vol.arrivee), doux(lisse(0, 0.7, eb.u)))
+      : vise(cibleDuBallon(pos, eb));
+    // Appuis larges, genoux fléchis, bassin bas, buste un peu penché vers l'avant.
+    g.appuis = POSES.appuisDefense; g.flexion = 0.18;
+    // Les bras ne se lèvent que si le ballon est devant lui, à portée de tir : sinon, mains prêtes à hauteur de poitrine.
+    const b = cibleDuBallon(pos, eb);
+    const face = Math.cos(angleCourt(angleVers(p, b) - g.regard)), loin = Math.hypot(b.x - p.x, b.z - p.z);
+    const bras = melangePose(POSES.defensePrete, POSES.defense, lisse(0.45, 0.8, face) * lisse(10.5, 7.5, loin));
+    g.bras.push(['l', bras, 1], ['r', bras, 1]);
+  }
+  if (j.camp === 'gardien') {
+    g.appuis = POSES.appuisGardien; g.flexion = 0.1;
+    g.bras.push(['l', POSES.gardien, 1], ['r', POSES.gardien, 1]);
+  }
+  if (j.poste === 'PVT') g.bras.push(['l', POSES.pivot, 1], ['r', POSES.pivot, 1]);
+  if (eb.porteur === j.id) {
+    const d = dribble(pos, eb);
+    if (d) g.bras.push([faible, POSES.libreHanche, 1], [fort, chronologie(d.part, [[0, POSES.dribbleHaut], [0.18, POSES.dribbleBas], [0.6, POSES.dribbleBas], [0.9, POSES.dribbleHaut]]), 1]);
+    else g.bras.push([faible, POSES.soutien, 1], [fort, POSES.tenue, 1]);
+  }
+
+  if (monLancer && !monLancer.m.tir) {
+    const m = monLancer.m;
+    t2 = elan(monLancer.t, 380, monLancer.enMain);
+    // La passe : le passeur ne pivote pas. Son buste se tourne un peu vers le receveur, son bras lance vers lui,
+    // le pied opposé au bras avance, puis les doigts finissent vers la cible.
+    const cible = m.receveur ? pos[m.receveur] : m.arrivee;
+    const ecart = angleCourt(angleVers(p, cible) - g.regard);
+    const fenetre = lisse(-450, -200, t2) * (1 - lisse(m.duree + 150, m.duree + 450, t2));
+    const buste = borne(ecart * 0.35, -0.5, 0.5) * fenetre;
+    const fin = 1 - lisse(260, 600, t2);
+    // Tant qu'il dribble, ses bras sont au dribble : la passe ne se prépare qu'une fois le ballon repris.
+    const bras = eb.porteur === j.id && dribble(pos, eb) ? 0 : fin;
+    g.bras.push([fort, chronologie(t2, [[-380, POSES.tenue], [-110, POSES.armePasse], [30, POSES.lachePasse], [180, POSES.suiviPasse]]), bras, ecart * fenetre]);
+    g.bras.push([faible, chronologie(t2, [[-300, POSES.soutien], [-80, POSES.equilibre], [120, POSES.tirage]]), bras, ecart * fenetre]);
+    g.torsion = tordre([[-380, 0], [-140, -0.15], [10, 0.1], [300, 0]], fin).map((v, i) => v + buste * [0.3, 0.3, 0.4][i]);
+    const fente = lisse(-300, -60, t2) * (1 - lisse(300, 550, t2));
+    g.jambes.push([faible, POSES.fenteAvant, fente], [fort, POSES.fenteArriere, fente]);
+  }
+  if (monLancer && monLancer.m.tir && (j.poste === 'ALG' || j.poste === 'ALD')) {
+    const m = monLancer.m;
+    t2 = elan(monLancer.t, 700, monLancer.enMain);
+    // Le tir à l'aile, d'après une vidéo au ralenti : course basse ballon à la hanche, appel hors de la zone, long
+    // vol vers le point de penalty pour ouvrir l'angle, corps allongé, bras armé haut ; le tir part en fin de vol,
+    // puis la réception dans la zone et la chute.
+    g.regard = melangeAngle(g.regard, angleVers(p, m.arrivee), lisse(-700, -400, t2));
+    // L'appel se prend tôt et le vol est long : le tir part aux deux tiers du vol, pas au sommet.
+    if (t2 > -420 && t2 < 180) g.saut = Math.sin((Math.PI * (t2 + 420)) / 600);
+    g.hauteur = 0.55;
+    const fin = 1 - lisse(350, 650, t2);
+    g.bras.push([fort, chronologie(t2, [[-700, POSES.tenue], [-560, POSES.porteHanche], [-420, POSES.porteHanche], [-200, POSES.tirArme], [-40, POSES.tirArme], [30, POSES.tirLache], [200, POSES.tirSuivi]]), fin]);
+    g.bras.push([faible, chronologie(t2, [[-560, POSES.soutien], [-420, POSES.libreTendu], [-40, POSES.libreTendu], [100, POSES.libreHanche]]), fin]);
+    g.torsion = tordre([[-420, 0], [-220, -0.3], [-40, -0.3], [40, 0.15], [300, 0.05]], fin);
+    // Le buste se cambre à l'armé et plonge au lâcher.
+    g.flexion = chronologie(t2, [[-700, 0], [-560, 0.25], [-420, 0.25], [-200, -0.15], [40, 0.35], [250, 0.25]]);
+    const jambes = lisse(-620, -520, t2) * (1 - lisse(380, 600, t2));
+    g.jambes.push([faible, chronologie(t2, [[-520, POSES.appuiGauche], [-420, POSES.appelTendu], [-200, POSES.appelArriere], [80, POSES.gaucheSousCorps], [180, POSES.receptionGauche]]), jambes]);
+    g.jambes.push([fort, chronologie(t2, [[-520, POSES.appuiDroitArriere], [-420, POSES.cuisseHaute], [-180, POSES.cuisseHaute], [60, POSES.droiteRedescend], [180, POSES.droiteTendueArriere]]), jambes]);
+    // Le vol continue la course vers l'intérieur, le corps penché de ce côté ; il bascule dès le lâcher, se reçoit
+    // déjà penché, glisse dans la zone en se couchant sur le côté, puis se relève.
+    const course = derniereCourse(j.id, m.etape);
+    const tangente = course ? course.courbe.getTangentAt(1).setY(0).normalize() : new THREE.Vector3(Math.cos(g.regard), 0, -Math.sin(g.regard));
+    // Le vol part dans l'axe de la course et s'ouvre vers le point de penalty (13, 0), pour élargir l'angle de tir.
+    const dir = new THREE.Vector3(13 - p.x, 0, -p.z).normalize().add(tangente).normalize();
+    g.derive = { dir, dist: 2.2 * lisse(-300, 180, t2) + 0.5 * lisse(180, 600, t2) };
+    const droite = new THREE.Vector3(Math.sin(g.regard), 0, Math.cos(g.regard));
+    const interieur = Math.sign(dir.dot(droite)) || 1;
+    g.inclinaison = interieur * 0.45 * g.saut;
+    g.chute = lisse(40, 460, t2) * (1 - lisse(850, 1350, t2));
+    g.roulis = interieur * 1.3 * g.chute;
+  } else if (monLancer && monLancer.m.tir) {
+    const m = monLancer.m;
+    t2 = elan(monLancer.t, 760, monLancer.enMain);
+    // Le tir en suspension, d'après une vidéo filmée de côté (temps comptés depuis le lâcher) : le ballon à la
+    // hanche, l'armé circulaire pendant le dernier appui, l'appel du pied opposé au bras 400 ms avant le lâcher,
+    // la cuisse libre à l'horizontale, le bras libre tendu vers le but ; le buste se met de profil, se cambre au
+    // sommet et plonge au lâcher, qui se fait en redescendant ; la réception sur le pied d'appel.
+    g.regard = melangeAngle(g.regard, angleVers(p, m.arrivee), lisse(-700, -400, t2));
+    if (t2 > -400 && t2 < 120) g.saut = Math.sin((Math.PI * (t2 + 400)) / 520);
+    const fin = 1 - lisse(400, 750, t2);
+    g.bras.push([fort, chronologie(t2, [[-760, POSES.tenue], [-680, POSES.tirHanche], [-540, POSES.tirArriere], [-400, POSES.tirArriere], [-230, POSES.tirArme], [-80, POSES.tirArme], [10, POSES.tirLache], [150, POSES.tirSuivi], [380, POSES.tirRelache]]), fin]);
+    g.bras.push([faible, chronologie(t2, [[-760, POSES.soutien], [-650, POSES.libreMonte], [-480, POSES.libreTendu], [-130, POSES.libreTendu], [40, POSES.libreHanche]]), fin]);
+    g.torsion = tordre([[-700, 0], [-430, -0.4], [-160, -0.4], [-20, 0.13], [300, 0.05]], fin);
+    g.flexion = chronologie(t2, [[-400, 0], [-120, -0.2], [40, 0.4], [250, 0.3], [600, 0]]);
+    const jambes = lisse(-650, -550, t2) * (1 - lisse(350, 600, t2));
+    g.jambes.push([faible, chronologie(t2, [[-600, POSES.appuiGauche], [-400, POSES.appelTendu], [-150, POSES.gaucheSousCorps], [120, POSES.receptionGauche]]), jambes]);
+    g.jambes.push([fort, chronologie(t2, [[-600, POSES.appuiDroitArriere], [-400, POSES.cuisseHaute], [-250, POSES.cuisseHaute], [-50, POSES.droiteRedescend], [120, POSES.droiteTendueArriere]]), jambes]);
+    g.derive = { dir: new THREE.Vector3(Math.cos(g.regard), 0, -Math.sin(g.regard)), dist: 0.7 * lisse(0, 380, t2) };
+  }
+  if (maReception) {
+    const m = maReception.m, t = maReception.t;
+    // La réception : le receveur ne pivote pas ; son buste se tourne un peu, ses mains s'ouvrent vers le passeur.
+    const ecart = angleCourt(angleVers(p, pos[m.passeur]) - g.regard);
+    const tend = lisse(-150, 150, t) * (1 - lisse(m.duree, m.duree + 150, t));
+    const buste = borne(ecart * 0.3, -0.45, 0.45) * tend;
+    g.torsion = g.torsion.map((v, i) => v + buste * [0.3, 0.3, 0.4][i]);
+    g.bras.push(['l', POSES.recoit, tend, ecart * tend], ['r', POSES.recoit, tend, ecart * tend]);
+  }
+  if (j.camp === 'defense') {
+    // Au contact du porteur : une main sur le bras qui tient le ballon, l'autre à la hanche. Quand il passe,
+    // le contact se relâche au fil du vol du ballon.
+    const attaquant = eb.porteur ? pos[eb.porteur] : eb.vol?.passeur ? pos[eb.vol.passeur] : null;
+    const tenu = eb.porteur ? 1 : eb.vol ? 1 - lisse(0, 0.5, eb.u) : 0;
+    let contact = 0;
+    // À l'aile, il ne cherche pas le contact : il s'écarte un peu de la course de l'ailier pour le laisser passer,
+    // du côté où il se trouve déjà, et plutôt vers son but.
+    let ecarte = 0;
+    for (const id of ['ALG', 'ALD']) {
+      const a = pos[id];
+      if (!a || !(eb.porteur === id || eb.vol?.passeur === id || eb.vol?.receveur === id)) continue;
+      const proche = lisse(3.4, 1.6, Math.hypot(a.x - p.x, a.z - p.z));
+      if (proche <= ecarte) continue;
+      ecarte = proche;
+      const sens = a.mvt ? a.mvt.courbe.getTangentAt(Math.min(a.u, 1)).setY(0).normalize() : new THREE.Vector3(13 - a.x, 0, -a.z).normalize();
+      const cote = new THREE.Vector3(-sens.z, 0, sens.x);
+      if (cote.x * (p.x - a.x) + cote.z * (p.z - a.z) + 0.8 * cote.x * Math.sign(p.x) < 0) cote.negate();
+      g.derive = { dir: cote, dist: 0.9 * proche };
+      // Il s'écarte en pas chassés, le temps du déplacement.
+      g.pasDeCote = 4 * proche * (1 - proche);
+    }
+    if (attaquant) {
+      const d = Math.hypot(attaquant.x - p.x, attaquant.z - p.z);
+      contact = lisse(2.4, 1.3, d) * tenu * (1 - ecarte);
+      g.contact = { bras: versPoint(attaquant, 1.45), hanche: versPoint(attaquant, 0.95), poids: contact };
+    }
+    // Contre le pivot : une main dans son dos, tant qu'il n'est pas au contact du porteur.
+    const pivot = pos.PVT, dPivot = Math.hypot(pivot.x - p.x, pivot.z - p.z);
+    g.pivot = { dos: versPoint(pivot, 1.25), poids: lisse(1.8, 1.0, dPivot) * (1 - contact) };
+    // Près du tireur, il lève les bras pour contrer.
+    if (m && m.tir) {
+      const tireur = pos[m.passeur], d = Math.hypot(tireur.x - p.x, tireur.z - p.z);
+      g.contre = { point: versPoint(tireur, 2.7), poids: lisse(3, 1.8, d) * lisse(-400, -150, t) * (1 - lisse(150, 450, t)) };
+    }
+  }
+  if (j.camp === 'gardien' && m && m.tir) {
+    // Le gardien part du côté du ballon : le bras, la jambe et le buste.
+    const arrivee = versPoint(m.arrivee, 1.45);
+    const droite = new THREE.Vector3(Math.sin(g.regard), 0, Math.cos(g.regard));
+    const cote = (arrivee.x - p.x) * droite.x + (arrivee.z - p.z) * droite.z > 0 ? 'r' : 'l';
+    const parade = lisse(80, 260, t) * (1 - lisse(m.duree + 200, m.duree + 500, t));
+    g.parade = { cote, point: arrivee, poids: parade };
+    g.jambes.push([cote, POSES.jambeParade, parade * 0.8]);
+    g.inclinaison = (cote === 'r' ? 1 : -1) * 0.3 * parade;
+    // Il se détend : un petit saut de côté, bras et jambe du côté du ballon.
+    g.saut = 0.6 * parade * (1 - lisse(m.duree * FRACTION_TIR, m.duree * FRACTION_TIR + 350, t));
+    g.derive = { dir: droite.clone().multiplyScalar(cote === 'r' ? 1 : -1), dist: 0.35 * parade };
+  }
+  return g;
+}
+
+/**
+ * La prise de balle en course : le receveur qui repart ballon en main s'élance pendant que la passe arrive,
+ * au lieu de l'attendre arrêté. Sa course du temps suivant commence un peu plus tôt et s'étire d'autant.
+ */
+function anticipeCourses(pos, instant) {
+  for (const l of L.lancers) {
+    const m = l.m;
+    if (!m.receveur || m.tir) continue;
+    const suivante = L.etapes[m.etape + 1];
+    const course = suivante?.mouvements.find((x) => x.id === m.receveur && x.mode === 'course');
+    if (!course || suivante.ballon?.mode !== 'porte' || suivante.ballon.porteur !== m.receveur) continue;
+    const debut = l.debut + m.duree - Math.min(450, m.duree), fin = suivante.debut + course.duree;
+    if (instant <= debut || instant >= fin) continue;
+    // L'élan d'un tireur accélère jusqu'à l'appel ; les autres courses démarrent et s'arrêtent en douceur.
+    const brut = (instant - debut) / (fin - debut), u = suivante.ballon.prochainTir ? brut ** 1.7 : adoucis(brut, 'course');
+    const point = course.courbe.getPointAt(u);
+    pos[m.receveur] = { x: point.x, z: point.z, brut, u, mvt: course };
+  }
+}
+
+/** Les points du corps qui touchent le sol, et la hauteur sous laquelle ils ne descendent pas (leur épaisseur). */
+const PLANCHER = [
+  ['ball_l', 0.02], ['ball_r', 0.02], ['foot_l', 0.06], ['foot_r', 0.06], ['calf_l', 0.07], ['calf_r', 0.07],
+  ['thigh_l', 0.1], ['thigh_r', 0.1], ['pelvis', 0.12], ['spine_01', 0.12], ['spine_02', 0.13], ['spine_03', 0.14],
+  ['neck_01', 0.1], ['Head', 0.12], ['upperarm_l', 0.09], ['upperarm_r', 0.09], ['lowerarm_l', 0.06], ['lowerarm_r', 0.06],
+  ['hand_l', 0.05], ['hand_r', 0.05],
+];
+/** La hauteur des chevilles, mannequin debout au repos : les pieds y sont recalés après chaque geste. */
+let CHEVILLE_REPOS = 0.09;
+
+/** Pose le mannequin : les animations du pack, mêlées selon la course et le saut, puis les gestes du handball. */
+function poseMannequin(f, e, g) {
+  const course = e.course;
+  // Le tissu flotte d'autant plus que le joueur court, saute ou tombe.
+  f.materiau.userData.vitesse.value = Math.min(1, course + g.saut + g.chute);
+  const repos = 1 - course, sprint = course * lisse(3.5, 6, e.vitesse), jog = course - sprint;
+  const accroupi = g.accroupi;
+  const poids = {
+    Idle_Loop: repos * (1 - accroupi) * (1 - g.saut),
+    Crouch_Idle_Loop: repos * accroupi * (1 - g.saut),
+    Jog_Fwd_Loop: jog * (1 - g.saut),
+    Sprint_Loop: sprint * (1 - g.saut),
+    Jump_Loop: g.saut,
+  };
+  for (const [nom, a] of Object.entries(f.actions)) {
+    const duree = a.getClip().duration;
+    // Au repos, chacun respire à son rythme ; en course, une foulée complète tous les 2,4 m (3,6 m au sprint),
+    // déroulée à l'envers quand le joueur recule.
+    const sens = g.recule ? -1 : 1;
+    let temps = e.instant / 1000 + f.rang * 0.37;
+    if (nom === 'Jog_Fwd_Loop') temps = sens * (e.distance / 2.4) * duree;
+    if (nom === 'Sprint_Loop') temps = sens * (e.distance / 3.6) * duree;
+    a.setEffectiveWeight(poids[nom] ?? 0);
+    a.time = ((temps % duree) + duree) % duree;
+  }
+  // Le mélangeur ne réécrit un os que si l'animation l'a changé : à l'arrêt, les gestes de l'image précédente
+  // resteraient en place et s'ajouteraient aux nouveaux, et les bustes tourneraient sans fin. Chaque os repart
+  // donc de la pose de l'animation, gardée de l'appel précédent, avant d'être recalculé.
+  const osDuCorps = Object.values(f.os);
+  if (f.poseAnimee) osDuCorps.forEach((os, i) => os.quaternion.copy(f.poseAnimee[i]));
+  f.melangeur.update(0);
+  f.poseAnimee ??= osDuCorps.map(() => new THREE.Quaternion());
+  osDuCorps.forEach((os, i) => f.poseAnimee[i].copy(os.quaternion));
+  // Les gestes se placent en monde : le corps doit être debout, pas écrasé par la bascule vers le schéma.
+  const hauteur = f.corps.scale.y;
+  f.corps.scale.y = 1;
+  f.racine.updateMatrixWorld(true);
+  const devant = new THREE.Vector3(Math.cos(g.regard), 0, -Math.sin(g.regard));
+  const droite = new THREE.Vector3(Math.sin(g.regard), 0, Math.cos(g.regard));
+
+  // Le buste : il tourne avec le bras qui lance, du bas vers le haut, se penche vers l'avant ou se cambre ;
+  // le gardien se penche du côté du ballon.
+  tourneOs(f.os.spine_01, AXE_Y, g.torsion[0]);
+  tourneOs(f.os.spine_02, AXE_Y, g.torsion[1]);
+  tourneOs(f.os.spine_03, AXE_Y, g.torsion[2]);
+  tourneOs(f.os.spine_01, droite, -g.flexion * 0.5);
+  tourneOs(f.os.spine_02, droite, -g.flexion * 0.5);
+  tourneOs(f.os.spine_01, devant, g.inclinaison);
+
+  for (const [cote, pose, poids, lacet] of g.bras) placeMembre(f, 'bras', cote, pose, poids, lacet);
+  if (g.contact) { tendBras(f, 'r', g.contact.bras, g.contact.poids, 0.5, true); tendBras(f, 'l', g.contact.hanche, g.contact.poids * 0.8, 0.4, true); }
+  if (g.contre) { tendBras(f, 'l', g.contre.point, g.contre.poids, 0, true); tendBras(f, 'r', g.contre.point, g.contre.poids, 0, true); }
+  if (g.pivot) tendBras(f, 'l', g.pivot.dos, g.pivot.poids, 0.4);
+  if (g.parade) tendBras(f, g.parade.cote, g.parade.point, g.parade.poids);
+
+  // Les appuis du défenseur et du gardien, à l'arrêt.
+  if (g.appuis) { const w = (1 - e.course) * (1 - g.saut); placeMembre(f, 'jambe', 'l', g.appuis, w); placeMembre(f, 'jambe', 'r', g.appuis, w); }
+  // Les pas chassés : petits, rapides, rasant le sol ; les pieds s'écartent et se rejoignent sans croiser.
+  if (g.chasse > 0) {
+    const ecart = 0.18 + 0.12 * (0.5 + 0.5 * Math.sin((e.distance / 0.5) * Math.PI * 2));
+    const pose = [[0.3, -0.92, ecart], [-0.25, -0.96, 0.06]];
+    placeMembre(f, 'jambe', 'l', pose, g.chasse); placeMembre(f, 'jambe', 'r', pose, g.chasse);
+  }
+  for (const [cote, pose, poids] of g.jambes) placeMembre(f, 'jambe', cote, pose, poids);
+
+  // Les pieds recalés au sol : la cheville la plus basse revient à sa hauteur de repos, sauf en l'air ou en pleine course.
+  const recale = (1 - g.saut) * (1 - e.course * 0.8) * (1 - g.chute);
+  if (recale > 0) {
+    const plusBas = Math.min(f.os.foot_l.getWorldPosition(VA).y, f.os.foot_r.getWorldPosition(VB).y);
+    f.corps.position.y += (CHEVILLE_REPOS * f.stature - plusBas) * recale;
+  }
+  // Rien ne passe sous le sol : en l'air, à la réception ou couché, chaque point du corps garde sa hauteur minimale.
+  f.racine.updateMatrixWorld(true);
+  let manque = 0;
+  for (const [nom, minimum] of PLANCHER) manque = Math.max(manque, minimum - f.os[nom].getWorldPosition(VA).y);
+  if (manque > 0) f.corps.position.y += manque;
+  f.corps.scale.y = hauteur;
+}
+
+// La hauteur des chevilles au repos, mesurée une fois sur un mannequin debout.
+{
+  const f = figures[0];
+  for (const [nom, a] of Object.entries(f.actions)) { a.setEffectiveWeight(nom === 'Idle_Loop' ? 1 : 0); a.time = 0; }
+  f.melangeur.update(0);
+  f.racine.updateMatrixWorld(true);
+  CHEVILLE_REPOS = Math.min(f.os.foot_l.getWorldPosition(new THREE.Vector3()).y, f.os.foot_r.getWorldPosition(new THREE.Vector3()).y) / f.stature;
+}
 
 /** Le regard d'un joueur à sa place : vers le but le plus proche, ou dos à lui. */
 function regardA(j, p) {
@@ -974,6 +1735,13 @@ function regardA(j, p) {
   let dx = butX - p.x, dz = -p.z;
   if (j.dos) { dx = -dx; dz = -dz; }
   return Math.atan2(-dz, dx);
+}
+
+/** Le dribble en cours : la part du rebond (0 dans la main, ½ au sol, 1 de retour) et le sens de la course, ou rien. */
+function dribble(pos, eb) {
+  const m = pos.ballon.mvt, p = eb.porteur ? pos[eb.porteur] : null;
+  if (!m?.dribble || pos.ballon.brut >= 1 || p?.mvt?.mode !== 'course' || p.u >= m.dribble.jusqua) return null;
+  return { part: ((p.u / m.dribble.jusqua) * m.dribble.rebonds) % 1, sens: p.mvt.courbe.getTangentAt(p.u).setY(0).normalize() };
 }
 
 function etatDuBallon(pos, instant) {
@@ -985,69 +1753,44 @@ function etatDuBallon(pos, instant) {
 
 let tracesConstruites = false;
 function appliqueScene(instant, k, options = {}) {
+  TISSU.temps.value = instant / 1000;
   const pos = positionsA(instant);
+  anticipeCourses(pos, instant);
   const eb = etatDuBallon(pos, instant);
-  const tireur = eb.vol && eb.vol.tir ? eb.vol.passeur : eb.filet ? eb.filet.passeur : null;
-  const debutTir = eb.vol && eb.vol.tir ? L.etapes[eb.vol.etape].debut : eb.filet ? L.etapes[eb.filet.etape].debut : 0;
+  const ctx = { pos, eb, lancer: lancerProche(instant), instant };
   const yeuxDuGardien = options.vue === 'gardien' && k > 0.5;
   const suivi = options.vue === 'joueur' && k > 0.5 ? options.suivi : null;
 
   for (const f of figures) {
     const { j } = f, p = pos[j.id];
-    const regard = regardA(j, p);
-    f.regard = regard;
-    // Le saut du tireur : un ballon qui finit dans le but est un tir.
-    const tSaut = j.id === tireur ? instant - debutTir : -1;
-    const saut = tSaut >= 0 && tSaut <= 750 ? 0.45 * Math.sin((Math.PI * tSaut) / 750) : 0;
-    f.racine.position.set(p.x, 0, p.z);
-    f.corps.position.y = saut;
-    f.corps.rotation.y = regard;
-    f.plat.rotation.y = regard;
-
-    // La posture : celle du poste au repos, la foulée en course, le ballon en main.
-    const P = postureDeBase(j);
-    let ampl = 0, phase = 0;
+    // Ce que fait le joueur, déduit du schéma : son regard, sa course, son saut, ses gestes.
+    const g = gesteDuJoueur(j, p, ctx);
+    let course = 0, distance = 0, vitesse = 0;
     if (p.mvt && p.mvt.mode === 'course' && p.brut < 1) {
-      ampl = Math.sin(Math.PI * p.brut) * Math.min(1, p.mvt.longueur / 1.5);
-      phase = (p.u * p.mvt.longueur / 2.4) * Math.PI * 2;
-    }
-    if (ampl > 0) {
-      const s = Math.sin(phase);
-      // Le genou se plie surtout quand la jambe revient de l'arrière.
-      const genou = (ph) => -(0.22 + 1.1 * Math.max(0, -Math.sin(ph - 0.7)));
-      P.hG = lerp(P.hG, 0.1 + 0.6 * s, ampl); P.hD = lerp(P.hD, 0.1 - 0.6 * s, ampl);
-      P.gG = lerp(P.gG, genou(phase), ampl); P.gD = lerp(P.gD, genou(phase + Math.PI), ampl);
-      P.penche += 0.14 * ampl;
-      if (j.camp === 'attaque') {
-        P.eG = lerp(P.eG, -0.55 * s, ampl); P.eD = lerp(P.eD, 0.55 * s, ampl);
-        P.cG = lerp(P.cG, 1.35, ampl); P.cD = lerp(P.cD, 1.35, ampl);
+      course = lisse(0, 0.12, p.brut) * (1 - lisse(0.88, 1, p.brut)) * Math.min(1, p.mvt.longueur / 1.2);
+      distance = p.u * p.mvt.longueur;
+      vitesse = (p.mvt.longueur / p.mvt.duree) * 1000;
+      // Le défenseur glisse de côté en pas chassés, ou recule face au jeu ; il ne court de face que pour sortir.
+      if (j.camp !== 'attaque') {
+        const tangente = p.mvt.courbe.getTangentAt(Math.min(0.999, p.u));
+        const lateral = tangente.x * Math.sin(g.regard) + tangente.z * Math.cos(g.regard);
+        const avant = tangente.x * Math.cos(g.regard) - tangente.z * Math.sin(g.regard);
+        const chasse = lisse(0.45, 0.65, Math.abs(lateral));
+        g.chasse = course * chasse;
+        course *= 1 - chasse;
+        if (avant < -0.4) g.recule = true;
       }
     }
-
-    const mb = pos.ballon.mvt;
-    const tient = eb.porteur === j.id;
-    const passe = eb.vol && !eb.vol.tir && eb.vol.passeur === j.id;
-    const recoit = eb.vol && eb.vol.receveur === j.id;
-    if (tient) {
-      // Le porteur qui va tirer arme son bras à la fin de sa course.
-      const arme = mb && mb.mode === 'porte' && mb.prochainTir && mb.porteur === j.id ? lisse(0.45, 1, pos.ballon.brut) : 0;
-      Object.assign(P, brasDroit(BRAS.tenue, BRAS.arme, arme), { eG: 0.55, bG: 0.2, cG: 1.1 });
-    }
-    if (passe) Object.assign(P, brasDroit(BRAS.tenue, BRAS.pousse, lisse(0, 0.45, eb.u)), { eG: 0.5, bG: 0.2, cG: 1.0 });
-    if (j.id === tireur) {
-      const lache = eb.vol ? lisse(0, 0.3, eb.u) : 1;
-      const retombe = eb.filet ? lisse(150, 650, eb.apres) : 0;
-      Object.assign(P, brasDroit(brasDroit(BRAS.arme, BRAS.lache, lache), BRAS.repos, retombe), { eG: 0.95, bG: 0.5, cG: 0.6 });
-    }
-    if (recoit) Object.assign(P, { eD: 1.0, bD: 0.25, cD: 0.8, eG: 1.0, bG: 0.25, cG: 0.8 });
-    if (saut > 0) {
-      // Le genou d'appel monte, l'autre jambe pend.
-      const s = saut / 0.45;
-      P.hG = lerp(P.hG, 1.25, s); P.gG = lerp(P.gG, -1.5, s);
-      P.hD = lerp(P.hD, -0.15, s); P.gD = lerp(P.gD, -0.45, s);
-    }
-    poseFigure(f, P, saut > 0 ? saut / 0.45 : 0);
-    f.ombre.scale.setScalar(1 - saut * 0.7);
+    if (g.pasDeCote) { g.chasse = Math.max(g.chasse, g.pasDeCote); distance += g.derive.dist; }
+    f.regard = g.regard;
+    const saut = (g.hauteur ?? 0.45) * g.saut;
+    f.racine.position.set(p.x, 0, p.z);
+    // Le tireur file dans la zone après le lâcher ; le défenseur s'écarte de l'ailier.
+    if (g.derive) f.racine.position.addScaledVector(g.derive.dir, g.derive.dist * k);
+    f.corps.position.y = saut - 0.95 * g.chute;
+    f.corps.rotation.set(g.roulis, g.regard, 0);
+    f.plat.rotation.y = g.regard;
+    poseMannequin(f, { instant, course, distance, vitesse, ballon: pos.ballon }, g);
 
     // La bascule : les joueurs se lèvent l'un après l'autre, le symbole s'efface.
     const leve = borne((k - 0.12 - f.rang * 0.012) / 0.62);
@@ -1060,8 +1803,6 @@ function appliqueScene(instant, k, options = {}) {
     f.plat.visible = f.libellePlat.visible = aPlat > 0.01;
     f.bulle.material.opacity = lisse(0.6, 1, k);
     f.bulle.visible = k > 0.6 && !(yeuxDuGardien && j.camp === 'gardien') && j.id !== suivi;
-    f.ombre.material.opacity = 0.5 * lisse(0.3, 1, k);
-    f.ombre.visible = k > 0.3;
   }
   for (const but of buts) but.scale.y = Math.max(0.02, k);
   scene.updateMatrixWorld();
@@ -1071,16 +1812,29 @@ function appliqueScene(instant, k, options = {}) {
   const en3D = new THREE.Vector3(b.x, 0.11, b.z);
   if (eb.porteur) {
     main(eb.porteur, en3D);
-  } else if (eb.vol) {
-    const m = eb.vol, u = eb.u;
+    // En dribble, le ballon descend au sol un peu devant le porteur et remonte dans sa main.
+    const d = dribble(pos, eb);
+    if (d) {
+      en3D.addScaledVector(d.sens, 0.35 * Math.sin(Math.PI * d.part));
+      en3D.y = 0.1 + (en3D.y - 0.1) * Math.abs(Math.cos(Math.PI * d.part));
+    }
+  } else if (eb.vol && !(eb.vol.tir && eb.u >= FRACTION_TIR)) {
+    const m = eb.vol, u = m.tir ? eb.u / FRACTION_TIR : eb.u;
     const depart = m.passeur ? main(m.passeur, new THREE.Vector3()) : new THREE.Vector3(m.depart.x, 0.11, m.depart.z);
     const arrivee = m.receveur ? main(m.receveur, new THREE.Vector3())
       : m.tir ? new THREE.Vector3(m.arrivee.x, 1.45, m.arrivee.z) : new THREE.Vector3(m.arrivee.x, 0.11, m.arrivee.z);
-    const cloche = m.tir ? 0.25 : borne(0.06 * m.longueur, 0.2, 1.1);
+    // Une passe de handball est tendue : la cloche reste basse, même sur une longue passe.
+    const cloche = m.tir ? 0.15 : borne(0.04 * m.longueur, 0.12, 0.8);
     en3D.lerpVectors(depart, arrivee, u);
     en3D.y += 4 * cloche * u * (1 - u);
-  } else if (eb.filet) {
-    const m = eb.filet, t = borne(eb.apres / 450);
+    // Le ballon tourne sur lui-même, comme lâché du bout des doigts.
+    const axe = new THREE.Vector3().subVectors(arrivee, depart).cross(AXE_Y).normalize();
+    ballon.quaternion.setFromAxisAngle(axe, -u * m.longueur * 7);
+  } else if (eb.filet || eb.vol) {
+    // Au fond du but, le ballon tombe dans le filet.
+    const m = eb.filet ?? eb.vol;
+    const apres = eb.filet ? eb.apres + m.duree * (1 - FRACTION_TIR) : (eb.u - FRACTION_TIR) * m.duree;
+    const t = borne(apres / 450);
     const a = new THREE.Vector3(m.arrivee.x, 1.45, m.arrivee.z);
     const fin = new THREE.Vector3(m.arrivee.x + Math.sign(m.arrivee.x) * 0.45, 0.1, m.arrivee.z + 0.05);
     en3D.lerpVectors(a, fin, t * t);
@@ -1088,13 +1842,13 @@ function appliqueScene(instant, k, options = {}) {
   ballon.position.lerpVectors(new THREE.Vector3(b.x, 0.12, b.z), en3D, doux(k));
   ballon.scale.setScalar(lerp(3.4, 1, lisse(0, 0.8, k)));
 
-  if (tracesConstruites) majTraces(instant, k, options.lecture ?? instant > 0, k > 0.5 ? options.vue : null);
+  if (tracesConstruites) majTraces(instant, k, options.lecture ?? instant > 0);
   return pos;
 }
 
 /* ======================================================================
-   Les tracés des temps : au sol pour une course, en l'air pour une passe,
-   chacun avec sa pastille, comme sur le schéma.
+   Les tracés des temps, sur le schéma seulement : au sol pour une course,
+   en l'air pour une passe, chacun avec sa pastille.
    ====================================================================== */
 const traces = [];
 const groupeTraces = new THREE.Group();
@@ -1154,7 +1908,7 @@ function construitTraces() {
         // La passe suit le vrai trajet du ballon, échantillonné en 3D.
         const echantillons = [];
         for (let s = 0; s <= 32; s++) {
-          appliqueScene(e.debut + m.duree * (s / 32) * 0.999, 1);
+          appliqueScene(e.debut + m.duree * (m.tir ? FRACTION_TIR : 1) * (s / 32) * 0.999, 1);
           echantillons.push(ballon.position.clone());
         }
         const courbe = new THREE.CatmullRomCurve3(echantillons);
@@ -1183,10 +1937,14 @@ function construitTraces() {
   tracesConstruites = true;
 }
 
-function majTraces(instant, k, lecture, vue) {
+function majTraces(instant, k, lecture) {
   const c = etapeEnCours(instant);
+  // Les tracés et leurs numéros sont ceux du schéma : ils s'effacent pendant la bascule, la 3D n'en garde aucun.
+  const schema = 1 - lisse(0.2, 0.7, k);
+  groupeTraces.visible = schema > 0;
+  if (!groupeTraces.visible) return;
   for (const t of traces) {
-    // À plat, une passe se couche sur le terrain ; en 3D, elle reprend sa cloche.
+    // À plat, une passe se couche sur le terrain ; pendant la bascule, elle reprend sa cloche.
     if (t.passe) t.groupe.scale.y = Math.max(0.015, k);
     const hauteurPastille = t.passe ? lerp(0.1, t.milieu.y, k) : lerp(0.1, 0.55, k);
     t.sprite.position.set(t.milieu.x, t.passe ? hauteurPastille / Math.max(0.015, k) : hauteurPastille, t.milieu.z);
@@ -1194,23 +1952,19 @@ function majTraces(instant, k, lecture, vue) {
     t.sprite.scale.set(taille, t.passe ? taille / Math.max(0.015, k) : taille, 1);
     let visible = true, opacite = 0.92, part = 1, courant = false;
     if (lecture) {
-      // À hauteur de joueur, seuls les tracés du temps en cours restent : les autres barreraient la vue.
-      if (t.etape > c || (t.etape < c && (vue === 'joueur' || vue === 'gardien'))) visible = false;
+      if (t.etape > c) visible = false;
       else if (t.etape < c) opacite = 0.25;
       else {
         courant = true;
-        part = borne((instant - L.etapes[c].debut) / t.m.duree);
+        part = borne((instant - L.etapes[c].debut) / (t.m.duree * (t.m.tir ? FRACTION_TIR : 1)));
       }
     }
-    // Dans les yeux du gardien, le tracé du tir lui passerait devant l'œil.
-    t.groupe.visible = visible && !(vue === 'gardien' && t.m.tir);
-    t.mat.opacity = opacite;
-    t.spriteMat.opacity = opacite < 0.5 ? 0.35 : 1;
+    t.groupe.visible = visible;
+    t.mat.opacity = opacite * schema;
+    t.spriteMat.opacity = (opacite < 0.5 ? 0.35 : 1) * schema;
     t.spriteMat.map = courant ? t.textures.courant : t.textures.normal;
     t.geo.setDrawRange(0, Math.round(part * t.segments) * t.rayons * 6);
     t.fleche.visible = part >= 1;
-    // Au ras du sol, une pastille près de la caméra masquerait la scène.
-    t.sprite.visible = vue !== 'joueur' && vue !== 'gardien';
   }
 }
 
@@ -1231,8 +1985,8 @@ function depuisSpherique(cible, d, theta, phi) {
 function etatTribune(aspect) {
   const fov = 40;
   const demiLargeur = Math.atan(Math.tan(THREE.MathUtils.degToRad(fov / 2)) * aspect);
-  const d = Math.max(21, 10.2 / Math.tan(demiLargeur));
-  const cible = new THREE.Vector3(13.8, 0.4, 1.2);
+  const d = Math.max(21, 10.9 / Math.tan(demiLargeur));
+  const cible = new THREE.Vector3(13.4, 0.4, 1.2);
   return { pos: depuisSpherique(cible, d, THREE.MathUtils.degToRad(55), -0.2), cible, haut: HAUT_Y.clone(), fov };
 }
 function etatJoueur(id) {
@@ -1279,7 +2033,8 @@ function pose(cam, e) {
    L'état de la maquette, la boucle et les commandes
    ====================================================================== */
 const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const etat = { instant: 0, enCours: false, k: 0, cibleK: 0, vue: 'tribune', suivi: 'ARD' };
+// La démo s'ouvre en 3D ; l'application, elle, ouvrirait la situation en vue schéma.
+const etat = { instant: 0, enCours: false, k: 1, cibleK: 1, vue: 'tribune', suivi: 'ARD' };
 let etatCam = null, photo3D = null, orbiteActive = false, besoin = true, visible = true;
 
 const controles = new OrbitControls(camera, renderer.domElement);
@@ -1289,7 +2044,7 @@ controles.minDistance = 5; controles.maxDistance = 70;
 controles.maxPolarAngle = THREE.MathUtils.degToRad(86);
 controles.addEventListener('change', () => { besoin = true; });
 controles.addEventListener('start', () => masqueAide());
-renderer.domElement.style.touchAction = 'pan-y';
+renderer.domElement.style.touchAction = 'none';
 
 function etatVoulu(aspect) {
   if (etat.vue === 'joueur') return etatJoueur(etat.suivi);
@@ -1442,7 +2197,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
   dernierToucher = maintenant;
   const r = renderer.domElement.getBoundingClientRect();
   rayon.setFromCamera(new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), camera);
-  const touche = rayon.intersectObjects(figures.map((f) => f.corps), true)[0];
+  const touche = rayon.intersectObjects(figures.map((f) => f.prise), false)[0];
   if (touche && touche.object.userData.joueur && touche.object.userData.joueur !== 'GB') choisisVue('joueur', touche.object.userData.joueur);
   else if (touche && touche.object.userData.joueur === 'GB') choisisVue('gardien');
 });
@@ -1482,7 +2237,7 @@ function majInterface() {
     i.style.width = `${borne((etat.instant - e.debut) / e.duree) * 100}%`;
   });
   const enLecture = etat.enCours || etat.instant > 0;
-  document.getElementById('etat').textContent = enLecture && c >= 0 ? `Temps ${c + 1} / ${L.etapes.length}` : 'Vue schéma';
+  document.getElementById('etat').textContent = enLecture && c >= 0 ? `Temps ${c + 1} / ${L.etapes.length}` : etat.cibleK === 1 ? 'Au départ' : 'Vue schéma';
   if (enLecture && c >= 0) {
     note.innerHTML = `<b>T${c + 1}</b>${L.etapes[c].note}`;
     note.classList.add('visible');
@@ -1511,7 +2266,7 @@ function photographie() {
     tribune: { instant: t3.debut + t3.duree * 0.62, k: 1, etat: () => etatTribune(aspect) },
     joueur: { instant: t3.debut + t3.duree * 0.62, k: 1, vue: 'joueur', suivi: 'ARD', etat: () => etatJoueur('ARD') },
     passe: { instant: t4.debut + t4.duree * 0.55, k: 1, etat: () => ({ pos: new THREE.Vector3(12.4, 2.3, 15.2), cible: new THREE.Vector3(15.9, 1.5, 6.9), haut: HAUT_Y.clone(), fov: 50 }) },
-    gardien: { instant: t6.debut + t6.duree * 0.45, k: 1, vue: 'gardien', etat: () => etatGardien() },
+    gardien: { instant: t6.debut + t6.duree * 0.4, k: 1, vue: 'gardien', etat: () => etatGardien() },
   };
   for (const [nom, m] of Object.entries(moments)) {
     const cadre = document.querySelector(`[data-moment="${nom}"]`);
@@ -1528,15 +2283,7 @@ function photographie() {
   r2.dispose(); r2.forceContextLoss();
 }
 
-// Les polices d'abord, pour les étiquettes peintes ; puis les tracés, les photos et la boucle.
-await document.fonts.ready;
-figures.forEach((f) => {
-  const c = COULEURS[f.j.camp];
-  f.bulle.material.map = etiquette(f.j.libelle, c.maillot, c.texte);
-  f.libellePlat.material.map = etiquette(f.j.libelle, null, c.texte, 128, 64, f.j.libelle.length > 2 ? 34 : 44);
-  f.dos.material.map = etiquette(f.j.libelle, null, c.texte, 128, 72, 52);
-  f.poitrine.material.map = etiquette(f.j.libelle, null, c.texte, 128, 72, 52);
-});
+// Les tracés, les photos, puis la boucle.
 construitTraces();
 photographie();
 taille();
