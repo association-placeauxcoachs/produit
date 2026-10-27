@@ -28,7 +28,7 @@ Le règlement intérieur fixe les rôles ([article 10](https://association.place
 |---|---|
 | **Bureau de l'association** | Arrête les évolutions de l'application. À chaque réunion ordinaire, au moins deux fois par an, il adopte une **feuille de route** : axes de travail, critères de priorisation, enveloppe de dépense. |
 | **Responsable du développement** — membre du bureau ([article 5](https://association.placeauxcoachs.fr/association/statuts/reglement-interieur.html)) | Exerce la délégation du bureau dans le cadre de la feuille de route : il instruit les demandes, les priorise, arbitre et livre. Il décide **comment** construire et dit ce que ça coûte. |
-| **Référent métier** — issu du comité départemental de handball | Apporte la **valeur d'usage** : ce dont les entraîneurs ont besoin sur le terrain, et ce qui compte le plus. Il propose la valeur de chaque sujet, de 1 à 5. Il n'a pas à entrer dans la technique. |
+| **Référent métier** — entraîneur, formateur ou expert du handball | Apporte la **valeur d'usage** : ce dont les entraîneurs ont besoin sur le terrain, et ce qui compte le plus. Il propose la valeur de chaque sujet, de 1 à 5. Il n'a pas à entrer dans la technique. |
 
 Le référent, les clubs et les entraîneurs **éclairent** les choix ; aucun ne les arrête. Aucune structure extérieure, qu'elle soutienne financièrement l'association ou non, n'a de droit de décision, de veto ni de priorité sur ses propres demandes.
 
