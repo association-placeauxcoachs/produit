@@ -365,7 +365,7 @@ h3{font-size:1rem;font-weight:600;margin:1.2em 0 .3em}
       <table class="tableau">
         <thead><tr><th scope="col">Pièce</th><th scope="col">En 3D</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Joueur</th><td>Un corps maillé d'un seul tenant, au visage modelé, dont un squelette plie le corps, animé au repos, en course et au saut. La peau va de très claire à foncée ; coiffure, crâne rasé, barbe et couleur des cheveux changent d'un joueur à l'autre. La morphologie suit le poste : arrières, pivot et défenseurs centraux plus grands et plus costauds que les ailiers. La tenue ne reprend pas le relief du corps : elle passe sur une version lissée de celui-ci, flotte autour, maillot ample porté hors du short et tombant droit de la poitrine, qui ondule et se plisse à la course, short large, le poste dans le dos et sur la poitrine, chaussettes et chaussures ; le gardien en manches longues et pantalon. L'arrière droit et l'ailier droit lancent du bras gauche. Ballon en main, quatre appuis au plus : au-delà, le porteur dribble, un rebond tous les deux appuis, et reprend le ballon pour ses trois derniers appuis. Le passeur ne pivote pas : son buste se tourne un peu vers le receveur, il lève le coude à hauteur d'épaule, avance le pied opposé au bras et finit les doigts vers la cible ; le receveur, s'il repart ballon en main, s'élance pendant que la passe arrive et la prend en courant. L'ailier tire à l'aile : course basse ballon à la hanche, appel hors de la zone, vol de plus de deux mètres vers le point de penalty, corps allongé et bras armé haut, tir en fin de vol, bascule dès le lâcher, réception dans la zone puis glissade sur le côté avant de se relever. L'arrière tire en suspension : ballon à la hanche, armé en arrière bras tendu puis derrière la tête, cuisse libre à l'horizontale, lâcher en redescendant. Le défenseur proche du ballon s'oriente vers lui sans tourner le dos à l'attaque et, pendant une passe, passe du lanceur au receveur ; appuis plus larges que les épaules, genoux fléchis, bassin bas ; il ne lève les bras, paumes vers l'attaque, que si le ballon est devant lui, et garde sinon les mains prêtes à hauteur de poitrine ; il glisse en pas chassés, prend contact avec le porteur et relâche quand le ballon part, met une main dans le dos du pivot et lève les bras devant un tireur proche ; face à l'ailier, il ne cherche pas le contact et s'écarte d'un pas chassé pour le laisser passer ; le gardien part du bras et de la jambe du côté du ballon, dans une détente latérale.</td></tr>
+          <tr><th scope="row">Joueur</th><td>Un corps maillé d'un seul tenant, au visage modelé, dont un squelette plie le corps, animé au repos, en course et au saut. La peau va de très claire à foncée ; coiffure, crâne rasé, barbe et couleur des cheveux changent d'un joueur à l'autre. La morphologie suit le poste : arrières, pivot et défenseurs centraux plus grands et plus costauds que les ailiers. Les vêtements sont taillés à part, autour du corps, au chargement : le maillot pose sur les épaules et tombe droit de la poitrine, ourlet libre par-dessus le short, manches ouvertes ; les jambes du short tombent droit de la hanche ; le tissu ondule et se plisse à la course. Le poste dans le dos et sur la poitrine, chaussettes et chaussures ; le gardien en manches longues et pantalon ample. L'arrière droit et l'ailier droit lancent du bras gauche. Ballon en main, quatre appuis au plus : au-delà, le porteur dribble, un rebond tous les deux appuis, et reprend le ballon pour ses trois derniers appuis. Le passeur ne pivote pas : son buste se tourne un peu vers le receveur, il lève le coude à hauteur d'épaule, avance le pied opposé au bras et finit les doigts vers la cible ; le receveur, s'il repart ballon en main, s'élance pendant que la passe arrive et la prend en courant. L'ailier tire à l'aile : course basse ballon à la hanche, appel hors de la zone, vol de plus de deux mètres vers le point de penalty, corps allongé et bras armé haut, tir en fin de vol, bascule dès le lâcher, réception dans la zone puis glissade sur le côté avant de se relever. L'arrière tire en suspension : ballon à la hanche, armé en arrière bras tendu puis derrière la tête, cuisse libre à l'horizontale, lâcher en redescendant. Le défenseur proche du ballon s'oriente vers lui sans tourner le dos à l'attaque et, pendant une passe, passe du lanceur au receveur ; appuis plus larges que les épaules, genoux fléchis, bassin bas ; il ne lève les bras, paumes vers l'attaque, que si le ballon est devant lui, et garde sinon les mains prêtes à hauteur de poitrine ; il glisse en pas chassés, prend contact avec le porteur et relâche quand le ballon part, met une main dans le dos du pivot et lève les bras devant un tireur proche ; face à l'ailier, il ne cherche pas le contact et s'écarte d'un pas chassé pour le laisser passer ; le gardien part du bras et de la jambe du côté du ballon, dans une détente latérale.</td></tr>
           <tr><th scope="row">Ballon</th><td>Dans la main du porteur, au bout des doigts. En vol, une passe tendue qui tourne sur elle-même, à peine plus haute quand elle est longue ; un tir plus rapide qu'une passe, à plus de 20 m/s, puis le ballon tombe dans le filet.</td></tr>
           <tr><th scope="row">Tracés des temps</th><td>Au sol pour une course, en pointillé ; en l'air pour une passe, en trait plein ; numérotés comme en 2D, le temps en cours en orange.</td></tr>
           <tr><th scope="row">Plot, coupelle, cerceau, latte, haie, échelle</th><td>Leur volume, posé au sol.</td></tr>
@@ -851,7 +851,7 @@ async function chargeModele() {
     // La pose de référence de chaque sommet : c'est elle qu'on projette, pas la pose animée.
     g.setAttribute('aRepos', g.attributes.position.clone());
     g.setAttribute('aZone', new THREE.BufferAttribute(zones, 1));
-    if (o.name === 'SuperHero_Male') lisseCorps(g);
+    if (o.name === 'SuperHero_Male') { lisseCorps(g); gltf.vetements = construitVetements(o); }
   });
   // Les coiffures sont placées dans le repère du modèle : on les ramène dans celui de l'os de la tête, qui les portera.
   const tete = squelette.bones.findIndex((b) => b.name === 'Head');
@@ -899,7 +899,7 @@ vec2 uvAtlas(vec3 p, float zone) {
   return vec2(0.5 + (z - 3.0) * 0.25 + s * 0.249, 0.77);
 }`;
 /** Le bas du maillot, porté hors du short, et le bas du short, en mètres dans la pose de référence. */
-const OURLET = 0.98, BAS_SHORT = 0.6;
+const OURLET = 0.93, BAS_SHORT = 0.6;
 
 /** Peint la tenue d'un joueur : celle de son camp, son poste dans le dos et sur la poitrine. */
 function peintAtlas(j) {
@@ -951,11 +951,14 @@ function peintAtlas(j) {
 /** La longueur des manches, de l'épaule à la main. */
 const MANCHE = 0.26, MANCHE_LONGUE = 0.66;
 
-/* Le tissu ne suit pas le relief du corps. Le maillot, le short, les manches et les chaussures passent sur une
-   version lissée de la pose de référence, sans muscles ni orteils, éclairée par ses propres normales ; le
-   maillot et le short s'évasent vers l'ourlet et ondulent quand le joueur court ou saute. Puis la morphologie
-   du joueur : plus ou moins large d'épaules et de taille, épais, de bras et de jambes. Tout se fait dans la
-   pose de référence, avant le squelette. */
+/* Le tissu. Le haut du maillot, posé sur les épaules et la poitrine, le haut du short et les chaussures restent
+   peints sur le corps, à peine décollés d'une version lissée de celui-ci, sans muscles ni orteils. Le reste est
+   taillé à part : le bas du maillot, les manches et les jambes du short sont des tubes qui tombent droit autour
+   du corps, ourlet libre, et ondulent quand le joueur court ou saute ; le corps n'est pas dessiné dessous. Puis
+   la morphologie, commune au corps et aux vêtements. Tout se fait dans la pose de référence, avant le squelette. */
+/** Où commencent les vêtements taillés à part : le bas du maillot, les jambes du short, les manches. */
+const HAUT_MAILLOT = 1.32, HAUT_SHORT = 0.86, DEPART_MANCHE = 0.22;
+
 const TISSU_COMMUN = `
 attribute vec3 aRepos, aLisse, aNormaleLisse;
 attribute float aZone;
@@ -964,8 +967,8 @@ uniform vec4 morpho;
 uniform float jambes;
 varying vec3 vRepos;
 flat varying float vZone;
-// La part de tissu d'un sommet : le short et le maillot sur le tronc, le cou nu ; le short, ou le pantalon du
-// gardien, et la chaussure sur les jambes ; la manche sur les bras.
+// La part de tissu d'un sommet du corps : le short et le maillot sur le tronc, le cou nu ; le short, ou le
+// pantalon du gardien, et la chaussure sur les jambes ; la manche sur les bras.
 float poidsTissu(vec3 p, float zone) {
   float z = floor(zone + 0.5);
   if (z < 0.5 || z > 4.5) return smoothstep(0.6, 0.64, p.y) * (1.0 - smoothstep(1.43, 1.5, p.y));
@@ -978,58 +981,32 @@ const NORMALE_TISSU = `
 float tissuV = clamp(poidsTissu(aRepos, aZone), 0.0, 1.0);
 objectNormal = normalize(mix(objectNormal, aNormaleLisse, tissuV));`;
 
+/* Le tissu peint sur le corps : un centimètre au-dessus de la surface lissée. */
 const AMPLE = `
 float zoneT = floor(aZone + 0.5), hT = aRepos.y;
-float ondule = sin(temps * 13.0 + atan(aRepos.x, aRepos.z) * 3.0 + hT * 11.0);
-transformed += aLisse * tissuV;
-float ample = 0.0;
-if (zoneT < 0.5) {
-  float maillot = smoothstep(${OURLET - 0.02}, ${OURLET}, hT) * (1.0 - smoothstep(1.36, 1.46, hT));
-  float ourlet = 1.0 - smoothstep(${OURLET}, 1.32, hT);
-  ample = maillot * (0.012 + ourlet * (0.016 + 0.012 * vitesse * ondule)) + (1.0 - maillot) * step(0.64, hT) * 0.01;
-  // Le maillot tombe droit de la poitrine : il s'évase vers l'ourlet au lieu de serrer la taille.
-  float evase = 1.0 + 0.12 * maillot * ourlet;
-  transformed.xz = vec2(0.0, -0.03) + (transformed.xz - vec2(0.0, -0.03)) * evase;
-} else if (zoneT < 2.5) {
-  float short_ = smoothstep(${BAS_SHORT - 0.02}, ${BAS_SHORT + 0.02}, hT) * (1.0 - gardien);
-  float bas = 1.0 - smoothstep(${BAS_SHORT}, 0.92, hT);
-  ample = short_ * (0.01 + 0.014 * bas * (1.0 + 0.5 * vitesse * ondule)) + (1.0 - smoothstep(0.1, 0.14, hT)) * 0.01;
-  // Le short s'évase autour de la cuisse.
-  vec2 axe = vec2(zoneT < 1.5 ? 0.114 : -0.114, -0.03);
-  transformed.xz = axe + (transformed.xz - axe) * (1.0 + 0.16 * short_ * bas);
-} else if (zoneT < 4.5) {
-  float s = (abs(aRepos.x) - 0.15) / 0.85;
-  ample = smoothstep(0.02, manche * 0.6, s) * (1.0 - smoothstep(manche - 0.03, manche, s)) * (0.01 + 0.004 * vitesse * ondule);
-}
-transformed += normal * ample;
-// La morphologie : morpho = carrure, taille, épaisseur, bras ; jambes à part. Ni la tête, ni les mains, ni les pieds.
+transformed += aLisse * tissuV + normal * tissuV * (zoneT < 0.5 ? 0.012 : 0.01);`;
+
+/* La morphologie : morpho = carrure, taille, épaisseur, bras ; jambes à part. Ni la tête, ni les mains, ni les pieds. */
+const MORPHO = `
 if (zoneT < 0.5) {
   float largeur = mix(morpho.y, morpho.x, smoothstep(1.05, 1.35, hT));
   transformed.x *= largeur;
   transformed.z = -0.03 + (transformed.z + 0.03) * morpho.z;
 } else if (zoneT < 2.5) {
   vec2 axe = vec2(zoneT < 1.5 ? 0.114 : -0.114, -0.03);
-  float k = mix(1.0, jambes, smoothstep(0.1, 0.18, hT));
-  transformed.xz = axe + (transformed.xz - axe) * k;
+  transformed.xz = axe + (transformed.xz - axe) * mix(1.0, jambes, smoothstep(0.1, 0.18, hT));
 } else if (zoneT < 4.5) {
   float k = mix(1.0, morpho.w, smoothstep(0.18, 0.26, abs(aRepos.x)) * (1.0 - smoothstep(0.6, 0.68, abs(aRepos.x))));
   transformed.yz = vec2(1.455, -0.07) + (transformed.yz - vec2(1.455, -0.07)) * k;
-}`;
-
-/* Des plis sur le bas du maillot, qui bougent avec lui. */
-const PLIS = `
-if (floor(vZone + 0.5) < 0.5 && vRepos.y > ${OURLET} && vRepos.y < 1.3) {
-  float phi = atan(vRepos.x, vRepos.z);
-  float pli = sin(phi * 11.0 + sin(temps * 9.0 + phi * 2.0) * vitesse * 1.4);
-  tenue.rgb *= 1.0 - 0.09 * (1.0 - smoothstep(${OURLET}, 1.3, vRepos.y)) * (0.5 + 0.5 * pli);
 }`;
 
 /** Le temps du tissu, commun à tous : celui du schéma, pour que l'arrêt sur image fige aussi les plis. */
 const TISSU = { temps: { value: 0 } };
 
 /**
- * Le matériau d'un joueur : la peau du modèle, recolorée à sa teinte, et sa tenue lue
- * sur l'atlas par la projection, posée par-dessus ; le tissu est plus mat que la peau et sans son relief.
+ * Le matériau d'un joueur : la peau du modèle, recolorée à sa teinte, et sa tenue lue sur l'atlas par la
+ * projection, posée par-dessus ; le tissu est plus mat que la peau et sans son relief. Sous les vêtements
+ * taillés à part, le corps n'est pas dessiné.
  */
 function materiauJoueur(atlas, teinte, gardien, morphologie) {
   const m = new THREE.MeshStandardMaterial({ map: TEX.peauClaire, normalMap: TEX.peauRelief, roughness: 0.58, metalness: 0 });
@@ -1046,20 +1023,65 @@ function materiauJoueur(atlas, teinte, gardien, morphologie) {
       // La zone est constante sur un triangle : interpolée entre le tronc (0) et le cou (5), elle passerait par les jambes et les bras.
       .replace('#include <common>', `#include <common>\n${TISSU_COMMUN}`)
       .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>\n${NORMALE_TISSU}`)
-      .replace('#include <begin_vertex>', `#include <begin_vertex>\nvRepos = aRepos;\nvZone = aZone;\n${AMPLE}`);
+      .replace('#include <begin_vertex>', `#include <begin_vertex>\nvRepos = aRepos;\nvZone = aZone;\n${AMPLE}\n${MORPHO}`);
     shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', `#include <common>\nuniform sampler2D atlas;\nuniform vec3 teinte;\nuniform float temps, vitesse;\nvarying vec3 vRepos;\nflat varying float vZone;\nfloat tissu;\n${UV_ATLAS}`)
+      .replace('#include <common>', `#include <common>
+uniform sampler2D atlas;
+uniform vec3 teinte;
+uniform float manche, gardien;
+varying vec3 vRepos;
+flat varying float vZone;
+float tissu;
+${UV_ATLAS}
+bool couvert(vec3 p, float zone) {
+  float z = floor(zone + 0.5);
+  if (z < 0.5) return p.y > ${OURLET + 0.04} && p.y < ${HAUT_MAILLOT - 0.02};
+  if (z < 2.5) return p.y > (gardien > 0.5 ? 0.16 : ${BAS_SHORT + 0.05}) && p.y < ${HAUT_SHORT - 0.02};
+  if (z < 4.5) return abs(p.x) > ${DEPART_MANCHE + 0.02} && (abs(p.x) - 0.15) / 0.85 < manche - 0.04;
+  return false;
+}`)
       // La peau garde la luminosité et un peu de la nuance de la texture, autour de la teinte du joueur.
-      .replace('#include <map_fragment>', `vec3 s = sqrt(texture(map, vMapUv).rgb);
+      .replace('#include <map_fragment>', `if (couvert(vRepos, vZone)) discard;
+vec3 s = sqrt(texture(map, vMapUv).rgb);
 float l = dot(s, vec3(0.3, 0.59, 0.11));
 vec3 peau = sqrt(teinte) * (l / 0.511) * mix(vec3(1.0), s / max(l, 1e-3) / vec3(1.274, 0.922, 0.675), 0.6);
 peau *= peau;
 vec4 tenue = textureLod(atlas, uvAtlas(vRepos, vZone), 0.0);
 tissu = tenue.a;
-${PLIS}
 diffuseColor.rgb *= mix(peau, tenue.rgb, tissu);`)
       .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.88, tissu);')
       .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>\nnormal = normalize(mix(normal, nonPerturbedNormal, tissu));');
+  };
+  return m;
+}
+
+/**
+ * Le matériau des vêtements taillés à part : la même tenue, lue sur le même atlas, des deux faces ; l'intérieur,
+ * vu sous l'ourlet ou dans la manche, est dans l'ombre. Le bas flotte et se plisse avec la course.
+ */
+function materiauVetement(atlas, morphologie, vitesse) {
+  const m = new THREE.MeshStandardMaterial({ roughness: 0.9, metalness: 0, side: THREE.DoubleSide });
+  const [, carrure, taille, epaisseur, bras, jambes] = morphologie;
+  m.onBeforeCompile = (shader) => {
+    Object.assign(shader.uniforms, {
+      atlas: { value: atlas }, morpho: { value: new THREE.Vector4(carrure, taille, epaisseur, bras) }, jambes: { value: jambes },
+      temps: TISSU.temps, vitesse,
+    });
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nattribute vec3 aRepos;\nattribute float aZone, aPend;\nuniform float temps, vitesse, jambes;\nuniform vec4 morpho;\nvarying vec3 vRepos;\nflat varying float vZone;\nvarying float vPend;')
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+vRepos = aRepos; vZone = aZone; vPend = aPend;
+float zoneT = floor(aZone + 0.5), hT = aRepos.y;
+float ondule = sin(temps * 13.0 + atan(aRepos.x, aRepos.z) * 3.0 + hT * 11.0 + aRepos.x * 9.0);
+transformed += normal * aPend * (0.004 + 0.014 * vitesse * ondule);
+${MORPHO}`);
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', `#include <common>\nuniform sampler2D atlas;\nuniform float temps, vitesse;\nvarying vec3 vRepos;\nflat varying float vZone;\nvarying float vPend;\n${UV_ATLAS}`)
+      .replace('#include <map_fragment>', `vec4 tenue = textureLod(atlas, uvAtlas(vRepos, vZone), 0.0);
+float phi = atan(vRepos.x, vRepos.z) + abs(vRepos.x) * 6.0;
+float pli = sin(phi * 11.0 + sin(temps * 9.0 + phi * 2.0) * vitesse * 1.4);
+tenue.rgb *= 1.0 - 0.12 * vPend * (0.5 + 0.5 * pli);
+diffuseColor.rgb *= tenue.rgb * (gl_FrontFacing ? 1.0 : 0.45);`);
   };
   return m;
 }
@@ -1116,6 +1138,184 @@ function lisseCorps(g) {
   g.setAttribute('aNormaleLisse', new THREE.BufferAttribute(normale, 3));
 }
 
+/* ---------- les vêtements taillés à part ---------- */
+const N_TOUR = 40;
+
+/**
+ * Le profil du corps lissé autour d'un axe — y pour le tronc et les jambes, x pour les bras : par tranche, son
+ * centre, et par angle autour de lui, la plus grande distance au centre. Chaque tranche voit les sommets à
+ * quelques centimètres de part et d'autre, pour qu'un maillage clairsemé ne donne pas des anneaux tour à tour
+ * larges et étroits. Le centre est celui de chaque tranche, ou un seul pour toutes quand le tissu doit tomber droit.
+ */
+function profil(points, garder, axe, hMin, hMax, centreUnique = false, pas = 0.02, fenetre = 0.04) {
+  const nb = Math.round((hMax - hMin) / pas) + 1;
+  const lit = (i) => (axe === 'y' ? [points[3 * i + 1], points[3 * i], points[3 * i + 2]] : [Math.abs(points[3 * i]), points[3 * i + 1], points[3 * i + 2]]);
+  const sommes = Array.from({ length: nb }, () => [0, 0, 0]), retenus = [], w = Math.round(fenetre / pas);
+  for (let i = 0; i < points.length / 3; i++) {
+    if (!garder(i)) continue;
+    const [h, a, b] = lit(i), k0 = Math.round((h - hMin) / pas);
+    for (let k = Math.max(0, k0 - w); k <= Math.min(nb - 1, k0 + w); k++) {
+      sommes[k][0] += a; sommes[k][1] += b; sommes[k][2]++;
+      retenus.push([k, a, b]);
+    }
+  }
+  const total = sommes.reduce((s, [a, b, n]) => [s[0] + a, s[1] + b, s[2] + n], [0, 0, 0]);
+  const centres = sommes.map(([a, b, n]) => (centreUnique ? [total[0] / total[2], total[1] / total[2]] : n ? [a / n, b / n] : null));
+  // Une tranche vide prend le centre de la plus proche.
+  centres.forEach((c, k) => { if (!c) { let d = 1; while (!centres[k - d] && !centres[k + d]) d++; centres[k] = centres[k - d] ?? centres[k + d]; } });
+  const rayons = Array.from({ length: nb }, () => new Float32Array(N_TOUR).fill(-1));
+  for (const [k, a, b] of retenus) {
+    const da = a - centres[k][0], db = b - centres[k][1];
+    const t = Math.round((((Math.atan2(da, db) + 2 * Math.PI) % (2 * Math.PI)) / (2 * Math.PI)) * N_TOUR) % N_TOUR;
+    rayons[k][t] = Math.max(rayons[k][t], Math.hypot(da, db));
+  }
+  // Les angles vides s'interpolent entre leurs voisins pleins ; puis un lissage d'un cran autour du tour.
+  for (const r of rayons) {
+    const pleins = [...r.keys()].filter((t) => r[t] >= 0);
+    if (!pleins.length) continue;
+    for (let t = 0; t < N_TOUR; t++) {
+      if (r[t] >= 0) continue;
+      const avant = [...pleins].reverse().find((p) => p < t) ?? pleins[pleins.length - 1] - N_TOUR;
+      const apres = pleins.find((p) => p > t) ?? pleins[0] + N_TOUR;
+      r[t] = lerp(r[(avant + N_TOUR) % N_TOUR], r[apres % N_TOUR], (t - avant) / (apres - avant));
+    }
+    const copie = Float32Array.from(r);
+    for (let t = 0; t < N_TOUR; t++) r[t] = 0.25 * copie[(t + N_TOUR - 1) % N_TOUR] + 0.5 * copie[t] + 0.25 * copie[(t + 1) % N_TOUR];
+  }
+  rayons.forEach((r, k) => { if (r[0] < 0) { let d = 1; while (!(rayons[k - d]?.[0] >= 0) && !(rayons[k + d]?.[0] >= 0)) d++; r.set(rayons[k - d]?.[0] >= 0 ? rayons[k - d] : rayons[k + d]); } });
+  // Puis un lissage le long de l'axe, centres compris.
+  for (let passe = 0; passe < 3; passe++) {
+    const copie = rayons.map((r) => Float32Array.from(r)), centresCopie = centres.map((c) => [...c]);
+    for (let k = 1; k < nb - 1; k++) {
+      for (let t = 0; t < N_TOUR; t++) rayons[k][t] = 0.25 * copie[k - 1][t] + 0.5 * copie[k][t] + 0.25 * copie[k + 1][t];
+      for (const c of [0, 1]) centres[k][c] = 0.25 * centresCopie[k - 1][c] + 0.5 * centresCopie[k][c] + 0.25 * centresCopie[k + 1][c];
+    }
+  }
+  const tranche = (h) => { const x = borne((h - hMin) / pas, 0, nb - 1), k = Math.min(nb - 2, Math.floor(x)); return [k, x - k]; };
+  return {
+    centre: (h) => { const [k, f] = tranche(h); return [lerp(centres[k][0], centres[k + 1][0], f), lerp(centres[k][1], centres[k + 1][1], f)]; },
+    rayon: (h, t) => { const [k, f] = tranche(h); return lerp(rayons[k][t], rayons[k + 1][t], f); },
+  };
+}
+
+/**
+ * Un tube de tissu : des anneaux de N_TOUR points le long de l'axe du profil, de h0 à h1. `forme(h, t)` donne
+ * le rayon au tour t, `pend(h)` combien le tissu y flotte. `cote` garde une jambe de son côté du corps. Les poids
+ * du squelette sont ceux des sommets du corps les plus proches, parmi ceux que `garder` retient.
+ */
+function tube({ prof, axe, signe = 1, h0, h1, anneaux, forme, pend, zone, cote = 0 }, corps) {
+  const pos = [], pendants = [], idx = [];
+  for (let k = 0; k < anneaux; k++) {
+    const h = lerp(h0, h1, k / (anneaux - 1)), [ca, cb] = prof.centre(h);
+    for (let t = 0; t < N_TOUR; t++) {
+      const th = (t / N_TOUR) * 2 * Math.PI, s = Math.sin(th);
+      let r = forme(h, t);
+      if (cote && -cote * s > 0) r = Math.min(r, (cote * ca - 0.012) / (-cote * s));
+      const a = ca + r * s, b = cb + r * Math.cos(th);
+      if (axe === 'y') pos.push(a, h, b); else pos.push(signe * h, a, b);
+      pendants.push(pend(h));
+    }
+  }
+  for (let k = 0; k < anneaux - 1; k++) for (let t = 0; t < N_TOUR; t++) {
+    const a = k * N_TOUR + t, b = k * N_TOUR + ((t + 1) % N_TOUR);
+    idx.push(a, b, b + N_TOUR, a, b + N_TOUR, a + N_TOUR);
+  }
+  // Les faces regardent vers l'extérieur : sinon, on les retourne.
+  const P = (i) => new THREE.Vector3(pos[3 * i], pos[3 * i + 1], pos[3 * i + 2]);
+  const [i0, i1, i2] = idx.slice(idx.length / 2, idx.length / 2 + 3);
+  const n = P(i1).sub(P(i0)).cross(P(i2).sub(P(i0)));
+  const milieu = P(i0), centre = prof.centre(axe === 'y' ? milieu.y : Math.abs(milieu.x));
+  const dehors = axe === 'y' ? new THREE.Vector3(milieu.x - centre[0], 0, milieu.z - centre[1]) : new THREE.Vector3(0, milieu.y - centre[0], milieu.z - centre[1]);
+  if (n.dot(dehors) < 0) for (let i = 0; i < idx.length; i += 3) [idx[i + 1], idx[i + 2]] = [idx[i + 2], idx[i + 1]];
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  g.setAttribute('aRepos', g.attributes.position.clone());
+  g.setAttribute('aZone', new THREE.Float32BufferAttribute(new Array(pos.length / 3).fill(zone), 1));
+  g.setAttribute('aPend', new THREE.Float32BufferAttribute(pendants, 1));
+  poidsDesVoisins(g, corps, (i) => corps.zone(i) === zone);
+  return g;
+}
+
+/** Les poids du squelette d'un vêtement : la moyenne de ceux des six sommets du corps lissé les plus proches. */
+function poidsDesVoisins(g, corps, garder) {
+  const candidats = [];
+  for (let i = 0; i < corps.n; i++) if (garder(i)) candidats.push(i);
+  const P = g.attributes.position, n = P.count, K = 6;
+  const indices = new Uint16Array(n * 4), poids = new Float32Array(n * 4);
+  const SI = corps.geo.attributes.skinIndex, SW = corps.geo.attributes.skinWeight, L = corps.lisse;
+  for (let v = 0; v < n; v++) {
+    const x = P.getX(v), y = P.getY(v), z = P.getZ(v);
+    const proches = [];
+    for (const i of candidats) {
+      const d = (L[3 * i] - x) ** 2 + (L[3 * i + 1] - y) ** 2 + (L[3 * i + 2] - z) ** 2;
+      if (proches.length < K || d < proches[K - 1][0]) {
+        proches.push([d, i]); proches.sort((p, q) => p[0] - q[0]);
+        if (proches.length > K) proches.pop();
+      }
+    }
+    const somme = new Map();
+    for (const [d, i] of proches) {
+      const w = 1 / (Math.sqrt(d) + 0.01);
+      for (let c = 0; c < 4; c++) { const os = SI.getComponent(i, c); somme.set(os, (somme.get(os) ?? 0) + SW.getComponent(i, c) * w); }
+    }
+    const meilleurs = [...somme].sort((p, q) => q[1] - p[1]).slice(0, 4), total = meilleurs.reduce((s, [, w]) => s + w, 0);
+    meilleurs.forEach(([os, w], c) => { indices[4 * v + c] = os; poids[4 * v + c] = w / total; });
+  }
+  g.setAttribute('skinIndex', new THREE.BufferAttribute(indices, 4));
+  g.setAttribute('skinWeight', new THREE.BufferAttribute(poids, 4));
+}
+
+/**
+ * Les vêtements, taillés une fois sur le corps lissé : le bas du maillot tombe droit de la poitrine et s'évase
+ * un peu ; les manches s'ouvrent vers le coude ; les jambes du short tombent droit de la hanche. Le gardien a
+ * des manches longues et un pantalon.
+ */
+function construitVetements(maillage) {
+  const geo = maillage.geometry, R = geo.attributes.aRepos, D = geo.attributes.aLisse, Z = geo.attributes.aZone;
+  const n = R.count, surface = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) { surface[3 * i] = R.getX(i) + D.getX(i); surface[3 * i + 1] = R.getY(i) + D.getY(i); surface[3 * i + 2] = R.getZ(i) + D.getZ(i); }
+  const corps = { geo, n, lisse: surface, zone: (i) => Z.getX(i) };
+  const DECOLLE = 0.007;
+
+  // Le bas du maillot : chaque anneau garde au moins la largeur de la poitrine, et s'évase vers l'ourlet.
+  const tronc = profil(surface, (i) => corps.zone(i) === 0, 'y', OURLET - 0.06, HAUT_MAILLOT + 0.04, true);
+  const pendMaillot = (h) => lisse(HAUT_MAILLOT, OURLET, h);
+  const maillot = tube({
+    prof: tronc, axe: 'y', h0: HAUT_MAILLOT, h1: OURLET, anneaux: 16, zone: 0, pend: pendMaillot,
+    forme: (h, t) => {
+      const p = pendMaillot(h);
+      return Math.max(tronc.rayon(h, t) + DECOLLE + 0.012 * p, (tronc.rayon(HAUT_MAILLOT, t) + DECOLLE) * (1 + 0.06 * p) + 0.014 * p);
+    },
+  }, corps);
+
+  // Les manches, du milieu de l'épaule vers le coude, ou jusqu'au poignet.
+  const manches = (longueur) => [[3, 1], [4, -1]].map(([zone, signe]) => {
+    const bras = profil(surface, (i) => corps.zone(i) === zone, 'x', 0.18, 0.74);
+    const fin = 0.15 + longueur * 0.85, pend = (h) => lisse(DEPART_MANCHE, fin, h);
+    return tube({
+      prof: bras, axe: 'x', signe, h0: DEPART_MANCHE, h1: fin, anneaux: Math.max(5, Math.round((fin - DEPART_MANCHE) / 0.03)), zone, pend,
+      forme: (h, t) => bras.rayon(h, t) + DECOLLE + (longueur > 0.5 ? 0.012 : 0.024) * pend(h),
+    }, corps);
+  });
+
+  // Les jambes du short, ou du pantalon : elles tombent droit de la hanche, chacune de son côté.
+  const jambes = (bas, ampleur) => [[1, 1], [2, -1]].map(([zone, cote]) => {
+    const jambe = profil(surface, (i) => corps.zone(i) === zone, 'y', bas - 0.04, HAUT_SHORT + 0.06);
+    const pend = (h) => lisse(HAUT_SHORT, bas, h);
+    return tube({
+      prof: jambe, axe: 'y', h0: HAUT_SHORT, h1: bas, anneaux: Math.max(6, Math.round((HAUT_SHORT - bas) / 0.025)), zone, cote, pend,
+      forme: (h, t) => Math.max(jambe.rayon(h, t) + DECOLLE + ampleur * 0.5 * pend(h), (jambe.rayon(HAUT_SHORT, t) + DECOLLE) * (1 - 0.05 * pend(h)) + ampleur * pend(h)),
+    }, corps);
+  });
+
+  return {
+    joueur: [maillot, ...manches(MANCHE), ...jambes(BAS_SHORT, 0.022)],
+    gardien: [maillot, ...manches(MANCHE_LONGUE), ...jambes(0.13, 0.012)],
+  };
+}
+
 await document.fonts.ready;
 const [MODELE, TEX] = await Promise.all([chargeModele(), chargeTextures()]);
 const MAT_YEUX = new THREE.MeshStandardMaterial({ map: TEX.yeux, roughness: 0.25 });
@@ -1124,7 +1324,8 @@ function creeMannequin(j, rang) {
   const modele = SkeletonUtils.clone(MODELE.scene);
   const gardien = j.camp === 'gardien';
   const morphologie = MORPHOLOGIES[MORPHOLOGIE_DU_POSTE[j.poste]];
-  const materiau = materiauJoueur(peintAtlas(j), TEINTES[(rang * 3) % TEINTES.length], gardien, morphologie);
+  const atlas = peintAtlas(j);
+  const materiau = materiauJoueur(atlas, TEINTES[(rang * 3) % TEINTES.length], gardien, morphologie);
   const poil = new THREE.MeshStandardMaterial({ map: TEX.cheveux, color: CHEVEUX[(rang * 5) % CHEVEUX.length], roughness: 0.8 });
   const coiffure = COIFFURES[rang % COIFFURES.length], barbe = rang % 4 === 1;
   const os = {}, coiffures = [];
@@ -1133,6 +1334,15 @@ function creeMannequin(j, rang) {
     else if (o.isSkinnedMesh) { o.material = o.name === 'Eyes' ? MAT_YEUX : o.name === 'Eyebrows' ? poil : materiau; o.frustumCulled = false; }
     else if (o.isMesh) coiffures.push(o);
   });
+  // Les vêtements taillés à part, tenus par le même squelette que le corps.
+  const maillage = modele.getObjectByName('SuperHero_Male');
+  const tissu = materiauVetement(atlas, morphologie, materiau.userData.vitesse);
+  for (const geo of MODELE.vetements[gardien ? 'gardien' : 'joueur']) {
+    const vetement = new THREE.SkinnedMesh(geo, tissu);
+    vetement.bind(maillage.skeleton, maillage.bindMatrix);
+    vetement.frustumCulled = false;
+    maillage.parent.add(vetement);
+  }
   // Une coiffure ou le crâne rasé, parfois une barbe : portées par l'os de la tête.
   for (const o of coiffures) {
     o.removeFromParent();
