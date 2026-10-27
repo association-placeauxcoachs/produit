@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Annoter une séance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Shantell+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Annoter une séance en formation : trois pistes pour le 1er décembre.
+     DA « La Marque » de l'application, mêmes jetons que les autres études. L'annotation
+     a sa propre main : le rose surligneur et Shantell Sans, absents du reste de l'application. */
+  :root{
+    --ink:#1C1726; --paper:#FAF4EC; --paper-2:#F3E9DA; --surface:#FFFFFF; --attenue:#6E6678;
+    --filet:rgba(28,23,38,.12); --filet-fort:rgba(28,23,38,.28);
+    --orange:#EB5D21; --orange-texte:#C2410C; --peach:#F4AD8E; --violet:#5D32F5; --rouge:#C9302C;
+    --st-brouillon:#8A8478; --st-encours:#C8841E; --st-pret:#2F7D4F;
+    --chassis:#0D0B12; --voile:rgba(28,23,38,.42); --gris-pdf:#DEDAD4;
+    --faire-b:#fdba74; --faire-bg:rgba(255,247,237,.7); --faire-t:#9a3412;
+    --verif-b:#c4b5fd; --verif-bg:rgba(245,243,255,.7); --verif-t:#5b21b6;
+    --dire-b:#fcd34d; --dire-bg:rgba(255,251,235,.7); --dire-t:#92400e;
+    --evol-b:#6ee7b7; --evol-bg:rgba(236,253,245,.7); --evol-t:#065f46;
+    /* la main de l'annotation : un rose surligneur, loin du violet d'« À vérifier » et des liens */
+    --fb:#E0337A; --fb-plein:#C2185E; --fb-sur:#FFFFFF; --fb-texte:#B0185A; --fb-encre:#8A1048;
+    --fb-fond:color-mix(in srgb,#E0337A 7%,#FFFFFF); --fb-filet:color-mix(in srgb,#E0337A 38%,transparent); --fb-surl:color-mix(in srgb,#E0337A 16%,transparent);
+    --display:"Fraunces",Georgia,serif; --corps:"Inter",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+    --main:"Shantell Sans","Comic Neue","Segoe Print",cursive;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926; --attenue:#A69DB1;
+    --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --orange-texte:#FDBA74; --violet:#9B82FF; --rouge:#F07167;
+    --st-brouillon:#A49D90; --st-encours:#E0A64A; --st-pret:#52B37D; --voile:rgba(0,0,0,.6); --gris-pdf:#0E0B13;
+    --faire-bg:rgba(251,146,60,.08); --faire-t:#fdba74; --verif-bg:rgba(167,139,250,.09); --verif-t:#c4b5fd;
+    --dire-bg:rgba(251,191,36,.08); --dire-t:#fcd34d; --evol-bg:rgba(52,211,153,.08); --evol-t:#6ee7b7;
+    --fb:#FF6FA8; --fb-plein:#FF6FA8; --fb-sur:#2A0B1A; --fb-texte:#FF8FBD; --fb-encre:#FFC2DA;
+    --fb-fond:color-mix(in srgb,#FF6FA8 9%,#1E1926); --fb-filet:color-mix(in srgb,#FF6FA8 38%,transparent); --fb-surl:color-mix(in srgb,#FF6FA8 20%,transparent);
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ink:#F2EBDE; --paper:#15111C; --paper-2:#211B2B; --surface:#1E1926; --attenue:#A69DB1;
+    --filet:rgba(242,235,222,.13); --filet-fort:rgba(242,235,222,.30); --orange-texte:#FDBA74; --violet:#9B82FF; --rouge:#F07167;
+    --st-brouillon:#A49D90; --st-encours:#E0A64A; --st-pret:#52B37D; --voile:rgba(0,0,0,.6); --gris-pdf:#0E0B13;
+    --faire-bg:rgba(251,146,60,.08); --faire-t:#fdba74; --verif-bg:rgba(167,139,250,.09); --verif-t:#c4b5fd;
+    --dire-bg:rgba(251,191,36,.08); --dire-t:#fcd34d; --evol-bg:rgba(52,211,153,.08); --evol-t:#6ee7b7;
+    --fb:#FF6FA8; --fb-plein:#FF6FA8; --fb-sur:#2A0B1A; --fb-texte:#FF8FBD; --fb-encre:#FFC2DA;
+    --fb-fond:color-mix(in srgb,#FF6FA8 9%,#1E1926); --fb-filet:color-mix(in srgb,#FF6FA8 38%,transparent); --fb-surl:color-mix(in srgb,#FF6FA8 20%,transparent);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font:16px/1.55 var(--corps);letter-spacing:-.01em;padding-block:0 96px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));-webkit-font-smoothing:antialiased}
+  button,input,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+  button{cursor:pointer;background:none;border:0;text-align:inherit}
+  img{display:block;max-width:100%;height:auto}
+  q{quotes:"«\202F" "\202F»"}
+  code{font-family:var(--mono);font-size:.82em;background:color-mix(in srgb,var(--ink) 7%,transparent);padding:1px 5px;border-radius:5px;overflow-wrap:anywhere}
+  :is(a,button,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  h1,h2,h3,h4,h5{text-wrap:balance}
+  .ic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ---------- page d'étude ---------- */
+  .wrap{max-width:1280px;margin:0 auto}
+  .outils{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;margin:0 -16px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--filet)}
+  .outils-in{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.84rem}
+  .outils a{font-weight:600;color:var(--violet);text-underline-offset:3px}
+  .seg{display:inline-flex;border:1px solid var(--filet-fort);border-radius:999px;overflow:hidden;flex-wrap:nowrap}
+  .seg button{font-size:.84rem;font-weight:600;color:var(--attenue);padding:.4em 1em;white-space:nowrap}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+  .entete{padding-top:44px;display:grid;gap:18px 48px;align-items:end}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(2.3rem,6vw,3.6rem);line-height:1.02;letter-spacing:-.02em}
+  .lede{margin-top:.55em;color:var(--attenue);font-size:1.06rem;max-width:62ch}
+  /* la note du développeur : la proposition se présente elle-même, dans la main qu'elle propose */
+  .mot-dev{position:relative;max-width:34ch;padding:12px 16px 14px;border:1px solid var(--fb-filet);border-radius:4px 16px 16px 16px;background:var(--fb-fond);color:var(--fb-encre);font:400 1.02rem/1.45 var(--main)}
+  .mot-dev b{display:block;margin-top:6px;font:600 .8rem/1.2 var(--corps);color:var(--fb-texte)}
+  @media(min-width:900px){.entete{grid-template-columns:minmax(0,1fr) auto}.mot-dev{transform:rotate(-1.2deg);margin-bottom:6px}}
+
+  .bloc{margin-top:84px;scroll-margin-top:64px}
+  .bloc>h2{font-family:var(--display);font-weight:600;font-size:clamp(1.45rem,3.2vw,1.8rem);letter-spacing:-.01em;line-height:1.15}
+  .bloc>.chapo{margin-top:.35em;max-width:66ch;color:var(--attenue)}
+  .bloc a,.dev a{color:var(--violet);text-underline-offset:3px}
+
+  /* ---------- zone de maquette ---------- */
+  .maquette-zone{margin-top:40px;scroll-margin-top:60px}
+  .pistes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:760px}
+  .piste{display:grid;gap:2px;padding:10px 14px 12px;border:1.5px solid var(--filet);border-radius:14px;background:var(--surface);text-align:left}
+  .piste b{font-family:var(--display);font-weight:600;font-size:1.1rem;line-height:1.15}
+  .piste span{font-size:.82rem;color:var(--attenue);line-height:1.35}
+  .piste:hover{border-color:var(--filet-fort)}
+  .piste[aria-pressed="true"]{border-color:var(--fb);background:var(--fb-fond)}
+  .piste[aria-pressed="true"] b{color:var(--fb-texte)}
+  @media(max-width:560px){.pistes{grid-template-columns:minmax(0,1fr)}.piste span{display:none}.piste{padding:8px 14px}}
+  .barre-maquette{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;margin-top:16px}
+  .barre-maquette p{font-size:.88rem;color:var(--attenue);max-width:52ch}
+  .barre-maquette p b{color:var(--ink);font-weight:600}
+  .commandes{display:flex;flex-wrap:wrap;gap:8px}
+  .demarrage{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:14px;padding:2px 0}
+  .demarrage::-webkit-scrollbar{display:none}
+  .demarrage .dm-titre{flex:none;margin-right:4px;font-size:.88rem;font-weight:600}
+  .demarrage button{flex:none;display:inline-flex;align-items:center;gap:7px;padding:.35em .9em .35em .4em;border:1px solid var(--filet);border-radius:999px;background:var(--surface);font-size:.84rem;font-weight:600;color:var(--attenue)}
+  .demarrage button b{display:inline-grid;place-items:center;width:1.55em;height:1.55em;border-radius:50%;background:color-mix(in srgb,var(--ink) 8%,transparent);font-size:.78rem;font-variant-numeric:tabular-nums}
+  .demarrage button[aria-current="step"]{border-color:var(--orange);color:var(--orange-texte);background:color-mix(in srgb,var(--orange) 8%,var(--surface))}
+  .demarrage button[aria-current="step"] b{background:var(--orange);color:#fff}
+  .demarrage [data-etape="tard"]{padding-left:.9em}
+  .demarrage .sep{flex:none;width:1px;height:22px;margin:0 4px;background:var(--filet-fort)}
+  .zone{--h:780px;display:grid;grid-template-columns:minmax(0,1fr);gap:28px 44px;align-items:start;margin-top:16px}
+  .zone[data-format="ord"]{--h:760px}
+  .zone[data-format="tab"]{--h:860px}
+  @media(min-width:1000px){.zone[data-format="tel"]{grid-template-columns:400px minmax(0,1fr)}.zone[data-format="tel"] .pourquoi{position:sticky;top:70px}}
+  .cadre{position:relative;width:100%;margin:0 auto;border:1px solid var(--filet-fort);border-radius:16px;overflow:hidden;background:var(--paper)}
+  .zone[data-format="tel"] .cadre{width:400px;max-width:100%;border:10px solid var(--chassis);border-radius:46px}
+  .zone[data-format="tab"] .cadre{width:824px;max-width:100%;border:12px solid var(--chassis);border-radius:34px}
+  .ecran{position:relative;height:var(--h);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;font-size:15px;line-height:1.45;background:var(--paper);color:var(--ink)}
+  .zone[data-format="ord"] .ecran,.zone[data-format="tab"] .ecran{overflow-x:auto;scrollbar-width:thin}
+  .ecran::-webkit-scrollbar{display:none}
+  .calque{position:absolute;inset:0;z-index:20;pointer-events:none;font-size:15px;line-height:1.45;color:var(--ink);overflow:hidden}
+  .calque>*{pointer-events:auto}
+  @media(max-width:430px){.zone[data-format="tel"]{--h:700px}.zone[data-format="tel"] .cadre{border-width:6px;border-radius:30px}.zone[data-format="tel"] .cmd{width:36px}.zone[data-format="tel"] .ed-st{padding:0 8px;letter-spacing:.06em}}
+
+  /* explications */
+  .pourquoi{display:grid;gap:16px}
+  .pourquoi h3{font-family:var(--display);font-weight:600;font-size:1.3rem;line-height:1.2}
+  .pq{list-style:none;display:grid;gap:15px}
+  .zone:not([data-format="tel"]) .pq{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 30px}
+  .pq li{padding-left:16px;border-left:2px solid var(--filet)}
+  .pq li.main{border-left-color:var(--fb)}
+  .pq h4{font-size:.98rem;font-weight:600;line-height:1.35}
+  .pq p{font-size:.9rem;color:var(--attenue);max-width:60ch}
+  .pourquoi .essai{font-size:.88rem;color:var(--ink);padding-top:12px;border-top:1px solid var(--filet)}
+
+  /* ---------- l'application : éléments communs ---------- */
+  .app{display:flex;min-height:100%}
+  .zone[data-format="ord"] .app,.zone[data-format="ord"] .seance{min-width:1180px}
+  .zone[data-format="tab"] .app,.zone[data-format="tab"] .seance{min-width:768px}
+  .contenu{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;min-height:var(--h)}
+  .btn-rond{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;color:var(--ink)}
+  .btn-rond .ic{width:20px;height:20px}
+  .btn-rond:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+  .bulle{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:40;width:max-content;max-width:calc(100% - 32px);padding:10px 16px;border-radius:12px;background:var(--ink);color:var(--paper);font-size:13.5px;text-align:center;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);pointer-events:none}
+
+  /* ---------- la liste d'aujourd'hui ---------- */
+  .rail0{display:none}
+  .zone[data-format="ord"] .rail0{position:sticky;top:0;z-index:8;display:flex;flex-direction:column;align-items:center;gap:4px;width:88px;height:var(--h);flex:none;padding:12px 0;border-right:1px solid var(--filet);background:var(--surface)}
+  .rail0 .burger{display:grid;place-items:center;width:56px;height:40px;border-radius:999px;margin-bottom:14px}
+  .rail0 .burger .ic{width:22px;height:22px}
+  .rd{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;padding:5px 0;font-size:11.5px;line-height:1.1;letter-spacing:-.02em;color:var(--attenue)}
+  .rd .pil{display:grid;place-items:center;width:56px;height:32px;border-radius:999px}
+  .rd .ic{width:21px;height:21px;stroke-width:1.8}
+  .rd[aria-current="page"]{color:var(--ink);font-weight:600}
+  .rd[aria-current="page"] .pil{background:color-mix(in srgb,var(--orange) 16%,var(--surface))}
+  .rd[aria-current="page"] .ic{color:var(--orange-texte)}
+  .rail0 .bas{margin-top:auto}
+  .marque0{display:none}
+  .zone[data-format="ord"] .marque0{position:absolute;top:12px;left:16px;z-index:2;display:flex}
+  .marque0 img{width:48px;height:48px}
+  .picto{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;--couleur-trajectoire:var(--peach)}
+  .picto :is(.trajectoire,.pointe,.passe){stroke:var(--couleur-trajectoire)}
+  .picto .passe{stroke-dasharray:1.6 4.4}
+  .onglets0{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:620px;margin:0 auto;padding:12px 8px 0}
+  .zone[data-format="ord"] .onglets0{padding-top:16px;max-width:520px}
+  .ong{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;min-height:72px;padding:0 4px 9px;font-size:12px;letter-spacing:-.02em;color:color-mix(in srgb,var(--attenue) 85%,transparent)}
+  .zone[data-format="ord"] .ong{font-size:14px;min-height:84px}
+  .ong .picto{width:32px;height:32px;stroke-width:2.5}
+  .zone[data-format="ord"] .ong .picto{width:40px;height:40px}
+  .ong .lib{display:flex;align-items:center;gap:2px;max-width:100%;overflow:hidden;white-space:nowrap}
+  .ong .lib span{overflow:hidden;text-overflow:ellipsis}
+  .ong .lib .ic{width:13px;height:13px;opacity:.5}
+  .ong[aria-current="page"]{color:var(--orange)}
+  .ong[aria-current="page"] .picto{color:var(--ink);--couleur-trajectoire:var(--orange)}
+  .ong[aria-current="page"]::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:2px;border-radius:2px;background:var(--orange)}
+  .filtres0{display:flex;justify-content:center;padding:16px 16px 4px}
+  .pilule0{display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:999px;background:var(--surface);box-shadow:0 4px 16px -6px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.06);font-size:14.5px;color:var(--attenue)}
+  .barre0{display:none;align-items:center;height:52px;border-radius:999px;border:1px solid var(--filet);background:var(--surface);box-shadow:0 4px 16px -10px rgba(0,0,0,.35);overflow:hidden;font-size:13.5px;color:var(--attenue)}
+  .barre0>span{display:flex;align-items:center;gap:7px;height:100%;padding:0 16px;white-space:nowrap}
+  .barre0 .sep{width:1px;height:24px;padding:0;background:var(--filet)}
+  .barre0 em{font-style:normal;font-size:11px;font-weight:600;color:var(--orange-texte);background:color-mix(in srgb,var(--orange) 12%,var(--surface));border-radius:6px;padding:2px 6px}
+  .zone[data-format="ord"] .pilule0{display:none}
+  .zone[data-format="ord"] .barre0{display:inline-flex}
+  .zone[data-format="ord"] .filtres0{padding:18px 28px 6px}
+  .liste{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding:18px 12px 110px}
+  .zone[data-format="ord"] .liste{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:22px 28px 110px}
+  .zone[data-format="tab"] .liste{gap:18px;padding:22px 24px 110px}
+
+  /* carte d'aujourd'hui (carte-entrainement.tsx), avec le compte des annotations */
+  .carte0{--acc:var(--st-pret);container:carte/inline-size;display:flex;flex-direction:column;border:1px solid var(--filet);border-top:3px solid var(--acc);border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 30px -20px rgba(0,0,0,.3)}
+  .carte0.encours{--acc:var(--st-encours)}
+  .c0-in{display:flex;flex-direction:column;flex:1}
+  .c0-corps{display:flex;flex-direction:column;gap:12px;padding:20px;text-align:center;flex:1}
+  .c0-haut{display:flex;align-items:center;gap:10px;text-align:left}
+  .st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:999px;padding:3px 10px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:var(--acc)}
+  .st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .trait{flex:1;min-width:10px;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 35%,transparent),transparent)}
+  .cats{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
+  .cats span{font-family:var(--mono);font-size:11.5px;border-radius:6px;padding:2px 6px;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--attenue);white-space:nowrap}
+  .c0-titre{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.15;letter-spacing:-.015em}
+  .c0-obj{list-style:none;font-family:var(--display);font-style:italic;font-size:14px;line-height:1.4;color:var(--attenue)}
+  .mots{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:auto}
+  .mots span{font-size:11px;border:1px solid var(--filet);border-radius:999px;padding:2px 10px;color:var(--attenue);background:var(--paper)}
+  .c0-rail{display:flex;flex-direction:column;gap:12px;padding:14px 16px 16px;border-top:1px solid var(--filet);background:linear-gradient(180deg,color-mix(in srgb,var(--paper-2) 55%,var(--surface)),var(--surface))}
+  .c0-metas{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px}
+  .c0-metas span{display:flex;align-items:baseline;gap:6px}
+  .c0-metas small{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--attenue)}
+  .c0-metas b{font-family:var(--display);font-size:14px;font-weight:600}
+  .c0-metas b.nul{color:color-mix(in srgb,var(--attenue) 45%,transparent);font-weight:400}
+  .c0-auteur{display:flex;align-items:center;justify-content:center;gap:10px;border-top:1px solid var(--filet);padding-top:12px;font-size:12px;font-weight:600;text-align:left}
+  .c0-auteur small{display:block;font-weight:400;font-size:11px;color:var(--attenue)}
+  .ini{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:var(--acc)}
+  .btn-ouvrir{height:40px;border-radius:999px;background:var(--ink);color:var(--paper);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;width:100%}
+  .c0-act{display:flex;justify-content:space-between;color:var(--attenue)}
+  .c0-act button{width:34px;height:34px;display:grid;place-items:center;border-radius:50%}
+  .c0-act button:hover{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
+  .c0-act .rouge{color:var(--rouge)}
+  .split{display:flex;gap:2px;height:44px}
+  .split button{display:flex;align-items:center;justify-content:center;gap:8px;background:color-mix(in srgb,var(--acc) 14%,var(--surface));color:color-mix(in srgb,var(--acc) 70%,var(--ink));font-weight:600;font-size:14px}
+  .split .sp{flex:1;border-radius:999px 6px 6px 999px}
+  .split .sm{width:52px;border-radius:6px 999px 999px 6px}
+  .zone:not([data-format="ord"]) .pour-ord,.zone[data-format="ord"] .pour-tel{display:none}
+  .compte-notes{align-self:center;display:inline-flex;align-items:center;gap:7px;min-height:32px;padding:4px 12px 4px 9px;border-radius:999px;border:1px solid var(--fb-filet);background:var(--fb-fond);color:var(--fb-texte);font-size:12.5px;font-weight:600;text-align:left}
+  .compte-notes .ic{width:15px;height:15px}
+  .compte-notes:hover{border-color:var(--fb)}
+  .compte-notes.toutes{color:var(--attenue);background:none;border-style:dashed;border-color:var(--filet-fort);font-weight:500}
+  @container carte (min-width:500px){
+    .c0-in{flex-direction:row}
+    .c0-corps{text-align:left;padding:16px 18px}
+    .mots{justify-content:flex-start}
+    .compte-notes{align-self:flex-start}
+    .c0-rail{width:216px;flex:none;border-top:0;border-left:1px solid var(--filet);padding:14px}
+    .c0-metas{flex-direction:column}
+    .c0-metas span{justify-content:space-between}
+    .c0-titre{font-size:22px}
+  }
+  .fab-zone{position:sticky;bottom:78px;z-index:6;height:0;display:flex;justify-content:flex-end;padding-right:16px}
+  .fab{transform:translateY(-100%);display:flex;align-items:center;justify-content:center;gap:8px;width:56px;height:56px;border-radius:50%;background:var(--orange);color:#fff;font-size:14.5px;font-weight:600;box-shadow:0 12px 26px -12px rgba(235,93,33,.75)}
+  .fab .ic{width:22px;height:22px;stroke-width:2.4}
+  .fab span{display:none}
+  .zone[data-format="ord"] .fab-zone{bottom:24px;padding-right:28px}
+  .zone[data-format="ord"] .fab{width:auto;padding:0 22px 0 18px;border-radius:999px}
+  .zone[data-format="ord"] .fab span{display:inline}
+  .nav-bas{position:sticky;bottom:0;z-index:7;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:64px;padding:6px 4px;background:var(--surface);border-top:1px solid var(--filet);box-shadow:0 -1px 5px rgba(0,0,0,.06)}
+  .zone[data-format="ord"] .nav-bas{display:none}
+  .dest{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;line-height:1.1;color:var(--attenue)}
+  .dest .pil{display:grid;place-items:center;width:56px;height:30px;border-radius:999px}
+  .dest .ic{width:20px;height:20px;stroke-width:1.8}
+  .dest[aria-current="page"]{color:var(--ink);font-weight:600}
+  .dest[aria-current="page"] .pil{background:color-mix(in srgb,var(--orange) 16%,var(--surface))}
+  .dest[aria-current="page"] .ic{color:var(--orange-texte)}
+
+  /* ---------- la séance (editeur-entrainement.tsx) ---------- */
+  .seance{min-height:var(--h);display:flex;flex-direction:column}
+  .ed-barre{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:2px;height:58px;padding:0 6px;border-bottom:1px solid var(--filet);background:var(--paper)}
+  .ed-barre .retour{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--attenue);height:44px;padding:0 8px;border-radius:10px;white-space:nowrap}
+  .ed-barre .retour span{display:none}
+  .ed-barre .esp{flex:1}
+  .ed-st{--acc:var(--st-encours);display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;margin-right:2px;border:1px solid var(--filet-fort);border-radius:999px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);white-space:nowrap}
+  .ed-st i{width:7px;height:7px;border-radius:2px;background:var(--acc)}
+  .cmd{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;height:40px;width:40px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--ink)}
+  .cmd .ic{width:20px;height:20px}
+  .cmd span{display:none}
+  .cmd.contour{border:1px solid var(--filet-fort);background:var(--surface)}
+  .cmd.orange{background:var(--orange);color:#fff}
+  .cmd.discret{color:var(--attenue)}
+  .zone[data-format="ord"] .ed-barre{height:64px;padding:0 24px;gap:8px}
+  .zone[data-format="ord"] .ed-barre .retour span{display:inline}
+  .zone[data-format="ord"] .cmd{width:auto;padding:0 14px}
+  .zone[data-format="ord"] .cmd .ic{width:16px;height:16px}
+  .zone[data-format="ord"] .cmd span{display:inline}
+  .zone[data-format="ord"] .cmd.discret{width:40px;padding:0}
+  .zone[data-format="ord"] .cmd.orange{display:none}
+  .zone[data-format="tab"] .ed-barre{height:64px;padding:0 16px;gap:4px}
+
+  /* le milieu de la barre : la bascule d'un membre du groupe, ou le compte de l'autrice.
+     Sur tablette et ordinateur, il prend la place libre entre le retour et les commandes. */
+  .ed-barre.trois{display:grid;grid-template-columns:1fr auto 1fr}
+  .eb-g,.eb-d{display:flex;align-items:center;gap:inherit}
+  .eb-d{justify-content:flex-end}
+  .eb-m{display:flex;justify-content:center}
+  /* sur tablette, la place est comptée : le milieu se centre dans l'espace libre, à égale distance du retour et des commandes */
+  .zone[data-format="tab"] .ed-barre.trois{display:flex}
+  .zone[data-format="tab"] .eb-m{margin:0 auto}
+  .zone:not([data-format="tel"]) .seance.en-annoter .ed-barre{box-shadow:inset 0 -2px 0 var(--fb)}
+  .milieu{position:relative;display:flex;align-items:center;gap:4px;min-width:0}
+  .bascule{flex:none;display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--ink) 7%,transparent)}
+  .bascule button{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--attenue)}
+  .bascule button .ic{width:16px;height:16px}
+  .bascule button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+  .bascule [aria-pressed="true"],.bascule [aria-pressed="true"]:hover{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.18)}
+  .bascule [data-bascule="annoter"] .ic{color:var(--fb)}
+  .bascule [data-bascule="annoter"][aria-pressed="true"]{background:var(--fb-plein);color:var(--fb-sur)}
+  .bascule [data-bascule="annoter"][aria-pressed="true"] .ic{color:var(--fb-sur)}
+  .milieu .compte-notes{flex:none;min-height:36px;white-space:nowrap}
+  .compte-notes small{font-size:inherit;font-weight:500;color:var(--attenue);margin-left:2px}
+  .m-rond{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--attenue)}
+  .m-rond .ic{width:18px;height:18px}
+  .m-rond:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+
+  /* sur téléphone, le milieu a sa barre, sous celle de la séance : elle s'efface quand on descend et revient dès qu'on remonte */
+  .bandeau-n{position:sticky;top:58px;z-index:5;display:flex;align-items:center;gap:6px;min-height:52px;padding:6px 8px;border-bottom:1px solid var(--filet);background:var(--paper);color:var(--attenue);font-size:13.5px;font-weight:600;transition:transform .25s ease}
+  .bandeau-n.efface:not(.mode){transform:translateY(calc(-100% - 1px))}
+  .bandeau-n.b-annoter{background:var(--fb-fond);border-bottom-color:var(--fb-filet)}
+  .bandeau-n .esp{flex:1}
+  .bandeau-n .groupe{display:inline-flex;align-items:center;gap:6px;min-width:0;padding:0 6px;font-size:12.5px;font-weight:500;color:var(--attenue);white-space:nowrap}
+  .bandeau-n .groupe span{overflow:hidden;text-overflow:ellipsis}
+  .bandeau-n .groupe .ic{flex:none;width:15px;height:15px}
+  @media(max-width:430px){.zone[data-format="tel"] .bascule button{padding:0 10px}.zone[data-format="tel"] .bandeau-n .groupe{padding:0 2px}.zone[data-format="tel"] .bandeau-n .groupe .ic{display:none}}
+  /* « Viser », dans la conversation : une barre le temps du geste, à toutes les largeurs */
+  .bandeau-n.mode{padding-left:14px;background:var(--fb-plein);border-bottom-color:var(--fb-plein);color:var(--fb-sur)}
+  .bandeau-n.mode>.ic{width:16px;height:16px}
+  .bandeau-n .txt{flex:1;min-width:0;line-height:1.25}
+  .bandeau-n.mode button{flex:none;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--fb-sur);border:1.5px solid color-mix(in srgb,var(--fb-sur) 70%,transparent)}
+  .bandeau-n.mode button .ic{width:16px;height:16px}
+  .bandeau-n.mode button:hover{background:color-mix(in srgb,var(--fb-sur) 15%,transparent)}
+  .zone:not([data-format="tel"]) .bandeau-n{top:64px;padding:5px 16px 5px 24px}
+
+  /* les bulles sous la bascule : l'astuce de la première ouverture, puis l'indication en entrant dans Annoter */
+  .bulle-m{--l:290px;position:absolute;left:0;top:calc(100% + 12px);z-index:8;width:var(--l);padding:12px 14px 10px;border-radius:12px;background:var(--ink);color:var(--paper);font-size:13.5px;font-weight:400;line-height:1.4;text-align:left;white-space:normal;box-shadow:0 14px 30px -12px rgba(0,0,0,.55);animation:pose-astuce .4s ease-out}
+  .zone:not([data-format="tel"]) .bulle-m{left:50%;margin-left:calc(var(--l) / -2)}
+  .bulle-m::before{content:"";position:absolute;top:-6px;left:var(--fleche,160px);width:12px;height:12px;border-radius:2px;background:inherit;transform:rotate(45deg)}
+  .astuce b{font-weight:700}
+  .astuce button{display:flex;align-items:center;margin:8px 0 0 auto;height:32px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--paper);border:1px solid color-mix(in srgb,var(--paper) 45%,transparent)}
+  .astuce button:hover{background:color-mix(in srgb,var(--paper) 14%,transparent)}
+  .indice{--l:250px;padding:9px 13px;background:var(--fb-plein);color:var(--fb-sur);font-size:13px;font-weight:500;pointer-events:none;animation:indice 5.5s ease-out forwards}
+  @keyframes pose-astuce{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  @keyframes indice{0%{opacity:0}6%{opacity:1}86%{opacity:1}100%{opacity:0;visibility:hidden}}
+
+  .ed-corps{display:flex;flex:1}
+  .sommaire{display:none}
+  .ed-main{flex:1;min-width:0;padding:8px 8px 120px}
+  .zone[data-format="ord"] .ed-main{padding:32px 32px 120px}
+
+  /* piste « marge » : sur ordinateur, le contenu à gauche, sa marge à droite */
+  .bloc-a{position:relative;margin-bottom:16px;scroll-margin-top:110px}
+  .zone[data-format="ord"] .ed-main.avec-marge .bloc-a{display:grid;grid-template-columns:minmax(0,1fr) 300px;column-gap:32px;align-items:start}
+  .marge{min-width:0}
+  .zone[data-format="ord"] .marge .notes{margin:0;padding-top:6px}
+  .zone[data-format="ord"] .marge .notes>:first-child::before{content:"";position:absolute;left:-33px;top:22px;width:30px;border-top:1.5px dashed var(--fb-filet)}
+  .b-contenu>*{transition:box-shadow .2s}
+  .zone[data-format="ord"] .bloc-a:has(.marge .note:hover) .b-contenu>*{box-shadow:0 0 0 2px var(--fb-filet)}
+
+  .ed-tete{position:relative;padding:22px 10px 22px;border-bottom:1px solid var(--filet);text-align:center;border-radius:14px}
+  .ed-meta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 8px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--attenue)}
+  .ed-meta i{width:4px;height:4px;border-radius:50%;background:var(--filet-fort)}
+  .ed-titre{margin-top:16px;font-family:var(--display);font-weight:600;font-size:30px;line-height:1.12;letter-spacing:-.015em}
+  .ed-etiq{margin-top:16px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--attenue)}
+  .ed-obj{list-style:none;margin-top:6px;font-family:var(--display);font-style:italic;font-size:16px;line-height:1.5;color:var(--attenue)}
+  .zone[data-format="ord"] .ed-tete{padding:0 0 26px;text-align:left;border-radius:0}
+  .zone[data-format="ord"] .ed-meta{justify-content:flex-start}
+  .zone[data-format="ord"] .ed-titre{font-size:40px}
+
+  .sit{position:relative;background:var(--surface);border:1px solid var(--filet);border-radius:14px;overflow:hidden}
+  .sit-tete{display:flex;gap:10px;align-items:flex-start;padding:22px 8px 4px 14px}
+  .sit-num{font-family:var(--display);font-weight:300;font-size:35px;line-height:.85;color:color-mix(in srgb,var(--orange) 55%,transparent);font-variant-numeric:tabular-nums;flex:none}
+  .sit-titre{flex:1;min-width:0;margin-top:4px;font-family:var(--display);font-weight:600;font-size:18.5px;line-height:1.2;letter-spacing:-.01em}
+  .sit-act{display:flex;gap:2px;margin-top:-6px;color:var(--attenue)}
+  .sit-act button{display:grid;place-items:center;width:40px;height:40px;border-radius:10px}
+  .sit-act button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+  .sit-mots{display:flex;flex-wrap:wrap;gap:6px;padding:8px 14px 12px 59px}
+  .sit-mots span{font-size:12px;border-radius:999px;padding:2px 10px;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--attenue)}
+  .sit-schema{position:relative;border-top:1px solid var(--filet)}
+  .sit-schema img{width:100%}
+  .ajout-schema{display:flex;align-items:center;justify-content:center;gap:8px;width:calc(100% - 24px);margin:10px 12px 4px;padding:9px;border:1px dashed var(--filet-fort);border-radius:12px;font-size:13.5px;font-weight:500;color:var(--attenue)}
+  .encart{border-left:4px solid var(--b);background:var(--bg);padding:10px 12px 12px;margin:12px}
+  .encart h5{font-size:15px;font-weight:600;color:var(--t);margin-bottom:3px}
+  .encart p{font-size:14.5px;line-height:1.55}
+  .encart.faire{--b:var(--faire-b);--bg:var(--faire-bg);--t:var(--faire-t)}
+  .encart.verif{--b:var(--verif-b);--bg:var(--verif-bg);--t:var(--verif-t)}
+  .encart.dire{--b:var(--dire-b);--bg:var(--dire-bg);--t:var(--dire-t)}
+  .encart.evol{--b:var(--evol-b);--bg:var(--evol-bg);--t:var(--evol-t)}
+  .zone[data-format="ord"] .sit-tete{padding:24px 16px 4px 24px;gap:14px}
+  .zone[data-format="ord"] .sit-num{font-size:42px}
+  .zone[data-format="ord"] .sit-titre{font-size:21px}
+  .zone[data-format="ord"] .sit-mots{padding:10px 24px 14px 82px}
+  .zone[data-format="ord"] .sit-schema{margin:0 24px;border:1px solid var(--filet);border-radius:10px;overflow:hidden}
+  .zone[data-format="ord"] .ajout-schema{width:calc(100% - 48px);margin:10px 24px 4px}
+  .zone[data-format="ord"] .encart{margin:12px 24px}
+  .zone[data-format="ord"] .sit>:last-child{margin-bottom:24px}
+
+  /* le sommaire (lg+) */
+  .zone[data-format="ord"] .sommaire{display:block;position:sticky;top:76px;align-self:flex-start;width:256px;flex:none;height:calc(var(--h) - 88px);overflow-y:auto;padding:14px 12px;border-right:1px solid var(--filet)}
+  .som-tete{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .som-titre{display:flex;align-items:center;gap:.6em;padding:0 4px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--orange)}
+  .som-titre::before{content:"";width:22px;height:1px;background:var(--orange)}
+  .som-tete button{display:grid;place-items:center;width:28px;height:28px;border-radius:6px;color:var(--attenue)}
+  .sommaire ul{list-style:none;display:flex;flex-direction:column;gap:2px}
+  .som{display:flex;align-items:flex-start;gap:8px;width:100%;padding:8px 8px 8px 10px;border-radius:12px;border-left:4px solid transparent;font-size:13px;text-align:left}
+  .som:hover{background:color-mix(in srgb,var(--ink) 4%,transparent)}
+  .som.ici{background:var(--paper-2);border-left-color:var(--ink)}
+  .som .n{width:20px;flex:none;font-family:var(--display);font-size:13px;color:var(--orange);font-variant-numeric:tabular-nums;padding-top:1px}
+  .som .l{flex:1;min-width:0}
+  .som .l span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:color-mix(in srgb,var(--ink) 80%,transparent)}
+  .som .l small{display:block;margin-top:2px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in srgb,var(--attenue) 75%,transparent)}
+  .som-n{flex:none;display:inline-flex;align-items:center;gap:3px;height:20px;padding:0 7px 0 5px;border-radius:999px;background:var(--fb-fond);border:1px solid var(--fb-filet);color:var(--fb-texte);font-size:11px;font-weight:700}
+  .som-n .ic{width:11px;height:11px;stroke-width:2.4}
+  .som-ajout{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:40px;margin-top:12px;border-radius:999px;background:var(--orange);color:#fff;font-size:13.5px;font-weight:600}
+  .som-ajout .ic{width:16px;height:16px}
+
+  /* la bulle du sommaire (sous lg) */
+  .bulle-som{position:absolute;right:14px;bottom:18px;z-index:12;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--surface);border:1px solid var(--filet-fort);box-shadow:0 8px 22px -10px rgba(0,0,0,.45);color:var(--ink)}
+  .bulle-som .ic{width:20px;height:20px}
+  .bulle-som .pastille{position:absolute;top:-4px;right:-4px;min-width:21px;height:21px;padding:0 5px;border-radius:999px;background:var(--fb-plein);color:var(--fb-sur);font-size:11px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 2px var(--paper)}
+  .menu-som{position:absolute;right:14px;bottom:80px;z-index:13;width:268px;max-height:60%;overflow-y:auto;padding:4px;border-radius:12px;border:1px solid var(--filet);background:var(--surface);box-shadow:0 18px 40px -16px rgba(0,0,0,.45)}
+  .menu-som .som{border-left:0;padding-left:8px}
+
+  /* ---------- l'annotation ---------- */
+  .notes{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:2px 12px 14px;text-align:left}
+  .ed-tete .notes{margin:18px 0 0}
+  .zone[data-format="ord"] .sit .notes{margin:6px 24px 16px}
+  .note{position:relative;min-width:0;padding:10px 12px 12px;border:1px solid var(--fb-filet);border-radius:4px 14px 14px 14px;background:var(--fb-fond);text-align:left}
+  .note-tete{display:flex;align-items:center;gap:8px;min-height:28px}
+  .note-ini{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--fb);color:var(--fb-sur);font-size:9.5px;font-weight:700;letter-spacing:0}
+  .note-qui{flex:1;min-width:0;font-size:12.5px;line-height:1.2;color:var(--ink)}
+  .note-qui b{font-weight:600}
+  .note-qui time,.note-qui small{margin-left:6px;color:var(--attenue);font-size:12px}
+  .note-txt{margin-top:6px;font:400 15.5px/1.45 var(--main);color:var(--fb-encre)}
+  .suppr{flex:none;display:grid;place-items:center;width:34px;height:34px;margin:-4px -6px -4px 0;border-radius:50%;color:var(--attenue)}
+  .suppr:hover{color:var(--ink);background:color-mix(in srgb,var(--ink) 8%,transparent)}
+  .suppr.rouge:hover{color:var(--rouge);background:color-mix(in srgb,var(--rouge) 10%,transparent)}
+  .repris{display:inline-flex;align-items:center;gap:6px;height:34px;margin-top:10px;padding:0 13px 0 10px;border-radius:999px;border:1px solid var(--fb-filet);background:var(--surface);color:var(--fb-encre);font-size:13px;font-weight:600}
+  .repris .ic{width:15px;height:15px;stroke-width:2.4}
+  .repris:hover{border-color:var(--fb)}
+  .etat-rep{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12.5px;font-weight:600;color:var(--st-pret)}
+  .etat-rep .ic{width:15px;height:15px;stroke-width:2.4}
+  .etat-rep button{height:30px;padding:0 10px;border-radius:999px;font-weight:600;color:var(--fb-encre)}
+  .etat-rep button:hover{background:color-mix(in srgb,var(--fb) 10%,transparent)}
+  /* sous l'annotation dépliée, pour l'autrice : la reprendre, puis passer à la suivante */
+  .note-act{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px}
+  .note-act .repris,.note-act .etat-rep{margin-top:0}
+  .suivante{display:inline-flex;align-items:center;gap:4px;height:34px;margin-left:auto;padding:0 8px 0 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--fb-encre)}
+  .suivante .ic{width:16px;height:16px}
+  .suivante:hover{background:color-mix(in srgb,var(--fb) 10%,transparent)}
+  .note.reprise{display:flex;align-items:center;gap:8px;padding:5px 6px 5px 10px;border-style:dashed;border-color:var(--filet-fort);border-radius:10px;background:none}
+  .note.reprise>.ic{width:15px;height:15px;stroke-width:2.4;color:var(--st-pret)}
+  .rep-txt{flex:1;min-width:0;font-size:12.5px;color:var(--attenue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rep-txt b{font-weight:600;color:var(--ink)}
+  .note.reprise button{flex:none;height:30px;padding:0 10px;border-radius:999px;font-size:12.5px;font-weight:600;color:var(--fb-encre)}
+  .note.reprise button:hover{background:color-mix(in srgb,var(--fb) 10%,transparent)}
+  .vient{animation:vient 1.4s ease-out}
+  @keyframes vient{0%,30%{box-shadow:0 0 0 5px color-mix(in srgb,var(--fb) 30%,transparent)}100%{box-shadow:0 0 0 0 transparent}}
+  .annoter{justify-self:start;display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 14px 0 11px;border:1px dashed var(--fb-filet);border-radius:999px;color:var(--fb-texte);font-size:13.5px;font-weight:600;background:none}
+  .annoter .ic{width:15px;height:15px}
+  .annoter:hover{border-style:solid;background:var(--fb-fond)}
+  .ed-tete .annoter{justify-self:center}
+  .zone[data-format="ord"] .ed-tete .annoter{justify-self:start}
+
+  /* piste « stylo » : le surligneur, les pastilles, la note qui se déplie sur place */
+  .surl{color:inherit;background:var(--fb-surl);box-shadow:inset 0 -2px 0 var(--fb);border-radius:3px 3px 0 0;padding:0 2px;cursor:pointer;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .surl.rep{background:none;box-shadow:none;text-decoration:underline dashed var(--filet-fort);text-underline-offset:4px}
+  .surl.temp,.surl.flash{background:color-mix(in srgb,var(--fb) 34%,transparent)}
+  .surl.flash{animation:allume 1.8s ease-out}
+  @keyframes allume{0%,40%{box-shadow:0 0 0 4px color-mix(in srgb,var(--fb) 30%,transparent)}100%{box-shadow:none}}
+  .pastille-n{display:inline-grid;place-items:center;width:22px;height:22px;margin:0 2px 0 3px;border-radius:50%;background:var(--fb);color:var(--fb-sur);font:700 8.5px/1 var(--corps);font-style:normal;letter-spacing:0;vertical-align:1px;box-shadow:0 0 0 2px var(--surface)}
+  .pastille-n.rep{background:var(--surface);color:var(--st-pret);box-shadow:inset 0 0 0 1px var(--filet-fort)}
+  .pastille-n .ic{width:12px;height:12px;stroke-width:3}
+  .pastille-n[aria-expanded="true"]{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--fb)}
+  .epingle{position:absolute;z-index:2;display:grid;place-items:center;width:30px;height:30px;transform:translate(-50%,-50%);border-radius:50%;background:var(--fb);color:var(--fb-sur);font:700 10px/1 var(--corps);letter-spacing:0;box-shadow:0 0 0 3px #fff,0 6px 14px -4px rgba(0,0,0,.5)}
+  .epingle.rep{background:#fff;color:var(--st-pret);width:26px;height:26px}
+  .epingle .ic{width:14px;height:14px;stroke-width:3}
+  .epingle[aria-expanded="true"]{box-shadow:0 0 0 3px #fff,0 0 0 6px var(--fb)}
+  .epingle.temp{animation:pose .3s ease-out}
+  .epingle.flash{animation:allume 1.8s ease-out}
+  @keyframes pose{from{transform:translate(-50%,-50%) scale(.4)}to{transform:translate(-50%,-50%) scale(1)}}
+  .depli{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:4px 12px 12px}
+  .zone[data-format="ord"] .depli{margin:6px 24px 14px}
+  .ed-tete .depli{margin:12px 0 0}
+  .note.ouverte{border-radius:14px}
+  .note.ouverte::before{content:"";position:absolute;left:22px;top:-7px;width:12px;height:12px;background:var(--fb-fond);border-left:1px solid var(--fb-filet);border-top:1px solid var(--fb-filet);transform:rotate(45deg)}
+  .note-ferme{margin-left:2px}
+  /* le stylo pris : ce qui peut être visé se signale, rien ne se modifie */
+  .en-mode .visable{cursor:crosshair;border-radius:3px;background:linear-gradient(transparent 92%,var(--fb-filet) 92%)}
+  .en-mode .visable:hover,.en-mode .visable:focus-visible{background:color-mix(in srgb,var(--fb) 14%,transparent);outline:none}
+  .en-mode .sit-schema{cursor:crosshair;outline:2px dashed var(--fb);outline-offset:-2px}
+  /* en Annoter : la séance se fige et s'encadre de rose, les outils d'édition s'éteignent */
+  .seance.en-annoter .ed-main{box-shadow:inset 3px 0 0 var(--fb),inset -3px 0 0 var(--fb);background:color-mix(in srgb,var(--fb) 4%,var(--paper))}
+  .seance.en-annoter .sit-act,.seance.en-annoter .ajout-schema,.seance.en-annoter .som-ajout,.seance.en-annoter .ed-barre .cmd.orange{opacity:.3;pointer-events:none}
+  /* en Modifier : le texte s'écrit sur place, comme dans l'éditeur */
+  [contenteditable="true"]{cursor:text;border-radius:4px}
+  [contenteditable="true"]:focus{outline:2px solid color-mix(in srgb,var(--orange) 70%,transparent);outline-offset:3px}
+
+  /* citation : ce qu'une annotation vise */
+  .cite{display:flex;align-items:center;gap:9px;width:100%;margin-top:8px;padding:6px 9px;border-radius:8px;border-left:3px solid var(--fb);background:color-mix(in srgb,var(--ink) 5%,transparent);font-size:12.5px;line-height:1.35;color:var(--attenue);text-align:left}
+  .cite b{color:var(--orange-texte);font-family:var(--display);font-weight:600;margin-right:2px}
+  .cite q{font-style:italic;color:var(--ink)}
+  button.cite:hover{background:color-mix(in srgb,var(--fb) 10%,transparent)}
+  .cite .va{margin-left:auto;flex:none;color:var(--fb-texte)}
+  .cite .va .ic{width:15px;height:15px}
+  .mini{position:relative;flex:none;width:76px;border-radius:4px;overflow:hidden}
+  .mini img{width:100%}
+  .mini i{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--fb);box-shadow:0 0 0 2px #fff;transform:translate(-50%,-50%)}
+
+  /* écrire */
+  .compo-txt{display:block;width:100%;min-height:96px;margin-top:8px;padding:10px 12px;border:1px solid var(--fb-filet);border-radius:10px;background:var(--surface);resize:vertical;font:400 16px/1.45 var(--main);color:var(--fb-encre)}
+  .compo-txt::placeholder{color:color-mix(in srgb,var(--fb-encre) 50%,transparent)}
+  .compo-txt:focus-visible{outline:2px solid var(--fb);outline-offset:1px}
+  .compo-aide{margin-top:8px;font-size:12px;line-height:1.4;color:var(--attenue)}
+  .compo-act{display:flex;justify-content:flex-end;gap:6px;margin-top:10px}
+  .btn-texte{height:38px;padding:0 14px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--attenue)}
+  .btn-texte:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+  .publier{height:38px;padding:0 18px;border-radius:999px;background:var(--fb-plein);color:var(--fb-sur);font-size:13.5px;font-weight:600}
+  .publier:disabled{opacity:.4;cursor:not-allowed}
+  .voile{position:absolute;inset:0;z-index:30;display:flex;align-items:flex-end;background:var(--voile)}
+  .feuille{display:flex;flex-direction:column;width:100%;max-height:88%;background:var(--paper);border-radius:22px 22px 0 0;overflow:hidden;animation:monte .22s ease-out}
+  @keyframes monte{from{transform:translateY(20%);opacity:.5}to{transform:none;opacity:1}}
+  .poignee{flex:none;width:40px;height:4px;border-radius:2px;background:var(--filet-fort);margin:10px auto 0}
+  .f-tete{display:flex;align-items:flex-start;gap:10px;padding:12px 10px 4px 20px}
+  .f-tete h4{flex:1;font-size:16px;font-weight:600;line-height:1.3}
+  .f-tete h4 small{display:block;font-size:13px;font-weight:400;color:var(--attenue)}
+  .f-corps{padding:4px 20px 0;overflow-y:auto}
+  .f-corps .compo-txt{min-height:110px}
+  .f-pied{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px 18px}
+  .f-pied .publier,.f-pied .btn-texte{height:44px;padding:0 20px;font-size:14.5px}
+
+  /* piste « conversation » : un fil à côté de la séance */
+  .sit-n{flex:none;display:inline-flex;align-items:center;gap:4px;height:32px;margin-top:-2px;padding:0 10px 0 8px;border-radius:999px;border:1px solid var(--fb-filet);background:var(--fb-fond);color:var(--fb-texte);font-size:12.5px;font-weight:700}
+  .sit-n .ic{width:14px;height:14px}
+  .panneau{display:flex;flex-direction:column;min-height:0;background:var(--paper)}
+  .zone[data-format="ord"] aside.panneau{position:sticky;top:64px;align-self:flex-start;width:380px;flex:none;height:calc(var(--h) - 64px);border-left:1px solid var(--filet)}
+  .feuille.pan{height:82%;max-height:82%}
+  .pan-tete{flex:none;display:flex;align-items:center;gap:8px;padding:10px 8px 10px 18px;border-bottom:1px solid var(--filet)}
+  .pan-tete h4{flex:1;font-size:16px;font-weight:600;line-height:1.25}
+  .pan-tete h4 small{display:block;font-size:12.5px;font-weight:400;color:var(--attenue)}
+  .pan-liste{position:relative;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:14px 14px 10px;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start}
+  .pan-vide{font-size:14px;color:var(--attenue);padding:20px 4px}
+  .msg{justify-self:start;width:92%}
+  .msg.moi{justify-self:end;border-radius:14px 4px 14px 14px;background:var(--surface);border-color:var(--filet-fort)}
+  .msg.moi .note-ini{background:var(--ink);color:var(--paper)}
+  .msg.moi .note-txt{color:var(--ink)}
+  .msg.est-reprise{background:none;border-style:dashed;border-color:var(--filet-fort)}
+  .msg.est-reprise .note-txt{color:var(--attenue)}
+  .pan-compo{flex:none;border-top:1px solid var(--filet);padding:10px 12px 12px;background:var(--surface)}
+  .cibles{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .cibles>span{flex:none;font-size:12.5px;color:var(--attenue);margin-right:2px}
+  .ch{flex:none;height:32px;min-width:38px;padding:0 10px;border-radius:999px;border:1px solid var(--filet-fort);font-size:12.5px;font-weight:600;color:var(--attenue)}
+  .ch[aria-pressed="true"]{background:var(--fb-plein);border-color:var(--fb-plein);color:var(--fb-sur)}
+  .viser{flex:none;display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 11px 0 9px;margin-left:auto;border-radius:999px;border:1px dashed var(--fb);font-size:12.5px;font-weight:600;color:var(--fb-texte)}
+  .viser .ic{width:14px;height:14px}
+  .cite-prev{display:flex;align-items:center;gap:4px;margin-top:8px}
+  .cite-prev .cite{margin-top:0}
+  .ecrire{display:flex;align-items:flex-end;gap:8px;margin-top:8px}
+  .ecrire .compo-txt{margin-top:0;min-height:46px;max-height:132px;field-sizing:content;resize:none;padding:11px 12px;scrollbar-width:none}
+  .ecrire .publier{height:46px}
+
+  /* menus */
+  .menu-fond{position:absolute;inset:0;z-index:28}
+  .menu{position:absolute;z-index:29;min-width:220px;padding:4px;border-radius:12px;border:1px solid var(--filet);background:var(--surface);box-shadow:0 18px 40px -16px rgba(0,0,0,.45)}
+  .menu button{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:0 14px;border-radius:8px;font-size:15px;text-align:left}
+  .menu button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+  .menu button .ic{width:18px;height:18px;color:var(--attenue)}
+  .menu .m-fb{color:var(--fb-texte);font-weight:600}
+  .menu .m-fb .ic{color:var(--fb-texte)}
+  .menu .m-rouge,.menu .m-rouge .ic{color:var(--rouge)}
+
+  /* ---------- le PDF ---------- */
+  .pdf-ecran{min-height:var(--h);background:var(--gris-pdf)}
+  .pdf-pages{display:grid;gap:16px;justify-items:center;padding:18px 14px 40px}
+  .pdf-page{width:100%;max-width:640px;aspect-ratio:210/297;overflow:hidden;background:#fff;color:#111;font-family:Roboto,Arial,sans-serif;padding:3.2%;box-shadow:0 2px 10px rgba(0,0,0,.18);font-size:9px}
+  .zone[data-format="ord"] .pdf-page{font-size:14px}
+  .pdf-titre{font-size:2.4em;font-weight:700;text-align:center;line-height:1.15}
+  .pdf-obj{margin:.4em 0 1em;font-size:1.6em;font-style:italic;color:gray;text-align:center;line-height:1.3}
+  .pdf-infos{display:grid;grid-template-columns:repeat(4,1fr);margin-bottom:1.4em;font-size:1em;font-style:italic}
+  .pdf-infos span{font-weight:300}
+  .pdf-sit{font-size:1.6em;font-weight:700;margin:.4em 0 .6em}
+  .pdf-mots{font-size:.9em;font-style:italic;margin-bottom:1em}
+  .pdf-page img{width:72%;margin:0 auto 1em}
+  .pdf-desc{font-size:1.15em;line-height:1.45}
+  .pdf-desc b{display:block;margin-top:.6em}
+
+  @media (prefers-reduced-motion: reduce){.feuille,.astuce,.vient,.surl.flash,.epingle.temp,.epingle.flash{animation:none}.b-contenu>*,.bandeau-n{transition:none}}
+
+  /* ---------- sections sous la maquette ---------- */
+  .tab-wrap{overflow-x:auto;margin-top:20px}
+  .tableau{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+  .tableau th,.tableau td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--filet);vertical-align:top}
+  .tableau th{font-weight:600;font-size:.84rem;color:var(--attenue)}
+  .tableau td{color:var(--attenue)}
+  .tableau td:first-child{color:var(--ink);font-weight:600}
+  .tableau td b{color:var(--ink);font-weight:600}
+  .tableau th.choisie{color:var(--fb-texte)}
+  .trancher{margin-top:22px;border:1.5px solid var(--orange);border-radius:20px;background:color-mix(in srgb,var(--orange) 5%,var(--paper));overflow:hidden}
+  .d{display:grid;grid-template-columns:3rem minmax(0,1.15fr) minmax(0,1fr);gap:6px 20px;padding:14px 22px;border-top:1px solid var(--filet)}
+  .d:first-child{border-top:0}
+  .d-num{font-family:var(--mono);font-size:.84rem;color:var(--orange-texte);padding-top:2px}
+  .d-q{font-size:.95rem;font-weight:600;line-height:1.4}
+  .d-q span{display:block;font-weight:400;color:var(--attenue);font-size:.88rem;margin-top:2px}
+  .d-p{font-size:.92rem;line-height:1.45}
+  .d-p::before{content:"Proposé\202F: ";color:var(--violet);font-weight:600}
+  @media(max-width:700px){.d{grid-template-columns:2.4rem minmax(0,1fr)}.d-p{grid-column:2}}
+  .dev{margin-top:96px;padding:clamp(18px,3vw,34px);border:1.5px dashed var(--filet-fort);border-radius:22px;background:var(--paper-2)}
+  .dev-marque{display:inline-block;font-size:.82rem;font-weight:600;color:var(--paper);background:var(--ink);border-radius:8px;padding:5px 12px}
+  .dev>h2{font-family:var(--display);font-weight:600;font-size:clamp(1.4rem,3vw,1.7rem);margin:14px 0 .25em}
+  .dev>p{max-width:72ch;color:var(--attenue);font-size:.94rem}
+  .dev ul{margin:10px 0 0 1.1em;display:grid;gap:.45em}
+  .dev li{color:var(--attenue);font-size:.9rem;max-width:90ch}
+  .dev li b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="outils"><div class="wrap outils-in">
+  <a href="../">Études</a>
+  <div class="seg" role="group" aria-label="Thème"><button type="button" data-theme-choix="light">Jour</button><button type="button" data-theme-choix="dark">Nuit</button></div>
+</div></div>
+
+<main class="wrap">
+<header class="entete">
+  <div>
+    <h1>Annoter une séance</h1>
+    <p class="lede">En formation de cadres, le formateur et les stagiaires laissent leurs remarques sur une séance partagée avec leur groupe de travail. Elles s’écrivent d’une autre main et n’entrent ni dans le PDF ni dans Présenter. On y passe par une bascule, « Modifier » ou « Annoter » : au milieu de la barre de la séance sur tablette et ordinateur, juste en dessous sur téléphone. Trois façons d’annoter ensuite, à essayer dans la maquette : la marge, le stylo, la conversation. Une première version pour l’ouverture du 1er décembre, avant la préparation de la PEDA.</p>
+  </div>
+  <p class="mot-dev">Voici à quoi ressemble une annotation. Dites-moi en commentaire de la fiche quelle piste vous parle le plus.<b>Le développeur</b></p>
+</header>
+
+<section class="maquette-zone" id="maquette" aria-labelledby="titre-maquette">
+  <h2 id="titre-maquette" class="sr">La maquette</h2>
+  <div class="pistes" role="group" aria-label="Piste">
+    <button type="button" class="piste" data-piste="marge"><b>La marge</b><span>En Annoter, un bouton sous chaque bloc ; l’annotation se lit à côté.</span></button>
+    <button type="button" class="piste" data-piste="stylo"><b>Le stylo</b><span>En Annoter, on touche ce qu’on commente.</span></button>
+    <button type="button" class="piste" data-piste="fil"><b>La conversation</b><span>En Annoter, une messagerie s’ouvre à côté de la séance.</span></button>
+  </div>
+  <div class="barre-maquette">
+    <p>Suivez le démarrage pas à pas, puis regardez librement avec les yeux de <b>Léa</b>, la stagiaire qui a écrit la séance, ou de <b>Nadia</b>, sa formatrice. Séance, noms et groupe d’exemple.</p>
+    <div class="commandes">
+      <div class="seg" role="group" aria-label="Format"><button type="button" data-format="tel">Téléphone</button><button type="button" data-format="tab">Tablette</button><button type="button" data-format="ord">Ordinateur</button></div>
+      <div class="seg" role="group" aria-label="Vu par"><button type="button" data-qui="lea">Léa, l’autrice</button><button type="button" data-qui="nadia">Nadia, formatrice</button></div>
+      <div class="seg" role="group" aria-label="Écran"><button type="button" data-rapide="liste">Liste</button><button type="button" data-rapide="seance">Séance</button><button type="button" data-rapide="pdf">PDF</button></div>
+    </div>
+  </div>
+  <div class="demarrage" role="group" aria-label="Le démarrage, pas à pas">
+    <span class="dm-titre">Le démarrage</span>
+    <button type="button" data-etape="1"><b>1</b>Nadia ouvre la séance</button>
+    <button type="button" data-etape="2"><b>2</b>Elle passe en Annoter</button>
+    <button type="button" data-etape="3"><b>3</b>Elle écrit</button>
+    <button type="button" data-etape="4"><b>4</b>Léa voit le compte</button>
+    <button type="button" data-etape="5"><b>5</b>Léa reprend</button>
+    <span class="sep" aria-hidden="true"></span>
+    <button type="button" data-etape="tard">Plus tard : une séance très annotée</button>
+  </div>
+  <div class="zone" id="zone" data-format="tel">
+    <div class="cadre" id="cadre"><div class="ecran" id="ecran" role="region" aria-label="Maquette de l’application"></div><div class="calque" id="calque"></div></div>
+    <aside class="pourquoi" id="pourquoi" aria-live="polite"></aside>
+  </div>
+</section>
+
+<section class="bloc" id="pistes" aria-labelledby="titre-pistes">
+  <h2 id="titre-pistes">Trois façons d’annoter</h2>
+  <p class="chapo">Les trois partent de la même bascule : un membre du groupe passe de « Modifier » à « Annoter », la séance se fige et s’encadre de rose. Elles se comptent pareil sur la fiche, et aucune n’entre dans le PDF ni dans Présenter. Elles diffèrent par le geste qui suit, et par l’endroit où l’annotation se lit.</p>
+  <div class="tab-wrap">
+    <table class="tableau">
+      <thead><tr><th scope="col"></th><th scope="col">La marge</th><th scope="col" class="choisie">Le stylo</th><th scope="col">La conversation</th></tr></thead>
+      <tbody>
+        <tr><td>En Annoter</td><td>Un bouton sous l’en-tête et dans chaque situation</td><td><b>Toucher</b> une phrase, un point du schéma ou un titre, puis écrire</td><td>La conversation s’ouvre : écrire en bas, comme un message ; « Viser » pointe une phrase ou un point du schéma</td></tr>
+        <tr><td>Ce qu’on vise</td><td>La séance ou une situation</td><td>Une phrase, un point du schéma, une situation, la séance</td><td>Les mêmes, en citation</td></tr>
+        <tr><td>Où se lit l’annotation</td><td>Dans la marge sur ordinateur, sous le titre sur tablette et téléphone</td><td><b>Sur place</b> : la phrase surlignée, une pastille sur le schéma ; elle se déplie au toucher</td><td>Dans un panneau à côté, dans l’ordre ; la citation ramène à la phrase ou au point</td></tr>
+        <tr><td>La séance à l’écran</td><td>Allongée par les annotations, surtout sur téléphone</td><td>Marquée, pas allongée</td><td>Intacte : un compte par situation</td></tr>
+        <tr><td>Répondre</td><td>Plus tard</td><td>Plus tard</td><td>Tout de suite, dans le même fil</td></tr>
+        <tr><td>Coût pour le 1er décembre</td><td>Le plus faible</td><td>Moyen : viser dans le texte et dans le schéma</td><td>Moyen : le panneau, et viser comme le stylo</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="bloc" id="qui" aria-labelledby="titre-qui">
+  <h2 id="titre-qui">Qui peut faire quoi</h2>
+  <p class="chapo">Seule une séance partagée avec un groupe de travail reçoit des annotations. Ses membres sont ceux d’aujourd’hui : rien ne change dans la façon de rejoindre un groupe.</p>
+  <div class="tab-wrap">
+    <table class="tableau">
+      <thead><tr><th scope="col"></th><th scope="col">L’autrice de la séance</th><th scope="col">Un membre du groupe</th><th scope="col">Hors du groupe</th></tr></thead>
+      <tbody>
+        <tr><td>Voir les annotations</td><td>Oui, et leur compte sur la fiche</td><td>Oui, et leur compte sur la fiche</td><td>Non, même quand la séance est dans la Communauté</td></tr>
+        <tr><td>La bascule « Modifier / Annoter »</td><td>Non : elle reste en Modifier, les annotations sous les yeux</td><td>Oui</td><td>Non</td></tr>
+        <tr><td>Annoter</td><td>Non : elle modifie son contenu. Dans la conversation, elle répond</td><td>Oui</td><td>Non</td></tr>
+        <tr><td>Supprimer une annotation</td><td>Les siennes, dans la conversation</td><td>Les siennes</td><td>—</td></tr>
+        <tr><td>Marquer « C’est repris », rouvrir</td><td>Oui</td><td>Non</td><td>—</td></tr>
+        <tr><td>Masquer les annotations</td><td>Oui, sur son appareil</td><td>Oui, sur son appareil</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="bloc" id="reste" aria-labelledby="titre-reste">
+  <h2 id="titre-reste">Le reste de l’application</h2>
+  <p class="chapo">Une annotation n’est pas du contenu : elle reste attachée à la séance, mais ne la suit pas partout.</p>
+  <div class="tab-wrap">
+    <table class="tableau">
+      <thead><tr><th scope="col"></th><th scope="col">Avec les annotations</th></tr></thead>
+      <tbody>
+        <tr><td>PDF</td><td><b>Aucune annotation.</b> Le PDF ne change pas.</td></tr>
+        <tr><td>Présenter</td><td><b>Aucune annotation.</b> Sur le terrain, la séance telle que l’autrice l’a écrite.</td></tr>
+        <tr><td>Dupliquer</td><td>La copie part sans annotations.</td></tr>
+        <tr><td>Réécrire une phrase annotée</td><td>L’annotation remonte à sa situation et garde la phrase d’origine en citation.</td></tr>
+        <tr><td>Supprimer une situation</td><td>Ses annotations partent avec elle.</td></tr>
+        <tr><td>Retirer la séance du groupe</td><td>Les annotations restent avec la séance, visibles de l’autrice seule.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="bloc" id="trancher" aria-labelledby="titre-trancher">
+  <h2 id="titre-trancher">À trancher</h2>
+  <p class="chapo">Répondez en citant le numéro, en commentaire de la fiche « Annoter une séance en formation » du <a href="https://github.com/orgs/association-placeauxcoachs/projects/2">tableau de suivi</a>.</p>
+  <div class="trancher">
+    <div class="d"><span class="d-num">A1</span><p class="d-q">Quelle piste : la marge, le stylo ou la conversation&#8239;?<span>Les trois sont à essayer dans la maquette.</span></p><p class="d-p">Le stylo pour le 1er décembre : on touche ce qu’on commente, et la stagiaire lit chaque remarque là où elle porte. La conversation pourra s’y ajouter avec le fil de discussion, sur les mêmes annotations.</p></div>
+    <div class="d"><span class="d-num">A2</span><p class="d-q">Une bascule « Modifier / Annoter » dans la barre de la séance&#8239;?<span>Aujourd’hui, un membre du groupe qui ouvre une séance partagée la modifie directement.</span></p><p class="d-p">Oui. Les deux modes se voient d’un coup d’œil et se quittent d’un toucher. Sur tablette et ordinateur, la bascule prend le milieu de la barre, entre le retour et les commandes : pas de seconde barre, la séance garde sa hauteur. Sur téléphone, la barre est pleine : la bascule a la sienne, juste en dessous, qui s’efface quand on descend et revient dès qu’on remonte, comme la barre du bas. En Annoter, la séance se fige, s’encadre de rose et éteint ses outils d’édition : rien ne se modifie par erreur. La bascule n’apparaît que sur une séance partagée avec un groupe de travail, pour les membres autres que l’autrice.</p></div>
+    <div class="d"><span class="d-num">A3</span><p class="d-q">Dans quel mode s’ouvre la séance pour un membre&#8239;?</p><p class="d-p">En Modifier la première fois, comme aujourd’hui, avec une astuce qui montre « Annoter ». Ensuite, dans le dernier mode choisi, retenu sur l’appareil : une formatrice qui annote retrouve Annoter.</p></div>
+    <div class="d"><span class="d-num">A4</span><p class="d-q">Une annotation à part, plutôt qu’un texte coloré dans la séance&#8239;?<span>Le 22 septembre, la première marche évoquée était de colorer un ajout dans le contenu.</span></p><p class="d-p">À part. Le texte de l’autrice reste intact ; le PDF et Présenter l’ignorent sans rien trier ; chaque annotation est signée, se compte sur la fiche et se marque reprise.</p></div>
+    <div class="d"><span class="d-num">A5</span><p class="d-q">Une autre main : une écriture manuscrite, en rose surligneur&#8239;?<span>Le violet est déjà pris par les cartes À vérifier et par les liens. Le rose n’existe nulle part ailleurs dans l’application, ni sur le terrain bleu des schémas.</span></p><p class="d-p">Oui. L’écriture manuscrite est réservée au texte écrit par les membres ; les boutons et les comptes gardent la police de l’application.</p></div>
+    <div class="d"><span class="d-num">A6</span><p class="d-q">Viser une phrase ou un point du schéma&#8239;?<span>Une remarque précise se comprend sans explication.</span></p><p class="d-p">Oui, avec le stylo ou la conversation. L’annotation garde la phrase citée : si l’autrice la réécrit, l’annotation remonte à sa situation, citation comprise, sans se perdre. Un point du schéma se repère en proportion du schéma.</p></div>
+    <div class="d"><span class="d-num">A7</span><p class="d-q">Pas de réponse, mais « C’est repris »&#8239;?<span>Avec la conversation, la réponse vient d’elle-même.</span></p><p class="d-p">Oui pour la marge et le stylo. L’autrice marque une annotation reprise : elle s’efface et sort du compte de la fiche. Elle peut la rouvrir.</p></div>
+    <div class="d"><span class="d-num">A8</span><p class="d-q">L’autrice annote-t-elle sa propre séance&#8239;?</p><p class="d-p">Non avec la marge et le stylo : elle modifie son contenu. Avec la conversation, elle répond.</p></div>
+    <div class="d"><span class="d-num">A9</span><p class="d-q">Les membres du groupe gardent-ils le droit de modifier la séance&#8239;?<span>Aujourd’hui, tout membre du groupe peut modifier une séance partagée avec lui.</span></p><p class="d-p">Oui, rien ne change pour le 1er décembre : la bascule les sépare. En Annoter, le contenu est figé, pour qu’un toucher ne modifie rien par erreur. La question revient avec le « staff », mis de côté.</p></div>
+    <div class="d"><span class="d-num">A10</span><p class="d-q">Prévenir des nouvelles annotations, par une pastille ou un e-mail&#8239;?</p><p class="d-p">Pas pour le 1er décembre : le compte sur la fiche suffit à la préparation de la PEDA. À revoir après la formation.</p></div>
+    <div class="d"><span class="d-num">A11</span><p class="d-q">Masquer les annotations : retenu, ou le temps de la visite&#8239;?</p><p class="d-p">Retenu sur l’appareil, comme le sommaire masqué. À la place du compte, « Afficher les annotations » rappelle combien restent à reprendre.</p></div>
+  </div>
+</section>
+
+<section class="dev" aria-labelledby="titre-dev">
+  <span class="dev-marque">Réservé au développeur</span>
+  <h2 id="titre-dev">Livraison</h2>
+  <p>On peut s’arrêter ici. Un seul change, effort M quelle que soit la piste, pour une bêta au groupe de formation la semaine du 23 novembre et l’ouverture à tous le 1er décembre.</p>
+  <ul>
+    <li><b>Données</b> : une table <code>annotations</code> à côté de la séance, jamais dans son contenu : séance, situation (vide pour la séance entière), auteur, texte, <code>reprise_le</code>, <code>cree_le</code>, et une <code>ancre</code> facultative : la phrase visée (son texte et sa carte) ou un point du schéma (x, y en proportion de l’image). Supprimer une situation ou une séance emporte ses annotations. Les droits suivent le tableau « Qui peut faire quoi » et se décident dans le dépôt de code.</li>
+    <li><b>Éditeur</b> : les annotations se chargent à part du store de la séance. Elles ne passent ni par l’enregistrement automatique ni par <code>useGestionConflitEntrainement</code>, et n’entrent jamais dans <code>PdfEntrainement</code> ni dans <code>OverlayPresentation</code>. Publier, supprimer et « C’est repris » écrivent tout de suite.</li>
+    <li><b>La bascule</b> : un état de l’éditeur, pas une page à part. À partir de <code>md</code>, elle se place dans <code>barreOutils</code>, entre <code>LienRetourEntrainements</code> et les commandes, déjà réduites à l’icône sous <code>lg</code> ; pour l’autrice, la même place porte le compte. En dessous de <code>md</code>, une barre à part sous l’en-tête, qui s’efface avec <code>useScrollDirection</code>, comme l’en-tête de la liste. En Annoter, <code>MinimalTiptap</code> et le schéma passent en lecture seule et les outils d’édition s’éteignent ; le dernier mode choisi est une préférence par appareil, en cookie. L’astuce de la première ouverture passe par les astuces de l’écran existantes.</li>
+    <li><b>Le stylo</b> : une phrase se retrouve par son texte à l’affichage (décoration Tiptap, sans toucher au document) ; introuvable, l’annotation remonte à sa situation avec sa citation. Une pastille se pose sur le schéma statique, en proportion.</li>
+    <li><b>La conversation</b> : un panneau à droite à partir de <code>lg</code>, une feuille qui monte en dessous ; la même table, triée par date. La réponse de l’autrice est une annotation de plus, sans « C’est repris ».</li>
+    <li><b>La marge</b> : elle n’apparaît qu’à partir de <code>xl</code>, sommaire ouvert ; en dessous, les annotations se placent sous le titre, comme sur téléphone.</li>
+    <li><b>Fiche</b> : le compte « à reprendre » vient avec la liste, dans la même requête. Le toucher ouvre la séance sur la première annotation à reprendre (une ancre dans l’adresse).</li>
+    <li><b>Police</b> : Shantell Sans par <code>next/font/google</code>, sous-ensemble latin, chargée par la page de la séance seulement. <b>Masquage</b> : une préférence par appareil, en cookie, comme <code>entrainement_sommaire_masque</code>.</li>
+    <li><b>Mesure</b> (ADR-0024) : <code>annotation_publiee</code> (cible : séance, situation, phrase ou schéma), <code>annotation_reprise</code>, <code>annotations_masquees</code>, et l’ouverture d’une séance depuis le compte de la fiche.</li>
+  </ul>
+</section>
+</main>
+
+<script>
+(function () {
+  var racine = document.documentElement;
+  var boutonsTheme = document.querySelectorAll('[data-theme-choix]');
+  function themeActuel() { return racine.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+  function marqueTheme() { var v = themeActuel(); boutonsTheme.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeChoix === v)); }); }
+  boutonsTheme.forEach(function (b) { b.addEventListener('click', function () { racine.dataset.theme = b.dataset.themeChoix; marqueTheme(); }); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', marqueTheme);
+  marqueTheme();
+
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  var I = {
+    retour: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    ampoule: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/>',
+    presenter: '<path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/>',
+    pdf: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
+    coche: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+    copier: '<rect width="13" height="13" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+    corbeille: '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+    points: '<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>',
+    liste: '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+    stylo: '<path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/>',
+    crayon: '<path d="M12 20h9"/><path d="M16.4 3.6a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4z"/>',
+    bulle: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/>',
+    viser: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+    suivant: '<path d="m9 18 6-6-6-6"/>',
+    masquer: '<path d="M10.7 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-2.2 3.2"/><path d="M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m2 2 20 20"/>',
+    oeil: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+    chevron: '<path d="m6 9 6 6 6-6"/>',
+    croix: '<path d="M6 6l12 12M18 6 6 18"/>',
+    sifflet: '<path d="M9 7a5 5 0 1 0 4.9 6H21V9h-9.3"/><circle cx="9" cy="12" r="1.2"/>',
+    membres: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3.3 2.5-5.6 5.5-5.6s5.5 2.3 5.5 5.6"/><path d="M16 5.2a3.2 3.2 0 0 1 0 6"/><path d="M18 13.6c1.6.7 2.6 2.6 2.6 5.4"/>',
+    personne: '<circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.9 3.1-6.6 7-6.6s7 2.7 7 6.6"/>',
+    importer: '<path d="M12 15V4M7 9l5-5 5 5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/>',
+    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    reglages: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+    dossier: '<path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>',
+    diese: '<path d="M5 9h15M4 15h15M10 3 8 21M16 3l-2 18"/>',
+    loupe: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+    partager: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+    panneau: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M16 15l-3-3 3-3"/>'
+  };
+  function ic(n) { return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + I[n] + '</svg>'; }
+  var DESSINS = {
+    plaquette: '<path d="M18 9h-4.5A2.5 2.5 0 0 0 11 11.5v28a2.5 2.5 0 0 0 2.5 2.5h21a2.5 2.5 0 0 0 2.5-2.5v-28A2.5 2.5 0 0 0 34.5 9H30"/><path d="M18 12V7.5A1.5 1.5 0 0 1 19.5 6h9A1.5 1.5 0 0 1 30 7.5V12z"/><path d="M16 18h9M16 22.5h6"/><path class="trajectoire" d="M16 36.5c6-1 11-5 15-11.5"/><path class="pointe" d="M25.11 26.13L31 25L31.93 30.93"/>',
+    staff: '<circle cx="10.5" cy="20" r="4"/><path d="M3 37c0-4.6 3.3-8.2 7.5-8.2 1.9 0 3.6.7 4.9 1.9"/><circle cx="37.5" cy="20" r="4"/><path d="M45 37c0-4.6-3.3-8.2-7.5-8.2-1.9 0-3.6.7-4.9 1.9"/><circle cx="24" cy="23" r="5.5"/><path d="M14 43c0-6.8 4.5-11.5 10-11.5s10 4.7 10 11.5"/><path class="trajectoire" d="M12.22 12.51A13 13 0 0 1 35.02 11.11"/><path class="pointe" d="M35.24 5.12L35.02 11.11L29.04 10.68"/>',
+    ronde: '<circle cx="24" cy="12.75" r="9"/><circle cx="24" cy="10.77" r="2.88"/><path d="M18.05 19.5A6.09 6.09 0 0 1 29.95 19.5"/><circle cx="36.99" cy="35.25" r="9"/><circle cx="36.99" cy="33.27" r="2.88"/><path d="M31.04 42A6.09 6.09 0 0 1 42.94 42"/><circle cx="11.01" cy="35.25" r="9"/><circle cx="11.01" cy="33.27" r="2.88"/><path d="M5.06 42A6.09 6.09 0 0 1 16.96 42"/><path class="passe" d="M34.7 17.23A15 15 0 0 1 38.46 23.75"/><path class="passe" d="M27.76 42.27A15 15 0 0 1 20.24 42.27"/><path class="passe" d="M9.54 23.75A15 15 0 0 1 13.3 17.23"/>'
+  };
+  function picto(c) { return '<svg class="picto" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + DESSINS[c] + '</svg>'; }
+
+  /* ---------- données d'exemple ---------- */
+  var GROUPE = 'PEDA1';
+  var GENS = {
+    lea: { nom: 'Léa Martin', court: 'Léa M.', ini: 'LM' },
+    nadia: { nom: 'Nadia Lefèvre', court: 'Nadia L.', ini: 'NL' },
+    hugo: { nom: 'Hugo Perrin', court: 'Hugo P.', ini: 'HP' }
+  };
+  var SEANCE = {
+    theme: 'Attaquer vite après la récupération',
+    meta: ['Jeu. 10 déc.', '1h30', '14 joueurs', 'U13', 'Léa Martin'],
+    objectifs: ['Courir vers l’avant dès la récupération du ballon', 'Passer au partenaire démarqué plutôt que dribbler'],
+    sits: [
+      { id: 's1', img: '01', titre: 'Relais de passes en mouvement', mots: ['Passe', 'Échauffement'],
+        cartes: [['faire', 'À faire', 'Deux colonnes face à face, un ballon pour deux. Après la passe, on court derrière la colonne d’en face.'], ['verif', 'À vérifier', 'La passe arrive devant le partenaire, dans sa course.']] },
+      { id: 's2', img: '02', titre: 'Montée de balle à trois, aller et retour', mots: ['Montée de balle', 'Grand espace'],
+        cartes: [['faire', 'À faire', 'Trois joueurs partent de la zone. Le gardien relance sur le premier démarqué ; tir, puis retour en défense.'], ['dire', 'À dire', 'Regarde devant toi avant de recevoir.']] },
+      { id: 's3', img: '05', titre: '2 contre 1 sur grand espace', mots: ['Surnombre', 'Grand espace'],
+        cartes: [['faire', 'À faire', 'Deux attaquants contre un défenseur parti du centre. Le défenseur démarre au signal, à la relance du gardien.'], ['verif', 'À vérifier', 'Le porteur fixe le défenseur avant de passer.']] },
+      { id: 's4', img: '07', titre: 'Match à thème : le but après fixation compte double', mots: ['Fixation', 'Jeu'],
+        cartes: [['faire', 'À faire', '6 contre 6 sur tout le terrain, matchs de 6 minutes.'], ['evol', 'Évoluer', 'Le but marqué en moins de cinq secondes après la récupération compte triple.']] }
+    ]
+  };
+  // chaque phrase porte un identifiant : c'est ce que le stylo et la conversation visent
+  var PHRASES = {};
+  function decoupe(t) { return t.match(/[^.!?]+[.!?]+|[^.!?]+$/g).map(function (x) { return x.trim(); }); }
+  SEANCE.objectifs.forEach(function (o, i) { PHRASES['entete-o' + i] = o; });
+  SEANCE.sits.forEach(function (s) { s.cartes.forEach(function (k, ci) { decoupe(k[2]).forEach(function (p, pi) { PHRASES[s.id + '-c' + ci + '-p' + pi] = p; }); }); });
+  function phraseAncre(id) { return { t: 'phrase', id: id, txt: PHRASES[id] }; }
+  var NOTES_DEPART = [
+    { id: 'n1', cible: 'entete', ancre: phraseAncre('entete-o1'), qui: 'nadia', quand: 'mardi', txt: 'Tes deux objectifs se recoupent. Pour la PEDA, garde le premier et fais-en le fil des quatre situations.' },
+    { id: 'n2', cible: 's2', ancre: { t: 'schema', x: 84, y: 50 }, qui: 'nadia', quand: 'mardi', txt: 'À 14, trois colonnes de trois laissent cinq joueurs à l’arrêt. Prévois deux ateliers en parallèle.' },
+    { id: 'n3', cible: 's2', ancre: phraseAncre('s2-c0-p1'), qui: 'hugo', quand: 'hier', txt: 'On l’a faite au club : ajoute un critère de réussite, par exemple marquer en moins de trois passes.' },
+    { id: 'n4', cible: 's3', ancre: { t: 'schema', x: 50, y: 50 }, qui: 'nadia', quand: 'lundi', txt: 'Où part le défenseur ? Dessine-le, sinon les joueurs ne sauront pas quand démarrer.', reprise: true }
+  ];
+  var FICHES = {
+    peda: { id: 'peda', st: 'encours', cats: ['U13'], t: SEANCE.theme, o: SEANCE.objectifs, mots: ['Passe', 'Montée de balle', 'Grand espace', 'Surnombre', 'Fixation'], n: '4', eff: '14 joueurs', du: '1h30', d: '10 déc.', a: 'Léa Martin', g: GROUPE },
+    pins: { id: 'pins', st: 'pret', cats: ['U13'], t: 'Défendre en 0-6 : sortir sur le tireur', o: ['Sortir sur le porteur au bon moment', 'Revenir dans sa zone après la passe'], mots: ['Défense', '0-6', 'Duel'], n: '3', eff: '12 joueurs', du: '1h15', d: '', a: 'Léa Martin', g: 'HB Les Pins' },
+    hugo: { id: 'hugo', st: 'encours', cats: ['U15'], t: 'Finir en course face au gardien', o: ['Tirer dans la foulée, sans s’arrêter'], mots: ['Tir', 'Gardien', 'Course'], n: '3', eff: '16 joueurs', du: '1h30', d: '11 déc.', a: 'Hugo Perrin', g: GROUPE, compte: [1, 2] }
+  };
+
+  /* ---------- état ---------- */
+  function copie(l) { return l.map(function (n) { var c = {}; for (var k in n) c[k] = n[k]; return c; }); }
+  // « neuve » : personne n'a encore annoté ; « tard » : la séance a déjà ses annotations
+  function etatDepart(qui, depart) {
+    var neuve = depart !== 'tard';
+    return { qui: qui, depart: neuve ? 'neuve' : 'tard', ecran: neuve ? 'seance' : 'liste', masque: false, notes: neuve ? [] : copie(NOTES_DEPART), texte: '', menu: null, som: false, bulle: '', vient: null, flash: null,
+      annote: false,  // la bascule sur « Annoter » (la marge, le stylo) ; pour la conversation, c'est le panneau ouvert
+      vise: false,    // la conversation : on touche ce qu'on vise
+      astuce: neuve,  // la bulle qui montre « Annoter » à la première ouverture
+      indice: false,  // la bulle qui dit quoi faire, en entrant dans Annoter
+      compo: null,    // la marge : le bloc où l'on écrit
+      cible: null,    // le stylo : ce qu'on est en train d'annoter
+      ouverte: null,  // le stylo : l'annotation dépliée
+      pan: false,     // la conversation ouverte
+      filCible: { cible: 'entete', ancre: null } };
+  }
+  var E = etatDepart('nadia', 'neuve');
+  var format = 'tel', piste = 'stylo';
+  var TEXTE_EXEMPLE = 'Tes deux objectifs se recoupent. Pour la PEDA, garde le premier et fais-en le fil des quatre situations.';
+  var zone = document.getElementById('zone'), cadre = document.getElementById('cadre'), ecran = document.getElementById('ecran'), calque = document.getElementById('calque'), pourquoi = document.getElementById('pourquoi');
+  var minuteur, suivant = 5;
+  var efface = false, dernierHaut = 0;  // la barre du téléphone, effacée en descendant
+  var ORDRE = ['entete', 's1', 's2', 's3', 's4'];
+  function ord() { return format === 'ord'; }
+  function tel() { return format === 'tel'; }
+  function autrice() { return E.qui === 'lea'; }
+  // la bascule : un membre du groupe passe en Annoter ; l'autrice reste en Modifier
+  function enAnnoter() { return !autrice() && (piste === 'fil' ? E.pan : E.annote); }
+  function vise() { return piste === 'stylo' ? enAnnoter() : piste === 'fil' && E.vise; }
+  function fige() { return enAnnoter() || E.vise; }
+  function bascule(on) {
+    E.astuce = false; E.vise = false; E.cible = null; E.compo = null; E.ouverte = null; E.texte = ''; E.indice = on;
+    if (on) E.masque = false;
+    if (piste === 'fil') E.pan = on; else E.annote = on;
+  }
+  // en Modifier, le texte s'écrit sur place
+  function ecrit() { return fige() ? '' : ' contenteditable="true" spellcheck="false"'; }
+  function trouve(id) { return E.notes.filter(function (x) { return x.id === id; })[0]; }
+  function notesDe(c) { return E.notes.filter(function (n) { return n.cible === c; }); }
+  function duGroupe(l) { return l.filter(function (n) { return n.qui !== 'lea'; }); }
+  function aReprendre(l) { return duGroupe(l).filter(function (n) { return !n.reprise; }).length; }
+  function pluriel(n, mot) { return n + ' ' + mot + (n > 1 ? 's' : ''); }
+  function compteTexte(r, t) {
+    if (r) return pluriel(r, 'annotation') + ' à reprendre';
+    return t === 1 ? '1 annotation, reprise' : t + ' annotations, toutes reprises';
+  }
+  function dit(t) { E.bulle = t; clearTimeout(minuteur); minuteur = setTimeout(function () { E.bulle = ''; calque.innerHTML = calqueHtml(); }, 2400); }
+  function sitDe(c) { for (var i = 0; i < SEANCE.sits.length; i++) if (SEANCE.sits[i].id === c) return { s: SEANCE.sits[i], i: i }; return null; }
+  function num(i) { return (i < 9 ? '0' : '') + (i + 1); }
+  function cibleDePhrase(id) { return id.split('-')[0]; }
+  // l'élément de la page sous lequel une annotation (ou ce qu'on annote) se déplie
+  function elemDe(c) {
+    if (c.ancre && c.ancre.t === 'phrase') return c.ancre.id.indexOf('entete-o') === 0 ? 'entete-obj' : c.ancre.id.replace(/-p\d+$/, '');
+    if (c.ancre && c.ancre.t === 'schema') return c.cible + '-schema';
+    return c.cible + '-titre';
+  }
+  function triees() { return duGroupe(E.notes).slice().sort(function (a, b) { return ORDRE.indexOf(a.cible) - ORDRE.indexOf(b.cible); }); }
+
+  /* ---------- la liste ---------- */
+  function pageListe() {
+    var nadia = !autrice();
+    var h = '<div class="app"><nav class="rail0" aria-label="Navigation principale"><button type="button" class="burger" data-autre aria-label="Menu">' + ic('menu') + '</button>' +
+      rd('Entraînements', 'sifflet', true) + rd('Groupes', 'membres', false) + rd('Profil', 'personne', false) + '<span class="bas">' + rd('Importer', 'importer', false) + '</span></nav>';
+    h += '<div class="contenu"><span class="marque0"><img src="logo.png" alt="Place aux coachs" width="443" height="442"></span>' +
+      '<div class="onglets0"><button type="button" class="ong" data-autre' + (nadia ? '' : ' aria-current="page"') + '>' + picto('plaquette') + '<span class="lib"><span>Mes entraînements</span></span></button>' +
+      '<button type="button" class="ong" data-autre' + (nadia ? ' aria-current="page"' : '') + '>' + picto('staff') + '<span class="lib"><span>' + (nadia ? GROUPE : 'Groupes') + '</span>' + ic('chevron') + '</span></button>' +
+      '<button type="button" class="ong" data-autre>' + picto('ronde') + '<span class="lib"><span>Communauté</span></span></button></div>' +
+      '<div class="filtres0"><button type="button" class="pilule0" data-autre>' + ic('reglages') + 'Filtrer' + ic('chevron') + '</button>' +
+      '<div class="barre0"><span>' + ic('dossier') + 'Catégories</span><span class="sep"></span><span>' + ic('diese') + 'Mots-clés</span><span class="sep"></span><span>' + ic('liste') + '<em>Brouillon</em><em>En cours</em><em>Prêt</em></span><span class="sep"></span><span>' + ic('loupe') + '</span></div></div>';
+    var l = nadia ? [FICHES.peda, FICHES.hugo] : [FICHES.peda, FICHES.pins];
+    h += '<div class="liste">' + l.map(carte).join('') + '</div>' +
+      '<div class="fab-zone"><button type="button" class="fab" data-autre aria-label="Nouvel entraînement">' + ic('plus') + '<span>Nouvel entraînement</span></button></div>' +
+      '<nav class="nav-bas" aria-label="Navigation principale">' + dest('Entraînements', 'sifflet', true) + dest('Groupes', 'membres', false) + dest('Profil', 'personne', false) + '</nav></div></div>';
+    return h;
+  }
+  function rd(l, i, actif) { return '<button type="button" class="rd" data-autre' + (actif ? ' aria-current="page"' : '') + '><span class="pil">' + ic(i) + '</span>' + l + '</button>'; }
+  function dest(l, i, actif) { return '<button type="button" class="dest" data-autre' + (actif ? ' aria-current="page"' : '') + '><span class="pil">' + ic(i) + '</span>' + l + '</button>'; }
+  function carte(s) {
+    var mien = s.a === 'Léa Martin' && autrice();
+    var compte = '';
+    if (s.id === 'peda') {
+      var t = duGroupe(E.notes).length, r = aReprendre(E.notes);
+      if (t) compte = '<button type="button" class="compte-notes' + (r ? '' : ' toutes') + '" data-compte>' + ic(r ? 'stylo' : 'coche') + compteTexte(r, t) + '</button>';
+    } else if (s.compte) compte = '<button type="button" class="compte-notes" data-autre="exemple">' + ic('stylo') + compteTexte(s.compte[0], s.compte[1]) + '</button>';
+    function m(l, v) { return '<span><small>' + l + '</small><b' + (v ? '' : ' class="nul"') + '>' + (v || '—') + '</b></span>'; }
+    var ouvrir = s.id === 'peda' ? 'data-ouvrir' : 'data-autre="exemple"';
+    return '<article class="carte0 ' + s.st + '"><div class="c0-in"><div class="c0-corps">' +
+      '<div class="c0-haut"><span class="st">' + (s.st === 'pret' ? 'Prêt' : 'En cours') + '</span><span class="trait"></span><span class="cats">' + s.cats.map(function (c) { return '<span>' + c + '</span>'; }).join('') + '</span></div>' +
+      '<h4 class="c0-titre">' + esc(s.t) + '</h4><ul class="c0-obj">' + s.o.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+      '<div class="mots">' + s.mots.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' + compte + '</div>' +
+      '<div class="c0-rail"><div class="c0-metas">' + m('Situations', s.n) + m('Effectif', s.eff) + m('Durée', s.du) + m('Date', s.d) + '</div>' +
+      '<div class="c0-auteur"><span class="ini">' + (s.a === 'Hugo Perrin' ? 'HP' : 'LM') + '</span><span>' + esc(s.a) + '<small>' + esc(s.g) + '</small></span></div>' +
+      '<div class="pour-ord"><button type="button" class="btn-ouvrir" ' + ouvrir + '>Ouvrir</button></div>' +
+      '<div class="c0-act pour-ord"><button type="button" data-autre aria-label="Présenter">' + ic('presenter') + '</button><button type="button" data-autre aria-label="Télécharger le PDF">' + ic('pdf') + '</button><button type="button" data-autre aria-label="Dupliquer">' + ic('copier') + '</button>' +
+      (mien ? '<button type="button" data-autre aria-label="Partager">' + ic('partager') + '</button><button type="button" class="rouge" data-autre aria-label="Supprimer">' + ic('corbeille') + '</button>' : '') + '</div>' +
+      '<div class="split pour-tel"><button type="button" class="sp" data-autre>' + ic('presenter') + 'Présenter</button><button type="button" class="sm" data-menu="carte:' + s.id + '" aria-label="Plus d’actions" aria-haspopup="menu">' + ic('chevron') + '</button></div>' +
+      '</div></div></article>';
+  }
+
+  /* ---------- la séance ---------- */
+  function pageSeance() {
+    var h = '<div class="seance' + (fige() ? ' en-annoter' : '') + '"><div class="ed-barre trois"><div class="eb-g"><button type="button" class="retour" data-retour>' + ic('retour') + '<span>Retour aux entraînements</span></button></div>' +
+      '<div class="eb-m">' + (tel() ? '' : milieu()) + '</div><div class="eb-d"><span class="ed-st"><i></i>En cours</span>' +
+      '<button type="button" class="cmd orange" data-autre aria-label="Ajouter une situation">' + ic('plus') + '</button>' +
+      '<button type="button" class="cmd discret" data-autre aria-label="Astuces de l’écran">' + ic('ampoule') + '</button>' +
+      '<button type="button" class="cmd contour" data-presenter aria-label="Présenter">' + ic('presenter') + '<span>Présenter</span></button>' +
+      '<button type="button" class="cmd contour" data-pdf aria-label="Télécharger le PDF">' + ic('pdf') + '<span>PDF</span></button>' +
+      '<button type="button" class="cmd" data-autre aria-label="Enregistré">' + ic('coche') + '<span>Enregistré</span></button></div></div>' + bandeau();
+    // la marge ne prend sa place qu'avec une annotation, ou en Annoter
+    var cls = (piste === 'marge' && !E.masque && (E.notes.length || E.annote) ? ' avec-marge' : '') + (vise() ? ' en-mode' : '');
+    h +='<div class="ed-corps">' + sommaire() + '<div class="ed-main' + cls + '">' + bloc('entete', entete());
+    SEANCE.sits.forEach(function (s, i) { h += bloc(s.id, situation(s, i)); });
+    h += '</div>' + (piste === 'fil' && E.pan && ord() ? '<aside class="panneau" aria-label="Annotations">' + panneau() + '</aside>' : '') + '</div></div>';
+    return h;
+  }
+  var INDICE = {
+    stylo: 'Touche une phrase, un point du schéma ou un titre.',
+    marge: '« Annoter » sous l’en-tête et dans chaque situation.',
+    fil: 'Écris dans la conversation. « Viser » pointe une phrase ou un point du schéma.'
+  };
+  // le milieu de la barre : la bascule d'un membre du groupe, ou le compte de l'autrice
+  function milieu() {
+    var t = duGroupe(E.notes).length, r = aReprendre(E.notes), h;
+    function rond(attr, i, l) { return '<button type="button" class="m-rond" ' + attr + ' aria-label="' + l + '" title="' + l + '">' + ic(i) + '</button>'; }
+    if (autrice()) {
+      // l'autrice n'a pas de bascule : rien ne change tant que personne n'annote
+      if (!t) return '';
+      if (E.masque) h = '<button type="button" class="compte-notes toutes" data-masquer>' + ic('oeil') + 'Afficher les annotations' + (r ? '<small>' + r + ' à reprendre</small>' : '') + '</button>';
+      else h = '<button type="button" class="compte-notes' + (r ? '' : ' toutes') + '" data-premiere>' + ic(r ? 'stylo' : 'coche') + compteTexte(r, t) + '</button>' +
+        (piste === 'fil' ? '' : rond('data-masquer', 'masquer', 'Masquer les annotations'));
+      return '<div class="milieu">' + h + '</div>';
+    }
+    var on = enAnnoter();
+    h = '<div class="bascule" role="group" aria-label="Mode">' +
+      '<button type="button" data-bascule="modifier" aria-pressed="' + !on + '">' + ic('crayon') + '<span>Modifier</span></button>' +
+      '<button type="button" data-bascule="annoter" aria-pressed="' + on + '">' + ic('stylo') + '<span>Annoter</span></button></div>';
+    if (!on && t) h += E.masque ? rond('data-masquer', 'oeil', 'Afficher les annotations') : rond('data-masquer', 'masquer', 'Masquer les annotations');
+    if (!on && E.astuce) h += '<div class="bulle-m astuce" role="note"><p><b>Nouveau : Annoter.</b> Laisse une remarque à l’autrice, d’une autre main, sans toucher à son texte.</p><button type="button" data-astuce-ok>J’ai compris</button></div>';
+    if (on && E.indice) h += '<p class="bulle-m indice" role="status">' + INDICE[piste] + '</p>';
+    return '<div class="milieu">' + h + '</div>';
+  }
+  // sur téléphone, le milieu a sa propre barre ; « Viser » prend la sienne, à toutes les largeurs
+  function bandeau() {
+    if (E.vise) return '<div class="bandeau-n mode" role="status">' + ic('viser') + '<span class="txt">Touche une phrase ou un point du schéma</span><button type="button" data-viser-annuler>' + ic('croix') + '<span>Annuler</span></button></div>';
+    if (!tel()) return '';
+    var m = milieu();
+    if (!m) return '';
+    return '<div class="bandeau-n' + (enAnnoter() ? ' b-annoter' : '') + (efface ? ' efface' : '') + '">' + m + '<span class="esp"></span>' +
+      '<span class="groupe" title="Séance partagée avec ' + GROUPE + '">' + ic('membres') + '<span>' + GROUPE + '</span></span></div>';
+  }
+  function bloc(cible, contenu) {
+    var marge = piste === 'marge' && ord() && !E.masque && (E.notes.length || E.annote) ? '<aside class="marge" aria-label="Annotations">' + zoneNotes(cible) + '</aside>' : '';
+    return '<section class="bloc-a" id="b-' + cible + '"><div class="b-contenu">' + contenu + '</div>' + marge + '</section>';
+  }
+  function entete() {
+    return '<header class="ed-tete"><p class="ed-meta">' + SEANCE.meta.map(esc).join('<i></i>') + '</p><h3 class="ed-titre"' + ecrit() + '>' + titre('entete', SEANCE.theme) + '</h3>' + apres('entete-titre') +
+      '<p class="ed-etiq">Objectifs de la séance</p><ul class="ed-obj">' + SEANCE.objectifs.map(function (o, i) { return '<li' + ecrit() + '>' + phr('entete-o' + i, o) + '</li>'; }).join('') + '</ul>' + apres('entete-obj') +
+      (piste === 'marge' && !ord() ? zoneNotes('entete') : '') + '</header>';
+  }
+  function situation(s, i) {
+    var compteSit = piste === 'fil' ? aReprendre(notesDe(s.id)) : 0;
+    return '<article class="sit"><div class="sit-tete"><span class="sit-num">' + num(i) + '</span><h4 class="sit-titre"' + ecrit() + '>' + titre(s.id, s.titre) + '</h4>' +
+      (compteSit ? '<button type="button" class="sit-n" data-ouvrir-pan="' + s.id + '" aria-label="' + pluriel(compteSit, 'annotation') + ' à reprendre">' + ic('bulle') + compteSit + '</button>' : '') +
+      '<div class="sit-act">' + (ord() ? '<button type="button" data-autre aria-label="Copier">' + ic('copier') + '</button><button type="button" data-autre aria-label="Supprimer la situation">' + ic('corbeille') + '</button>'
+               : '<button type="button" data-menu="sit:' + s.id + '" aria-label="Options de la situation" aria-haspopup="menu">' + ic('points') + '</button>') + '</div></div>' +
+      '<div class="sit-mots">' + s.mots.map(function (m) { return '<span>' + esc(m) + '</span>'; }).join('') + '</div>' + apres(s.id + '-titre') +
+      (piste === 'marge' && !ord() ? zoneNotes(s.id) : '') +
+      schema(s) + apres(s.id + '-schema') +
+      '<button type="button" class="ajout-schema" data-autre>' + ic('plus') + 'Ajouter un schéma</button>' +
+      s.cartes.map(function (k, ci) {
+        return '<div class="encart ' + k[0] + '"><h5>' + k[1] + '</h5><p' + ecrit() + '>' + decoupe(k[2]).map(function (p, pi) { return phr(s.id + '-c' + ci + '-p' + pi, p); }).join(' ') + '</p></div>' + apres(s.id + '-c' + ci);
+      }).join('') + '</article>';
+  }
+  // un titre : visé en entier pendant le stylo, porteur des pastilles des annotations « entières »
+  function titre(cible, txt) {
+    var l = piste === 'stylo' && !E.masque ? notesDe(cible).filter(function (n) { return !n.ancre; }) : [];
+    if (vise()) return '<span class="visable" data-viser-titre="' + cible + '" tabindex="0">' + esc(txt) + '</span>' + l.map(pastille).join('');
+    return esc(txt) + l.map(pastille).join('');
+  }
+  // une phrase : surlignée si elle est annotée (stylo), visable pendant le stylo ou la visée, allumée quand on y mène
+  function phr(id, txt) {
+    var l = piste === 'stylo' && !E.masque ? E.notes.filter(function (n) { return n.ancre && n.ancre.t === 'phrase' && n.ancre.id === id; }) : [];
+    var temp = E.cible && E.cible.ancre && E.cible.ancre.id === id;
+    var f = E.flash && trouve(E.flash), flash = f && f.ancre && f.ancre.id === id;
+    // en Annoter, les annotations posées restent surlignées
+    if (vise()) return '<span class="visable' + (temp || l.length ? ' surl' : '') + (temp ? ' temp' : '') + '" data-viser="' + id + '" tabindex="0">' + esc(txt) + '</span>' + l.map(pastille).join('');
+    if (l.length || temp || flash) {
+      var rep = l.length && l.every(function (n) { return n.reprise; });
+      return '<mark class="surl' + (rep ? ' rep' : '') + (temp ? ' temp' : '') + (flash ? ' flash' : '') + '"' + (l.length ? ' data-voir="' + l[0].id + '"' : '') + '>' + esc(txt) + '</mark>' + l.map(pastille).join('');
+    }
+    return esc(txt);
+  }
+  function pastille(n) {
+    var p = GENS[n.qui];
+    return '<button type="button" contenteditable="false" class="pastille-n' + (n.reprise ? ' rep' : '') + '" data-voir="' + n.id + '" aria-expanded="' + (E.ouverte === n.id) + '" aria-label="Annotation de ' + p.court + (n.reprise ? ', reprise' : '') + '">' + (n.reprise ? ic('coche') : p.ini) + '</button>';
+  }
+  function schema(s) {
+    var h = '';
+    if (piste === 'stylo' && !E.masque) h += E.notes.filter(function (n) { return n.cible === s.id && n.ancre && n.ancre.t === 'schema'; }).map(function (n) {
+      var p = GENS[n.qui];
+      return '<button type="button" class="epingle' + (n.reprise ? ' rep' : '') + '" style="left:' + n.ancre.x + '%;top:' + n.ancre.y + '%" data-voir="' + n.id + '" aria-expanded="' + (E.ouverte === n.id) + '" aria-label="Annotation de ' + p.court + ' sur le schéma">' + (n.reprise ? ic('coche') : p.ini) + '</button>';
+    }).join('');
+    if (E.cible && E.cible.cible === s.id && E.cible.ancre && E.cible.ancre.t === 'schema') h += '<span class="epingle temp" style="left:' + E.cible.ancre.x + '%;top:' + E.cible.ancre.y + '%">' + GENS[E.qui].ini + '</span>';
+    var f = E.flash && trouve(E.flash);
+    if (f && f.cible === s.id && f.ancre && f.ancre.t === 'schema') h += '<span class="epingle flash" style="left:' + f.ancre.x + '%;top:' + f.ancre.y + '%">' + GENS[f.qui].ini + '</span>';
+    return '<div class="sit-schema" data-schema="' + s.id + '"' + (vise() ? ' aria-label="Schéma : touchez un point"' : '') + '><img src="schemas/' + s.img + '.webp" alt="" width="640" height="322" draggable="false">' + h + '</div>';
+  }
+
+  /* la marge */
+  function zoneNotes(cible) {
+    if (E.masque) return '';
+    var h = notesDe(cible).map(noteMarge).join('');
+    if (!autrice() && E.annote) {
+      if (ord() && E.compo && E.compo.cible === cible) h += composer({ cible: cible, ancre: null }, true);
+      else h += '<button type="button" class="annoter" data-annoter="' + cible + '">' + ic('stylo') + 'Annoter ' + (cible === 'entete' ? 'la séance' : 'la situation') + '</button>';
+    }
+    return h ? '<div class="notes">' + h + '</div>' : '';
+  }
+  function noteMarge(n) {
+    var p = GENS[n.qui];
+    var vient = E.vient === n.id ? ' vient' : '';
+    if (n.reprise) return '<article class="note reprise' + vient + '" id="note-' + n.id + '">' + ic('coche') + '<p class="rep-txt"><b>Repris</b> ' + esc(p.court) + ' : ' + esc(n.txt) + '</p>' +
+      (autrice() ? '<button type="button" data-rouvrir="' + n.id + '">Rouvrir</button>' : '') + '</article>';
+    return '<article class="note' + vient + '" id="note-' + n.id + '">' + teteNote(n) + '<p class="note-txt">' + esc(n.txt) + '</p>' +
+      (autrice() ? '<button type="button" class="repris" data-repris="' + n.id + '">' + ic('coche') + 'C’est repris</button>' : '') + '</article>';
+  }
+  function teteNote(n, fermer) {
+    var p = GENS[n.qui];
+    return '<header class="note-tete"><span class="note-ini" aria-hidden="true">' + p.ini + '</span><span class="note-qui"><b>' + esc(p.court) + '</b><time>' + n.quand + '</time></span>' +
+      (n.qui === E.qui ? '<button type="button" class="suppr rouge" data-suppr="' + n.id + '" aria-label="Supprimer mon annotation">' + ic('corbeille') + '</button>' : '') +
+      (fermer ? '<button type="button" class="suppr note-ferme" data-voir="' + n.id + '" aria-label="Replier l’annotation">' + ic('croix') + '</button>' : '') + '</header>';
+  }
+
+  /* le stylo : l'annotation dépliée, ou l'écriture sur ordinateur, juste sous ce qu'elle vise */
+  function apres(cle) {
+    if (piste !== 'stylo') return '';
+    var h = '';
+    var n = E.ouverte && !E.masque && trouve(E.ouverte);
+    if (n && elemDe(n) === cle) h += noteDepliee(n);
+    if (E.cible && ord() && elemDe(E.cible) === cle) h += composer(E.cible, false);
+    return h ? '<div class="depli">' + h + '</div>' : '';
+  }
+  function noteDepliee(n) {
+    var etat = '';
+    if (n.reprise) etat = '<p class="etat-rep">' + ic('coche') + 'Repris' + (autrice() ? '<button type="button" data-rouvrir="' + n.id + '">Rouvrir</button>' : ' par Léa') + '</p>';
+    else if (autrice()) etat = '<button type="button" class="repris" data-repris="' + n.id + '">' + ic('coche') + 'C’est repris</button>';
+    // l'autrice passe d'une annotation à reprendre à la suivante, depuis l'annotation même
+    var suite = autrice() && triees().some(function (x) { return !x.reprise && x.id !== n.id; }) ? '<button type="button" class="suivante" data-suivante>Suivante' + ic('suivant') + '</button>' : '';
+    return '<article class="note ouverte' + (E.vient === n.id ? ' vient' : '') + '" id="note-' + n.id + '">' + teteNote(n, true) + '<p class="note-txt">' + esc(n.txt) + '</p>' +
+      (etat || suite ? '<div class="note-act">' + etat + suite + '</div>' : '') + '</article>';
+  }
+
+  /* ce qu'une annotation vise, en citation */
+  function citation(c) {
+    var x = c.cible === 'entete' ? null : sitDe(c.cible);
+    var lieu = x ? '<b>' + num(x.i) + '</b> ' : '';
+    if (c.ancre && c.ancre.t === 'phrase') return lieu + '<q>' + esc(c.ancre.txt) + '</q>';
+    if (c.ancre && c.ancre.t === 'schema') return '<span class="mini"><img src="schemas/' + x.s.img + '.webp" alt="" width="640" height="322"><i style="left:' + c.ancre.x + '%;top:' + c.ancre.y + '%"></i></span><span>' + lieu + 'Un point du schéma</span>';
+    return x ? '<span>' + lieu + esc(x.s.titre) + '</span>' : '<span>La séance</span>';
+  }
+  function libCible(c) {
+    var x = c.cible === 'entete' ? null : sitDe(c.cible);
+    if (c.ancre && c.ancre.t === 'phrase') return { t: 'Annoter cette phrase', s: x ? 'Situation ' + num(x.i) : 'Objectifs de la séance' };
+    if (c.ancre && c.ancre.t === 'schema') return { t: 'Annoter ce point du schéma', s: 'Situation ' + num(x.i) };
+    return x ? { t: 'Annoter la situation ' + num(x.i), s: x.s.titre } : { t: 'Annoter la séance', s: SEANCE.theme };
+  }
+  var AIDE = 'Visible des membres de ' + GROUPE + '. N’apparaît ni dans le PDF ni dans Présenter.';
+  function composer(c, marge) {
+    var p = GENS[E.qui], l = libCible(c);
+    return '<form class="note compo" data-compo-form><header class="note-tete"><span class="note-ini" aria-hidden="true">' + p.ini + '</span><span class="note-qui"><b>' + esc(p.court) + '</b><small>' + esc(l.t.replace('Annoter ', 'sur ')) + '</small></span></header>' +
+      (marge ? '' : '<div class="cite">' + citation(c) + '</div>') +
+      '<textarea class="compo-txt" rows="3" placeholder="Ta remarque…" aria-label="' + l.t + '">' + esc(E.texte) + '</textarea><p class="compo-aide">' + AIDE + '</p>' +
+      '<div class="compo-act"><button type="button" class="btn-texte" data-compo-annuler>Annuler</button><button type="submit" class="publier"' + (E.texte.trim() ? '' : ' disabled') + '>Publier</button></div></form>';
+  }
+
+  /* la conversation */
+  function panneau() {
+    var h = '<div class="pan-tete"><h4>Annotations<small>' + GROUPE + ', visibles du groupe seulement</small></h4><button type="button" class="btn-rond" data-pan-fermer aria-label="Fermer">' + ic('croix') + '</button></div>';
+    h += '<div class="pan-liste">' + (E.notes.length ? E.notes.map(message).join('') : '<p class="pan-vide">Aucune annotation pour l’instant.' + (autrice() ? '' : ' Écris la première en bas ; « Viser » pointe une phrase ou un point du schéma.') + '</p>') + '</div>';
+    var ch = [['entete', 'Séance']].concat(SEANCE.sits.map(function (s, i) { return [s.id, num(i)]; }));
+    h += '<form class="pan-compo" data-compo-form><div class="cibles" role="group" aria-label="Sur quoi"><span>Sur</span>' +
+      ch.map(function (x) { return '<button type="button" class="ch" data-sur="' + x[0] + '" aria-pressed="' + (E.filCible.cible === x[0] && !E.filCible.ancre) + '">' + x[1] + '</button>'; }).join('') +
+      '<button type="button" class="viser" data-viser-mode>' + ic('viser') + 'Viser</button></div>' +
+      (E.filCible.ancre ? '<div class="cite-prev"><div class="cite">' + citation(E.filCible) + '</div><button type="button" class="suppr" data-ancre-retirer aria-label="Retirer la citation">' + ic('croix') + '</button></div>' : '') +
+      '<div class="ecrire"><textarea class="compo-txt" rows="1" placeholder="' + (autrice() ? 'Répondre…' : 'Écris une annotation…') + '" aria-label="Écrire une annotation">' + esc(E.texte) + '</textarea><button type="submit" class="publier"' + (E.texte.trim() ? '' : ' disabled') + '>Publier</button></div></form>';
+    return h;
+  }
+  function message(n) {
+    var p = GENS[n.qui], moi = n.qui === E.qui, etat = '';
+    if (n.qui !== 'lea') {
+      if (n.reprise) etat = '<p class="etat-rep">' + ic('coche') + 'Repris' + (autrice() ? '<button type="button" data-rouvrir="' + n.id + '">Rouvrir</button>' : ' par Léa') + '</p>';
+      else if (autrice()) etat = '<button type="button" class="repris" data-repris="' + n.id + '">' + ic('coche') + 'C’est repris</button>';
+    }
+    return '<article class="note msg' + (moi ? ' moi' : '') + (n.reprise ? ' est-reprise' : '') + (E.vient === n.id ? ' vient' : '') + '" id="msg-' + n.id + '">' + teteNote(n) +
+      '<button type="button" class="cite" data-aller="' + n.id + '" aria-label="Aller à ce qu’elle vise">' + citation(n) + '<span class="va">' + ic('suivant') + '</span></button>' +
+      '<p class="note-txt">' + esc(n.txt) + '</p>' + etat + '</article>';
+  }
+
+  function sommaire() {
+    var items = [['entete', '', 'Présentation', '']].concat(SEANCE.sits.map(function (s, i) { return [s.id, num(i), s.titre, s.mots[0] + (s.mots.length > 1 ? ' +' + (s.mots.length - 1) : '')]; }));
+    return '<nav class="sommaire" aria-label="Sommaire de l’entraînement"><div class="som-tete"><span class="som-titre">Sommaire</span><button type="button" data-autre aria-label="Masquer le sommaire">' + ic('panneau') + '</button></div><ul>' +
+      items.map(function (x, i) { return '<li>' + itemSom(x, i === 0) + '</li>'; }).join('') + '</ul>' +
+      '<button type="button" class="som-ajout" data-autre>' + ic('plus') + 'Ajouter une situation</button></nav>';
+  }
+  function itemSom(x, ici) {
+    var r = E.masque ? 0 : aReprendre(notesDe(x[0]));
+    return '<button type="button" class="som' + (ici ? ' ici' : '') + '" data-va="' + x[0] + '"><span class="n">' + x[1] + '</span><span class="l"><span>' + esc(x[2]) + '</span>' + (x[3] ? '<small>' + esc(x[3]) + '</small>' : '') + '</span>' +
+      (r ? '<span class="som-n" aria-label="' + pluriel(r, 'annotation') + ' à reprendre">' + ic('stylo') + r + '</span>' : '') + '</button>';
+  }
+
+  /* ---------- le PDF ---------- */
+  function pagePdf() {
+    var s = SEANCE.sits;
+    function sit(x) {
+      return '<p class="pdf-sit">' + esc(x.titre) + '</p><p class="pdf-mots">Mots-clés : ' + x.mots.map(esc).join(', ') + '</p><img src="schemas/' + x.img + '.webp" alt="" width="640" height="322">' +
+        '<div class="pdf-desc">' + x.cartes.map(function (k) { return '<b>' + k[1] + '</b>' + esc(k[2]); }).join('') + '</div>';
+    }
+    return '<div class="pdf-ecran"><div class="ed-barre"><button type="button" class="retour" data-retour>' + ic('retour') + '<span>Retour à la séance</span></button><span class="esp"></span><span style="font-size:13px;color:var(--attenue);padding-right:8px">Le PDF téléchargé</span></div>' +
+      '<div class="pdf-pages"><article class="pdf-page" aria-label="Page 1 du PDF"><p class="pdf-titre">' + esc(SEANCE.theme) + '</p><p class="pdf-obj">' + SEANCE.objectifs.map(esc).join('<br>') + '</p>' +
+      '<div class="pdf-infos"><p><span>Date : </span>10 décembre 2026</p><p><span>Durée : </span>1h30</p><p><span>Catégorie : </span>U13</p><p><span>Effectif : </span>14 joueurs</p></div>' + sit(s[0]) + '</article>' +
+      '<article class="pdf-page" aria-label="Page 2 du PDF">' + sit(s[1]) + '</article></div></div>';
+  }
+
+  /* ---------- le calque : feuilles, menus, bulle du sommaire ---------- */
+  function calqueHtml() {
+    var h = '';
+    if (E.ecran === 'seance' && !ord()) {
+      var r = E.masque ? 0 : aReprendre(E.notes);
+      if (E.som) h += '<div class="menu-fond" data-fermer></div><div class="menu-som" role="menu">' + [['entete', '', 'Présentation', '']].concat(SEANCE.sits.map(function (s, i) { return [s.id, num(i), s.titre, '']; })).map(function (x) { return itemSom(x, false); }).join('') + '</div>';
+      h += '<button type="button" class="bulle-som" data-som aria-label="Sommaire de l’entraînement' + (r ? ', ' + pluriel(r, 'annotation') + ' à reprendre' : '') + '" aria-expanded="' + E.som + '">' + ic('liste') + (r ? '<span class="pastille" aria-hidden="true">' + r + '</span>' : '') + '</button>';
+      if (piste === 'marge' && E.compo) h += feuille({ cible: E.compo.cible, ancre: null }, true);
+      if (piste === 'stylo' && E.cible) h += feuille(E.cible, false);
+      if (piste === 'fil' && E.pan && !E.vise) h += '<div class="voile" data-fermer><div class="feuille pan" role="dialog" aria-modal="true" aria-label="Annotations"><span class="poignee"></span>' + panneau() + '</div></div>';
+    }
+    if (E.menu) h += '<div class="menu-fond" data-fermer></div><div class="menu" role="menu" style="top:' + E.menu.y + 'px;right:' + E.menu.x + 'px">' + itemsMenu(E.menu.cle) + '</div>';
+    if (E.bulle) h += '<div class="bulle" role="status">' + E.bulle + '</div>';
+    return h;
+  }
+  function feuille(c, marge) {
+    var l = libCible(c);
+    return '<div class="voile" data-fermer><form class="feuille" data-compo-form role="dialog" aria-modal="true" aria-label="' + l.t + '"><span class="poignee"></span>' +
+      '<div class="f-tete"><h4>' + l.t + '<small>' + esc(l.s) + '</small></h4><button type="button" class="btn-rond" data-compo-annuler aria-label="Fermer">' + ic('croix') + '</button></div>' +
+      '<div class="f-corps">' + (marge ? '' : '<div class="cite">' + citation(c) + '</div>') + '<textarea class="compo-txt" rows="4" placeholder="Ta remarque…" aria-label="Ton annotation">' + esc(E.texte) + '</textarea><p class="compo-aide">' + AIDE + '</p></div>' +
+      '<div class="f-pied"><button type="button" class="btn-texte" data-compo-annuler>Annuler</button><button type="submit" class="publier"' + (E.texte.trim() ? '' : ' disabled') + '>Publier</button></div></form></div>';
+  }
+  function itemsMenu(cle) {
+    var p = cle.split(':');
+    function it(attr, i, l, cls) { return '<button type="button" role="menuitem" ' + attr + (cls ? ' class="' + cls + '"' : '') + '>' + ic(i) + l + '</button>'; }
+    if (p[0] === 'sit') return it('data-autre', 'copier', 'Copier la situation') + (autrice() && piste !== 'fil' ? '' : it('data-annoter-sit="' + p[1] + '"', 'stylo', autrice() ? 'Répondre sur la situation' : 'Annoter la situation', 'm-fb')) + it('data-autre', 'corbeille', 'Supprimer la situation', 'm-rouge');
+    var mien = p[1] !== 'hugo' && autrice();
+    return it('data-autre', 'presenter', 'Présenter') + it(p[1] === 'peda' ? 'data-ouvrir' : 'data-autre="exemple"', 'crayon', 'Ouvrir') + it('data-autre', 'copier', 'Dupliquer') + it('data-autre', 'pdf', 'Télécharger le PDF') +
+      (mien ? it('data-autre', 'partager', 'Partager avec un groupe') + it('data-autre', 'corbeille', 'Supprimer', 'm-rouge') : '');
+  }
+
+  /* ---------- explications ---------- */
+  function explications() {
+    var e = E.ecran, lea = autrice(), t = duGroupe(E.notes).length, r = aReprendre(E.notes), h, pts, essai;
+    if (e === 'liste' && lea && !t) {
+      h = 'Personne n’a encore annoté'; essai = 'Essayez : l’étape 1, « Nadia ouvre la séance ».';
+      pts = [['La fiche d’aujourd’hui', 'Tant qu’aucun membre du groupe n’a annoté, rien ne change pour Léa.', 1]];
+    } else if (e === 'liste' && lea) {
+      h = r ? 'Léa voit ce qu’il lui reste à reprendre' : 'Léa a tout repris'; essai = 'Essayez : touchez « ' + compteTexte(r, t) + ' » sur la première fiche.';
+      pts = [['Le compte sur la fiche', 'La fiche dit combien d’annotations Léa n’a pas encore reprises, sans ouvrir la séance. Il est le même pour les trois pistes.', 1],
+        ['Un raccourci', 'Toucher le compte ouvre la séance sur la première annotation à reprendre.', 1],
+        ['Rien d’autre ne bouge', 'Une séance sans annotation garde la fiche d’aujourd’hui, comme la seconde, partagée avec son club.']];
+    } else if (e === 'liste') {
+      h = 'Nadia suit les séances de son groupe'; essai = 'Essayez : ouvrez la séance de Léa.';
+      pts = [['Le même compte', 'Dans l’onglet ' + GROUPE + ', chaque fiche dit ce qui reste à reprendre : Nadia voit où ses remarques attendent encore.', 1],
+        ['Pas de nouvel écran', 'Les séances des stagiaires restent dans l’onglet du groupe, comme aujourd’hui.']];
+    } else if (e === 'pdf') {
+      h = 'Le PDF imprime la séance de Léa, rien d’autre'; essai = 'Revenez à la séance : les annotations y sont toujours.';
+      pts = [['Aucune annotation', 'Le PDF et Présenter montrent la séance telle que l’autrice l’a écrite, quelle que soit la piste. Rien à masquer avant d’imprimer.', 1],
+        ['Le PDF ne change pas', 'C’est le gabarit d’aujourd’hui : la première situation sous l’en-tête, puis une situation par page.']];
+    } else if (lea && !t) {
+      h = 'Rien ne change tant que personne n’annote'; essai = 'Essayez : « Nadia, formatrice » dans « Vu par », puis « Annoter ».';
+      pts = [['Pas de bascule pour Léa', 'Elle écrit sa séance, elle ne l’annote pas : la séance s’ouvre comme aujourd’hui, en Modifier.', 1],
+        ['Le compte vient avec la première annotation', (tel() ? 'Dans une barre sous celle de la séance.' : 'Au milieu de la barre de la séance.') + ' Le toucher mène à la première annotation à reprendre.']];
+    } else if (!lea && !enAnnoter()) {
+      h = t ? 'En Modifier, comme aujourd’hui' : 'Nadia ouvre la séance de Léa : elle est en Modifier';
+      essai = 'Essayez : touchez une phrase, elle se modifie. Puis « Annoter », ' + (tel() ? 'sous la barre.' : 'au milieu de la barre.');
+      pts = [['Modifier, comme aujourd’hui', 'La séance s’ouvre comme d’habitude. Membre du groupe, Nadia peut corriger le texte de Léa, déplacer un joueur, ajouter une situation.'],
+        ['La bascule', (tel() ? '« Modifier » ou « Annoter », dans une barre sous celle de la séance. Elle s’efface quand on descend dans la séance et revient dès qu’on remonte.'
+          : '« Modifier » ou « Annoter », au milieu de la barre de la séance, où la place est libre : pas de seconde barre, la séance garde sa hauteur.') + ' Elle n’apparaît que sur une séance partagée avec un groupe de travail, et pas pour l’autrice.', 1],
+        t ? ['Les annotations restent visibles', 'En Modifier, elles se lisent ; on n’en écrit qu’en Annoter.']
+          : ['Une astuce la première fois', 'À la première ouverture, une bulle montre « Annoter ». Elle ne revient plus une fois touchée.', 1]];
+    } else if (piste === 'marge' && lea) {
+      h = 'La marge : à côté de ce qu’elle commente'; essai = 'Essayez : « C’est repris » sur une annotation, puis l’œil à côté du compte, pour masquer.';
+      pts = [['En marge, d’une autre main', ord() ? 'Les annotations tiennent la marge, à hauteur de ce qu’elles commentent. Survolez-en une : son bloc s’entoure.' : 'Les annotations se placent sous le titre de ce qu’elles commentent.', 1],
+        ['Léa reste en Modifier', 'Elle corrige sa séance avec les annotations sous les yeux.'],
+        ['C’est repris', 'Léa marque ce qu’elle a repris : l’annotation se replie sur une ligne et sort du compte.', 1],
+        ['La séance s’allonge', 'Chaque annotation prend sa place dans la page, surtout sur téléphone. L’œil, à côté du compte, rend la séance nette.']];
+    } else if (piste === 'marge') {
+      h = 'La marge : « Annoter » sous chaque bloc'; essai = E.compo ? 'Essayez : « Publier ».' : 'Essayez : « Annoter la situation » sur la situation 03, puis « Publier ».';
+      pts = [['La séance se fige et s’encadre de rose', 'En Annoter, les outils d’édition s’éteignent et un toucher ne modifie rien. Une bulle, sous la bascule, dit quoi faire puis s’efface. « Modifier » rend la séance comme avant.', 1],
+        ['La séance ou une situation', 'Un bouton sous l’en-tête et dans chaque situation. On ne vise ni une phrase ni un point du schéma.', 1],
+        ['Publiée tout de suite', 'Elle n’attend pas l’enregistrement de la séance et ne touche pas à son contenu.']];
+    } else if (piste === 'stylo' && lea) {
+      h = 'Le stylo : chaque remarque là où elle porte';
+      essai = !r ? 'Essayez : touchez le surlignage, puis « Rouvrir ».' : !E.ouverte ? 'Essayez : touchez le compte, ' + (tel() ? 'sous la barre.' : 'au milieu de la barre.')
+        : r > 1 ? 'Essayez : « C’est repris », puis « Suivante », dans l’annotation.' : 'Essayez : « C’est repris », dans l’annotation.';
+      pts = [['Surligné sur place', 'Une phrase annotée est surlignée en rose, un point du schéma porte une pastille. Léa voit d’un coup d’œil ce qui a été annoté, et où.', 1],
+        ['Léa reste en Modifier', 'Toucher le surlignage ou la pastille déplie l’annotation juste en dessous ; Léa corrige sa phrase dans la foulée.', 1],
+        ['Suivante, dans l’annotation', 'Elle mène à la prochaine à reprendre, dans l’ordre de la séance. Le compte, ' + (tel() ? 'sous la barre' : 'au milieu de la barre') + ', ouvre la première.'],
+        ['C’est repris', 'Le surlignage passe en pointillé, la pastille en coche, et l’annotation sort du compte.']];
+    } else if (piste === 'stylo') {
+      h = 'Le stylo : en Annoter, on touche ce qu’on commente'; essai = E.cible ? 'Essayez : « Publier ».' : t ? 'Essayez : le défenseur au centre du schéma de la situation 03, puis « Modifier » pour revenir.' : 'Essayez : touchez le second objectif, écrivez, puis « Publier ».';
+      pts = [['La séance se fige et s’encadre de rose', 'En Annoter, les outils d’édition s’éteignent : un toucher ne peut ni déplacer un joueur ni modifier une phrase par erreur. Une bulle, sous la bascule, dit quoi faire puis s’efface.', 1],
+        ['Toucher, écrire', 'Une phrase, un point du schéma ou un titre se signalent sous le doigt. Rien à sélectionner au millimètre.', 1],
+        ['Revenir', '« Modifier » rend la séance comme avant. Nadia supprime ses annotations, pas celles des autres ; « C’est repris » appartient à Léa.']];
+    } else if (lea) {
+      h = 'La conversation : à côté de la séance'; essai = 'Essayez : touchez le compte, puis une citation, puis répondez.';
+      pts = [['La séance reste intacte', 'Rien ne s’ajoute au contenu, seulement un compte sur chaque situation annotée. Léa reste en Modifier.', 1],
+        ['Comme une messagerie', 'Les annotations se lisent dans l’ordre, chacune avec ce qu’elle vise : une phrase citée, un point du schéma, une situation.', 1],
+        ['La citation y mène', 'La toucher fait défiler la séance jusqu’à la phrase ou au point, qui s’allume.'],
+        ['Léa répond', 'Dans le même champ. Le fil de discussion vient de lui-même.']];
+    } else {
+      h = 'La conversation : en Annoter, elle s’ouvre'; essai = E.texte.trim() ? 'Essayez : « Publier ».' : 'Essayez : « Viser », puis le défenseur au centre du schéma de la situation 03.';
+      pts = [['La séance se fige', 'En Annoter, la conversation s’ouvre ' + (ord() ? 'à droite' : 'par-dessus') + ' et la séance ne se modifie plus. La fermer ramène en Modifier.', 1],
+        ['Écrire en bas', 'Un champ, comme dans une messagerie. Les puces « Sur » choisissent la séance ou une situation.', 1],
+        ['Viser', '« Viser » laisse toucher une phrase ou un point du schéma dans la séance ; il s’ajoute en citation.']];
+    }
+    return '<h3>' + h + '</h3><ul class="pq">' + pts.map(function (p) { return '<li' + (p[2] ? ' class="main"' : '') + '><h4>' + p[0] + '</h4><p>' + p[1] + '</p></li>'; }).join('') + '</ul><p class="essai">' + essai + '</p>';
+  }
+
+  /* ---------- rendu ---------- */
+  var dernierEcran = null;
+  function rend() {
+    zone.dataset.format = format;
+    var haut = ecran.scrollTop, gauche = ecran.scrollLeft;
+    var liste = cadre.querySelector('.pan-liste'), hautFil = liste ? liste.scrollTop : 0;
+    var cle = E.ecran + format + piste, meme = dernierEcran === cle;
+    if (!meme) { efface = false; dernierHaut = 0; }
+    ecran.innerHTML = E.ecran === 'liste' ? pageListe() : E.ecran === 'seance' ? pageSeance() : pagePdf();
+    if (meme) { ecran.scrollTop = haut; ecran.scrollLeft = gauche; } else { ecran.scrollTop = 0; ecran.scrollLeft = 0; }
+    dernierEcran = cle;
+    calque.innerHTML = calqueHtml();
+    var l2 = cadre.querySelector('.pan-liste'); if (l2) l2.scrollTop = hautFil;
+    pourquoi.innerHTML = explications();
+    document.querySelectorAll('button[data-format]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.format === format)); });
+    document.querySelectorAll('[data-qui]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.qui === E.qui)); });
+    document.querySelectorAll('[data-piste]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.piste === piste)); });
+    document.querySelectorAll('[data-rapide]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.rapide === E.ecran)); });
+    var et = String(etapeActuelle());
+    document.querySelectorAll('[data-etape]').forEach(function (b) { if (b.dataset.etape === et) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    // la flèche des bulles pointe sur « Annoter »
+    ecran.querySelectorAll('.bulle-m').forEach(function (a) {
+      var ba = a.parentNode.querySelector('[data-bascule="annoter"]');
+      if (ba) a.style.setProperty('--fleche', Math.round(ba.offsetLeft + ba.offsetWidth / 2 - a.offsetLeft - 6) + 'px');
+    });
+    E.vient = null; E.flash = null; E.indice = false;
+  }
+  // comme useScrollDirection dans l'application : on descend, la barre s'efface ; on remonte, elle revient
+  ecran.addEventListener('scroll', function () {
+    var y = ecran.scrollTop, d = y - dernierHaut;
+    if (Math.abs(d) < 10) return;
+    dernierHaut = y;
+    var e = y > 0 && d > 0;
+    if (e === efface) return;
+    efface = e;
+    var b = ecran.querySelector('.bandeau-n');
+    if (b) b.classList.toggle('efface', efface);
+  }, { passive: true });
+  // le démarrage, pas à pas
+  function etapeActuelle() {
+    if (E.depart === 'tard') return 'tard';
+    var t = duGroupe(E.notes).length;
+    if (E.qui === 'nadia' && E.ecran === 'seance') {
+      if (t || E.cible || E.compo || E.texte.trim() || E.filCible.ancre) return 3;
+      return enAnnoter() ? 2 : 1;
+    }
+    if (E.qui === 'lea' && t) return E.ecran === 'liste' ? 4 : E.ecran === 'seance' ? 5 : null;
+    return null;
+  }
+  function etape(n) {
+    if (n === 'tard') { E = etatDepart('lea', 'tard'); rend(); return; }
+    n = +n;
+    // ce que Nadia a publié en chemin sert aux étapes de Léa
+    var publiees = E.depart === 'neuve' ? duGroupe(E.notes) : [];
+    E = etatDepart('nadia', 'neuve');
+    if (n >= 2) bascule(true);
+    if (n === 3) {
+      var c = { cible: 'entete', ancre: phraseAncre('entete-o1') };
+      if (piste === 'stylo') E.cible = c; else if (piste === 'marge') E.compo = { cible: 'entete' }; else E.filCible = c;
+      E.texte = TEXTE_EXEMPLE; E.indice = false;
+    }
+    if (n >= 4) {
+      E.qui = 'lea'; E.annote = false; E.pan = false; E.cible = null; E.compo = null; E.texte = ''; E.filCible = { cible: 'entete', ancre: null };
+      E.notes = publiees.length ? publiees : [{ id: 'n1', cible: 'entete', ancre: phraseAncre('entete-o1'), qui: 'nadia', quand: 'à l’instant', txt: TEXTE_EXEMPLE }];
+      E.ecran = n === 4 ? 'liste' : 'seance';
+    }
+    rend();
+    if (n === 3) focusTexte();
+    if (n === 5) { var p = premiere(); if (p) montre(p); }
+  }
+  function defile(el, marge) {
+    if (!el) return;
+    var y = el.getBoundingClientRect().top - ecran.getBoundingClientRect().top + ecran.scrollTop - marge;
+    ecran.scrollTop = Math.max(0, y);
+  }
+  function va(cible) { defile(ecran.querySelector('#b-' + cible), ord() ? 118 : 110); }
+  function versNote(id) {
+    // le stylo : on garde en vue ce que l'annotation vise, juste au-dessus d'elle
+    var n = ecran.querySelector('#note-' + id), d = n && n.closest('.depli');
+    defile(d && d.previousElementSibling ? d.previousElementSibling : n, d ? 124 : 190);
+  }
+  function versMsg(id) {
+    var l = cadre.querySelector('.pan-liste'), m = cadre.querySelector('#msg-' + id);
+    if (l && m) l.scrollTop = Math.max(0, m.offsetTop - 12);
+  }
+  function basDuFil() { var l = cadre.querySelector('.pan-liste'); if (l) l.scrollTop = l.scrollHeight; }
+  function focusTexte() { var t = cadre.querySelector('.compo-txt'); if (t) { t.focus({ preventScroll: true }); t.setSelectionRange(t.value.length, t.value.length); } }
+  function ouvreSeance() { E.ecran = 'seance'; E.menu = null; rend(); }
+  function premiere() { return triees().filter(function (n) { return !n.reprise; })[0]; }
+  function montre(n) {
+    // ouvre une annotation à l'endroit où chaque piste la montre
+    if (piste === 'stylo') { E.ouverte = n.id; E.vient = n.id; rend(); versNote(n.id); }
+    else if (piste === 'fil') { E.pan = true; E.vient = n.id; rend(); versMsg(n.id); if (ord()) va(n.cible); }
+    else { E.vient = n.id; rend(); versNote(n.id); }
+  }
+
+  cadre.addEventListener('click', function (ev) {
+    var el = ev.target.closest('button, [data-fermer], [data-viser], [data-viser-titre], [data-schema], mark[data-voir]');
+    if (!el || !cadre.contains(el)) return;
+    if (el.hasAttribute('data-fermer') && ev.target !== el) return;
+    var d = el.dataset;
+    if (d.fermer !== undefined) { E.menu = null; E.som = false; if (!ord()) { E.compo = null; E.cible = null; E.pan = false; E.texte = ''; } rend(); return; }
+    // viser : le stylo pris, ou la conversation qui vise
+    if (vise() && (d.viser || d.viserTitre || d.schema)) {
+      var c;
+      if (d.viser) c = { cible: cibleDePhrase(d.viser), ancre: phraseAncre(d.viser) };
+      else if (d.viserTitre) c = { cible: d.viserTitre, ancre: null };
+      else {
+        var r = el.querySelector('img').getBoundingClientRect();
+        var x = Math.round((ev.clientX - r.left) / r.width * 100), y = Math.round((ev.clientY - r.top) / r.height * 100);
+        if (x < 2 || x > 98 || y < 2 || y > 98) return;
+        c = { cible: d.schema, ancre: { t: 'schema', x: x, y: y } };
+      }
+      if (piste === 'stylo') { E.cible = c; E.texte = ''; rend(); focusTexte(); }
+      else { E.filCible = c; E.vise = false; E.pan = true; rend(); focusTexte(); }
+      return;
+    }
+    if (d.schema !== undefined || d.viser !== undefined || d.viserTitre !== undefined) return;
+    if (d.voir) { E.ouverte = E.ouverte === d.voir ? null : d.voir; rend(); if (E.ouverte) versNote(E.ouverte); return; }
+    if (d.compte !== undefined) { E.masque = false; ouvreSeance(); var p = premiere(); if (p) montre(p); return; }
+    if (d.suivante !== undefined) {
+      // la prochaine à reprendre après celle-ci, dans l'ordre de la séance, en reprenant au début
+      var tout = triees(), i = tout.map(function (n) { return n.id; }).indexOf(E.ouverte);
+      var l = tout.slice(i + 1).concat(tout.slice(0, i + 1)).filter(function (n) { return !n.reprise && n.id !== E.ouverte; });
+      if (l.length) montre(l[0]);
+      return;
+    }
+    if (d.premiere !== undefined) { var p0 = premiere() || triees()[0]; if (p0) montre(p0); return; }
+    if (d.bascule) { if ((d.bascule === 'annoter') !== enAnnoter()) { bascule(d.bascule === 'annoter'); rend(); if (piste === 'fil' && E.pan) { basDuFil(); if (ord()) focusTexte(); } } return; }
+    if (d.astuceOk !== undefined) { E.astuce = false; rend(); return; }
+    if (d.viserMode !== undefined) { E.vise = true; rend(); return; }
+    if (d.viserAnnuler !== undefined) { E.vise = false; rend(); return; }
+    if (d.pan !== undefined) { E.pan = !(E.pan && ord()); rend(); if (E.pan) basDuFil(); return; }
+    if (d.panFermer !== undefined) { E.pan = false; E.vise = false; rend(); return; }
+    if (d.ouvrirPan) { E.filCible = { cible: d.ouvrirPan, ancre: null }; var n0 = notesDe(d.ouvrirPan)[0]; if (n0) montre(n0); else { E.pan = true; rend(); } return; }
+    if (d.sur) { E.filCible = { cible: d.sur, ancre: null }; rend(); focusTexte(); return; }
+    if (d.ancreRetirer !== undefined) { E.filCible = { cible: E.filCible.cible, ancre: null }; rend(); focusTexte(); return; }
+    if (d.aller) {
+      var cibleN = trouve(d.aller);
+      E.flash = d.aller; if (!ord()) E.pan = false; rend();
+      var fl = ecran.querySelector('.surl.flash, .epingle.flash');
+      if (fl) defile(fl, ord() ? 220 : 200); else va(cibleN.cible);
+      return;
+    }
+    if (d.annoterSit) {
+      // le raccourci du menu : passe en Annoter, sur la situation
+      E.menu = null; bascule(true); E.indice = false;
+      if (piste === 'marge') E.compo = { cible: d.annoterSit };
+      else if (piste === 'stylo') E.cible = { cible: d.annoterSit, ancre: null };
+      else E.filCible = { cible: d.annoterSit, ancre: null };
+      rend(); focusTexte(); return;
+    }
+    if (d.ouvrir !== undefined) { ouvreSeance(); return; }
+    if (d.retour !== undefined) { E.ecran = E.ecran === 'pdf' ? 'seance' : 'liste'; E.compo = null; E.cible = null; E.annote = false; E.vise = false; E.pan = false; rend(); return; }
+    if (d.pdf !== undefined) { E.ecran = 'pdf'; E.compo = null; E.cible = null; E.annote = false; E.vise = false; E.pan = false; rend(); return; }
+    if (d.presenter !== undefined) { dit('Présenter montre la séance sans ses annotations.'); calque.innerHTML = calqueHtml(); return; }
+    if (d.masquer !== undefined) { E.masque = !E.masque; E.compo = null; E.ouverte = null; rend(); return; }
+    if (d.repris) { var a = trouve(d.repris); a.reprise = true; E.vient = a.id; rend(); return; }
+    if (d.rouvrir) { var b = trouve(d.rouvrir); b.reprise = false; E.vient = b.id; rend(); return; }
+    if (d.suppr) { E.notes = E.notes.filter(function (x) { return x.id !== d.suppr; }); if (E.ouverte === d.suppr) E.ouverte = null; dit('Annotation supprimée'); rend(); return; }
+    if (d.annoter) { E.menu = null; E.compo = { cible: d.annoter }; E.texte = ''; rend(); focusTexte(); return; }
+    if (d.compoAnnuler !== undefined) { E.compo = null; E.cible = null; E.texte = ''; rend(); return; }
+    if (d.va) { E.som = false; rend(); va(d.va); return; }
+    if (d.som !== undefined) { E.som = !E.som; calque.innerHTML = calqueHtml(); return; }
+    if (d.menu) {
+      var rc = el.getBoundingClientRect(), rcad = calque.getBoundingClientRect();
+      E.menu = { cle: d.menu, x: Math.max(8, rcad.right - rc.right), y: rc.bottom - rcad.top + 4 };
+      calque.innerHTML = calqueHtml();
+      var menu = calque.querySelector('.menu');
+      if (menu && menu.getBoundingClientRect().bottom > rcad.bottom - 8) { E.menu.y = rc.top - rcad.top - menu.offsetHeight - 4; calque.innerHTML = calqueHtml(); }
+      var prem = calque.querySelector('.menu button'); if (prem) prem.focus();
+      return;
+    }
+    if (d.autre !== undefined) { E.menu = null; dit(d.autre === 'exemple' ? 'Dans cette maquette, seule la séance de Léa s’ouvre.' : 'Pas dans cette maquette.'); calque.innerHTML = calqueHtml(); return; }
+  });
+  cadre.addEventListener('keydown', function (ev) {
+    if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.matches('.visable')) { ev.preventDefault(); ev.target.click(); }
+  });
+  cadre.addEventListener('input', function (ev) {
+    if (!ev.target.classList.contains('compo-txt')) return;
+    E.texte = ev.target.value;
+    var p = ev.target.closest('[data-compo-form]').querySelector('.publier'); if (p) p.disabled = !E.texte.trim();
+  });
+  cadre.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var c = piste === 'marge' ? (E.compo && { cible: E.compo.cible, ancre: null }) : piste === 'stylo' ? E.cible : E.filCible;
+    if (!c || !E.texte.trim()) return;
+    var id = 'n' + (suivant++);
+    E.notes.push({ id: id, cible: c.cible, ancre: c.ancre, qui: E.qui, quand: 'à l’instant', txt: E.texte.trim() });
+    E.texte = ''; E.vient = id;
+    dit(piste === 'fil' && autrice() ? 'Réponse publiée' : 'Annotation publiée');
+    if (piste === 'marge') { E.compo = null; rend(); if (ord()) va(c.cible); else versNote(id); }
+    else if (piste === 'stylo') { E.cible = null; E.ouverte = id; rend(); versNote(id); }
+    else { E.filCible = { cible: c.cible, ancre: null }; rend(); basDuFil(); focusTexte(); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Escape') return;
+    if (E.menu || E.som || E.compo || E.cible) { E.menu = null; E.som = false; E.compo = null; E.cible = null; E.texte = ''; rend(); }
+    else if (E.vise) { E.vise = false; rend(); }
+    else if (enAnnoter()) { bascule(false); rend(); }
+    else if (E.pan) { E.pan = false; rend(); }
+  });
+
+  function transitoires() { E.menu = null; E.som = false; E.compo = null; E.cible = null; E.annote = false; E.vise = false; E.ouverte = null; E.pan = false; E.texte = ''; E.filCible = { cible: 'entete', ancre: null }; }
+  document.querySelectorAll('button[data-format]').forEach(function (b) { b.addEventListener('click', function () { format = b.dataset.format; E.menu = null; E.som = false; rend(); }); });
+  document.querySelectorAll('[data-qui]').forEach(function (b) { b.addEventListener('click', function () { E.qui = b.dataset.qui; transitoires(); rend(); }); });
+  document.querySelectorAll('[data-piste]').forEach(function (b) { b.addEventListener('click', function () { piste = b.dataset.piste; transitoires(); E.masque = false; rend(); }); });
+  document.querySelectorAll('[data-rapide]').forEach(function (b) { b.addEventListener('click', function () { E.ecran = b.dataset.rapide; transitoires(); rend(); }); });
+  document.querySelectorAll('[data-etape]').forEach(function (b) { b.addEventListener('click', function () { etape(b.dataset.etape); }); });
+  rend();
+})();
+</script>
+</body>
+</html>

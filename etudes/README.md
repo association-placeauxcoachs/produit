@@ -7,3 +7,4 @@ Les études de design et de planification des sujets ouverts. Une étude dispara
 | [Refonte des entraînements](refonte-entrainements/) | Des séances plus lisibles et plus faciles à ranger, en trois étapes : Naviguer, Organiser, Créer |
 | [Planification de saison](planif/) | Ranger ses séances dans une saison, avec ou sans dates |
 | [Animation en 3D](animation-3d/) | Montrer une situation en 3D en mode Présenter, idée exploratoire |
+| [Annoter une séance](annoter-seance/) | Laisser une remarque sur une séance partagée avec un groupe, en formation de cadres, sans la mêler au contenu |
