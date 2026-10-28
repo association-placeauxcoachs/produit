@@ -672,16 +672,6 @@
   .p-pied>*{flex:1}
   .btn-orange{display:flex;align-items:center;justify-content:center;gap:6px;height:46px;padding:0 18px;border-radius:999px;background:var(--orange);color:#fff;font-size:15px;font-weight:600}
   .btn-texte{height:46px;font-size:14.5px;font-weight:600;text-align:center;color:var(--ink)}
-  .reglette{display:flex;align-items:center;gap:14px}
-  .reglette .tous{font-size:12.5px;font-weight:600;border:1px solid var(--filet-fort);border-radius:999px;padding:6px 11px;color:var(--attenue);flex:none}
-  .piste{position:relative;display:flex;flex:1;min-width:0}
-  .piste::before,.piste .rempli{content:"";position:absolute;top:9px;height:3px;border-radius:2px}
-  .piste::before{left:16.6%;right:16.6%;background:color-mix(in srgb,var(--violet) 30%,transparent)}
-  .piste .rempli{background:var(--violet);height:5px;top:8px}
-  .piste button{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--attenue)}
-  .piste i{width:21px;height:21px;border-radius:50%;border:3px solid var(--violet);background:var(--surface)}
-  .piste button[aria-pressed="true"]{color:var(--ink)}
-  .piste button[aria-pressed="true"] i{background:var(--violet)}
   .phases-f{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .phases-f .phase{width:auto}
   /* trois phases (U13 et moins) : une seule rangée, sans orpheline */
@@ -737,10 +727,11 @@
   .moi-ident i{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1.5px solid var(--filet-fort);background:var(--surface);font-style:normal;font-weight:700}
   .moi-ident b{display:block;font-weight:600}
   .moi-ident .fermer{margin-left:auto;align-self:flex-start;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--attenue)}
-  .moi-equipes{display:grid;gap:12px;margin:12px 16px 4px;padding:14px;border:1px solid var(--filet);border-radius:16px;background:var(--surface)}
+  /* une section du panneau, alignée sur la liste : pas de cadre, un filet dessous */
+  .moi-equipes{display:grid;gap:12px;padding:14px 22px 18px;border-bottom:1px solid var(--filet)}
   .moi-equipes h5{font-family:var(--display);font-weight:600;font-size:17px}
-  .moi-equipes p{font-size:12.5px;color:var(--attenue);margin-top:-8px}
-  .moi-equipes .grille-cat .puce{min-height:36px;font-size:12.5px}
+  .moi-equipes>p{font-size:12.5px;color:var(--attenue);margin-top:-8px}
+  .moi-equipes .p-secs{gap:14px}
   .moi-liens{list-style:none;padding:6px 0 14px}
   .moi-liens li>button,.moi-liens li>div{display:flex;align-items:center;gap:14px;width:100%;padding:11px 22px;font-size:14.5px;text-align:left}
   .moi-liens li>button:hover{background:color-mix(in srgb,var(--ink) 4%,transparent)}
@@ -1145,7 +1136,7 @@
 
   /* ---------- état ---------- */
   function etatDepart(etape) {
-    return { etape: etape === undefined ? 1 : etape, ecran: 'mes', couche: null, seance: 'M2', pres: 0, source: 'tout', phase: null, typeSit: 'ech', groupe: 'club', aClasser: false, copiees: {}, classees: {}, creer: null, creee: null, bulle: '', tiroir: null, cherche: false, q: '', qs: '', sel: {}, quoi: null, prepa: false, page: 1, nom: null, nomSaisi: null, editNom: false, obs: false, brouillon: null, charge: false, fige: '', sgI: -1, sgCache: false };
+    return { etape: etape === undefined ? 1 : etape, equipes: { cats: ['U13', 'U15'], niv: ['Intermédiaire'] }, ecran: 'mes', couche: null, seance: 'M2', pres: 0, source: 'tout', phase: null, typeSit: 'ech', groupe: 'club', aClasser: false, copiees: {}, classees: {}, creer: null, creee: null, bulle: '', tiroir: null, cherche: false, q: '', qs: '', sel: {}, quoi: null, prepa: false, page: 1, nom: null, nomSaisi: null, editNom: false, obs: false, brouillon: null, charge: false, fige: '', sgI: -1, sgCache: false };
   }
   var E = etatDepart(0);
   var format = 'tel', expl = true;
@@ -1299,7 +1290,7 @@
   function sel(ecr) {
     ecr = ecr || E.ecran;
     var equipes = ecr === 'communaute' && E.etape >= 2;
-    if (!E.sel[ecr]) E.sel[ecr] = { cat: equipes ? ['U13', 'U15'] : [], mots: [], st: [], niv: equipes ? ['Intermédiaire'] : [], ph: [], ds: [] };
+    if (!E.sel[ecr]) E.sel[ecr] = { cat: equipes ? E.equipes.cats.slice() : [], mots: [], st: [], niv: equipes ? E.equipes.niv.slice() : [], ph: [], ds: [] };
     return E.sel[ecr];
   }
   // le panneau ouvert modifie un brouillon ; la requête part à sa fermeture
@@ -1423,7 +1414,7 @@
   }
   // une recherche ou un filtre réduit la Communauté aux résultats ; catégorie et niveau, eux, disent pour qui on cherche
   function filtreActif() { var f = sel(), c = E.ecran === 'communaute'; return !!(E.q.trim() || f.mots.length || f.ph.length || f.ds.length || (!c && (f.cat.length || f.niv.length || f.st.length))); }
-  function estProfil() { var f = sel('communaute'); return f.cat.join() === 'U13,U15' && f.niv.join() === 'Intermédiaire'; }
+  function estProfil() { var f = sel('communaute'); return f.cat.join() === E.equipes.cats.join() && f.niv.join() === E.equipes.niv.join(); }
   // la liste principale de l'écran, telle que les puces et la recherche la filtrent
   function listeCourante() {
     var e = E.ecran, l = e === 'communaute' && E.etape >= 2 ? communauteVisibles().filter(function (s) { return !E.phase || aLaPhase(s, E.phase); }) : seancesDe(e);
@@ -1550,18 +1541,19 @@
     }
     return '<span class="nom-l"><b>' + esc(n) + '</b>' + (E.etape >= 1 ? '<button type="button" class="nom-crayon" data-nom-editer aria-label="Modifier mon nom">' + ic('crayon') + '</button>' : '') + '</span>';
   }
+  // les mêmes contrôles que la question de l'éditeur et les filtres : la grille des catégories, les niveaux en puces
   function equipes() {
-    return '<div class="moi-equipes"><h5>Mes équipes</h5><p>La Communauté s’ouvre sur elles, et le + en part.</p><div class="grille-cat">' +
-      CATS.map(function (c) { var on = c[0] === 'U13' || c[0] === 'U15'; return '<span class="puce" aria-pressed="' + on + '">' + c[1] + '</span>'; }).join('') + '</div>' + reglette('Intermédiaire') + '</div>';
-  }
-  function reglette(v) {
-    var i = NIV.indexOf(v);
-    return '<div class="reglette"><span class="tous">Tous</span><div class="piste"><span class="rempli" style="left:' + (16.6 + 33.4 * i) + '%;width:0"></span>' + NIV.map(function (n) { return '<button type="button" aria-pressed="' + (n === v) + '"><i></i>' + n + '</button>'; }).join('') + '</div></div>';
+    var q = E.equipes;
+    function puce(quoi, v, libelle) { return '<button type="button" class="puce" data-eq="' + quoi + '" data-v="' + v + '" aria-pressed="' + (q[quoi].indexOf(v) >= 0) + '">' + libelle + '</button>'; }
+    return '<section class="moi-equipes" aria-labelledby="eq-titre"><h5 id="eq-titre">Mes équipes</h5><p>La Communauté s’ouvre sur elles, et une nouvelle séance en part.</p><div class="p-secs">' +
+      '<div class="p-sec"><span>Catégories</span><div class="grille-cat">' + CATS.map(function (c) { return puce('cats', c[0], c[1]); }).join('') + '</div></div>' +
+      '<div class="p-sec"><span>Niveaux</span><div class="options">' + NIV.map(function (n) { return puce('niv', n, n); }).join('') + '</div></div>' +
+      '</div></section>';
   }
 
   /* ---------- éditeur ---------- */
   // à partir de l'étape 2, une séance neuve reprend la catégorie et le niveau de Mes équipes
-  function seanceOuverte() { return E.seance === 'NEW' ? { id: 'NEW', src: 'moi', t: '', o: [], cats: E.etape >= 2 ? ['U13'] : [], st: 'brouillon', n: 0, eff: '', du: '', d: '', mots: [], plus: 0, niv: E.etape >= 2 ? 'Intermédiaire' : '', ph: [], fo: [], sits: [] } : E.seance === 'CREE' ? E.creee : SEANCE[E.seance]; }
+  function seanceOuverte() { return E.seance === 'NEW' ? { id: 'NEW', src: 'moi', t: '', o: [], cats: E.etape >= 2 ? E.equipes.cats.slice(0, 1) : [], st: 'brouillon', n: 0, eff: '', du: '', d: '', mots: [], plus: 0, niv: E.etape >= 2 ? (E.equipes.niv[0] || '') : '', ph: [], fo: [], sits: [] } : E.seance === 'CREE' ? E.creee : SEANCE[E.seance]; }
   function editeur() {
     var s = seanceOuverte(), mien = estMienne(s);
     var meta = [s.d, s.du, s.eff, s.cats.join(' - '), auteur(s)].filter(Boolean).map(esc).join(' · ');
@@ -1716,7 +1708,7 @@
     if (c === 'filtres') {
       var corps = '<div class="champ-texte">' + ic('loupe') + 'Thème, objectif, auteur…</div>' +
         '<div class="p-sec"><span>Catégories</span><div class="grille-cat">' + CATS.map(function (x) { return '<span class="puce" aria-pressed="false">' + x[1] + '</span>'; }).join('') + '</div></div>';
-      if (E.etape >= 2) corps += '<div class="p-sec"><span>Niveau</span>' + reglette('Intermédiaire') + '</div><div class="p-sec"><span>Dispositif et système</span><div class="options">' + DISPOSITIFS.map(function (f) { return '<span class="puce">' + f + '</span>'; }).join('') + '</div></div>' + (E.ecran === 'communaute' ? '<div class="case"><i>' + ic('coche') + '</i>Enregistrer dans mon profil</div>' : '');
+      if (E.etape >= 2) corps += '<div class="p-sec"><span>Niveau</span><div class="options">' + NIV.map(function (n) { return '<span class="puce" aria-pressed="' + (n === 'Intermédiaire') + '">' + n + '</span>'; }).join('') + '</div></div><div class="p-sec"><span>Dispositif et système</span><div class="options">' + DISPOSITIFS.map(function (f) { return '<span class="puce">' + f + '</span>'; }).join('') + '</div></div>' + (E.ecran === 'communaute' ? '<div class="case"><i>' + ic('coche') + '</i>Enregistrer dans mon profil</div>' : '');
       else corps += '<div class="p-sec"><span>Mots-clés</span><div class="options">' + ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive', 'Contre-attaque', 'Défense de zone', '+ 120'].map(function (m) { return '<span class="puce">' + m + '</span>'; }).join('') + '</div></div>';
       corps += '<div class="p-sec"><span>Statut</span><div class="options">' + ['Brouillon', 'En cours', 'Prêt', 'Terminé'].map(function (m) { return '<span class="puce" aria-pressed="' + (E.ecran !== 'mes' ? (m === 'Prêt' || m === 'Terminé') : true) + '">' + m + '</span>'; }).join('') + '</div></div>';
       return feuille('Filtres', '', corps, '<button type="button" class="btn-texte" data-fermer>Réinitialiser</button><button type="button" class="btn-orange" data-fermer>Voir les séances</button>');
@@ -1819,7 +1811,7 @@
       else { it(2, 'Une séance en quatre temps, déjà dessinée', 'Celle du comité s’il en a une pour cette équipe et cette phase, sinon les situations les plus reprises. <b>Chaque temps se change</b>. Échauffement, duel tireur-gardien, travail, forme jouée.'); essai = 'Touchez « Changer », puis « Créer l’entraînement ».'; }
       return [titre, items, essai];
     }
-    if (E.couche === 'menu') { return ['Sous l’avatar', [['', 'Ce qu’on ouvre rarement', (t === 0 ? 'Profil, import, administration, thème et déconnexion.' : '<b>Plus de page Profil</b> : le nom se modifie ici, au crayon, et l’observation de la navigation y passe à côté du thème. ' + (t >= 2 ? '<b>Mes équipes</b> s’y ajoute : catégories et niveau, qui ouvrent la Communauté sur vos équipes.' : 'Sans nom, la pastille de l’avatar mène ici, où le champ attend.'))]], t === 1 ? 'Ajoutez un nom, puis Enregistrer.' : '']; }
+    if (E.couche === 'menu') { return ['Sous l’avatar', [['', 'Ce qu’on ouvre rarement', (t === 0 ? 'Profil, import, administration, thème et déconnexion.' : '<b>Plus de page Profil</b> : le nom se modifie ici, au crayon, et l’observation de la navigation y passe à côté du thème. ' + (t >= 2 ? '<b>Mes équipes</b> s’y ajoute : les catégories et les niveaux, avec les mêmes puces que les filtres. La Communauté s’ouvre sur eux, et une nouvelle séance en part.' : 'Sans nom, la pastille de l’avatar mène ici, où le champ attend.'))]], t === 1 ? 'Ajoutez un nom, puis Enregistrer.' : '']; }
     if (E.couche === 'classer') { return ['Classer en quelques gestes', [['', 'Quelques choix, pas un mot-clé', 'Catégorie, niveau, une ou deux phases, et s’il y a lieu dispositif et système. La liste des phases suit la catégorie. Depuis « Classer mes séances », « Passer » garde une séance pour plus tard. Les types restent sur les situations, posés par le modèle.']], '']; }
     if (e === 'presenter') {
       titre = 'Présenter';
@@ -2035,6 +2027,12 @@
     if ((b = t.closest('[data-phase]'))) { var ph0 = b.dataset.phase; requete(function () { E.phase = E.phase === ph0 ? null : ph0; }); rend(); return; }
     if ((b = t.closest('[data-type]'))) { E.typeSit = b.dataset.type; rend(); return; }
     if ((b = t.closest('[data-copier]'))) { var k = b.dataset.copier; E.copiees[k] = !E.copiees[k]; if (E.copiees[k]) dit('Situation copiée : collez-la dans une séance'); rend(); return; }
+    if ((b = t.closest('[data-eq]'))) {
+      // les choix restent dans l'ordre des listes, pas dans l'ordre des touchers
+      var qe = b.dataset.eq, ordre = qe === 'cats' ? CATS.map(function (c) { return c[0]; }) : NIV;
+      bascule(E.equipes[qe], b.dataset.v); E.equipes[qe].sort(function (x, y) { return ordre.indexOf(x) - ordre.indexOf(y); });
+      delete E.sel.communaute; rend(); return;
+    }
     if ((b = t.closest('[data-repere]'))) { var qr0 = b.dataset.repere; if (E.couche === 'repere' && E.quoiR === qr0) E.couche = null; else { E.couche = 'repere'; E.quoiR = qr0; } rend(); return; }
     if ((b = t.closest('[data-rv]'))) {
       var vr0 = reperesDe(E.couche === 'classer' ? SEANCE[E.seance] : seanceOuverte()), x0 = b.dataset.rv, q0 = b.dataset.rq;
