@@ -520,16 +520,63 @@
   .ed-titre{margin-top:14px;font-family:var(--display);font-weight:600;font-size:26px;line-height:1.15;letter-spacing:-.015em}
   .ed-etiq{margin-top:14px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--attenue)}
   .ed-obj{list-style:none;margin-top:6px;font-family:var(--display);font-style:italic;font-size:16px;line-height:1.45;color:var(--attenue)}
-  .reperes-ed{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px 14px;align-items:center;margin:20px auto 0;max-width:560px;padding:14px 14px 16px;border:1px solid var(--filet);border-radius:16px;background:var(--surface);text-align:left}
-  .reperes-ed>span{font-size:12.5px;font-weight:600;color:var(--attenue)}
-  .reperes-ed .val{display:flex;flex-wrap:wrap;gap:6px}
-  .reperes-ed .puce{min-height:32px;font-size:13px;padding:0 11px}
-  .reperes-ed .val.ph{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-  .reperes-ed .val.ph .puce{white-space:normal;line-height:1.15;padding:4px 10px}
-  @container cadre (min-width:720px){.reperes-ed .val.ph{display:flex}}
-  .reperes-ed .note-r{grid-column:1/-1;font-size:12.5px;color:var(--attenue)}
-  .reperes-ed .note-r b{color:var(--st-pret)}
-  .reperes-ed>.repere{right:-8px;top:-10px}
+  /* les infos de la séance, au même endroit : une fiche qui se lit d'abord ; chaque case se touche pour la changer */
+  .infos-ed{position:relative;margin-top:20px;container:infos/inline-size}
+  .grille-i.quatre{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grille-i.quatre .info-c{grid-column:auto}
+  .grille-i.quatre .info-c:nth-child(odd){border-left:0}
+  .grille-i.quatre .info-c:nth-child(n+3){border-top:1px solid var(--filet)}
+  /* deux par deux dans une zone étroite (téléphone, tablette avec sommaire), sur une ligne au-delà */
+  @container infos (min-width:560px){
+    .grille-i.quatre{grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.5fr)}
+    .grille-i.quatre .info-c:nth-child(odd){border-left:1px solid var(--filet)}
+    .grille-i.quatre .info-c:first-child{border-left:0}
+    .grille-i.quatre .info-c:nth-child(n+3){border-top:0}
+    .infos-ed .grille-i.quatre .info-c:nth-child(3){padding-left:16px}
+  }
+  /* l'identité de la séance, au-dessus du thème : la phase dessinée, puis l'équipe */
+  .embleme{display:inline-flex;flex-direction:column;align-items:center;gap:2px;margin:0 auto 10px;padding:4px 10px;border-radius:12px;transition:background-color .15s}
+  .embleme:hover,.embleme[aria-expanded="true"]{background:color-mix(in srgb,var(--paper-2) 70%,transparent)}
+  .embleme:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .em-ph{display:inline-flex;align-items:center;gap:6px;color:var(--orange-texte);font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.01em}
+  .em-ph b+.picto{margin-left:10px}
+  .em-ph .picto{width:30px;height:30px;color:var(--ink)}
+  .em-eq{font-size:13px;color:var(--attenue)}
+  /* la question, posée dans la page tant que l'équipe ou la phase manque */
+  .question-ed{position:relative;display:grid;gap:12px;margin-top:22px;padding-top:20px;border-top:2px solid var(--orange);text-align:left}
+  .question-ed>.repere{right:-4px;top:-12px}
+  .question-ed h4{font-family:var(--display);font-size:21px;font-weight:600;line-height:1.15;letter-spacing:-.015em;text-align:center}
+  .question-ed>p{margin-top:-6px;font-size:13.5px;line-height:1.4;color:var(--attenue);text-align:center}
+  .question-ed .q-ph{grid-template-columns:repeat(auto-fit,minmax(100px,1fr))}
+  .question-ed .q-ph .phase{padding:10px 10px 11px}
+  .question-ed .q-ph .phase .picto{width:38px;height:38px}
+  .q-ligne{display:grid;gap:8px;justify-items:center}
+  .q-ligne>span{font-size:13.5px;color:var(--ink)}
+  .q-ligne .options{justify-content:center}
+
+  .infos-ed>.repere{right:-4px;top:-10px}
+  .grille-i{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--filet);border-bottom:1px solid var(--filet)}
+  .info-c{grid-column:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:68px;padding:10px 6px;text-align:center;transition:background-color .15s}
+  .info-c+.info-c{border-left:1px solid var(--filet)}
+  .info-c.l2{grid-column:span 3;border-top:1px solid var(--filet)}
+  .info-c.l2.debut{border-left:0}
+  .info-c:hover,.info-c[aria-expanded="true"]{background:color-mix(in srgb,var(--paper-2) 70%,transparent)}
+  .info-c:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
+  .info-c .lab{font-size:12px;color:var(--attenue)}
+  .info-c .val{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-size:17px;font-weight:600;line-height:1.15;letter-spacing:-.01em;color:var(--ink)}
+  .info-c .val .picto{flex:none;width:26px;height:26px;margin:-4px -2px -4px -4px}
+  .info-c .sec-i{font-size:12.5px;line-height:1.25;color:var(--attenue)}
+  /* à remplir : discret pour ce qui est facultatif, orange pour ce qui manque à la Communauté */
+  .info-c.ajout .val{font-family:var(--corps);font-size:14px;font-weight:500;color:var(--attenue)}
+  .info-c.manque .val,.info-c .sec-i.manque{font-family:var(--corps);font-size:14px;font-weight:600;color:var(--orange-texte)}
+  .info-c .sec-i.manque{font-size:12.5px}
+  .infos-ed .note-r{margin-top:10px;font-size:13px;line-height:1.4;color:var(--orange-texte)}
+  .auteur-ed{margin-top:10px;font-size:13px;color:var(--attenue)}
+  .champ-r{width:100%;height:46px;padding:0 14px;border:1px solid var(--filet-fort);border-radius:12px;background:var(--surface);color:var(--ink);font:500 16px var(--corps)}
+  .champ-r:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:transparent}
+  .sous-r{margin:-4px 0 12px;font-size:13px;color:var(--attenue)}
+  .p-sec>small{margin-top:-5px;font-size:12.5px;color:var(--attenue)}
+  .p-secs{display:grid;gap:20px}
   .select{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px 0 12px;border:1px solid var(--filet-fort);border-radius:8px;font-family:var(--mono);font-size:13px;background:var(--surface)}
   .sit-ed{margin:18px 12px 0;background:var(--surface);border:1px solid var(--filet);border-radius:18px;overflow:hidden}
   .sit-ed .tete{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:18px 16px 10px}
@@ -557,7 +604,18 @@
     .ed-tete{padding:30px 36px 26px;text-align:left}
     .ed-meta{justify-content:flex-start}
     .ed-titre{font-size:32px}
-    .reperes-ed{margin-left:0}
+    .grille-i{grid-template-columns:1fr 1fr 1fr 1.25fr 1.6fr}
+    .embleme{align-items:flex-start;margin-left:-10px}
+    .question-ed h4,.question-ed>p{text-align:left}
+    .q-ligne{justify-items:start}
+    .q-ligne .options{justify-content:flex-start}
+    .question-ed{max-width:640px}
+    .info-c,.info-c.l2{grid-column:auto;align-items:flex-start;justify-content:flex-start;text-align:left;padding:12px 16px;border-top:0}
+    .info-c.l2.debut{border-left:1px solid var(--filet)}
+    .info-c:first-child,.grille-i.quatre .info-c:nth-child(3){padding-left:0}
+    .info-c:first-child:hover,.info-c:first-child[aria-expanded="true"],.grille-i.quatre .info-c:nth-child(3):hover,.grille-i.quatre .info-c:nth-child(3)[aria-expanded="true"]{padding-left:12px}
+    .infos-ed>.repere{right:auto;left:-29px;top:22px}
+    .ed-titre:first-child{margin-top:0}
     .sit-ed{margin:22px 36px 0}
   }
 
@@ -626,6 +684,8 @@
   .piste button[aria-pressed="true"] i{background:var(--violet)}
   .phases-f{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .phases-f .phase{width:auto}
+  /* trois phases (U13 et moins) : une seule rangée, sans orpheline */
+  .phases-f:has(> .phase:nth-child(3):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
   .phases-f .phase .picto{width:40px;height:40px}
   .groupes-l{list-style:none;display:grid}
   .groupes-l button{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:12px 20px;border-bottom:1px solid var(--filet);text-align:left}
@@ -825,10 +885,10 @@
   <h2 id="titre-train" class="sr">Les étapes</h2>
   <nav class="train" id="train" aria-label="Étapes de la refonte">
     <span class="voie" aria-hidden="true"></span><span class="voie-faite" aria-hidden="true"></span>
-    <button type="button" class="gare" data-etape="0"><span class="pt"><i></i></span><span class="nom">Aujourd’hui</span><span class="sous">L’application en production</span></button>
-    <button type="button" class="gare" data-etape="1"><span class="pt"><i></i></span><span class="nom"><small>1</small>Naviguer</span><span class="sous">La barre mène aux séances</span></button>
-    <button type="button" class="gare" data-etape="2"><span class="pt"><i></i></span><span class="nom"><small>2</small>Organiser</span><span class="sous">Chaque séance porte ses repères</span></button>
-    <button type="button" class="gare finale" data-etape="3"><span class="pt"><svg viewBox="0 0 32 26" aria-hidden="true"><path d="M4 23V4h24v19"/><path d="M4 9h24M4 14h24M4 19h24M10 4v19M16 4v19M22 4v19" stroke-width="1.1"/></svg></span><span class="nom"><small>3</small>Créer</span><span class="sous">Le + propose une séance prête</span></button>
+    <button type="button" class="gare" data-etape="0"><span class="pt"><i></i></span><span class="nom">Aujourd’hui</span><span class="sec-i">L’application en production</span></button>
+    <button type="button" class="gare" data-etape="1"><span class="pt"><i></i></span><span class="nom"><small>1</small>Naviguer</span><span class="sec-i">La barre mène aux séances</span></button>
+    <button type="button" class="gare" data-etape="2"><span class="pt"><i></i></span><span class="nom"><small>2</small>Organiser</span><span class="sec-i">Chaque séance porte ses repères</span></button>
+    <button type="button" class="gare finale" data-etape="3"><span class="pt"><svg viewBox="0 0 32 26" aria-hidden="true"><path d="M4 23V4h24v19"/><path d="M4 9h24M4 14h24M4 19h24M10 4v19M16 4v19M22 4v19" stroke-width="1.1"/></svg></span><span class="nom"><small>3</small>Créer</span><span class="sec-i">Le + propose une séance prête</span></button>
   </nav>
   <p class="legende" id="legende" aria-live="polite"></p>
 
@@ -963,6 +1023,8 @@
     sortie: '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',
     sifflet: '<path d="M9 7a5 5 0 1 0 4.9 6H21V9h-9.3"/><circle cx="9" cy="12" r="1.2"/>',
     oeil: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+    calendrier: '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+    horloge: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
     crayon: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
     cible: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/>'
   };
@@ -1003,7 +1065,8 @@
   var CATS = [['U5', 'Baby (U5)'], ['U7', '1er pas (U7)'], ['U9', 'U9'], ['U11', 'U11'], ['U13', 'U13'], ['U15', 'U15'], ['U18', 'U18'], ['Seniors', 'Seniors']];
   var NIV = ['Débutant', 'Intermédiaire', 'Confirmé'];
   // « Formes de jeu » se confondait avec les formes de jeu des jeunes : dispositif et système, proposés quelle que soit la phase
-  var DISPOS = ['0-6', '1-5', '2-4', '3-2-1', '3-3'], SYSTEMES = ['Zone', 'Homme à homme'];
+  // chaque dispositif va avec son système : une liste de combinaisons, pas deux choix indépendants
+  var DISPOSITIFS = ['0-6 de zone', '0-6 homme à homme', '1-5 de zone', '1-5 homme à homme', '2-4 de zone', '3-2-1 de zone', '3-3 homme à homme'];
   // U13 et moins : Attaque, Défense, Grand espace ; U15 et plus : les quatre phases ; U13 et U15 ensemble : les deux listes
   var JEUNES = ['U5', 'U7', 'U9', 'U11', 'U13'];
   var VERS_JEUNES = { ap: 'at', dp: 'de', rd: 'de' }, VERS_GRANDS = { at: 'ap', de: 'dp' };
@@ -1013,9 +1076,7 @@
   function uniq(l) { return l.filter(function (x, i) { return l.indexOf(x) === i; }); }
   function normalise(s) {
     if (jeunes(s.cats)) s.ph = uniq(s.ph.map(function (q) { return VERS_JEUNES[q] || q; }));
-    var fo = s.fo || [];
-    s.dis = s.dis || uniq(fo.map(function (f) { return f.split(' ')[0]; }));
-    s.sys = s.sys || uniq(fo.map(function (f) { return /zone/.test(f) ? 'Zone' : 'Homme à homme'; }));
+    s.fo = s.fo || [];
   }
   var LIB_ST = { brouillon: 'Brouillon', encours: 'En cours', pret: 'Prêt', termine: 'Terminé' };
   function lib(l, c) { for (var i = 0; i < l.length; i++) if (l[i][0] === c) return l[i][1]; return c; }
@@ -1094,8 +1155,7 @@
   function niv(s) { return E.classees[s.id] ? E.classees[s.id].niv : s.niv; }
   function phs(s) { return E.classees[s.id] ? E.classees[s.id].ph : s.ph; }
   function classee(s) { return !!(niv(s) && phs(s).length); }
-  function dis(s) { return (E.classees[s.id] && E.classees[s.id].dis) || s.dis || []; }
-  function sys(s) { return (E.classees[s.id] && E.classees[s.id].sys) || s.sys || []; }
+  function dispos(s) { return (E.classees[s.id] && E.classees[s.id].fo) || s.fo || []; }
   function aLaPhase(s, p) { return phs(s).indexOf(p) >= 0; }
   function ini(nom) { return nom.split(' ').map(function (m) { return m.charAt(0); }).join('').replace('.', '').slice(0, 2).toUpperCase(); }
   function auteur(s) { return s.src === 'moi' ? MOI : s.a; }
@@ -1277,7 +1337,7 @@
     function ajoute(quoi, val, lib, alias) { if (quoi === 'ph' && com ? E.phase === val : f[quoi].indexOf(val) >= 0) return; r.push({ quoi: quoi, v: val, lib: lib, alias: alias }); }
     if (E.etape >= 2) {
       phasesPour(f.cat).forEach(function (p) { var al = (ALIAS_PH[p] || []).filter(a)[0]; if (a(PH[p])) ajoute('ph', p, PH[p]); else if (al) ajoute('ph', p, PH[p], al); });
-      DISPOS.concat(SYSTEMES).forEach(function (x) { if (a(x)) ajoute('ds', x, x); });
+      DISPOSITIFS.forEach(function (x) { if (a(x)) ajoute('ds', x, x); });
       NIV.forEach(function (x) { if (a(x)) ajoute('niv', x, x); });
     } else motsFrequents().forEach(function (m) { if (a(m)) ajoute('mots', m, m); });
     CATS.forEach(function (c) { if (a(c[0]) || a(c[1])) ajoute('cat', c[0], c[1]); });
@@ -1358,10 +1418,7 @@
     if (f.st.length && f.st.indexOf(s.st) < 0) return false;
     if (f.niv.length && !(c && !niv(s)) && f.niv.indexOf(niv(s)) < 0) return false;
     if (f.ph.length && !f.ph.some(function (p) { return aLaPhase(s, p); })) return false;
-    // un dispositif et un système choisis ensemble se cumulent : « 0-6 » et « Zone », c'est la 0-6 de zone
-    var fd = f.ds.filter(function (x) { return DISPOS.indexOf(x) >= 0; }), fs = f.ds.filter(function (x) { return SYSTEMES.indexOf(x) >= 0; });
-    if (fd.length && !croise(dis(s), fd)) return false;
-    if (fs.length && !croise(sys(s), fs)) return false;
+    if (f.ds.length && !croise(dispos(s), f.ds)) return false;
     return !q || sansAccent([s.t, s.o.join(' '), auteur(s), sousAuteur(s), s.mots.join(' ')].join(' ')).indexOf(q) >= 0;
   }
   // une recherche ou un filtre réduit la Communauté aux résultats ; catégorie et niveau, eux, disent pour qui on cherche
@@ -1390,7 +1447,7 @@
     var etq = '';
     if (E.etape >= 2) {
       if (cl) {
-        etq = phs(s).map(function (p) { return '<span class="etq ph">' + picto(p) + PH_C[p] + '</span>'; }).join('') + '<span class="etq niv">' + niv(s) + '</span>' + (dis(s).length || sys(s).length ? '<span class="etq">' + [dis(s).join(', '), sys(s).join(', ').toLowerCase()].filter(Boolean).join(' · ') + '</span>' : '');
+        etq = phs(s).map(function (p) { return '<span class="etq ph">' + picto(p) + PH_C[p] + '</span>'; }).join('') + '<span class="etq niv">' + niv(s) + '</span>' + dispos(s).map(function (f) { return '<span class="etq">' + f + '</span>'; }).join('');
       } else if (mien) etq = '<button type="button" class="etq classer" data-act="classer" data-id="' + s.id + '">À classer</button>';
       else etq = '<span class="etq">Pas encore classée</span>';
     } else if (s.mots.length) {
@@ -1503,7 +1560,8 @@
   }
 
   /* ---------- éditeur ---------- */
-  function seanceOuverte() { return E.seance === 'NEW' ? { id: 'NEW', src: 'moi', t: '', o: [], cats: [], st: 'brouillon', n: 0, eff: '', du: '', d: '', mots: [], plus: 0, niv: '', ph: [], fo: [], dis: [], sys: [], sits: [] } : E.seance === 'CREE' ? E.creee : SEANCE[E.seance]; }
+  // à partir de l'étape 2, une séance neuve reprend la catégorie et le niveau de Mes équipes
+  function seanceOuverte() { return E.seance === 'NEW' ? { id: 'NEW', src: 'moi', t: '', o: [], cats: E.etape >= 2 ? ['U13'] : [], st: 'brouillon', n: 0, eff: '', du: '', d: '', mots: [], plus: 0, niv: E.etape >= 2 ? 'Intermédiaire' : '', ph: [], fo: [], sits: [] } : E.seance === 'CREE' ? E.creee : SEANCE[E.seance]; }
   function editeur() {
     var s = seanceOuverte(), mien = estMienne(s);
     var meta = [s.d, s.du, s.eff, s.cats.join(' - '), auteur(s)].filter(Boolean).map(esc).join(' · ');
@@ -1517,9 +1575,10 @@
       var x = TITRES_SIT[img] || { t: 'Situation ' + (i + 1), ty: 'tr' };
       return '<li><b>0' + (i + 1) + '</b>' + esc(x.t) + '<small>' + lib(TYPES, x.ty) + '</small></li>';
     }).join('') + '</ol></nav><div class="ed-main"><div class="ed-tete">' +
-      '<p class="ed-meta">' + (meta || 'Date · durée · effectif') + '</p><h3 class="ed-titre">' + esc(s.t || 'Thème de la séance') + '</h3>' +
+      // à partir de l'étape 2, les infos de la séance quittent la ligne du haut pour la zone sous les objectifs
+      (E.etape >= 2 ? embleme(s) : '<p class="ed-meta">' + (meta || 'Date · durée · effectif') + '</p>') + '<h3 class="ed-titre">' + esc(s.t || 'Thème de la séance') + '</h3>' +
       '<p class="ed-etiq">Objectifs de la séance</p><ul class="ed-obj">' + (s.o.length ? s.o.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') : '<li style="opacity:.6">Ajouter un objectif</li>') + '</ul>';
-    if (E.etape >= 2) h += reperesEditeur(s);
+    if (E.etape >= 2) h += infosEditeur(s);
     h += '</div>';
     h += sits.slice(0, 3).map(function (img, i) {
       var x = TITRES_SIT[img] || { t: 'Situation ' + (i + 1), ty: 'tr', de: '' };
@@ -1530,16 +1589,83 @@
     if (!sits.length) h += '<p class="vide" style="margin-top:20px">Ajoutez une première situation.</p>';
     return h + '</div></div>';
   }
-  function reperesEditeur(s) {
-    var n = niv(s) || '', p = phs(s);
-    var cat = s.cats[0] || 'U13';
-    return '<div class="reperes-ed">' + rep(1) +
-      '<span>Catégorie</span><div class="val"><span class="select">' + cat + ic('chevron') + '</span></div>' +
-      '<span>Niveau</span><div class="val">' + NIV.map(function (x) { return '<span class="puce" aria-pressed="' + (x === n) + '">' + x + '</span>'; }).join('') + '</div>' +
-      '<span>Phase</span><div class="val ph">' + phasesPour(s.cats.length ? s.cats : ['U13']).map(function (x) { return '<span class="puce" aria-pressed="' + (p.indexOf(x) >= 0) + '">' + picto(x) + PH_C[x] + '</span>'; }).join('') + '</div>' +
-      '<span>Dispositif et système</span><div class="val">' + DISPOS.map(function (x) { return '<span class="puce" aria-pressed="' + (dis(s).indexOf(x) >= 0) + '">' + x + '</span>'; }).join('') + SYSTEMES.map(function (x) { return '<span class="puce" aria-pressed="' + (sys(s).indexOf(x) >= 0) + '">' + x + '</span>'; }).join('') + '</div>' +
-      '<p class="note-r">' + (classee(s) ? '<b>Classée</b> : la tuile « ' + PH[p[0]] + ' » de la Communauté la retrouve.' : 'Il manque le niveau ou la phase : la séance est dans la Communauté, mais ni les filtres ni les tuiles ne la retrouvent.') + '</p></div>';
+  // les infos modifiées dans la maquette restent dans l'état, la séance d'exemple n'est jamais touchée
+  function catsEd(s) { return (E.classees[s.id] && E.classees[s.id].cats) || s.cats; }
+  function infoEd(s, k) { var c = E.classees[s.id]; return c && c[k] !== undefined ? c[k] : s[k]; }
+  function reperesDe(s) {
+    var c = E.classees[s.id] || {};
+    E.classees[s.id] = { cats: (c.cats || s.cats).slice(), niv: c.niv !== undefined ? c.niv : s.niv, ph: (c.ph || s.ph).slice(), fo: dispos(s).slice(), d: infoEd(s, 'd'), du: infoEd(s, 'du'), eff: infoEd(s, 'eff') };
+    return E.classees[s.id];
   }
+  function texteDs(s) { return dispos(s).join(', '); }
+  // équipe et phase font l'identité de la séance : classée, elle les porte en tête, au-dessus du thème
+  var TITRES_R = { d: 'Date', du: 'Durée', eff: 'Effectif', ds: 'Dispositif et système', cl: 'Équipe et phase de jeu' };
+  function manquants(s) {
+    var m = [];
+    if (!catsEd(s).length) m.push('la catégorie');
+    if (!niv(s)) m.push('le niveau');
+    if (!phs(s).length) m.push('la phase de jeu');
+    return m;
+  }
+  function classeeEd(s) { return !manquants(s).length; }
+  function embleme(s) {
+    if (classeeEd(s)) {
+      var p = phs(s);
+      return '<button type="button" class="embleme" data-repere="cl" aria-label="Équipe et phase de jeu : ' + esc(p.map(function (x) { return PH[x]; }).join(', ') + ', ' + catsEd(s).join(', ') + ', ' + niv(s)) + '">' +
+        '<span class="em-ph">' + p.map(function (x) { return picto(x) + '<b>' + PH_C[x] + '</b>'; }).join('') + '</span>' +
+        '<span class="em-eq">' + esc(catsEd(s).join(', ')) + ' · ' + niv(s) + '</span></button>';
+    }
+    return '';
+  }
+  // tant qu'il manque l'équipe ou la phase, la question est posée sous les objectifs, réponses à portée de doigt
+  function question(s) {
+    var v = reperesDe(s);
+    function rv(q, val, libelle, actif, cls) { return '<button type="button" class="' + (cls || 'puce') + '" data-rq="' + q + '" data-rv="' + esc(val) + '" aria-pressed="' + actif + '">' + libelle + '</button>'; }
+    return '<section class="question-ed" aria-labelledby="q-titre">' + rep(1) +
+      '<h4 id="q-titre">Que travaille cette séance&#8239;?</h4>' +
+      '<p>C’est ce qui la fait retrouver : par vous dans vos filtres, par les autres entraîneurs dans la Communauté.</p>' +
+      '<div class="phases-f q-ph">' + phasesPour(v.cats.length ? v.cats : ['U13']).map(function (x) { return rv('ph', x, picto(x) + '<span class="nom">' + PH[x] + '</span>', v.ph.indexOf(x) >= 0, 'phase'); }).join('') + '</div>' +
+      // la catégorie de la séance, ou celle de Mes équipes, est déjà choisie ; un toucher la change, et les phases suivent
+      '<div class="q-ligne"><span>Pour quelle catégorie&#8239;?</span><div class="options">' + CATS.map(function (x) { return rv('cat', x[0], x[0], v.cats.indexOf(x[0]) >= 0); }).join('') + '</div></div>' +
+      '<div class="q-ligne"><span>De quel niveau&#8239;?</span><div class="options">' + NIV.map(function (x) { return rv('niv', x, x, v.niv === x); }).join('') + '</div></div>' +
+      '</section>';
+  }
+  // la date, la durée, l'effectif et le dispositif : des cases qui se lisent, et se touchent pour changer
+  function infosEditeur(s) {
+    function cellule(q) {
+      var v = q === 'ds' ? texteDs(s) : infoEd(s, q);
+      return '<button type="button" class="info-c' + (v ? '' : ' ajout') + '" data-repere="' + q + '" aria-label="' + TITRES_R[q] + ' : ' + esc(v || 'à ajouter') + '"' + (E.couche === 'repere' && E.quoiR === q ? ' aria-expanded="true"' : '') + '><span class="lab">' + TITRES_R[q] + '</span><span class="val">' + (v ? esc(v) : 'Ajouter') + '</span></button>';
+    }
+    return (classeeEd(s) ? '' : question(s)) + '<div class="infos-ed"><div class="grille-i quatre" role="group" aria-label="Infos de la séance">' + cellule('d') + cellule('du') + cellule('eff') + cellule('ds') + '</div>' +
+      '<p class="auteur-ed">par ' + esc(auteur(s)) + '</p></div>';
+  }
+  // chaque info a un seul bloc de choix, partout : l'éditeur en ouvre un, « Classer mes séances » les empile
+  var BLOCS = {
+    d: ['Date', ''], du: ['Durée', ''], eff: ['Effectif', 'Le nombre de joueurs, gardiens compris.'],
+    cat: ['Catégories', ''], niv: ['Niveau', ''], ph: ['Phase de jeu', 'Une ou deux. La liste suit les catégories.'], ds: ['Dispositif et système', 'Facultatif, s’il y en a un.']
+  };
+  // le titre du panneau ouvert n'est pas répété au-dessus de son premier bloc
+  function blocs(s, liste, titre) {
+    var v = reperesDe(s);
+    function rv(q, val, libelle, actif, cls) { return '<button type="button" class="' + (cls || 'puce') + '" data-rq="' + q + '" data-rv="' + esc(val) + '" aria-pressed="' + actif + '">' + libelle + '</button>'; }
+    function corps(q) {
+      if (q === 'd') return '<input class="champ-r" type="date" data-champ-r="d" value="' + dateIso(v.d) + '" aria-label="Date de la séance">';
+      if (q === 'du') return '<input class="champ-r" type="text" data-champ-r="du" value="' + esc(v.du || '') + '" placeholder="1h30" aria-label="Durée"><div class="options">' + ['1h', '1h15', '1h30', '1h45', '2h'].map(function (x) { return rv('du', x, x, v.du === x); }).join('') + '</div>';
+      if (q === 'eff') return '<input class="champ-r" type="text" data-champ-r="eff" value="' + esc(v.eff || '') + '" placeholder="14, ou 12+2GB" aria-label="Effectif">';
+      if (q === 'cat') return '<div class="grille-cat">' + CATS.map(function (x) { return rv('cat', x[0], esc(x[1]), v.cats.indexOf(x[0]) >= 0); }).join('') + '</div>';
+      if (q === 'niv') return '<div class="options">' + NIV.map(function (x) { return rv('niv', x, x, v.niv === x); }).join('') + '</div>';
+      if (q === 'ph') return '<div class="phases-f">' + phasesPour(v.cats.length ? v.cats : ['U13']).map(function (x) { return rv('ph', x, picto(x) + '<span class="nom">' + PH[x] + '</span>', v.ph.indexOf(x) >= 0, 'phase'); }).join('') + '</div>';
+      return '<div class="options">' + DISPOSITIFS.map(function (x) { return rv('ds', x, x, v.fo.indexOf(x) >= 0); }).join('') + '</div>';
+    }
+    return '<div class="p-secs">' + liste.map(function (q) {
+      var t = BLOCS[q];
+      return '<div class="p-sec">' + (t[0] === titre || liste.length === 1 ? '' : '<span>' + t[0] + '</span>') + (t[1] ? '<small>' + t[1] + '</small>' : '') + corps(q) + '</div>';
+    }).join('') + '</div>';
+  }
+  // la date choisie s'écrit comme sur la fiche : « 7 oct. »
+  function dateCourte(iso) { var d = new Date(iso + 'T12:00:00'); return isNaN(d) ? '' : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }); }
+  var MOIS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+  function dateIso(court) { var m = /^(\d+)(?:er)? (\S+)/.exec(court || ''); if (!m) return ''; var i = MOIS.indexOf(m[2]); if (i < 0) return ''; return '2026-' + String(i + 1).padStart(2, '0') + '-' + String(+m[1]).padStart(2, '0'); }
 
   /* ---------- présenter ---------- */
   function presenter() {
@@ -1581,7 +1707,7 @@
       else if (q === 'st') corpsF = '<div class="options">' + (E.ecran === 'communaute' ? ['pret', 'termine'] : ['brouillon', 'encours', 'pret', 'termine']).map(function (v) { return opt('st', v, LIB_ST[v]); }).join('') + '</div>';
       else if (q === 'ph') corpsF = '<div class="phases-f">' + phasesPour(vueSel().cat).map(function (v) { return '<button type="button" class="phase" data-opt="ph" data-v="' + v + '" aria-pressed="' + (vueSel().ph.indexOf(v) >= 0) + '">' + picto(v) + '<span class="nom">' + PH[v] + '</span></button>'; }).join('') + '</div>';
       else if (q === 'niv') corpsF = '<div class="options">' + NIV.map(function (v) { return opt('niv', v, v); }).join('') + '</div>';
-      else corpsF = '<div class="options">' + DISPOS.map(function (v) { return opt('ds', v, v); }).join('') + '</div><div class="options" style="margin-top:10px">' + SYSTEMES.map(function (v) { return opt('ds', v, v); }).join('') + '</div>';
+      else corpsF = '<div class="options">' + DISPOSITIFS.map(function (v) { return opt('ds', v, v); }).join('') + '</div>';
       // pas de compte en direct : il coûterait une requête par clic ; la liste se met à jour à la fermeture du panneau
       var effF = ' data-effacer="' + q + '"' + (vueSel()[q].length ? '' : ' disabled') + '>Effacer</button>';
       if (large()) return pop(TITRES_F[q], corpsF, '', '', '<button type="button" class="effacer-f"' + effF);
@@ -1590,7 +1716,7 @@
     if (c === 'filtres') {
       var corps = '<div class="champ-texte">' + ic('loupe') + 'Thème, objectif, auteur…</div>' +
         '<div class="p-sec"><span>Catégories</span><div class="grille-cat">' + CATS.map(function (x) { return '<span class="puce" aria-pressed="false">' + x[1] + '</span>'; }).join('') + '</div></div>';
-      if (E.etape >= 2) corps += '<div class="p-sec"><span>Niveau</span>' + reglette('Intermédiaire') + '</div><div class="p-sec"><span>Dispositif et système</span><div class="options">' + DISPOS.concat(SYSTEMES).map(function (f) { return '<span class="puce">' + f + '</span>'; }).join('') + '</div></div>' + (E.ecran === 'communaute' ? '<div class="case"><i>' + ic('coche') + '</i>Enregistrer dans mon profil</div>' : '');
+      if (E.etape >= 2) corps += '<div class="p-sec"><span>Niveau</span>' + reglette('Intermédiaire') + '</div><div class="p-sec"><span>Dispositif et système</span><div class="options">' + DISPOSITIFS.map(function (f) { return '<span class="puce">' + f + '</span>'; }).join('') + '</div></div>' + (E.ecran === 'communaute' ? '<div class="case"><i>' + ic('coche') + '</i>Enregistrer dans mon profil</div>' : '');
       else corps += '<div class="p-sec"><span>Mots-clés</span><div class="options">' + ['Échauffement', 'Duel GB/T', 'Duel T/GB', 'Situation évolutive', 'Contre-attaque', 'Défense de zone', '+ 120'].map(function (m) { return '<span class="puce">' + m + '</span>'; }).join('') + '</div></div>';
       corps += '<div class="p-sec"><span>Statut</span><div class="options">' + ['Brouillon', 'En cours', 'Prêt', 'Terminé'].map(function (m) { return '<span class="puce" aria-pressed="' + (E.ecran !== 'mes' ? (m === 'Prêt' || m === 'Terminé') : true) + '">' + m + '</span>'; }).join('') + '</div></div>';
       return feuille('Filtres', '', corps, '<button type="button" class="btn-texte" data-fermer>Réinitialiser</button><button type="button" class="btn-orange" data-fermer>Voir les séances</button>');
@@ -1626,18 +1752,19 @@
     }
     if (c === 'classer') {
       var s = SEANCE[E.seance] || seanceOuverte();
-      var cur = E.classeEnCours || { niv: '', ph: [], dis: [], sys: [] };
-      var corps2 = '<p style="font-size:14px;color:var(--attenue);margin-top:-6px">« ' + esc(titreSeance(s)) + ' »</p>' +
-        '<div class="p-sec"><span>Catégorie</span><div class="options"><span class="select">' + (s.cats[0] || 'U13') + ic('chevron') + '</span></div></div>' +
-        '<div class="p-sec"><span>Niveau</span><div class="options">' + NIV.map(function (x) { return '<button type="button" class="puce" data-cl-niv="' + x + '" aria-pressed="' + (cur.niv === x) + '">' + x + '</button>'; }).join('') + '</div></div>' +
-        '<div class="p-sec"><span>Phase de jeu, une ou deux</span><div class="phases-f">' + phasesPour(s.cats.length ? s.cats : ['U13']).map(function (q) { return '<button type="button" class="phase" data-cl-ph="' + q + '" aria-pressed="' + (cur.ph.indexOf(q) >= 0) + '">' + picto(q) + '<span class="nom">' + PH_C[q] + '</span></button>'; }).join('') + '</div></div>' +
-        '<div class="p-sec"><span>Dispositif et système, s’il y en a un</span><div class="options">' + DISPOS.map(function (x) { return '<button type="button" class="puce" data-cl-dis="' + x + '" aria-pressed="' + (cur.dis.indexOf(x) >= 0) + '">' + x + '</button>'; }).join('') + '</div><div class="options" style="margin-top:8px">' + SYSTEMES.map(function (x) { return '<button type="button" class="puce" data-cl-sys="' + x + '" aria-pressed="' + (cur.sys.indexOf(x) >= 0) + '">' + x + '</button>'; }).join('') + '</div></div>';
+      var corps2 = '<p style="font-size:14px;color:var(--attenue);margin-top:-6px">« ' + esc(titreSeance(s)) + ' »</p>' + blocs(s, ['cat', 'niv', 'ph']);
       var dit2 = 'Classée, les filtres et les tuiles de la Communauté la retrouvent.';
       if (E.suite) {
         var dernier = E.suiteI === E.suite.length - 1;
         return feuille('Classer mes séances', 'Séance ' + (E.suiteI + 1) + ' sur ' + E.suite.length + '. ' + dit2, corps2, '<button type="button" class="btn-texte" data-cl-passer>Passer</button><button type="button" class="btn-orange" data-cl="ok">' + (dernier ? 'Classer' : 'Classer et continuer') + '</button>');
       }
       return feuille('Classer la séance', dit2, corps2, '<button type="button" class="btn-texte" data-fermer>Plus tard</button><button type="button" class="btn-orange" data-cl="ok">Classer</button>');
+    }
+    if (c === 'repere') {
+      var sr = seanceOuverte(), qr = E.quoiR;
+      var corpsR = blocs(sr, { d: ['d'], du: ['du'], eff: ['eff'], ds: ['ds'], cl: ['cat', 'niv', 'ph'] }[qr], TITRES_R[qr]);
+      if (large()) return pop(TITRES_R[qr], corpsR, '');
+      return feuille(TITRES_R[qr], '', corpsR, '<button type="button" class="btn-orange" data-fermer>Terminé</button>');
     }
     if (c === 'partager') {
       return feuille('Partager avec un groupe', '', '<ul class="groupes-l" style="margin:-18px -20px">' + GROUPES.map(function (g, i) {
@@ -1702,7 +1829,12 @@
     }
     if (e === 'editeur') {
       titre = 'Une séance ouverte';
-      if (t >= 2) it(1, 'Les repères dans l’en-tête', 'Catégorie, niveau, phase, dispositif et système se posent ici, avec les contrôles des filtres. Les phases suivent la catégorie. Une phrase dit si la séance est classée, donc retrouvée par les filtres de la Communauté.');
+      if (t >= 2) {
+        var sx = seanceOuverte(), cx = classeeEd(sx);
+        if (!cx) it(1, 'La question est posée dans la page', 'Tant que l’équipe ou la phase manque, la question remplace la fiche sous les objectifs : <b>un toucher sur une phase, un sur le niveau</b>, sans rien ouvrir. La catégorie est déjà choisie, celle de la séance ou de Mes équipes, et se change d’un toucher ; les phases suivent.');
+        else it('', 'Une fois classée, la question disparaît', 'La phase dessinée et l’équipe passent en tête, au-dessus du thème : c’est l’identité de la séance. Un toucher pour les changer.');
+        it('', 'Date, durée, effectif, dispositif', 'Quatre cases qui se lisent, sous les objectifs. Un toucher ouvre un calendrier, une case à remplir, ou la liste des dispositifs : « 0-6 de zone », « 3-3 homme à homme »… Le dispositif est facultatif.');
+      }
       if (t === 3 && E.seance === 'CREE') it('', 'Chaque reprise cite son auteur', 'Les situations reprises affichent « d’après » leur auteur, et la reprise lui est comptée.');
       if (t < 2) it('', 'Inchangé', 'Les mots-clés se posent situation par situation, comme aujourd’hui.');
       return [titre, items, ''];
@@ -1792,7 +1924,7 @@
   function champVisible() { return Array.prototype.filter.call(ecran.querySelectorAll('input.q'), function (i) { return i.offsetParent !== null; })[0]; }
   function placePop() {
     var p = calque.querySelector('.voile.pop .feuille'); if (!p) return;
-    var a = ecran.querySelector(E.couche === 'filtre' ? '.pf[data-quoi="' + E.quoi + '"]' : '.selecteur'); if (!a) return;
+    var a = ecran.querySelector(E.couche === 'filtre' ? '.pf[data-quoi="' + E.quoi + '"]' : E.couche === 'repere' ? '[data-repere="' + E.quoiR + '"]' : '.selecteur'); if (!a) return;
     var r = a.getBoundingClientRect(), base = calque.getBoundingClientRect(), haut = r.bottom - base.top + 8;
     p.style.left = Math.max(12, Math.min(r.left - base.left, base.width - p.offsetWidth - 12)) + 'px';
     p.style.top = haut + 'px'; p.style.maxHeight = (base.height - haut - 12) + 'px';
@@ -1850,6 +1982,11 @@
         var dessous = document.elementsFromPoint(ev.clientX, ev.clientY).filter(function (el) { return ecran.contains(el); })[0], pq = dessous && dessous.closest('[data-quoi]');
         if (pq && pq.dataset.quoi !== E.quoi) { E.quoi = pq.dataset.quoi; rend(); return; }
       }
+      // de même, un autre repère touché à travers le voile ouvre son choix
+      if (b === t && E.couche === 'repere' && b.classList.contains('pop')) {
+        var sous = document.elementsFromPoint(ev.clientX, ev.clientY).filter(function (el) { return ecran.contains(el); })[0], pr = sous && sous.closest('[data-repere]');
+        if (pr && pr.dataset.repere !== E.quoiR) { E.quoiR = pr.dataset.repere; rend(); return; }
+      }
       ferme(); rend(); return;
     }
     if ((b = t.closest('[data-nav]'))) {
@@ -1898,18 +2035,28 @@
     if ((b = t.closest('[data-phase]'))) { var ph0 = b.dataset.phase; requete(function () { E.phase = E.phase === ph0 ? null : ph0; }); rend(); return; }
     if ((b = t.closest('[data-type]'))) { E.typeSit = b.dataset.type; rend(); return; }
     if ((b = t.closest('[data-copier]'))) { var k = b.dataset.copier; E.copiees[k] = !E.copiees[k]; if (E.copiees[k]) dit('Situation copiée : collez-la dans une séance'); rend(); return; }
+    if ((b = t.closest('[data-repere]'))) { var qr0 = b.dataset.repere; if (E.couche === 'repere' && E.quoiR === qr0) E.couche = null; else { E.couche = 'repere'; E.quoiR = qr0; } rend(); return; }
+    if ((b = t.closest('[data-rv]'))) {
+      var vr0 = reperesDe(E.couche === 'classer' ? SEANCE[E.seance] : seanceOuverte()), x0 = b.dataset.rv, q0 = b.dataset.rq;
+      if (q0 === 'cat') {
+        bascule(vr0.cats, x0);
+        // une phase qui n'existe plus pour ces catégories est retirée
+        var ok = phasesPour(vr0.cats.length ? vr0.cats : ['U13']); vr0.ph = vr0.ph.filter(function (q) { return ok.indexOf(q) >= 0; });
+      } else if (q0 === 'niv') vr0.niv = vr0.niv === x0 ? '' : x0;
+      else if (q0 === 'du') vr0.du = vr0.du === x0 ? '' : x0;
+      else if (q0 === 'ph') { if (vr0.ph.indexOf(x0) >= 0 || vr0.ph.length < 2) bascule(vr0.ph, x0); else dit('Deux phases au plus'); }
+      else bascule(vr0.fo, x0);
+      if (E.couche !== 'classer' && vr0.cats.length && vr0.niv && vr0.ph.length && (q0 === 'ph' || q0 === 'niv' || q0 === 'cat') && E.dejaDit !== E.seance) { E.dejaDit = E.seance; dit('Séance classée : la Communauté la retrouve'); }
+      rend(); return;
+    }
     if ((b = t.closest('[data-classer-suite]'))) { E.suite = seancesDe('mes').filter(function (x) { return !classee(x); }).map(function (x) { return x.id; }); E.suiteI = 0; ouvreClasser(E.suite[0]); rend(); return; }
     if ((b = t.closest('[data-cl-passer]'))) { suivanteAClasser(); rend(); return; }
-    if ((b = t.closest('[data-cl-dis]'))) { bascule(E.classeEnCours.dis, b.dataset.clDis); rend(); return; }
-    if ((b = t.closest('[data-cl-sys]'))) { bascule(E.classeEnCours.sys, b.dataset.clSys); rend(); return; }
     if ((b = t.closest('[data-filtre]'))) { requete(function () { E.aClasser = !E.aClasser; }); rend(); return; }
     if ((b = t.closest('[data-partage]'))) { E.couche = null; dit('Partagée avec ' + b.dataset.partage); rend(); return; }
-    if ((b = t.closest('[data-cl-niv]'))) { E.classeEnCours.niv = b.dataset.clNiv; rend(); return; }
-    if ((b = t.closest('[data-cl-ph]'))) { var ph = b.dataset.clPh, l = E.classeEnCours.ph, i = l.indexOf(ph); if (i >= 0) l.splice(i, 1); else if (l.length < 2) l.push(ph); rend(); return; }
     if ((b = t.closest('[data-cl]'))) {
-      var c = E.classeEnCours;
+      var c = reperesDe(SEANCE[E.seance]);
       if (!c.niv || !c.ph.length) { dit('Choisissez un niveau et une phase'); rend(); return; }
-      E.classees[E.seance] = { niv: c.niv, ph: c.ph.slice(), dis: c.dis.slice(), sys: c.sys.slice() }; dit('Séance classée : les filtres la retrouvent');
+      dit('Séance classée : les filtres la retrouvent');
       if (E.suite) suivanteAClasser(); else E.couche = null;
       rend(); return;
     }
@@ -1933,7 +2080,7 @@
       if (v === 'blanche') { E.couche = null; E.creer = null; E.retourEd = 'mes'; E.seance = 'NEW'; va('editeur'); rend(); return; }
       if (v === 'valider') {
         var p = proposition(E.creer.ph), base = p.base;
-        E.creee = { id: 'CREE', src: 'moi', t: base ? base.t : PH[E.creer.ph] + ', U13', o: base ? base.o : ['Travailler ' + PH[E.creer.ph].toLowerCase() + '.'], cats: ['U13'], st: 'pret', n: 4, eff: '', du: '1h30', d: '', mots: [], plus: 0, niv: 'Intermédiaire', ph: [E.creer.ph], fo: base ? base.fo : [], dis: base ? base.dis : [], sys: base ? base.sys : [], sits: ['ech', 'dtg', 'tr', 'fj'].map(function (k) { return p.choix[k].img; }) };
+        E.creee = { id: 'CREE', src: 'moi', t: base ? base.t : PH[E.creer.ph] + ', U13', o: base ? base.o : ['Travailler ' + PH[E.creer.ph].toLowerCase() + '.'], cats: ['U13'], st: 'pret', n: 4, eff: '', du: '1h30', d: '', mots: [], plus: 0, niv: 'Intermédiaire', ph: [E.creer.ph], fo: base ? base.fo : [], sits: ['ech', 'dtg', 'tr', 'fj'].map(function (k) { return p.choix[k].img; }) };
         SEANCE.CREE = E.creee; E.couche = null; E.creer = null; E.seance = 'CREE'; E.retourEd = 'mes'; va('editeur'); dit('Entraînement créé, prêt à présenter'); rend(); return;
       }
     }
@@ -1950,7 +2097,7 @@
     if ((b = t.closest('[data-ouvrir]'))) { E.seance = b.dataset.ouvrir; E.retourEd = E.ecran; va('editeur'); rend(); return; }
   });
   // « Classer mes séances » présente une à une les séances sans niveau ni phase
-  function ouvreClasser(id) { var s0 = SEANCE[id]; E.seance = id; E.classeEnCours = { niv: niv(s0) || '', ph: phs(s0).slice(), dis: dis(s0).slice(), sys: sys(s0).slice() }; E.couche = 'classer'; }
+  function ouvreClasser(id) { E.seance = id; reperesDe(SEANCE[id]); E.couche = 'classer'; }
   function suivanteAClasser() {
     E.suiteI++;
     if (E.suite && E.suiteI < E.suite.length) { ouvreClasser(E.suite[E.suiteI]); return; }
@@ -1985,6 +2132,11 @@
     E.nom = v; E.nomSaisi = null; E.editNom = false; dit('Nom enregistré'); rend();
   });
   cadre.addEventListener('input', function (ev) { if (ev.target.classList.contains('nom-champ')) E.nomSaisi = ev.target.value; });
+  cadre.addEventListener('input', function (ev) {
+    var k = ev.target.dataset && ev.target.dataset.champR; if (!k) return;
+    var vr = reperesDe(E.couche === 'classer' ? SEANCE[E.seance] : seanceOuverte()); vr[k] = k === 'd' ? dateCourte(ev.target.value) : ev.target.value.trim();
+  });
+  cadre.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' && ev.target.dataset && ev.target.dataset.champR) { ev.preventDefault(); ferme(); rend(); } });
   // Échap ferme le panneau ouvert, comme un clic à côté
   document.addEventListener('keydown', function (ev) { if (ev.key !== 'Escape' || !E.couche || (ev.target.classList && ev.target.classList.contains('q'))) return; ferme(); rend(); });
 
@@ -2011,6 +2163,16 @@
   document.querySelectorAll('button[data-explications]').forEach(function (b) { b.addEventListener('click', function () { expl = b.dataset.explications === 'oui'; rend(); }); });
   document.getElementById('recommencer').addEventListener('click', function () { E = etatDepart(E.etape); ecran.scrollTop = 0; rend(); });
 
+  // un lien peut ouvrir la maquette sur une étape, une séance et un format : #etape=2&seance=M4&format=ord
+  (function () {
+    var h = {};
+    location.hash.slice(1).split('&').forEach(function (x) { var kv = x.split('='); if (kv[0]) h[kv[0]] = decodeURIComponent(kv[1] || ''); });
+    if (!h.etape && !h.seance) return;
+    if (h.etape) E = etatDepart(Math.max(0, Math.min(3, +h.etape || 0)));
+    if (['tel', 'tab', 'ord'].indexOf(h.format) >= 0) format = h.format;
+    if (h.seance && SEANCE[h.seance]) { E.seance = h.seance; E.retourEd = 'mes'; va('editeur'); }
+    setTimeout(function () { document.getElementById('maquette').scrollIntoView(); }, 0);
+  })();
   marqueTheme();
   rend();
 })();
